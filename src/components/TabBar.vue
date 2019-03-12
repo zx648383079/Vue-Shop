@@ -6,12 +6,21 @@
         </a>
     </footer>
 </template>
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+interface IMenu {
+    name: string,
+    icon: string,
+    url: string
+}
+
+export default Vue.extend({
+    name: 'TabBar',
     data() {
         return {
             menus: [
-                {
+                 {
                     name: '首页',
                     icon: 'fa fa-home',
                     url: 'home'
@@ -31,13 +40,13 @@ export default {
                     icon: 'fa fa-user',
                     url: 'member'
                 },
-            ]
-        }
+            ],
+        };
     },
     methods: {
-        tapMenu(item) {
-            this.$router.push('/' + item.url)
-        }
-    }
-}
+        tapMenu(item: IMenu) {
+            this.$router.push({ name: item.url});
+        },
+    },
+})
 </script>

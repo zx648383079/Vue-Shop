@@ -34,7 +34,6 @@
 </template>
 
 <style lang="scss" scoped>
-
   .loadmoreText{
       /* background: #f0f3f5; */
       display: flex;
@@ -56,15 +55,12 @@
     color: #ccc;
     transition: .2s;
   }
-
   .arrow-pull {
     transform: rotate(0deg);
   }
-
   .arrow-drop {
     transform: rotate(-180deg);
   }
-
   .loadmore-top {
     >div {
       font-size: 15px;
@@ -109,9 +105,11 @@
   }
 </style>
 
-<script type="text/babel">
-  import { Spinner, InfiniteScroll  } from 'mint-ui';
-  export default {
+<script lang="ts">
+import Vue from 'vue';
+import { Spinner, InfiniteScroll  } from 'mint-ui';
+
+export default Vue.extend({
     name: 'mt-loadmore',
     props: {
       maxDistance: {
@@ -207,9 +205,9 @@
         AllLoaded:false
       };
     },
-    components:{
+    components: {
         Spinner,
-        InfiniteScroll
+        InfiniteScroll,
     },
     watch: {
       translate(val){
@@ -440,7 +438,7 @@
       this.uuid = Math.random().toString(36).substring(3, 8);
       this.init();
     }
-  };
+});
 </script>
 <style lang="scss">
 .loadmore-content{
