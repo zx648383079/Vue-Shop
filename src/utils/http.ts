@@ -59,6 +59,7 @@ axios.interceptors.response.use(
             position: 'bottom',
         });
         if (error && error.response && error.response.status === 401) {
+            util.removeSessionStorage(TOKEN_KEY);
             router.push({
                 path: '/login',
                 query: {
