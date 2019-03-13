@@ -55,10 +55,19 @@ axios.interceptors.response.use(
     },
     (error) => {
         Toast({
-            message: error,
+            message: error && error.response ? error.response.data.message : error,
             position: 'bottom',
-        })
-        return Promise.reject(error)
+        });
+        if (error && error.response && error.response.status === 401) {
+            router.push({
+                path: '/login',
+                query: {
+                    redirect: router.currentRoute.fullPath,
+                }, // 从哪个页面跳转
+            })
+            return Promise.reject(error);
+        }
+        return Promise.reject(error);
     },
 )
 

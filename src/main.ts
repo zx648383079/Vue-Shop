@@ -9,6 +9,8 @@ import { assetsFilter, statusFilter, sizeFilter, agoFilter } from './pipes';
 import { getSessionStorage } from './utils';
 import { TOKEN_KEY } from './store/types';
 
+import MintUI from 'mint-ui'
+import 'mint-ui/lib/style.css'
 import '@fortawesome/fontawesome-free/css/all.css';
 
 Vue.filter('assets', assetsFilter);
@@ -17,6 +19,7 @@ Vue.filter('size', sizeFilter);
 Vue.filter('ago', agoFilter);
 Vue.use(Http);
 Vue.use(Title);
+Vue.use(MintUI);
 
 router.beforeEach((to, from, next) => {
     const token = getSessionStorage<string>(TOKEN_KEY); // 获取本地存储的token

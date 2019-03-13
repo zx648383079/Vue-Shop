@@ -40,12 +40,11 @@ export default Vue.extend({
       SearchBar
     },
     data() {
+        const items: any[] = [];
         return {
             isSearch: true,
             keywords: '',
-            items: [
-
-            ],
+            items,
             commad: getList,
             searchParams: {
                 keywords: '',
@@ -73,9 +72,9 @@ export default Vue.extend({
             this.searchParams = JSON.parse(JSON.stringify(Object.assign(this.searchParams, this.$route.query)))
             this.$refs.searchRusultloadMore.onloadMoreScroll();
         },
-        async infiniteCallback(response) { //下拉加载
+        async infiniteCallback(response: any) { //下拉加载
             if (response.data.length > 0) {
-                response.data.map(i => {
+                response.data.map((i: any) => {
                     this.items.push(i)
                 })
             }
@@ -88,11 +87,11 @@ export default Vue.extend({
         },
         tapSearch(keywords: string) {
             this.searchParams.keywords = keywords
-            this.isSearch = false
+            this.isSearch = false;
             this.searchRusult();
         },
         tapHome() {
-            this.$router.push('/')
+            this.$router.push('/');
         },
         tapEnterSearch() {
             this.keywords = this.searchParams.keywords

@@ -8,7 +8,7 @@
                 <i class="fa fa-search"></i>
                 <span>搜索商品, 共666款好物</span>
             </a>
-            <a v-if="!isLogin">登录</a>
+            <a v-if="!isLogin" @click="tapLogin">登录</a>
             <a v-if="isLogin">
                 <i class="fa fa-comment-dots"></i>
             </a>
@@ -58,7 +58,7 @@ import { IProduct } from '@/api/model';
 export default Vue.extend({
     components: {
         TabBar,
-        GoodsPanel
+        GoodsPanel,
     },
     data() {
         return {
@@ -88,8 +88,11 @@ export default Vue.extend({
             console.log(item);
         },
         tapSearch() {
-            this.$router.push('/search')
-        }
+            this.$router.push('/search');
+        },
+        tapLogin() {
+            this.$router.push('/login');
+        },
     }
 });
 </script>

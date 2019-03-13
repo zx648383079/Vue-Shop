@@ -36,6 +36,10 @@ const actions = {
                 return;
             }
             const token = getSessionStorage<string>(TOKEN_KEY);
+            if (!token) {
+                resolve();
+                return;
+            }
             getProfile().then((res: IUser) => {
                 context.commit(SET_USER, res);
                 resolve(res);

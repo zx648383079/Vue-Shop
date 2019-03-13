@@ -3,10 +3,10 @@ module.exports = {
   plugins: [
     [
       'component',
-      {
-        "libraryName": "mint-ui", 
-        "style": true
-      }
+      // {
+      //   "libraryName": "mint-ui", 
+      //   "style": true
+      // }
     ]
   ]
 }

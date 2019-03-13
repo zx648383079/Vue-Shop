@@ -1,81 +1,55 @@
 <template>
     <div>
+        <BackHeader title="个人中心"></BackHeader>
         <div class="has-header has-footer">
             <div class="user-header">
                 <div class="avatar">
-                    <img src="<?=$user ? $user->avatar : '/assets/images/avatar/1.png'?>">
+                    <img :src="user ? user.avatar : '/assets/images/avatar/1.png' | assets">
                 </div>
                 <div class="name">
                     欢迎您，
-                    <?php if($user):?>
-                    <a href="<?=$this->url('./mobile/member/profile')?>"><?=$user->name?></a>
-                    <?php else:?>
-                    <a href="<?=$this->url('./mobile/member/login')?>">请登陆</a>
-                    <?php endif;?>
+                    <a v-if="user" @click="tapProfile">{{ user.name }}</a>
+                    <a v-else @click="tapLogin">请登陆</a>
                     ~
                 </div>
             </div>
             <div class="menu-grid">
-                <a href="<?=$this->url('./mobile/order')?>" class="item">
+                <a @click="$router.push('/order')" class="item">
                     <i class="fa fa-users" aria-hidden="true"></i>
                     订单
                 </a>
-                <a href="<?=$this->url('./mobile/collect')?>" class="item">
+                <a @click="$router.push('/collect')" class="item">
                     <i class="fa fa-bookmark" aria-hidden="true"></i>
                     关注
                 </a>
-                <a href="<?=$this->url('./mobile/message')?>" class="item">
+                <a @click="$router.push('/message')" class="item">
                     <i class="fa fa-comments" aria-hidden="true"></i>
                     消息
                 </a>
-                <a href="<?=$this->url('./mobile/account/center')?>" class="item">
+                <a @click="$router.push('/account/center')" class="item">
                     <i class="fa fa-shield-alt" aria-hidden="true"></i>
                     安全
                 </a>
-                <a href="<?=$this->url('./mobile/member/profile')?>" class="item">
+                <a @click="tapProfile" class="item">
                     <i class="fa fa-cog" aria-hidden="true"></i>
                     设置
                 </a>
             </div>
             <div class="menu-large">
-                <a href="<?=$this->url('./mobile/order', ['status' => OrderModel::STATUS_UN_PAY])?>" class="item">
-                    <i class="fa fa-money-bill" aria-hidden="true"></i>
-                    <span>待付款</span>
-                    <?php if(isset($order_subtotal['unpay']) && $order_subtotal['unpay'] > 0):?>
-                    <i class="tip"><?=$order_subtotal['unpay']?></i>
-                    <?php endif;?>
-                </a>
-                <a href="<?=$this->url('./mobile/order', ['status' => OrderModel::STATUS_SHIPPED])?>" class="item">
-                    <i class="fa fa-truck" aria-hidden="true"></i>
-                    <span>待收货</span>
-                    <?php if(isset($order_subtotal['shipped']) && $order_subtotal['shipped'] > 0):?>
-                    <i class="tip"><?=$order_subtotal['shipped']?></i>
-                    <?php endif;?>
-                </a>
-                <a href="<?=$this->url('./mobile/comment')?>" class="item">
-                    <i class="fa fa-comment" aria-hidden="true"></i>
-                    <span>待评价</span>
-                    <?php if(isset($order_subtotal['uncomment']) && $order_subtotal['uncomment'] > 0):?>
-                    <i class="tip"><?=$order_subtotal['uncomment']?></i>
-                    <?php endif;?>
-                </a>
-                <a href="<?=$this->url('./mobile/refund', ['status' => ''])?>" class="item">
-                    <i class="fa fa-exchange-alt" aria-hidden="true"></i>
-                <span>退换货</span>
-                <?php if(isset($order_subtotal['refunding']) && $order_subtotal['refunding'] > 0):?>
-                    <i class="tip"><?=$order_subtotal['refunding']?></i>
-                    <?php endif;?>
-                </a>
+                <MenuLargeItem title="待付款" icon="fa-money-bill" uri="/order?status=1" :count="0"/>
+                <MenuLargeItem title="待收货" icon="fa-truck" uri="/order?status=1" :count="0"/>
+                <MenuLargeItem title="待评价" icon="fa-comment" uri="/comment" :count="0"/>
+                <MenuLargeItem title="退换货" icon="fa-exchange-alt" uri="/refund" :count="0"/>
             </div>
 
             <div class="menu-panel">
-                <a href="<?=$this->url('./mobile/account')?>" class="panel-header">
+                <a @click="$router.push('/account')" class="panel-header">
                     <i class="fa fa-briefcase" aria-hidden="true"></i>
                     我的钱包
                     <i class="fa fa-chevron-right" aria-hidden="true"></i>
                 </a>
                 <div class="panel-body">
-                    <a href="<?=$this->url('./mobile/account')?>" class="item">
+                    <a @click="$router.push('/account')" class="item">
                         <span class="menu-item-icon">0
                         </span>
                         余额
@@ -87,7 +61,7 @@
                         <span class="menu-item-icon">0
                         </span>
                         红包
-                    </a><a href="<?=$this->url('./mobile/coupon/my')?>" class="item">
+                    </a><a @click="$router.push('/coupon/my')" class="item">
                         <span class="menu-item-icon">0
                         </span>
                         优惠券
@@ -96,34 +70,50 @@
             </div>
 
             <div class="menu-list">
-                <a href="<?=$this->url('./mobile/address')?>">
-                    <i class="fa fa-map-marker" aria-hidden="true"></i>
-                    我的收货地址
-                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                </a>
-                <a href="">
-                    <i class="fa fa-history" aria-hidden="true"></i>
-                    浏览历史
-                </a>
-                <a href="<?=$this->url('./mobile/affiliate')?>">
-                    <i class="fa fa-share" aria-hidden="true"></i>
-                    我的推荐
-                </a>
-                <a href="<?=$this->url('./mobile/article')?>">
-                    <i class="fa fa-gift" aria-hidden="true"></i>
-                    帮助
-                </a>
+                <MenuItem title="我的收货地址" icon="fa-map-marker" uri="/address"/>
+                <MenuItem title="浏览历史" icon="fa-history" uri="/history"/>
+                <MenuItem title="我的推荐" icon="fa-share" uri="/affiliate"/>
+                <MenuItem title="帮助" icon="fa-gift" uri="/article"/>
             </div>
             
         </div>
+        <TabBar/>
     </div>
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import TabBar from '@/components/TabBar.vue';
+import BackHeader from '@/components/BackHeader.vue';
+import { IUser } from '@/api/model';
+import { dispatchUser } from '@/store/dispatches';
+import MenuItem from './Child/MenuItem.vue';
+import MenuLargeItem from './Child/MenuLargeItem.vue';
 
-@Component
+@Component({
+    components: {
+        BackHeader,
+        TabBar,
+        MenuItem,
+        MenuLargeItem
+    },
+})
 export default class Index extends Vue {
 
+    user: IUser | null = null;
+
+    created() {
+        dispatchUser().then(res => {
+            this.user = res;
+        });
+    }
+
+    tapLogin() {
+        this.$router.push('/login');
+    }
+
+    tapProfile() {
+        this.$router.push('/member/profile');
+    }
 }
 </script>
 <style lang="scss" scoped>

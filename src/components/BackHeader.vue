@@ -38,7 +38,7 @@ header {
     top: 0;
     left: 0;
     right: 0;
-    background: rgb(240, 78, 73);
+    background: #05a6b1;
     color: #fff;
     text-align: center;
     z-index: 99;
