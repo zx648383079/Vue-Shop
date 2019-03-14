@@ -30,7 +30,7 @@ router.beforeEach((to, from, next) => {
             next({
                 path: '/login',
                 query: {
-                    redirect: to.fullPath,
+                    redirect_uri: to.fullPath,
                 }, // 将跳转的路由path作为参数，登录成功后跳转到该路由
             });
         }

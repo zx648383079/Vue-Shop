@@ -4,9 +4,9 @@ import {
 import {
     Commit,
 } from 'vuex';
-import { IUser } from '@/api/model';
-import { getSessionStorage } from '@/utils';
-import { getProfile } from '@/api/user';
+import { IUser, ILogin } from '@/api/model';
+import { getSessionStorage, setSessionStorage, removeSessionStorage } from '@/utils';
+import { getProfile, login, logout } from '@/api/user';
 
 
 export interface State {
@@ -25,7 +25,19 @@ const initState: State = {
 };
 
 // getters
-const getters = {};
+const getters = {
+    /**
+     * 此方法不验证token的有效性
+     * @param state
+     */
+    isGuest(state: State) {
+        if (state.user) {
+            return false;
+        }
+        const token = getSessionStorage<string>(TOKEN_KEY);
+        return !token;
+    },
+};
 
 // actions
 const actions = {
@@ -46,6 +58,26 @@ const actions = {
             }).catch(reject);
         });
     },
+    loginUser(context: IActionContext, params: ILogin) {
+        return login(params).then((res: IUser) => {
+            setSessionStorage(TOKEN_KEY, res.token);
+            context.commit(SET_USER, res);
+        });
+    },
+    logoutUser(context: IActionContext) {
+        return new Promise((resolve, reject) => {
+            const token = getSessionStorage<string>(TOKEN_KEY);
+            if (!token) {
+                resolve();
+                return;
+            }
+            logout().then(() => {
+                context.commit(SET_USER, null);
+                removeSessionStorage(TOKEN_KEY);
+                resolve();
+            }).catch(reject);
+        });
+    }
 };
 
 // mutations

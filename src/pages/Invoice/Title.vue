@@ -1,5 +1,10 @@
 <template>
     <div>
+        <BackHeader title="发票抬头">
+            <a class="right" @clcik="tapEdit">
+                <i class="fa fa-plus"></i>
+            </a>
+        </BackHeader>
         <div class="has-header">
             <div class="swipe-box title-list">
                 <div class="swipe-row" v-for="(item, index) in items" :key="index">
@@ -9,7 +14,7 @@
                         <p>税务登记号：11123545656</p>
                     </div>
                     <div class="actions-right">
-                        <a href="<?=$this->url('./mobile/invoice/edit', ['id' => $item])?>">
+                        <a @click="tapEdit(item)">
                             <i class="fa fa-edit"></i>
                         </a>
                         <i class="fa fa-trash"></i>
@@ -19,19 +24,19 @@
         </div>
     </div>
 </template>
-<script>
-export default {
-    data() {
-        return {
-            items: [
+<script lang="ts">
+import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import BackHeader from '@/components/BackHeader.vue';
 
-            ]
-        }
-    },
-    created() {
+@Component({
+    components: {
+        BackHeader
+    }
+})
+export default class Title extends Vue {
+    items = [1, 2];
 
-    },
-    methods: {
+    tapEdit(item?: any) {
 
     }
 }

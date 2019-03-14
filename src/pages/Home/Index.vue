@@ -8,8 +8,8 @@
                 <i class="fa fa-search"></i>
                 <span>搜索商品, 共666款好物</span>
             </a>
-            <a v-if="!isLogin" @click="tapLogin">登录</a>
-            <a v-if="isLogin">
+            <a v-if="isGuest" @click="tapLogin">登录</a>
+            <a v-if="!isGuest">
                 <i class="fa fa-comment-dots"></i>
             </a>
         </header>
@@ -65,8 +65,12 @@ export default Vue.extend({
             banners: [],
             categories: [],
             data: {},
-            isLogin: false
         }
+    },
+    computed: {
+        ...mapGetters([
+            'isGuest'
+        ]),
     },
     created: function () {
         getHome().then(res => {

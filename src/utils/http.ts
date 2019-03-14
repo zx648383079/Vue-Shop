@@ -27,7 +27,7 @@ axios.interceptors.request.use(
         config.params.sign = sign;
         const token = util.getSessionStorage(TOKEN_KEY)
         if (token) {
-            config.params.token = token
+            config.headers.Authorization = 'Bearer ' + token
         }
         return config
     },
@@ -113,9 +113,20 @@ export function post<T>(url: string, data = {}): Promise<T> {
  * @param data
  * @returns {Promise}
  */
-export function patch(url: string, data = {}) {
+export function patch<T>(url: string, data = {}): Promise<T> {
     return new Promise((resolve, reject) => {
         axios.patch(url, data)
+            .then((response) => {
+                resolve(response.data)
+            }, (err) => {
+                reject(err)
+            })
+    })
+}
+
+export function deleleRequest<T>(url: string): Promise<T> {
+    return new Promise((resolve, reject) => {
+        axios.delete(url)
             .then((response) => {
                 resolve(response.data)
             }, (err) => {

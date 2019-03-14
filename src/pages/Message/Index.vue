@@ -1,35 +1,40 @@
 <template>
     <div>
+        <BackHeader title="我的消息"/>
         <div class="has-header">
             <div class="swipe-box address-list">
-                <?php foreach(range(1, 5) as $item):?>
-                <div class="swipe-row">
-                    <div class="swipe-content address-item">
-                        <div class="address-first">
-                            <span>系</span>
-                        </div>
-                        <div class="address-info">
-                            <h3>213213213123</h3>
-                            <p>
-                                <?=date('Y-m-d H:i:s')?>
-                            </p>
-                        </div>
+                <SwipeRow name="address-item" v-for="(item, index) in items" :key="index" @remove="tapRemove(item)" :index="index" ref="swiperow">
+                    <div class="address-first">
+                        <span>系</span>
                     </div>
-                    <div class="actions-right">
-                        <i class="fa fa-trash"></i>
+                    <div class="address-info">
+                        <h3>213213213123</h3>
+                        <p>
+                            2019-29
+                        </p>
                     </div>
-                </div>
-                <?php endforeach;?>
+                </SwipeRow>
             </div>
         </div>
     </div>
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import BackHeader from '@/components/BackHeader.vue';
+import SwipeRow from '@/components/SwipeRow.vue';
 
-@Component
+@Component({
+    components: {
+        BackHeader,
+        SwipeRow
+    }
+})
 export default class Index extends Vue {
+    items = ['1231231', 1002];
 
+    tapRemove(item: any) {
+        console.log(item)
+    }
 }
 </script>
 <style lang="scss" scoped>

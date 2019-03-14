@@ -39,7 +39,8 @@ export interface ICategory {
     parent_id?: number,
     expanded?: boolean,
     level?: number,
-    children?: ICategoryObject
+    children?: ICategoryObject | ICategory[],
+    goods_list: IProduct[]
 }
 
 export interface ICategoryObject {
@@ -79,9 +80,33 @@ export interface ICart {
 }
 
 export interface IUser {
-    id: string;
+    id: number;
     email: string;
     name: string;
     avatar: string;
     token?: string;
+}
+
+export interface IAccountLog {
+    id?: number,
+    type?: number;
+    item_id?: number,
+    money?: number,
+    status?: number,
+    remark: string;
+    created_at?: string;
+}
+
+export interface ICollect {
+    id?: number,
+    goods: IProduct;
+    goods_id: number;
+    created_at?: string;
+}
+
+export interface ILogin {
+    email?: string;
+    password?: string;
+    mobile?: string;
+    code?: string;
 }

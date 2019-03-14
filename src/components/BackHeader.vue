@@ -1,5 +1,5 @@
 <template>
-    <header>
+    <header class="top">
         <a class="back" @click="tapBack">
             <i class="fa fa-chevron-left" aria-hidden="true"></i>
         </a>

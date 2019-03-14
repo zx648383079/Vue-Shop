@@ -1,6 +1,10 @@
 <template>
     <div>
-        <BackHeader title="个人中心"></BackHeader>
+        <BackHeader title="个人中心">
+            <a v-if="user" class="right" @click="tapLogout">
+                <i class="fa fa-sign-out-alt"></i>
+            </a>
+        </BackHeader>
         <div class="has-header has-footer">
             <div class="user-header">
                 <div class="avatar">
@@ -85,7 +89,7 @@ import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import TabBar from '@/components/TabBar.vue';
 import BackHeader from '@/components/BackHeader.vue';
 import { IUser } from '@/api/model';
-import { dispatchUser } from '@/store/dispatches';
+import { dispatchUser, dispatchLogout } from '@/store/dispatches';
 import MenuItem from './Child/MenuItem.vue';
 import MenuLargeItem from './Child/MenuLargeItem.vue';
 
@@ -113,6 +117,12 @@ export default class Index extends Vue {
 
     tapProfile() {
         this.$router.push('/member/profile');
+    }
+
+    tapLogout() {
+        dispatchLogout().then(() => {
+            this.user = null;
+        });
     }
 }
 </script>

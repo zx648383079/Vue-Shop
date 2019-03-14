@@ -1,18 +1,17 @@
 <template>
     <div>
+        <BackHeader title="申请开票"/>
         <div class="has-header has-double-footer">
-            <?php foreach(range(1, 5) as $item):?>
-            <div class="order-mini-item">
+            <div class="order-mini-item" v-for="(item, index) in items" :key="index">
                 <i class="fa check-box"></i>
                 <div class="info">
-                    <div class="name"><?=$item?></div>
-                    <p><?=date('Y-m-d H:i:s')?></p>
+                    <div class="name">{{ item }}</div>
+                    <p>2018-123</p>
                 </div>
                 <div class="amount">
                     ￥200
                 </div>
             </div>
-            <?php endforeach;?>
         </div>
         <div class="invoice-footer">
             <div>
@@ -32,21 +31,17 @@
         </div>
     </div>
 </template>
-<script>
-export default {
-    data() {
-        return {
-            items: [
+<script lang="ts">
+import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import BackHeader from '@/components/BackHeader.vue';
 
-            ]
-        }
-    },
-    created() {
-
-    },
-    methods: {
-
+@Component({
+    components: {
+        BackHeader
     }
+})
+export default class Apply extends Vue {
+    items = [1, 1, 2, 3];
 }
 </script>
 <style lang="scss" scoped>

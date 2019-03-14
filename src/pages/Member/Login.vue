@@ -65,19 +65,17 @@
                     <a @click="mode = 0" class="btn btn-none">其他登录方式</a>
                 </div>
                 <div class="email-password" v-if="mode == 3">
-                    <form data-type="ajax" action="<?= $this->url('/auth/login') ?>" method="POST">
-                        <div class="input-box">
-                            <input type="email" name="email" required autocomplete="off" placeholder="请输入账号">
-                        </div>
-                        <div class="input-box">
-                            <input type="password" name="password" required autocomplete="off" placeholder="请输入密码">
-                        </div>
-                        <div class="unlogin">
-                            <a @click="mode = 4">注册账号</a>
-                            <a href="">忘记密码</a>
-                        </div>
-                        <button>登录</button>
-                    </form>
+                    <div class="input-box">
+                        <input type="email" name="email" required autocomplete="off" v-model="email" placeholder="请输入账号">
+                    </div>
+                    <div class="input-box">
+                        <input type="password" name="password" required autocomplete="off" v-model="password" placeholder="请输入密码">
+                    </div>
+                    <div class="unlogin">
+                        <a @click="mode = 4">注册账号</a>
+                        <a href="">忘记密码</a>
+                    </div>
+                    <button @click="tapLogin">登录</button>
                     <a @click="mode = 0" class="btn btn-none">其他登录方式</a>
                 </div>
             </div>
@@ -108,14 +106,43 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import { IUser } from '@/api/model';
-import { dispatchUser } from '@/store/dispatches';
+import { dispatchUser, dispatchLogin } from '@/store/dispatches';
+import { Toast } from 'mint-ui';
 
 @Component
 export default class Login extends Vue {
 
     mode: number = 0;
 
+    email: string = '';
+
+    password: string = '';
+
     tapHome() {
+        this.$router.push('/');
+    }
+
+    tapLogin() {
+        const email = this.email;
+        const password = this.password;
+        if (!email || !/.+@.+/.test(email)) {
+            Toast('请输入账号');
+            return;
+        }
+        if (!password || password.length < 4) {
+            Toast('请输入密码');
+            return;
+        }
+        dispatchLogin({email, password}).then((res: IUser) => {
+            this.tapLoginBack();
+        });
+    }
+
+    tapLoginBack() {
+        if (this.$route.query.redirect_uri) {
+            this.$router.push(this.$route.query.redirect_uri + '');
+            return;
+        }
         this.$router.push('/');
     }
 }

@@ -8,7 +8,7 @@
         </header>
         <div class="has-header has-footer category-page">
             <div class="category-menu">
-                <div v-for="(item, index) in categories" :key="index" :class="['menu-item', item.id == category.id ? 'active' : '']" @click="tapSelected(item)">{{ item.name }}</div>
+                <div v-for="(item, index) in categories" :key="index" :class="['menu-item', category && item.id == category.id ? 'active' : '']" @click="tapSelected(item, index)">{{ item.name }}</div>
             </div>
 
             <div class="category-main" v-if="category">
@@ -47,20 +47,43 @@
             </div>
 
         </div>
+        <TabBar/>
     </div>
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import { ICategory, IProduct } from '@/api/model';
+import { getCategories, getCategory } from '@/api/category';
+import TabBar from '@/components/TabBar.vue';
 
-@Component
+@Component({
+    components: {
+        TabBar,
+    },
+})
 export default class Index extends Vue {
     categories: ICategory[] = [];
 
     category: ICategory | null = null;
 
-    tapSelected(item: ICategory) {
-        this.category = item;
+    created() {
+        getCategories().then(res => {
+            if (!res.data) {
+                return;
+            }
+            this.categories = res.data;
+            this.tapSelected(res.data[0], 0);
+        });
+    }
+
+    tapSelected(item: ICategory, index: number) {
+        if (item.goods_list) {
+            this.category = item;
+            return;
+        }
+        getCategory(item.id, 'goods_list,children').then(res => {
+            this.categories[index] = this.category = res;
+        });
     }
 
     tapSearch(item: ICategory) {

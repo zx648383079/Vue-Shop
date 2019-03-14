@@ -1,5 +1,6 @@
 <template>
     <div>
+        <BackHeader title="编辑抬头"/>
         <div class="has-header">
             <?=Form::open($model, './mobile/invoice/save')?>
                 <?=Form::text('发票抬头', true)?>
@@ -19,21 +20,17 @@
 
     </div>
 </template>
-<script>
-export default {
-    data() {
-        return {
-            items: [
+<script lang="ts">
+import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import BackHeader from '@/components/BackHeader.vue';
 
-            ]
-        }
-    },
-    created() {
-
-    },
-    methods: {
-
+@Component({
+    components: {
+        BackHeader
     }
+})
+export default class Edit extends Vue {
+
 }
 </script>
 <style lang="scss" scoped>
