@@ -22,6 +22,11 @@ import InvoiceTitle from '@/pages/Invoice/Title.vue';
 import Message from '@/pages/Message/Index.vue';
 import Collect from '@/pages/Collect/Index.vue';
 
+import Order from '@/pages/Order/Index.vue';
+import OrderDetail from '@/pages/Order/Detail.vue';
+import OrderLogistics from '@/pages/Order/Logistics.vue';
+
+
 Vue.use(Router);
 
 export default new Router({
@@ -169,6 +174,33 @@ export default new Router({
             component: Collect,
             meta: {
                 title: '我的收藏',
+                requireAuth: true,
+            },
+        },
+        {
+            path: '/order',
+            name: 'order',
+            component: Order,
+            meta: {
+                title: '我的订单',
+                requireAuth: true,
+            },
+        },
+        {
+            path: '/order/logistics/:id',
+            name: 'order-logistics',
+            component: OrderLogistics,
+            meta: {
+                title: '物流信息',
+                requireAuth: true,
+            },
+        },
+        {
+            path: '/order/:id',
+            name: 'order-detail',
+            component: OrderDetail,
+            meta: {
+                title: '订单详情',
                 requireAuth: true,
             },
         },

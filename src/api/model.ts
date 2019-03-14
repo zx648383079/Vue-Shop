@@ -110,3 +110,13 @@ export interface ILogin {
     mobile?: string;
     code?: string;
 }
+
+export enum ORDER_STATUS {
+    CANCEL = 1,
+    INVALID = 2,
+    UN_PAY = 10,
+    PAID_UN_SHIP = 20,
+    SHIPPED = 40,
+    RECEIVED = 60,
+    FINISH = 80,
+}

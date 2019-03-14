@@ -1,10 +1,9 @@
 <template>
     <div>
+        <BackHeader title="我的订单"/>
         <div class="has-header">
             <div class="tab-bar order-header">
-                <?php foreach($status_list as $key => $item):?>
-                <a href="<?=$this->url('./mobile/order', ['status' => $key])?>" <?=$status == $key ? 'class="active"': ''?>><?=$item?></a>
-                <?php endforeach;?>
+                <a v-for="(item, index) in status_list" :key="index" @click="tapStatus(item)" :class="status == item.status ? 'active' : ''">{{ item.name }}</a>
             </div>
 
             <div class="order-box">
@@ -63,10 +62,50 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import BackHeader from '@/components/BackHeader.vue';
+import { ORDER_STATUS } from '@/api/model';
 
-@Component
+@Component({
+    components: {
+        BackHeader
+    }
+})
 export default class Index extends Vue {
+    status_list = [
+        {
+            name: '全部',
+            status: 0
+        },
+        {
+            name: '待支付',
+            status: ORDER_STATUS.UN_PAY
+        },
+        {
+            name: '待收货',
+            status: ORDER_STATUS.SHIPPED
+        },
+        {
+            name: '已完成',
+            status: ORDER_STATUS.FINISH
+        },
+        {
+            name: '已取消',
+            status: ORDER_STATUS.CANCEL
+        },
+    ];
+    ORDER_STATUS = ORDER_STATUS;
+    items = [];
+    status = 0;
 
+    created() {
+        if (this.$route.query && this.$route.query.status) {
+            this.status = parseInt(this.$route.query.status + '') || 0;
+        }   
+    }
+
+    tapStatus(item: any) {
+        this.status = item.status;
+    }
 }
 </script>
 <style lang="scss" scoped>

@@ -1,5 +1,6 @@
 <template>
     <div>
+        <BackHeader title="订单详情"/>
         <div class="has-header order-box">
             <div class="status-header">
                 <i class="fa fa-money-bill"></i>
@@ -80,21 +81,17 @@
 
     </div>
 </template>
-<script>
-export default {
-    data() {
-        return {
-            items: [
+<script lang="ts">
+import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import BackHeader from '@/components/BackHeader.vue';
 
-            ]
-        }
-    },
-    created() {
-
-    },
-    methods: {
-
+@Component({
+    components: {
+        BackHeader
     }
+})
+export default class Detail extends Vue {
+
 }
 </script>
 <style lang="scss" scoped>
