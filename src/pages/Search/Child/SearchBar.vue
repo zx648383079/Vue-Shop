@@ -4,8 +4,8 @@
             <div class="search-box">
                 <form onsubmit="return false;">
                     <i class="fa fa-search" aria-hidden="true"></i>
-                    <input type="text" name="keywords" v-model="keywords" @keyup="onKeyUp" placeholder="搜索" autocomplete="off">
-                    <i class="fa fa-times-circle" v-if="keywords && keywords.length > 0" @click="tapClearSearch"></i>
+                    <input type="text" name="keywords" :value="value" @input="tapUpdateVal($event.target.value)" @keyup="onKeyUp" placeholder="搜索" autocomplete="off">
+                    <i class="fa fa-times-circle" v-if="value && value.length > 0" @click="tapClearSearch"></i>
                 </form>
                 <a class="cancel-btn" @click="tapBack">取消</a>
             </div>
@@ -57,13 +57,13 @@ export default Vue.extend({
         };
     },
     props: {
-        keywords: String
+        value: String
     },
     created() {
         this.history_list = getLocalStorage(KEYWORDS_HISTORY, true) || []
         getHotKeywords().then(res => {
-            this.hot_keywords = res.data
-        })
+            this.hot_keywords = res.data ? res.data : [];
+        });
     },
     methods: {
         tapBack() {
@@ -73,15 +73,18 @@ export default Vue.extend({
             }
             this.$router.go(-1)
         },
+        tapUpdateVal(val: string) {
+            this.$emit('input', val);
+        },
         tapClearHistory() {
             this.history_list = []
             removeLocalStorage(KEYWORDS_HISTORY)
         },
         tapClearSearch() {
-            this.keywords = ''
-            this.tip_list = []
+            this.tapUpdateVal('');
+            this.tip_list = [];
         },
-        addHistory(keywords) {
+        addHistory(keywords: string) {
             if (this.history_list.indexOf(keywords) >= 0) {
                 return;
             }
@@ -91,20 +94,20 @@ export default Vue.extend({
             }
             setLocalStorage(KEYWORDS_HISTORY, this.history_list)
         },
-        onKeyUp(event) {
-            if (!this.keywords || this.keywords.trim().length === 0) {
+        onKeyUp(event: any) {
+            if (!this.value || this.value.trim().length === 0) {
                 return;
             }
             if (event.which === 13) {
-                this.addHistory(this.keywords);
-                this.tapSearch(this.keywords);
+                this.addHistory(this.value);
+                this.tapSearch(this.value);
                 return;
             }
-            getTips(this.keywords).then(res => {
-                this.tip_list = res.data
+            getTips(this.value).then(res => {
+                this.tip_list = res.data ? res.data : [];
             });
         },
-        tapSearch(keywords) {
+        tapSearch(keywords: string) {
             this.$emit('search', keywords);
         }
     }

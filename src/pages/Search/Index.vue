@@ -1,6 +1,6 @@
 <template>
     <div>
-        <SearchBar v-show="isSearch" :keywords="keywords" @search="tapSearch"></SearchBar>
+        <SearchBar v-show="isSearch" v-model="keywords" @search="tapSearch"></SearchBar>
         <div v-show="!isSearch">
             <header class="top">
                 <div class="search-box under-search">
@@ -62,15 +62,19 @@ export default Vue.extend({
         this.isSearch = Object.keys(this.$route.query).length == 0
         this.searchParams = JSON.parse(JSON.stringify(Object.assign(this.searchParams, this.$route.query)))
         if (!this.isSearch) {
-            this.$refs.searchRusultloadMore.onloadMoreScroll();
+            (this.$refs.searchRusultloadMore as any).onloadMoreScroll();
         }
     },
     methods: {
         async searchRusult() {
             this.searchParams.per_page = 20;
             this.searchParams.page = 1;
-            this.searchParams = JSON.parse(JSON.stringify(Object.assign(this.searchParams, this.$route.query)))
-            this.$refs.searchRusultloadMore.onloadMoreScroll();
+            for (const key in this.searchParams) {
+                if (this.searchParams.hasOwnProperty(key) && this.$route.query.hasOwnProperty(key)) {
+                    this.searchParams[key] = this.$route.query[key];
+                }
+            }
+            (this.$refs.searchRusultloadMore as any).onloadMoreScroll();
         },
         async infiniteCallback(response: any) { //下拉加载
             if (response.data.length > 0) {
@@ -80,7 +84,7 @@ export default Vue.extend({
             }
         },
         tapProduct(item: IProduct) {
-            console.log(item);
+            this.$router.push({name: 'product', params: {id: item.id + ''}});
         },
         tapAddCart(item: IProduct) {
             console.log(item);
