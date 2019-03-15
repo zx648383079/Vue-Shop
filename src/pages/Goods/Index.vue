@@ -1,7 +1,7 @@
 <template>
     <div>
         <header class="top">
-            <a href="javascript:history.back(-1);" class="back">
+            <a @click="tapBack" class="back">
                 <i class="fa fa-chevron-left" aria-hidden="true"></i>
             </a>
             <div class="top-tab">
@@ -12,19 +12,19 @@
             </div>
         </header>
 
-        <div class="has-header has-footer">
+        <div class="has-header has-footer" v-if="goods">
 
             <div id="info">
                 <div class="goods-gallary-box">
-                    <img src="<?=$goods->thumb?>" alt="">
+                    <img :src="goods.thumb" alt="">
                 </div>
 
-                <div class="activity-box">
+                <div class="activity-box" v-if="goods.activty">
                     <div class="price">
-                        <em>￥</em><?=$goods->price?>
+                        <em>￥</em>{{ goods.price }}
                     </div>
                     <div class="info">
-                        <p class="old-price">$1122</p>
+                        <p class="old-price">{{ goods.market_price | price }}</p>
                         <span class="time-block"><i class="fa fa-clock"></i>秒杀</span>
                     </div>
                     <div class="countdown">
@@ -41,13 +41,13 @@
 
                 <div class="goods-info">
                     <div class="goods-header">
-                        <h1 class="goods-name"><?=$goods->name?></h1>
-                        <div class="goods-collect <?=$goods->is_collect ? 'active' : ''?>" onclick="collectGoods('<?=$goods->id?>', this)">
+                        <h1 class="goods-name">{{ goods.name }}</h1>
+                        <div :class="['goods-collect', goods.is_collect ? 'active' : '']" @click="tapCollect">
                             <i class="like-icon"></i>
                             收藏
                         </div>
                     </div>
-                    <div class="goods-price"><?=$goods->price?></div>
+                    <div class="goods-price">{{ goods.price | price }}</div>
 
                     <div class="promote-line">
                         <div>支付</div>
@@ -73,116 +73,105 @@
                 </div>
             </div>
 
-            <div id="comments" class="comment-box">
+            <div id="comments" class="comment-box" v-if="comment">
                 <div class="comment-header">
                     评价
                     <i class="fa fa-angle-right"></i>
                 </div>
-                <?php if(empty($comment_list)):?>
-                <a class="comment-more">暂无评价</a>
-                <?php else:?>
-                <div class="comment-stats">
-                    <a href="">好评（2000）</a>
+                <a class="comment-more" v-if="comment.total < 1">暂无评价</a>
+                <div v-else>
+                    <div class="comment-stats" v-if="comment.tags && comment.tags.length > 0">
+                        <a v-for="(item, index) in comment.tags" :key="index">{{ item.label }}（{{ item.count }}）</a>
+                    </div>
+                    <a class="comment-more">查看更多</a>
                 </div>
-                <?php $this->extend('./page');?>
-                <a href="<?=$this->url('./mobile/goods/comment', ['id' => $goods->id])?>" class="comment-more">查看更多</a>
-                <?php endif;?>
             </div>
 
-            <div id="recommend" class="recomment-box">
+            <div id="recommend" class="recomment-box" v-if="items && items.length > 0">
                 <div class="recommend-header">推荐</div>
                 <div class="goods-list">
-                    <?php foreach($goods_list as $item):?>
-                    <div class="item-view">
+                    <div class="item-view" v-for="(item, index) in items" :key="index">
                         <div class="item-img">
-                            <a href="<?=$this->url('./mobile/goods', ['id' => $item->id])?>"><img src="<?=$item->thumb?>" alt=""></a>
+                            <a @click="tapProduct(item)"><img :src="item.thumb" alt=""></a>
                         </div>
                         <div class="item-title">
-                            <?=$item->name?>
+                            {{ item.name }}
                         </div>
                         <div class="item-actions">
-                            <span class="item-price"><?=$item->price?></span>
-                            
+                            <span class="item-price">{{ item.price | price }}</span>
                         </div>
                     </div>
-                    <?php endforeach;?>
                 </div>
                 <div class="clearfix"></div>
             </div>
 
             <div id="detail" class="tab-box goods-content">
-                <div class="tab-header"><div class="tab-item active">商品介绍</div><div class="tab-item">规格参数</div><div class="tab-item">售后保障</div></div>
+                <div class="tab-header"><div :class="['tab-item', tab < 1 ? 'active' : '']" @click="tab = 0">商品介绍</div><div :class="['tab-item', tab == 1 ? 'active' : '']"  @click="tab = 1">规格参数</div><div :class="['tab-item', tab == 2 ? 'active' : '']"  @click="tab = 2">售后保障</div></div>
                 <div class="tab-body">
-                    <div class="tab-item active"><?=$item->content?></div>
-                    <div class="tab-item">
-                        <div class="static-properties-box">
-                            <?php foreach($goods->static_properties as $item):?>
-                            <dl>
-                                <dt><?=$item->name?></dt>
-                                <dd><?=$item->attr_item->value?></dd>
+                    <div :class="['tab-item', tab < 1 ? 'active' : '']" v-html="goods.content"></div>
+                    <div :class="['tab-item', tab == 1 ? 'active' : '']">
+                        <div class="static-properties-box" v-if="goods.static_properties">
+                            <dl v-for="(item, index) in goods.static_properties" :key="index">
+                                <dt>{{ item.name }}</dt>
+                                <dd>{{ item.attr_item ? item.attr_item.value : '' }}</dd>
                             </dl>
-                            <?php endforeach;?>
                         </div>
                     </div>
-                    <div class="tab-item">售后保障</div>
+                    <div  :class="['tab-item', tab == 2 ? 'active' : '']">售后保障</div>
                 </div>
             </div>
 
         </div>
 
         <footer class="goods-navbar">
-            <a href="<?=$this->url('./mobile')?>">
+            <a @click="$router.push('/')">
                 <i class="fa fa-home" aria-hidden="true"></i>
                 首页
             </a>
-            <a href="<?=$this->url('./mobile/category')?>">
+            <a  @click="$router.push('/category')">
                 <i class="fa fa-th-large" aria-hidden="true"></i>
                 分类
             </a>
-            <a href="<?=$this->url('./mobile/cart')?>">
+            <a  @click="$router.push('/cart')">
                 <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                 购物车
             </a>
-            <a class="btn btn-orange" data-action="cart" href="javascript:;">
+            <a class="btn btn-orange" @click="tapAddCart">
                 加入购物车
             </a>
-            <a class="btn" data-action="buy" href="javascript:;">
+            <a class="btn" @click="tapBuy">
                 立即购买
             </a>
         </footer>
 
-        <div class="cart-dialog">
-            <div class="dialog-body">
+        <div class="cart-dialog" v-if="mode > 0" @click="mode = 0">
+            <div class="dialog-body" @click.stop>
                 <div class="dialog-header">
-                    <img src="<?=$goods->thumb?>" alt="">
-                    <p class="price"><?=$goods->price?></p>
-                    <p class="stock">库存：<?=$goods->stock?></p>
+                    <img :src="goods.thumb" alt="">
+                    <p class="price">{{ goods.price }}</p>
+                    <p class="stock">库存：{{ goods.stock }}</p>
                     <p class="selected-property"></p>
-                    <i class="fa fa-times dialog-close"></i>
+                    <i class="fa fa-times dialog-close" @click="mode = 0"></i>
                 </div>
                 <div class="property-box">
-                    <?php foreach($goods->properties as $item):?>
-                    <div class="group<?=$item->type == 2 ? ' multi-group' : ''?>">
-                        <div class="group-header"><?=$item->name?></div>
+                    <div v-for="(item, index) in goods.properties" :key="index" :class="['group', item.type == 2 ? ' multi-group' : '']">
+                        <div class="group-header">{{ item.name }}</div>
                         <div class="group-body">
-                            <?php foreach($item->attr_items as $attr):?>
-                            <span data-value="<?=sprintf('%s:%s', $item->id, $attr->id)?>"><?=$attr->value?></span>
-                            <?php endforeach;?>
+                            <span v-for="(attr, i) in item.attr_items" :key="i">{{ attr.value }}</span>
                         </div>
                     </div>
-                    <?php endforeach;?>
 
                     <div class="count-box">
                         <span>数量</span>
                         <div class="number-box">
-                            <i class="fa fa-minus"></i>
-                            <input type="text" class="number-input" value="1">
-                            <i class="fa fa-plus"></i>
+                            <i class="fa fa-minus" @click="tapMinus"></i>
+                            <input type="text" class="number-input" v-model="amount" @change="tapChangeAmount">
+                            <i class="fa fa-plus" @click="tapPlus"></i>
                         </div>
                     </div>
                 </div>
                 <div class="dialog-footer">
-                    <a href="" class="dailog-yes">确认</a>
+                    <a @click="tapDoCart" class="dailog-yes">确认</a>
                 </div>
             </div>
         </div>
@@ -190,10 +179,113 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Toast } from 'mint-ui';
+import { IProduct, ICommentSubtotal } from '@/api/model';
+import { getInfo, getRecommend } from '@/api/product';
+import { getCommentSubtotal } from '@/api/comment';
+import { toggleCollect } from '@/api/user';
+import { Getter, Action } from 'vuex-class'
 
 @Component
 export default class Index extends Vue {
+    goods: IProduct | null = null;
+    amount: number = 1;
+    mode: number = 0;
+    tab: number = 0;
+    comment: ICommentSubtotal | null = null;
+    items: IProduct[] = [];
+    @Getter('isGuest') isGuest?: boolean;
 
+    created() {
+        const id = parseInt(this.$route.params.id);
+        if (!id) {
+            Toast('商品错误');
+            this.$router.push('/');
+            return;
+        }
+        getInfo(id).then(res => {
+            this.goods = res;
+            this.loadComment();
+            this.loadRecommend();
+        });  
+    }
+
+    loadComment() {
+        getCommentSubtotal(this.goods.id).then(res => {
+            this.comment = res;
+        });
+    }
+
+    loadRecommend() {
+        getRecommend(this.goods.id).then(res => {
+            if (!res.data) {
+                return;
+            }
+            this.items = res.data;
+        })
+    }
+
+    tapBack() {
+        if (window.history.length <= 1) {
+            this.$router.push('/');
+            return;
+        }
+        this.$router.go(-1);
+    }
+
+    tapProduct(item: IProduct) {
+        this.$router.push({name: 'product', params: {id: item.id + ''}});
+    }
+
+    tapAddCart() {
+        this.mode = 1;
+    }
+
+    tapBuy() {
+        this.mode = 2;
+    }
+
+    getStock(): number {
+        if (!this.goods) {
+            return 1;
+        }
+        return this.goods.stock;
+    }
+
+    tapMinus() {
+        this.amount = Math.max(this.amount - 1, 1);
+    }
+
+    tapChangeAmount() {
+        if (this.amount < 1) {
+            this.amount = 1;
+            return;
+        }
+        const stock = this.getStock();
+        if (this.amount > stock) {
+            this.amount = stock;
+        }
+    }
+
+    tapPlus() {
+        this.amount = Math.min(this.amount + 1, this.getStock());
+    }
+
+    tapCollect() {
+        if (!this.goods) {
+            return;
+        }
+        if (this.isGuest) {
+            return;
+        }
+        toggleCollect(this.goods.id).then(res => {
+            this.goods.is_collect = res.data;
+        });
+    }
+
+    tapDoCart() {
+
+    }
 }
 </script>
 <style lang="scss" scoped>

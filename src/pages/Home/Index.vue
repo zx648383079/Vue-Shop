@@ -6,7 +6,7 @@
             </a>
             <a class="search-entry" @click="tapSearch">
                 <i class="fa fa-search"></i>
-                <span>搜索商品, 共666款好物</span>
+                <span>搜索商品, 共{{ subtotal ? subtotal.goods : 0 }}款好物</span>
             </a>
             <a v-if="isGuest" @click="tapLogin">登录</a>
             <a v-if="!isGuest">
@@ -54,6 +54,7 @@ import {getHome} from '../../api/product'
 import {getCategories} from '../../api/category'
 import {getBanners} from '../../api/ad'
 import { IProduct } from '@/api/model';
+import { dispatchSubtotal } from '@/store/dispatches';
 
 export default Vue.extend({
     components: {
@@ -65,6 +66,7 @@ export default Vue.extend({
             banners: [],
             categories: [],
             data: {},
+            subtotal: null,
         }
     },
     computed: {
@@ -75,14 +77,16 @@ export default Vue.extend({
     created: function () {
         getHome().then(res => {
             this.data = res;
-        })
+        });
         getCategories().then(res => {
             this.categories = res.data;
-        })
+        });
         getBanners().then(res => {
             this.banners = res.data
-        })
-
+        });
+        dispatchSubtotal().then(res => {
+            this.subtotal = res;
+        });
     },
     methods: {
         tapProduct(item: IProduct) {

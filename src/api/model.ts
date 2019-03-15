@@ -48,18 +48,43 @@ export interface ICategoryObject {
 }
 
 export interface IProduct {
-    id: string;
+    id: number;
     name: string;
     thumb: string;
-    price: string;
-    market_price: string;
-    shop: string;
+    price: number;
+    market_price: number;
+    stock?: number;
+    shop?: string;
+    is_collect?: boolean;
 }
 
 export interface IHomeProduct {
     hot_products: IProduct[];
     new_products: IProduct[];
     best_products: IProduct[];
+}
+
+export interface IComment {
+    id: number;
+    title: string;
+    content: string;
+    rank: number;
+    user?: IUser;
+    images?: {image: string}
+}
+
+export interface ITag {
+    label: string;
+    count: number;
+}
+
+export interface ICommentSubtotal {
+    total: number;
+    good: number;
+    middle: number;
+    bad: number;
+    tags: ITag[];
+    comments: IComment[];
 }
 
 export interface IStore {
@@ -109,6 +134,49 @@ export interface ILogin {
     password?: string;
     mobile?: string;
     code?: string;
+}
+
+export interface IAddress {
+    id: number;
+    name: string;
+    tel: string;
+    region_id: number;
+    region_name: string;
+    address: string;
+}
+
+export interface IOrder {
+    id: number,
+    series_number: string,
+    status_label: string,
+    status: number;
+    goods_amount: number,
+    goods_list?: IOrderGoods[];
+    address?: IAddress
+}
+
+export interface ISubtotal {
+    [key: string]: number
+}
+
+export interface IOrderCount {
+    un_pay?: number,
+    shipped?: number,
+    finish?: number,
+    cancel?: number,
+    invalid?: number,
+    paid_un_ship?: number,
+    received?: number,
+    uncomment?: number,
+    refunding?: number
+}
+
+export interface IOrderGoods {
+    id: number;
+    amount: number;
+    price: number;
+    goods_id: number;
+    goods: IProduct;
 }
 
 export enum ORDER_STATUS {

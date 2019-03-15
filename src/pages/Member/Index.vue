@@ -40,10 +40,10 @@
                 </a>
             </div>
             <div class="menu-large">
-                <MenuLargeItem title="待付款" icon="fa-money-bill" :uri="'/order?status=' + ORDER_STATUS.UN_PAY" :count="0"/>
-                <MenuLargeItem title="待收货" icon="fa-truck" :uri="'/order?status=' + ORDER_STATUS.SHIPPED" :count="0"/>
-                <MenuLargeItem title="待评价" icon="fa-comment" uri="/comment" :count="0"/>
-                <MenuLargeItem title="退换货" icon="fa-exchange-alt" uri="/refund" :count="0"/>
+                <MenuLargeItem title="待付款" icon="fa-money-bill" :uri="'/order?status=' + ORDER_STATUS.UN_PAY" :count="order_subtotal.un_pay"/>
+                <MenuLargeItem title="待收货" icon="fa-truck" :uri="'/order?status=' + ORDER_STATUS.SHIPPED" :count="order_subtotal.shipped"/>
+                <MenuLargeItem title="待评价" icon="fa-comment" uri="/comment" :count="order_subtotal.uncomment"/>
+                <MenuLargeItem title="退换货" icon="fa-exchange-alt" uri="/refund" :count="order_subtotal.refunding"/>
             </div>
 
             <div class="menu-panel">
@@ -88,10 +88,11 @@
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import TabBar from '@/components/TabBar.vue';
 import BackHeader from '@/components/BackHeader.vue';
-import { IUser, ORDER_STATUS } from '@/api/model';
+import { IUser, ORDER_STATUS, IOrderCount } from '@/api/model';
 import { dispatchUser, dispatchLogout } from '@/store/dispatches';
 import MenuItem from './Child/MenuItem.vue';
 import MenuLargeItem from './Child/MenuLargeItem.vue';
+import { getOrderSubtotal } from '@/api/order';
 
 @Component({
     components: {
@@ -105,10 +106,14 @@ export default class Index extends Vue {
 
     user: IUser | null = null;
     ORDER_STATUS = ORDER_STATUS;
+    order_subtotal: IOrderCount = {};
 
     created() {
         dispatchUser().then(res => {
             this.user = res;
+        });
+        getOrderSubtotal().then(res => {
+            this.order_subtotal = res;
         });
     }
 

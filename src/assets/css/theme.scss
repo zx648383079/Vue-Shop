@@ -1088,6 +1088,20 @@ footer,
     }
 }
 
+.tab-box {
+    .tab-header {
+
+    }
+    .tab-body {
+        .tab-item {
+            display: none;
+            &.active {
+                display: block;
+            }
+        }
+    }
+}
+
 .tab-box.goods-content {
     margin-top: 20px;
     .tab-header {
@@ -1169,7 +1183,6 @@ footer,
 }
 
 .cart-dialog {
-    display: none;
     position: fixed;
     top: 0;
     bottom: 0;

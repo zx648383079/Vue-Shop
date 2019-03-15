@@ -7,6 +7,8 @@ export const getAccountLog = (params: any) => fetch<IPage<IAccountLog>>('shop/ac
 
 export const getCollect = (params: any) => fetch<IPage<ICollect>>('shop/collect', params);
 
+export const toggleCollect = (id: number) => post<IData<boolean>>('shop/collect/toggle', {id});
+
 export const removeCollect = (id: number) => deleleRequest<IData<boolean>>('shop/collect/delete?id=' + id);
 
 export const login = (param: ILogin) => post<IUser>('auth/login', param);

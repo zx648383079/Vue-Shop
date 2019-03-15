@@ -5,7 +5,7 @@ import store from './store';
 import Http from './utils/http';
 import Title from './utils/title';
 
-import { assetsFilter, statusFilter, sizeFilter, agoFilter } from './pipes';
+import { assetsFilter, statusFilter, sizeFilter, agoFilter, priceFilter } from './pipes';
 import { getSessionStorage } from './utils';
 import { TOKEN_KEY } from './store/types';
 
@@ -17,6 +17,7 @@ Vue.filter('assets', assetsFilter);
 Vue.filter('status', statusFilter);
 Vue.filter('size', sizeFilter);
 Vue.filter('ago', agoFilter);
+Vue.filter('price', priceFilter);
 Vue.use(Http);
 Vue.use(Title);
 Vue.use(MintUI);

@@ -3,7 +3,7 @@
         <header class="top">
             <a class="search-entry" @click="$router.push('/search')">
                 <i class="fa fa-search"></i>
-                <span>搜索商品, 共19304款好物</span>
+                <span>搜索商品, 共 {{ subtotal ? subtotal.goods : 0 }} 款好物</span>
             </a>
         </header>
         <div class="has-header has-footer category-page">
@@ -52,9 +52,10 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
-import { ICategory, IProduct } from '@/api/model';
+import { ICategory, IProduct, ISubtotal } from '@/api/model';
 import { getCategories, getCategory } from '@/api/category';
 import TabBar from '@/components/TabBar.vue';
+import { dispatchSubtotal } from '@/store/dispatches';
 
 @Component({
     components: {
@@ -66,6 +67,8 @@ export default class Index extends Vue {
 
     category: ICategory | null = null;
 
+    subtotal: ISubtotal | null = null;
+
     created() {
         getCategories().then(res => {
             if (!res.data) {
@@ -73,6 +76,9 @@ export default class Index extends Vue {
             }
             this.categories = res.data;
             this.tapSelected(res.data[0], 0);
+        });
+        dispatchSubtotal().then(res => {
+            this.subtotal = res;
         });
     }
 

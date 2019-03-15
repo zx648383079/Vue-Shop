@@ -1,15 +1,17 @@
 import {
-    SET_CATEGORIES,
+    SET_CATEGORIES, SET_SUBTOTAL,
 } from '../types';
 import {
     Commit,
 } from 'vuex';
-import { ICategory } from '@/api/model';
+import { ICategory, ISubtotal } from '@/api/model';
 import { getCategories } from '@/api/category';
+import { getSubtotal } from '@/api/product';
 
 
 export interface State {
     categories: ICategory[],
+    subtotal: ISubtotal | null,
 };
 
 interface IActionContext {
@@ -21,6 +23,7 @@ interface IActionContext {
 // shape: [{ id, quantity }]
 const initState: State = {
     categories: [],
+    subtotal: null,
 };
 
 // getters
@@ -40,12 +43,27 @@ const actions = {
             }).catch(reject);
         });
     },
+    getSubtotal(context: IActionContext) {
+        return new Promise((resolve, reject) => {
+            if (context.state.subtotal) {
+                resolve(context.state.subtotal);
+                return;
+            }
+            getSubtotal().then(res => {
+                context.commit(SET_SUBTOTAL, res);
+                resolve(res);
+            }).catch(reject);
+        });
+    },
 };
 
 // mutations
 const mutations = {
     [SET_CATEGORIES](state: State, categories: ICategory[]) {
         state.categories = categories;
+    },
+    [SET_SUBTOTAL](state: State, subtotal: ISubtotal) {
+        state.subtotal = subtotal;
     },
 };
 
