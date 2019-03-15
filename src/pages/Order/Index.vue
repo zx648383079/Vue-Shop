@@ -55,7 +55,6 @@ export default class Index extends Vue {
             status: ORDER_STATUS.CANCEL
         },
     ];
-    ORDER_STATUS = ORDER_STATUS;
     items: IOrder[] = [];
     status = 0;
     has_more = true;

@@ -1,80 +1,58 @@
 <template>
     <div>
         <BackHeader title="订单详情"/>
-        <div class="has-header order-box">
+        <div class="has-header order-box" v-if="order">
             <div class="status-header">
                 <i class="fa fa-money-bill"></i>
-                <?=$order->status_label?>
+                {{ order.status_label }}
             </div>
             <div class="shipping-box">
-                <?=$order->shipping_status?>
+                {{ order.shipping_status }}
             </div>
             <div class="address-box">
                 <i class="fa fa-map-marker"></i>
                 <p>
-                    <span class="name"><?=$address->name?></span>
-                    <span class="tel"><?=$address->tel?></span>
+                    <span class="name">{{ order.address.name }}</span>
+                    <span class="tel">{{ order.address.tel }}</span>
                 </p>
-                <p><?=$address->region_name?> <?=$address->address?></p>
+                <p>{{ order.address.region_name }} {{ order.address.address }}</p>
             </div>
 
-            <div class="goods-list">
-                    <?php foreach($goods_list as $goods):?>
-                    <div class="goods-item">
+            <div class="goods-list" v-if="order.goods">
+                    <div class="goods-item" v-for="(goods, index) in order.goods" :key="index">
                         <div class="goods-img">
-                            <img src="<?=$goods->thumb?>" alt="">
+                            <img :src="goods.thumb" alt="">
                         </div>
                         <div class="goods-info">
-                            <h4><?=$goods->name?></h4>
-                            <span class="price"><?=$goods->price?></span>
-                            <span class="amount"> x <?=$goods->number?></span>
+                            <h4>{{ goods.name }}</h4>
+                            <span class="price">{{ goods.price | price }}</span>
+                            <span class="amount"> x {{ goods.amount }}</span>
                         </div>
                     </div>
-                    <?php endforeach;?>
                 </div>
                 <div class="order-amount">
-                    <p class="text-right">共 <?=count($goods_list)?> 件 合计：<?=$order->goods_amount?></p>
-                    <p class="line-item"><span>订单号</span> <span><?=$order->series_number?></span> </p>
-                    <p class="line-item"><span>下单时间</span> <span><?=$order->created_at?></span> </p>
-                    <?php if($order->pay_at > 0):?>
-                    <p class="line-item"><span>支付时间</span> <span><?=$this->time($order->pay_at)?></span> </p>
-                    <?php endif;?>
-                    <?php if($order->shipping_at > 0):?>
-                    <p class="line-item"><span>发货时间</span> <span><?=$this->time($order->shipping_at)?></span> </p>
-                    <?php endif;?>
-                    <?php if($order->receive_at > 0):?>
-                    <p class="line-item"><span>签收时间</span> <span><?=$this->time($order->receive_at)?></span> </p>
-                    <?php endif;?>
-                    <?php if($order->finish_at > 0):?>
-                    <p class="line-item"><span>完成时间</span> <span><?=$this->time($order->finish_at)?></span> </p>
-                    <?php endif;?>
+                    <p class="text-right">共 {{ order.goods.length }} 件 合计：{{ order.goods_amount }}</p>
+                    <p class="line-item"><span>订单号</span> <span>{{ order.series_number }}</span> </p>
+                    <p class="line-item"><span>下单时间</span> <span>{{ order.created_at }}</span> </p>
+                    <p class="line-item" v-if="order.pay_at > 0"><span>支付时间</span> <span>{{ order.pay_at | time }}</span> </p>
+                    <p class="line-item" v-if="order.shipping_at > 0"><span>发货时间</span> <span>{{ order.shipping_at | time }}</span> </p>
+                    <p class="line-item" v-if="order.receive_at > 0"><span>签收时间</span> <span>{{ order.receive_at | time }}</span> </p>
+                    <p class="line-item" v-if="order.finish_at > 0"><span>完成时间</span> <span>{{ order.finish_at | time }}</span> </p>
                     <hr>
-                    <p class="line-item"><span>商品总价</span> <span><?=$order->goods_amount?></span> </p>
-                    <p class="line-item"><span>+运费</span> <span><?=$order->shipping_fee?></span> </p>
-                    <p class="line-item"><span>+支付手续费</span> <span><?=$order->pay_fee?></span> </p>
-                    <p class="line-item"><span>-优惠</span> <span><?=$order->discount?></span> </p>
-                    <p class="line-item"><span>订单总价</span> <span><?=$order->order_amount?></span> </p>
+                    <p class="line-item"><span>商品总价</span> <span>{{ order.goods_amount }}</span> </p>
+                    <p class="line-item"><span>+运费</span> <span>{{ order.shipping_fee }}</span> </p>
+                    <p class="line-item"><span>+支付手续费</span> <span>{{ order.pay_fee }}</span> </p>
+                    <p class="line-item"><span>-优惠</span> <span>{{ order.discount }}</span> </p>
+                    <p class="line-item"><span>订单总价</span> <span>{{ order.order_amount }}</span> </p>
                 </div>
                 <div class="order-footer">
                     <div class="order-actions">
-                        <?php if($order->status == OrderModel::STATUS_UN_PAY):?>
-                        <a href="<?=$this->url('./mobile/cashier/pay', ['id' => $order->id])?>">支付</a>
-                        <?php endif;?>
-                        <?php if($order->status == OrderModel::STATUS_SHIPPED):?>
-                        <a data-type="del" data-tip="确认收货？" href="<?=$this->url('./mobile/order/receive', ['id' => $order->id])?>">确认收货</a>
-                        <?php endif;?>
-                        <?php if($order->status == OrderModel::STATUS_RECEIVED):?>
-                        <a href="<?=$this->url('./mobile/comment')?>">评价</a>
-                        <?php endif;?>
-                        <?php if(in_array($order->status, [OrderModel::STATUS_SHIPPED, OrderModel::STATUS_RECEIVED])):?>
-                        <a href="">退换货</a>
-                        <?php endif;?>
-                        <?php if(in_array($order->status, [OrderModel::STATUS_FINISH])):?>
-                        <a href="">售后</a>
-                        <?php endif;?>
-                        <?php if(in_array($order->status, [OrderModel::STATUS_UN_PAY, OrderModel::STATUS_PAID_UN_SHIP])):?>
-                        <a data-type="del" data-tip="确认取消此订单？" href="<?=$this->url('./mobile/order/cancel', ['id' => $order->id])?>">取消</a>
-                        <?php endif;?>
+                       <a @click="tapPay" v-if="order.status == ORDER_STATUS.UN_PAY">支付</a>
+                        <a @click="tapReceive" v-if="order.status == ORDER_STATUS.SHIPPED">确认收货</a>
+                        <a @click="tapComment" v-if="order.status == ORDER_STATUS.RECEIVED">评价</a>
+                        <a @click="tapRefund" v-if="order.status == ORDER_STATUS.SHIPPED || order.status == ORDER_STATUS.RECEIVED">退换货</a>
+                        <a @click="tapRefund" v-if="order.status == ORDER_STATUS.FINISH">售后</a>
+                        <a @click="tapCancel" v-if="order.status == ORDER_STATUS.UN_PAY || order.status == ORDER_STATUS.PAID_UN_SHIP">取消</a>
                     </div>
                 </div>
         </div>
@@ -84,6 +62,9 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
+import { IOrder, ORDER_STATUS } from '@/api/model';
+import { getOrderInfo } from '@/api/order';
+import { Toast, MessageBox } from 'mint-ui';
 
 @Component({
     components: {
@@ -91,7 +72,44 @@ import BackHeader from '@/components/BackHeader.vue';
     }
 })
 export default class Detail extends Vue {
+    order: IOrder | null = null;
+    ORDER_STATUS = ORDER_STATUS;
 
+    created() {
+        const id = parseInt(this.$route.params.id);
+        if (!id) {
+            Toast('订单错误');
+            this.$router.push('/');
+            return;
+        }
+        getOrderInfo(id).then(res => {
+            this.order = res;
+        });
+    }
+
+    tapPay() {
+        this.$router.push({name: 'cashier-pay', params: {id: this.order.id + ''}});
+    }
+
+    tapRefund() {
+        this.$router.push({name: 'refund', params: {id: this.order.id + ''}});
+    }
+
+    tapComment() {
+        this.$router.push({name: 'comment'});
+    }
+
+    tapReceive() {
+        MessageBox.confirm('确认取消此订单？').then(action => {
+            console.log(action);
+        });
+    }
+
+    tapCancel() {
+        MessageBox.confirm('Are you sure?').then(action => {
+            console.log(action);
+        });
+    }
 }
 </script>
 <style lang="scss" scoped>

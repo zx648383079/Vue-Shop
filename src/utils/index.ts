@@ -47,12 +47,15 @@ export function search(key: string) {
 }
 
 export function getCurrentTime() {
-    const now = new Date()
+    return formatTime(new Date());
+}
+
+export function formatTime(time: Date) {
     const format = (i: number) => i < 10 ? '0' + i : i
-    return now.getFullYear() +
-        '-' + format(now.getMonth() + 1) +
-        '-' + format(now.getDate()) +
-        ' ' + format(now.getHours()) +
-        ':' + format(now.getMinutes()) +
-        ':' + format(now.getSeconds())
+    return time.getFullYear() +
+        '-' + format(time.getMonth() + 1) +
+        '-' + format(time.getDate()) +
+        ' ' + format(time.getHours()) +
+        ':' + format(time.getMinutes()) +
+        ':' + format(time.getSeconds())
 }

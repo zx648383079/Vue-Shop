@@ -4,55 +4,71 @@
             <span>{{ item.series_number }}</span>
             <span class="status">{{ item.status_label }}</span>
         </div>
-        <div class="goods-list">
-            <?php foreach($order->goods as $goods):?>
-            <div class="goods-item">
+        <div class="goods-list" v-if="item.goods">
+            <div class="goods-item" v-for="(goods, index) in item.goods" :key="index">
                 <div class="goods-img">
-                    <img src="<?=$goods->thumb?>" alt="">
+                    <img :src="goods.thumb" alt="">
                 </div>
                 <div class="goods-info">
-                    <h4><?=$goods->name?></h4>
-                    <span class="price"><?=$goods->price?></span>
-                    <span class="amount"> x <?=$goods->number?></span>
+                    <h4>{{ goods.name }}</h4>
+                    <span class="price">{{ goods.price | price }}</span>
+                    <span class="amount"> x {{ goods.amount }}</span>
                 </div>
             </div>
-            <?php endforeach;?>
         </div>
         <div class="order-amount">
-            共 <?=count($order->goods)?> 件 合计：<?=$order->goods_amount?>
+            共 {{ item.goods.length }} 件 合计：{{ item.goods_amount }}
         </div>
         <div class="order-footer">
             <div class="order-actions">
-                <?php if($order->status == OrderModel::STATUS_UN_PAY):?>
-                <a href="<?=$this->url('./mobile/cashier/pay', ['id' => $order->id])?>">支付</a>
-                <?php endif;?>
-                <a href="<?=$this->url('./mobile/order/detail', ['id' => $order->id])?>">详情</a>
-                <?php if($order->status == OrderModel::STATUS_SHIPPED):?>
-                <a data-type="del" data-tip="确认收货？" href="<?=$this->url('./mobile/order/receive', ['id' => $order->id])?>">确认收货</a>
-                <?php endif;?>
-                <?php if($order->status == OrderModel::STATUS_RECEIVED):?>
-                <a href="<?=$this->url('./mobile/comment')?>">评价</a>
-                <?php endif;?>
-                <?php if(in_array($order->status, [OrderModel::STATUS_SHIPPED, OrderModel::STATUS_RECEIVED])):?>
-                <a href="">退换货</a>
-                <?php endif;?>
-                <?php if(in_array($order->status, [OrderModel::STATUS_FINISH])):?>
-                <a href="">售后</a>
-                <?php endif;?>
-                <?php if(in_array($order->status, [OrderModel::STATUS_UN_PAY, OrderModel::STATUS_PAID_UN_SHIP])):?>
-                <a data-type="del" data-tip="确认取消此订单？" href="<?=$this->url('./mobile/order/cancel', ['id' => $order->id])?>">取消</a>
-                <?php endif;?>
+                <a @click="tapPay" v-if="item.status == ORDER_STATUS.UN_PAY">支付</a>
+                <a @click="tapOrder">详情</a>
+                <a @click="tapReceive" v-if="item.status == ORDER_STATUS.SHIPPED">确认收货</a>
+                <a @click="tapComment" v-if="item.status == ORDER_STATUS.RECEIVED">评价</a>
+                <a @click="tapRefund" v-if="item.status == ORDER_STATUS.SHIPPED || item.status == ORDER_STATUS.RECEIVED">退换货</a>
+                <a @click="tapRefund" v-if="item.status == ORDER_STATUS.FINISH">售后</a>
+                <a @click="tapCancel" v-if="item.status == ORDER_STATUS.UN_PAY || item.status == ORDER_STATUS.PAID_UN_SHIP">取消</a>
             </div>
         </div>
     </div>
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
-import { IOrder } from '@/api/model';
+import { IOrder, ORDER_STATUS } from '@/api/model';
+import { MessageBox } from 'mint-ui';
 
 @Component
 export default class Logistics extends Vue {
+    ORDER_STATUS = ORDER_STATUS;
     @Prop(Object) readonly item?: IOrder;
+
+    tapPay() {
+        this.$router.push({name: 'cashier-pay', params: {id: this.item.id + ''}});
+    }
+
+    tapOrder() {
+        this.$router.push({name: 'order-detail', params: {id: this.item.id + ''}});
+    }
+
+    tapRefund() {
+        this.$router.push({name: 'refund', params: {id: this.item.id + ''}});
+    }
+
+    tapComment() {
+        this.$router.push({name: 'comment'});
+    }
+
+    tapReceive() {
+        MessageBox.confirm('确认取消此订单？').then(action => {
+            console.log(action);
+        });
+    }
+
+    tapCancel() {
+        MessageBox.confirm('Are you sure?').then(action => {
+            console.log(action);
+        });
+    }
 }
 </script>
 <style lang="scss" scoped>

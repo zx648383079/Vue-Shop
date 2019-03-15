@@ -13,6 +13,7 @@ import Member from '@/pages/Member/Index.vue';
 import Login from '@/pages/Member/Login.vue';
 import Search from '@/pages/Search/Index.vue';
 import Product from '@/pages/Goods/Index.vue';
+import ProductComment from '@/pages/Goods/Comment.vue';
 
 import Invoice from '@/pages/Invoice/Index.vue';
 import InvoiceApply from '@/pages/Invoice/Apply.vue';
@@ -71,6 +72,14 @@ export default new Router({
             component: Product,
             meta: {
                 title: '商品',
+            },
+        },
+        {
+            path: '/product/:id/comment',
+            name: 'product-comment',
+            component: ProductComment,
+            meta: {
+                title: '商品评价',
             },
         },
         {

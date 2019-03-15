@@ -76,14 +76,15 @@
             <div id="comments" class="comment-box" v-if="comment">
                 <div class="comment-header">
                     评价
-                    <i class="fa fa-angle-right"></i>
+                    <i @click="tapGoComment" class="fa fa-angle-right"></i>
                 </div>
                 <a class="comment-more" v-if="comment.total < 1">暂无评价</a>
                 <div v-else>
                     <div class="comment-stats" v-if="comment.tags && comment.tags.length > 0">
                         <a v-for="(item, index) in comment.tags" :key="index">{{ item.label }}（{{ item.count }}）</a>
                     </div>
-                    <a class="comment-more">查看更多</a>
+                    <CommentPage :items="comment.comments"/>
+                    <a @click="tapGoComment" class="comment-more">查看更多</a>
                 </div>
             </div>
 
@@ -186,8 +187,13 @@ import { getCommentSubtotal } from '@/api/comment';
 import { toggleCollect } from '@/api/user';
 import { Getter, Action } from 'vuex-class';
 import { addGoods } from '@/api/cart';
+import CommentPage from './Child/Page.vue';
 
-@Component
+@Component({
+    components: {
+        CommentPage
+    }
+})
 export default class Index extends Vue {
     goods: IProduct | null = null;
     amount: number = 1;
@@ -232,6 +238,13 @@ export default class Index extends Vue {
             return;
         }
         this.$router.go(-1);
+    }
+
+    tapGoComment() {
+        if (!this.goods) {
+            return;
+        }
+        this.$router.push({name: 'product-comment', params: {id: this.goods.id + ''}});
     }
 
     tapProduct(item: IProduct) {

@@ -83,6 +83,8 @@ export interface ICommentSubtotal {
     good: number;
     middle: number;
     bad: number;
+    avg: number;
+    favorable_rate: number;
     tags: ITag[];
     comments: IComment[];
 }
@@ -154,7 +156,7 @@ export interface IOrder {
     status_label: string,
     status: number;
     goods_amount: number,
-    goods_list?: IOrderGoods[];
+    goods?: IOrderGoods[];
     address?: IAddress
 }
 
