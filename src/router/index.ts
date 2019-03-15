@@ -8,6 +8,7 @@ import AccountLog from '@/pages/Account/Log.vue';
 import Category from '@/pages/Category/Index.vue';
 
 import Cart from '@/pages/Cart/Index.vue';
+import Cashier from '@/pages/Cashier/Index.vue';
 import Member from '@/pages/Member/Index.vue';
 import Login from '@/pages/Member/Login.vue';
 import Search from '@/pages/Search/Index.vue';
@@ -53,6 +54,15 @@ export default new Router({
             component: Cart,
             meta: {
                 title: '购物车',
+            },
+        },
+        {
+            path: '/cashier',
+            name: 'cashier',
+            component: Cashier,
+            meta: {
+                title: '结算',
+                requireAuth: true,
             },
         },
         {

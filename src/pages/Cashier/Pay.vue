@@ -1,5 +1,6 @@
 <template>
     <div>
+        <BackHeader title="支付订单"/>
         <div class="has-header checkout-box">
             <form action="<?=$this->url('./pay')?>" method="post">
                 <div class="money-header">
@@ -50,21 +51,17 @@
 
     </div>
 </template>
-<script>
-export default {
-    data() {
-        return {
-            items: [
+<script lang="ts">
+import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import BackHeader from '@/components/BackHeader.vue';
 
-            ]
-        }
-    },
-    created() {
-
-    },
-    methods: {
-
+@Component({
+    components: {
+        BackHeader,
     }
+})
+export default class Index extends Vue {
+
 }
 </script>
 <style lang="scss" scoped>

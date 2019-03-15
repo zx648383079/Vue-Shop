@@ -1,5 +1,6 @@
 <template>
     <div>
+        <BackHeader title="结算"/>
         <div class="has-header has-footer checkout-box">
             <?=Form::open('./mobile/cashier/checkout')?>
                 <?php if($address):?>
@@ -83,8 +84,13 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import BackHeader from '@/components/BackHeader.vue';
 
-@Component
+@Component({
+    components: {
+        BackHeader,
+    }
+})
 export default class Index extends Vue {
 
 }

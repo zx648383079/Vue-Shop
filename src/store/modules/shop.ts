@@ -1,10 +1,10 @@
 import {
-    SET_CATEGORIES, SET_SUBTOTAL,
+    SET_CATEGORIES, SET_SUBTOTAL, SET_CART,
 } from '../types';
 import {
     Commit,
 } from 'vuex';
-import { ICategory, ISubtotal } from '@/api/model';
+import { ICategory, ISubtotal, ICart } from '@/api/model';
 import { getCategories } from '@/api/category';
 import { getSubtotal } from '@/api/product';
 
@@ -12,6 +12,7 @@ import { getSubtotal } from '@/api/product';
 export interface State {
     categories: ICategory[],
     subtotal: ISubtotal | null,
+    cart: ICart[];
 };
 
 interface IActionContext {
@@ -24,13 +25,21 @@ interface IActionContext {
 const initState: State = {
     categories: [],
     subtotal: null,
+    cart: [],
 };
 
 // getters
-const getters = {};
+const getters = {
+    cart(state: State) {
+        return state.cart;
+    },
+};
 
 // actions
 const actions = {
+    setCart(context: IActionContext, cart: ICart[]) {
+        context.commit(SET_CART, cart);
+    },
     getCategories(context: IActionContext) {
         return new Promise((resolve, reject) => {
             if (context.state.categories && context.state.categories.length > 0) {
@@ -64,6 +73,9 @@ const mutations = {
     },
     [SET_SUBTOTAL](state: State, subtotal: ISubtotal) {
         state.subtotal = subtotal;
+    },
+    [SET_CART](state: State, cart: ICart[]) {
+        state.cart = cart;
     },
 };
 

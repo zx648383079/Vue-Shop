@@ -1,7 +1,7 @@
 import {fetch, post} from '../utils/http';
 import { IData, ICart } from './model';
 
-export const getCart = (params: any) => fetch<IData<ICart>>('shop/cart', params)
+export const getCart = (params?: any) => fetch<IData<ICart>>('shop/cart', params)
 
 export const addGoods = (goods: number, amount: number = 1, properties = []) => post<IData<ICart>>('shop/cart/add', {
     goods,

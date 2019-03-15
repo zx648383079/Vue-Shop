@@ -184,7 +184,8 @@ import { IProduct, ICommentSubtotal } from '@/api/model';
 import { getInfo, getRecommend } from '@/api/product';
 import { getCommentSubtotal } from '@/api/comment';
 import { toggleCollect } from '@/api/user';
-import { Getter, Action } from 'vuex-class'
+import { Getter, Action } from 'vuex-class';
+import { addGoods } from '@/api/cart';
 
 @Component
 export default class Index extends Vue {
@@ -284,7 +285,16 @@ export default class Index extends Vue {
     }
 
     tapDoCart() {
-
+        if (!this.goods) {
+            return;
+        }
+        if (this.mode == 1) {
+            addGoods(this.goods.id, this.amount).then(res => {
+                Toast('已成功加入购物车');
+                this.mode = 0;
+            });
+            return;
+        }
     }
 }
 </script>

@@ -1,5 +1,5 @@
 import store from './';
-import { ICategory, IUser, ILogin, ISubtotal } from '@/api/model';
+import { ICategory, IUser, ILogin, ISubtotal, ICart } from '@/api/model';
 
 export const dispatchCategories = (): Promise<ICategory[]> => store.dispatch('getCategories');
 
@@ -11,3 +11,5 @@ export const dispatchLogin =
     (param: ILogin): Promise<IUser> => store.dispatch('loginUser', param);
 
 export const dispatchLogout = (): Promise<any> => store.dispatch('logoutUser');
+
+export const dispatchSetCart = (cart: ICart[]) => store.dispatch('setCart', cart);

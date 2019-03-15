@@ -96,11 +96,14 @@ export interface ICartItem {
     id: number;
     amount: number;
     price: number;
+    checked?: boolean;
     goods: IProduct;
 }
 
 export interface ICart {
-    shop: IStore;
+    shop?: IStore;
+    name: string;
+    checked?: boolean;
     goods_list: ICartItem[];
 }
 

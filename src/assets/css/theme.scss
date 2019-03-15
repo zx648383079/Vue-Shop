@@ -24,6 +24,17 @@ a {
     display: none;
 }
 
+.btn {
+    padding: 0 30px;
+    background: #ff77ff;
+    border: none;
+    display: inline-block;
+    text-decoration: none;
+    line-height: 30px;
+    margin: 0 8px;
+    vertical-align: middle;
+}
+
 .scroll-nav {
     position: relative;
     height: 45px;
