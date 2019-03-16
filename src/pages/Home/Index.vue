@@ -9,7 +9,7 @@
                 <span>搜索商品, 共{{ subtotal ? subtotal.goods : 0 }}款好物</span>
             </a>
             <a v-if="isGuest" @click="tapLogin">登录</a>
-            <a v-if="!isGuest">
+            <a v-if="!isGuest" @click="tapMessage">
                 <i class="fa fa-comment-dots"></i>
             </a>
         </header>
@@ -43,66 +43,71 @@
     </div>
 </template>
 <script lang="ts">
-import Vue from 'vue';
+import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import TabBar from '@/components/TabBar.vue'
 import GoodsPanel from './Child/GoodsPanel.vue'
-import {
-    mapGetters,
-    mapMutations
-} from 'vuex'
 import {getHome} from '../../api/product'
 import {getCategories} from '../../api/category'
 import {getBanners} from '../../api/ad'
-import { IProduct } from '@/api/model';
+import { IProduct, IAd, ICategory, IHomeProduct, ISubtotal } from '@/api/model';
 import { dispatchSubtotal } from '@/store/dispatches';
+import { Getter } from 'vuex-class';
 
-export default Vue.extend({
+@Component({
     components: {
         TabBar,
         GoodsPanel,
-    },
-    data() {
-        return {
-            banners: [],
-            categories: [],
-            data: {},
-            subtotal: null,
-        }
-    },
-    computed: {
-        ...mapGetters([
-            'isGuest'
-        ]),
-    },
-    created: function () {
+    }
+})
+export default class Index extends Vue {
+    banners: IAd[] = [];
+    categories: ICategory[] = [];
+    data: IHomeProduct = {};
+    subtotal: ISubtotal| null = null;
+
+    @Getter('isGuest') isGuest?: boolean;
+
+    created() {
         getHome().then(res => {
             this.data = res;
         });
         getCategories().then(res => {
+            if (!res.data) {
+                return;
+            }
             this.categories = res.data;
         });
         getBanners().then(res => {
+             if (!res.data) {
+                return;
+            }
             this.banners = res.data
         });
         dispatchSubtotal().then(res => {
             this.subtotal = res;
         });
-    },
-    methods: {
-        tapProduct(item: IProduct) {
-            this.$router.push({name: 'product', params: {id: item.id}});
-        },
-        tapAddCart(item: IProduct) {
-            console.log(item);
-        },
-        tapSearch() {
-            this.$router.push('/search');
-        },
-        tapLogin() {
-            this.$router.push('/login');
-        },
     }
-});
+
+    tapProduct(item: IProduct) {
+        this.$router.push({name: 'product', params: {id: item.id + ''}});
+    }
+
+    tapAddCart(item: IProduct) {
+        console.log(item);
+    }
+
+    tapSearch() {
+        this.$router.push('/search');
+    }
+
+    tapLogin() {
+        this.$router.push('/login');
+    }
+
+    tapMessage() {
+        this.$router.push('/message');
+    }
+}
 </script>
 
 <style scoped>

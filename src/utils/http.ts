@@ -124,7 +124,7 @@ export function patch<T>(url: string, data = {}): Promise<T> {
     })
 }
 
-export function deleleRequest<T>(url: string): Promise<T> {
+export function deleteRequest<T>(url: string): Promise<T> {
     return new Promise((resolve, reject) => {
         axios.delete(url)
             .then((response) => {

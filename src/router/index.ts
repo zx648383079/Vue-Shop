@@ -10,6 +10,7 @@ import Category from '@/pages/Category/Index.vue';
 import Cart from '@/pages/Cart/Index.vue';
 import Cashier from '@/pages/Cashier/Index.vue';
 import Member from '@/pages/Member/Index.vue';
+import Profile from '@/pages/Member/Profile.vue';
 import Login from '@/pages/Member/Login.vue';
 import Search from '@/pages/Search/Index.vue';
 import Product from '@/pages/Goods/Index.vue';
@@ -99,6 +100,14 @@ export default new Router({
             component: Member,
             meta: {
                 title: '个人中心',
+            },
+        },
+        {
+            path: '/member/profile',
+            name: 'profile',
+            component: Profile,
+            meta: {
+                title: '我的资料',
             },
         },
         {

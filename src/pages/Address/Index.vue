@@ -7,7 +7,12 @@
         </BackHeader>
       <div class="has-header">
             <div class="swipe-box address-list">
-                <SwipeRow v-for="(item, index) in items" :name="['address-item' , selected == item.id ? ' selected' : '']"  :key="index" :index="item.id" ref="swiperow">
+                <SwipeRow v-for="(item, index) in items" :name="'address-item' + (selected == item.id ? ' selected' : '')"  :key="index" :index="item.id" ref="swiperow">
+                    <div slot="left" v-if="!item.is_default">
+                        <a class="set-default" @click="tapDefault(item)">
+                            设为默认
+                        </a>
+                    </div>
                     <div class="address-first">
                         <span>{{ item.name }}</span>
                     </div>
@@ -17,7 +22,7 @@
                             <span class="tel">{{ item.tel }}</span>
                         </p>
                         <p>
-                            <span class="default">默认</span>
+                            <span class="default" v-if="item.is_default">默认</span>
                             <span>{{ item.region.full_name }} {{ item.address }}</span>    
                         </p>
                     </div>
@@ -35,7 +40,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import { IAddress } from '@/api/model';
-import { getAddressList, deleteAddress } from '@/api/address';
+import { getAddressList, deleteAddress, defaultAddress } from '@/api/address';
 import BackHeader from '@/components/BackHeader.vue';
 import SwipeRow from '@/components/SwipeRow.vue';
 
@@ -62,6 +67,17 @@ export default class Index extends Vue {
         this.$router.push({name: 'address-edit', params: { id: item.id + ''}});
     }
 
+    tapDefault(item: IAddress) {
+        defaultAddress(item.id).then(() => {
+            for (const it of this.items) {
+                it.is_default = item.id == it.id;
+            }
+            for (const box of this.$refs.swiperow) {
+                box.reset();
+            }
+        });
+    }
+
     tapRemove(item: IAddress) {
         deleteAddress(item.id).then(() => {
             for (let i = 0; i < this.items.length; i++) {
@@ -74,5 +90,9 @@ export default class Index extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-
+.set-default {
+    line-height: 5rem;
+    font-size: 16px;
+    margin: 0 10px;
+}
 </style>

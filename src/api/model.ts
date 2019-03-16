@@ -59,9 +59,9 @@ export interface IProduct {
 }
 
 export interface IHomeProduct {
-    hot_products: IProduct[];
-    new_products: IProduct[];
-    best_products: IProduct[];
+    hot_products?: IProduct[];
+    new_products?: IProduct[];
+    best_products?: IProduct[];
 }
 
 export interface IComment {
@@ -157,13 +157,14 @@ export interface IRegion {
 }
 
 export interface IAddress {
-    id?: number;
+    id: number;
     name: string;
     tel: string;
     region_id: number;
     region?: IRegion;
     region_name?: string;
     address: string;
+    is_default: boolean;
 }
 
 export interface IOrder {
