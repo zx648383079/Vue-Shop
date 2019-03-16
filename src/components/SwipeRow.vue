@@ -28,8 +28,8 @@ export default Vue.extend({
         };
     },
     props: {
-        name: String,
-        index: {type: Number, default: -1},
+        name: String|Array,
+        index: Number|String,
     },
     methods: {
         getLeftWidth(): number {
@@ -110,14 +110,14 @@ export default Vue.extend({
             this.animation(this.left, 0);
         },
         resetOther() {
-            if (this.index < 0) {
+            if (!this.index) {
                 return;
             }
             if (!this.$parent.$refs.swiperow || this.$parent.$refs.swiperow.length < 1) {
                 return;
             }
             for (let i = 0; i < this.$parent.$refs.swiperow.length; i++) {
-                if (i == this.index) {
+                if (this.$parent.$refs.swiperow[i].index == this.index) {
                     continue;
                 }
                 this.$parent.$refs.swiperow[i].reset();

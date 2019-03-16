@@ -109,6 +109,15 @@ export interface ICart {
     goods_list: ICartItem[];
 }
 
+export interface IConnect {
+    id?: number,
+    vendor?: string,
+    nickname?: string,
+    created_at?: string,
+    name?: string,
+    icon?: string;
+}
+
 export interface IUser {
     id: number;
     email: string;
@@ -141,12 +150,19 @@ export interface ILogin {
     code?: string;
 }
 
-export interface IAddress {
+export interface IRegion {
     id: number;
+    name: string;
+    full_name: string;
+}
+
+export interface IAddress {
+    id?: number;
     name: string;
     tel: string;
     region_id: number;
-    region_name: string;
+    region?: IRegion;
+    region_name?: string;
     address: string;
 }
 

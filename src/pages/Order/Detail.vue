@@ -9,7 +9,7 @@
             <div class="shipping-box">
                 {{ order.shipping_status }}
             </div>
-            <div class="address-box">
+            <div class="address-box" v-if="order.address">
                 <i class="fa fa-map-marker"></i>
                 <p>
                     <span class="name">{{ order.address.name }}</span>

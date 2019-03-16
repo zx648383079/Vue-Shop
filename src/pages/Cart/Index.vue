@@ -9,7 +9,7 @@
                         <span>{{ item.name }}</span>
                     </div>
                     <div class="swipe-box goods-list">
-                        <SwipeRow name="cart-item goods-item" v-for="(cart, i) in item.goods_list" :key="i">
+                        <SwipeRow name="cart-item goods-item" v-for="(cart, i) in item.goods_list" :key="i" :index="cart.id" ref="swiperow">
                             <i :class="['fa', 'check-box', cart.checked ? 'active' : '']" @click="toggleCheck(item, cart)"></i>
                             <div class="goods-img">
                                 <img :src="cart.goods.thumb" alt="">

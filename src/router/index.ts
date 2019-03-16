@@ -28,6 +28,9 @@ import Order from '@/pages/Order/Index.vue';
 import OrderDetail from '@/pages/Order/Detail.vue';
 import OrderLogistics from '@/pages/Order/Logistics.vue';
 
+import Address from '@/pages/Address/Index.vue';
+import AddressEdit from '@/pages/Address/Edit.vue';
+
 
 Vue.use(Router);
 
@@ -220,6 +223,33 @@ export default new Router({
             component: OrderDetail,
             meta: {
                 title: '订单详情',
+                requireAuth: true,
+            },
+        },
+        {
+            path: '/address',
+            name: 'address',
+            component: Address,
+            meta: {
+                title: '我的地址',
+                requireAuth: true,
+            },
+        },
+        {
+            path: '/address/create',
+            name: 'address-create',
+            component: AddressEdit,
+            meta: {
+                title: '新增地址',
+                requireAuth: true,
+            },
+        },
+        {
+            path: '/address/:id',
+            name: 'address-edit',
+            component: AddressEdit,
+            meta: {
+                title: '编辑地址',
                 requireAuth: true,
             },
         },
