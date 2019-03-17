@@ -13,10 +13,13 @@
                 <div class="input-group">
                     <input type="text" name="tel" placeholder="手机号" required value="<?=$model->tel?>">
                 </div>
-                <div class="input-group region-box">
-                    <span>地址</span>
-                    <input type="hidden" name="region_id" value="<?=$model->region_id ?: 1?>">
-                </div>
+                <SelectPicker :items="regions" :column="3">
+                    <div class="input-group region-box">
+                        <span>地址</span>
+                        <input type="hidden" name="region_id" value="<?=$model->region_id ?: 1?>">
+                    </div>
+                </SelectPicker>
+                
                 <div class="input-group">
                     <textarea name="address" placeholder="详细地址" required><?=$model->address?></textarea>
                 </div>
@@ -38,13 +41,16 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
-import { IAddress } from '@/api/model';
+import { IAddress, IRegionObject } from '@/api/model';
+import { getRegionTree } from '@/api/region';
 import { getAddressList, deleteAddress, getAddress } from '@/api/address';
 import BackHeader from '@/components/BackHeader.vue';
+import SelectPicker from '@/components/SelectPicker.vue';
 
 @Component({
     components: {
         BackHeader,
+        SelectPicker,
     }
 })
 export default class Edit extends Vue {
@@ -58,7 +64,14 @@ export default class Edit extends Vue {
         address: '',
     };
 
+    regions: IRegionObject = {};
+
     created() {
+        getRegionTree().then(res => {
+            if (res.data) {
+                this.regions = res.data;
+            }
+        });
         const id = parseInt(this.$route.params.id);
         if (!id) {
             return;

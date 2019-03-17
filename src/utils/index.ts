@@ -50,12 +50,36 @@ export function getCurrentTime() {
     return formatTime(new Date());
 }
 
+export function twoPad(i: number) {
+    return i < 10 ? '0' + i : i;
+}
+
 export function formatTime(time: Date) {
-    const format = (i: number) => i < 10 ? '0' + i : i
     return time.getFullYear() +
-        '-' + format(time.getMonth() + 1) +
-        '-' + format(time.getDate()) +
-        ' ' + format(time.getHours()) +
-        ':' + format(time.getMinutes()) +
-        ':' + format(time.getSeconds())
+        '-' + twoPad(time.getMonth() + 1) +
+        '-' + twoPad(time.getDate()) +
+        ' ' + twoPad(time.getHours()) +
+        ':' + twoPad(time.getMinutes()) +
+        ':' + twoPad(time.getSeconds())
+}
+
+export function each(data: any, cb: (val: any, key: string | number) => boolean| void) {
+    if (typeof data !== 'object') {
+        return cb(data, 0);
+    }
+    if (data instanceof Array) {
+        for (let i = 0; i < data.length; i++) {
+            if (cb(data[i], i) === false) {
+                return;
+            }
+        }
+        return;
+    }
+    for (const key in data) {
+        if (data.hasOwnProperty(key)) {
+            if (cb(data[key], key) === false) {
+                return;
+            }
+        }
+    }
 }

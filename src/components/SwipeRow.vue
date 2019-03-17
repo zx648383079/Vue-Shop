@@ -21,8 +21,8 @@ import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 
 @Component
 export default class Index extends Vue {
-    @Prop(String) readonly name?: string;
-    @Prop(Number) readonly index?: number;
+    @Prop([String, Array]) readonly name!: string| string[];
+    @Prop([Number, String]) readonly index!: number|string;
     oldLeft: number = 0;
     left = 0;
     startX = 0;

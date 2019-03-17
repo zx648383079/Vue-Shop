@@ -1,18 +1,22 @@
 import {
-    SET_CATEGORIES, SET_SUBTOTAL, SET_CART,
+    SET_CATEGORIES, SET_SUBTOTAL, SET_CART, SET_ADDRESS_LIST, SET_ADDRESS,
 } from '../types';
 import {
     Commit,
 } from 'vuex';
-import { ICategory, ISubtotal, ICart } from '@/api/model';
+import { ICategory, ISubtotal, ICart, IAddress } from '@/api/model';
 import { getCategories } from '@/api/category';
 import { getSubtotal } from '@/api/product';
+import { getAddressList } from '@/api/address';
+import { dispatchAddressList } from '../dispatches';
 
 
 export interface State {
     categories: ICategory[],
     subtotal: ISubtotal | null,
     cart: ICart[];
+    addressList: IAddress[];
+    address: IAddress | null;
 };
 
 interface IActionContext {
@@ -26,6 +30,8 @@ const initState: State = {
     categories: [],
     subtotal: null,
     cart: [],
+    addressList: [],
+    address: null,
 };
 
 // getters
@@ -64,6 +70,36 @@ const actions = {
             }).catch(reject);
         });
     },
+    getAddressList(context: IActionContext) {
+        return new Promise((resolve, reject) => {
+            if (context.state.addressList && context.state.addressList.length > 0) {
+                resolve(context.state.addressList);
+                return;
+            }
+            getAddressList().then(res => {
+                context.commit(SET_ADDRESS_LIST, res.data);
+                resolve(res.data);
+            }).catch(reject);
+        });
+    },
+    getAddress(context: IActionContext) {
+        return new Promise((resolve, reject) => {
+            if (context.state.address) {
+                resolve(context.state.address);
+                return;
+            }
+            dispatchAddressList().then(res => {
+                for (const item of res) {
+                    if (item.is_default) {
+                        context.commit(SET_ADDRESS, item);
+                        resolve(item);
+                        return;
+                    }
+                }
+                resolve();
+            }).catch(reject);
+        });
+    },
 };
 
 // mutations
@@ -76,6 +112,12 @@ const mutations = {
     },
     [SET_CART](state: State, cart: ICart[]) {
         state.cart = cart;
+    },
+    [SET_ADDRESS_LIST](state: State, items: IAddress[]) {
+        state.addressList = items;
+    },
+    [SET_ADDRESS](state: State, item: IAddress) {
+        state.address = item;
     },
 };
 

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <BackHeader title="我的收藏"/>
+        <BackHeader :title="$route.meta.title"/>
         <div class="has-header collect-page" 
                 v-infinite-scroll="loadMore"
                 infinite-scroll-disabled="is_loading"

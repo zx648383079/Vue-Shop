@@ -32,6 +32,9 @@ import OrderLogistics from '@/pages/Order/Logistics.vue';
 import Address from '@/pages/Address/Index.vue';
 import AddressEdit from '@/pages/Address/Edit.vue';
 
+import Coupon from '@/pages/Coupon/Index.vue';
+import CouponMy from '@/pages/Coupon/My.vue';
+
 
 Vue.use(Router);
 
@@ -51,6 +54,23 @@ export default new Router({
             component: Category,
             meta: {
                 title: '分类',
+            },
+        },
+        {
+            path: '/coupon',
+            name: 'coupon',
+            component: Coupon,
+            meta: {
+                title: '领券中心',
+            },
+        },
+        {
+            path: '/coupon/my',
+            name: 'coupon-my',
+            component: CouponMy,
+            meta: {
+                title: '我的优惠券',
+                requireAuth: true,
             },
         },
         {
@@ -108,6 +128,7 @@ export default new Router({
             component: Profile,
             meta: {
                 title: '我的资料',
+                requireAuth: true,
             },
         },
         {

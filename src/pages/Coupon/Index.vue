@@ -1,15 +1,14 @@
 <template>
     <div>
+        <BackHeader :title="$route.meta.title"/>
         <div class="has-header has-footer">
-            <div class="scroll-nav">
+            <div :class="['scroll-nav', isExpand ? 'unfold' : '']">
                 <ul>
-                    <?php foreach($cat_list as $item):?>
-                    <li>
-                            <a href=""><?=$item->name?></a>
+                    <li v-for="(item, index) in categories" :key="index">
+                            <a href="">{{ item.name }}</a>
                     </li>
-                    <?php endforeach;?>
                 </ul>
-                <a href="javascript:;" class="fa nav-arrow"></a>
+                <a @click="isExpand = !isExpand" class="fa nav-arrow"></a>
             </div>
 
             <div>
@@ -42,11 +41,11 @@
         </div>
 
         <footer class="tab-bar">
-            <a href="<?=$this->url('./mobile/coupon')?>" class="active">
+            <a class="active">
                 <i class="fa fa-gift" aria-hidden="true"></i>
                 领券
             </a>
-            <a href="<?=$this->url('./mobile/coupon/my')?>">
+            <a @click="$router.push('/coupon/my')">
                 <i class="fa fa-user" aria-hidden="true"></i>
                 我的优惠券
             </a>
@@ -55,10 +54,26 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import BackHeader from '@/components/BackHeader.vue';
+import { ICategory } from '@/api/model';
+import { dispatchCategories } from '@/store/dispatches';
 
-@Component
+@Component({
+    components: {
+        BackHeader,
+    }
+})
 export default class Index extends Vue {
+    categories: ICategory[] = [];
+    status: number = 0;
+    items = [];
+    isExpand: boolean = false;
 
+    created() {
+        dispatchCategories().then(res => {
+            this.categories = res;
+        });
+    }
 }
 </script>
 <style lang="scss" scoped>

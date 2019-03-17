@@ -66,7 +66,7 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Component, Prop, Emit, Watch } from 'vue-property-decorator';
 
 export interface IDay {
     disable?: boolean,
@@ -82,15 +82,19 @@ export enum DayMode {
 
 @Component
 export default class DatePicker extends Vue {
-    @Prop(Date) readonly min: Date = new Date('1900/01/01 00:00:00');
-    @Prop(Date) readonly max: Date = new Date('2099/12/31 23:59:59');
-    @Prop(Number) readonly minYear: number = 1900;
-    @Prop(Number) readonly maxYear: number = 2099;
-    @Prop(String) readonly titleFormat: string = 'y年mm月dd日';
-    @Prop(String) readonly format: string = 'y-mm-dd hh:ii:ss';
-    @Prop(Date) readonly value: Date = new Date();
+    @Prop([Date, String]) readonly min!: Date| string;
+    @Prop([Date, String]) readonly max!: Date| string;
+    @Prop({default: 'y年mm月'}) readonly titleFormat!: string;
+    @Prop({default: 'y-mm-dd hh:ii:ss'}) readonly format!: string;
+    @Prop([Date, String]) readonly value?: Date| string;
+
+    currentDate: Date = new Date();
+    currentMin: Date = new Date('1900/01/01 00:00:00');
+    currentMax: Date = new Date('2099/12/31 23:59:59');
 
     title: string = '-';
+    minYear: number = 1900;
+    maxYear: number = 2099;
 
     day_list: Array<IDay> = [];
 
@@ -121,6 +125,75 @@ export default class DatePicker extends Vue {
     calendarVisible: boolean = false;
 
     gridMode: DayMode = DayMode.Day;
+
+    @Watch('min')
+    onMinChanged(val: Date| string, oldVal: Date| string) {
+        this.currentMin = this.toDate(val);
+        this.minYear = this.currentMin.getFullYear();
+    }
+
+    @Watch('max')
+    onMaxChanged(val: Date| string, oldVal: Date| string) {
+        this.currentMax = this.toDate(val);
+        this.maxYear = this.currentMax.getFullYear();
+    }
+
+    @Watch('value')
+    onValueChanged(val: Date| string, oldVal: Date| string) {
+        const date = this.toDate(val);
+        if (this.isSameTime(date)) {
+            return;
+        }
+        this.currentDate = date;
+        this.refresh();
+    }
+
+    isSameTime(date: Date): boolean {
+        if (date.getFullYear() !== this.currentDate.getFullYear()) {
+            return false;
+        }
+        if (date.getMonth() !== this.currentDate.getMonth()) {
+            return false;
+        }
+        if (date.getDate() !== this.currentDate.getDate()) {
+            return false;
+        }
+        if (!this.hasTime) {
+            return true;
+        }
+        if (date.getHours() !== this.currentDate.getHours()) {
+            return false;
+        }
+        if (date.getMinutes() !== this.currentDate.getMinutes()) {
+            return false;
+        }
+        return date.getSeconds() === this.currentDate.getSeconds();
+    }
+
+    private toDate(year: number|Date|string, month?: number): Date {
+         if (!year) {
+             return new Date();
+         }
+         if (typeof year == 'object') {
+             return year;
+         }
+         if (typeof year == 'number' 
+         && typeof month == 'number') {
+             return new Date(year, month - 1, 1);
+         }
+         // 解决safari 无法识别 - 
+         if (typeof year == 'string' && year.indexOf('-') > 0) {
+             year.replace('-', '/');
+         }
+         if (typeof year === 'number' && ('' + year).length  == 10) {
+             year *= 1000;
+         }
+         let date = new Date(year);
+         if (isNaN(date.getTime())) {
+             return new Date();
+         }
+         return date;
+     }
 
     created() {
         this.refresh();
@@ -156,11 +229,11 @@ export default class DatePicker extends Vue {
       * @param date 
       */
      checkDate(date: Date): boolean {
-        let min = this.min;
+        let min = this.currentMin;
         if (min && date <= min) {
             return false;
         }
-        let max = this.max;
+        let max = this.currentMax;
         return !max || date < max;
     }
 
@@ -174,15 +247,15 @@ export default class DatePicker extends Vue {
     }
 
     refreshCurrent() {
-        this.currentYear = this.value.getFullYear();
-        this.currentMonth = this.value.getMonth() + 1;
-        this.currentDay = this.value.getDate();
+        this.currentYear = this.currentDate.getFullYear();
+        this.currentMonth = this.currentDate.getMonth() + 1;
+        this.currentDay = this.currentDate.getDate();
         if (this.hasTime) {
-            this.currentHour = this.value.getHours();
-            this.currentMinute = this.value.getMinutes();
-            this.currentSecond = this.value.getSeconds();
+            this.currentHour = this.currentDate.getHours();
+            this.currentMinute = this.currentDate.getMinutes();
+            this.currentSecond = this.currentDate.getSeconds();
         }
-        this.title = this.formatDate(this.value, this.titleFormat);
+        this.title = this.formatDate(this.currentDate, this.titleFormat);
     }
 
     initHours() {
@@ -239,7 +312,7 @@ export default class DatePicker extends Vue {
         let i: number;
         if (f > 0) {
             let yc = this.getLastOfMonth(y, m - 1);
-            for (i = yc - f + 2; i <= yc; i ++) {
+            for (i = yc - f + 1; i <= yc; i ++) {
                 days.push({
                     disable: true,
                     val: i
@@ -253,7 +326,7 @@ export default class DatePicker extends Vue {
             });
         }
         if (f + c < 43) {
-            let l = 42 - f - c + 1;
+            let l = 42 - f - c;
             for (i = 1; i <= l; i ++) {
                 days.push({
                     disable: true,
@@ -312,11 +385,11 @@ export default class DatePicker extends Vue {
     }
 
     applyCurrent() {
-        this.value.setFullYear(this.currentYear, this.currentMonth, this.currentDay);
+        this.currentDate.setFullYear(this.currentYear, this.currentMonth -  1, this.currentDay);
         if (this.hasTime) {
-            this.value.setHours(this.currentHour, this.currentMinute, this.currentSecond);
+            this.currentDate.setHours(this.currentHour, this.currentMinute, this.currentSecond);
         }
-        this.title = this.formatDate(this.value, this.titleFormat);
+        this.title = this.formatDate(this.currentDate, this.titleFormat);
     }
 
     changeYear(year: number) {
@@ -332,7 +405,7 @@ export default class DatePicker extends Vue {
     }
 
     changeDay(day: IDay) {
-        let date = new Date(this.value.getTime());
+        let date = new Date(this.currentDate.getTime());
         if (day.disable) {
             if (day.val < 15) {
                 date.setMonth(date.getMonth() + 1);
@@ -344,7 +417,7 @@ export default class DatePicker extends Vue {
         if (!this.checkDate(date)) {
             return;
         }
-        this.$emit('input', date);
+        this.currentDate = date;
         this.refreshCurrent();
         if (!this.hasTime) {
             this.enterChange();
@@ -369,16 +442,18 @@ export default class DatePicker extends Vue {
      */
     enterChange() {
         this.applyCurrent();
-        if (!this.checkDate(this.value)) {
+        if (!this.checkDate(this.currentDate)) {
             return;
         }
+        
         this.output();
         this.calendarVisible = false;
     }
 
     output() {
-        this.$emit('input', this.value);
-        this.$emit('output', this.formatDate(this.value, this.format));
+        const format =  this.formatDate(this.currentDate, this.format);
+        this.$emit('input', typeof this.value !== 'object' ? format :  this.currentDate);
+        this.$emit('output', format);
     }
 
     showCalendar() {
@@ -402,7 +477,8 @@ export default class DatePicker extends Vue {
         };
         for (let k in o) {
             if (new RegExp("(" + k + ")").test(fmt)) {
-                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+                const len =  ("" + o[k]).length;
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1 || RegExp.$1.length == len) ? (o[k]) : (("00" + o[k]).substr(len)));
             }
         }
         return fmt;

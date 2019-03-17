@@ -1,4 +1,4 @@
-import { IAddress, IData } from './model';
+import { IAddress, IData, IDataOne } from './model';
 import { fetch, post, deleteRequest } from '@/utils/http';
 
 
@@ -11,6 +11,6 @@ export const createAddress = (param: any) => post<IAddress>('shop/address/create
 export const updateAddress = (param: any) => post<IAddress>('shop/address/update', param);
 export const defaultAddress = (id: number) => post<IAddress>('shop/address/default', {id});
 
-export const deleteAddress = (id: number) => deleteRequest<IData<boolean>>('shop/address/delete?id=' + id);
+export const deleteAddress = (id: number) => deleteRequest<IDataOne<boolean>>('shop/address/delete?id=' + id);
 
 

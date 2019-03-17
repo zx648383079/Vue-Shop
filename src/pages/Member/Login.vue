@@ -69,7 +69,7 @@
                         <input type="email" name="email" required autocomplete="off" v-model="email" placeholder="请输入账号">
                     </div>
                     <div class="input-box">
-                        <input type="password" name="password" required autocomplete="off" v-model="password" placeholder="请输入密码">
+                        <input type="password" name="password" required autocomplete="off" @keyup="tapKey" v-model="password" placeholder="请输入密码">
                     </div>
                     <div class="unlogin">
                         <a @click="mode = 4">注册账号</a>
@@ -120,6 +120,15 @@ export default class Login extends Vue {
 
     tapHome() {
         this.$router.push('/');
+    }
+
+    tapKey(e: KeyboardEvent) {
+        if (e.which !== 13) {
+            return;
+        }
+        if (this.mode < 4) {
+            this.tapLogin();
+        }
     }
 
     tapLogin() {

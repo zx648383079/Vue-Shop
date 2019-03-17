@@ -1,5 +1,5 @@
 import {fetch, post, deleteRequest} from '../utils/http';
-import {IUser, ILogin, IPage, IAccountLog, ICollect, IData, IConnect} from './model';
+import {IUser, ILogin, IPage, IAccountLog, ICollect, IData, IConnect, IDataOne} from './model';
 
 export const getProfile = () => fetch<IUser>('auth/user');
 
@@ -9,9 +9,9 @@ export const getConnect = () => fetch<IData<IConnect>>('shop/account/connect');
 
 export const getCollect = (params: any) => fetch<IPage<ICollect>>('shop/collect', params);
 
-export const toggleCollect = (id: number) => post<IData<boolean>>('shop/collect/toggle', {id});
+export const toggleCollect = (id: number) => post<IDataOne<boolean>>('shop/collect/toggle', {id});
 
-export const removeCollect = (id: number) => deleteRequest<IData<boolean>>('shop/collect/delete?id=' + id);
+export const removeCollect = (id: number) => deleteRequest<IDataOne<boolean>>('shop/collect/delete?id=' + id);
 
 export const login = (param: ILogin) => post<IUser>('auth/login', param);
 

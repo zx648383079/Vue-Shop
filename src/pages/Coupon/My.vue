@@ -1,5 +1,6 @@
 <template>
     <div>
+        <BackHeader :title="$route.meta.title"/>
         <div class="has-header has-footer">
             <div class="tab-header">
                 <div class="tab-item active">未使用</div>
@@ -41,32 +42,28 @@
         </div>
 
         <footer class="tab-bar">
-            <a href="<?=$this->url('./mobile/coupon')?>">
+            <a @click="$router.push('/coupon')">
                 <i class="fa fa-gift" aria-hidden="true"></i>
                 领券
             </a>
-            <a href="<?=$this->url('./mobile/coupon/my')?>" class="active">
+            <a class="active">
                 <i class="fa fa-user" aria-hidden="true"></i>
                 我的优惠券
             </a>
         </footer>
     </div>
 </template>
-<script>
-export default {
-    data() {
-        return {
-            items: [
+<script lang="ts">
+import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import BackHeader from '@/components/BackHeader.vue';
 
-            ]
-        }
-    },
-    created() {
-
-    },
-    methods: {
-
+@Component({
+    components: {
+        BackHeader,
     }
+})
+export default class My extends Vue {
+
 }
 </script>
 <style lang="scss" scoped>

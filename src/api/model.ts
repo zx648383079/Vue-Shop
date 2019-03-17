@@ -22,6 +22,10 @@ export interface IData<T> extends IBaseResponse {
     data?: T[];
 }
 
+export interface IDataOne<T> extends IBaseResponse {
+    data?: T;
+}
+
 export interface IAd {
     id?: number,
     name?: string,
@@ -99,7 +103,7 @@ export interface ICartItem {
     amount: number;
     price: number;
     checked?: boolean;
-    goods: IProduct;
+    goods?: IProduct;
 }
 
 export interface ICart {
@@ -107,6 +111,18 @@ export interface ICart {
     name: string;
     checked?: boolean;
     goods_list: ICartItem[];
+}
+
+export interface IPayment {
+    id: number,
+    name: string,
+    icon?: string;
+}
+
+export interface IShipping {
+    id: number,
+    name: string,
+    icon?: string;
 }
 
 export interface IConnect {
@@ -153,7 +169,13 @@ export interface ILogin {
 export interface IRegion {
     id: number;
     name: string;
+    parent_id?: number;
+    children?: IRegionObject | IRegion[];
     full_name: string;
+}
+
+export interface IRegionObject {
+    [id: number]: IRegion;
 }
 
 export interface IAddress {
@@ -164,7 +186,7 @@ export interface IAddress {
     region?: IRegion;
     region_name?: string;
     address: string;
-    is_default: boolean;
+    is_default?: boolean;
 }
 
 export interface IOrder {

@@ -4,3 +4,4 @@ export * from './status';
 export * from './ago';
 export * from './price';
 export * from './time';
+export * from './twoPad';
