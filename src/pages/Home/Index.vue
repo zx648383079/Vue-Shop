@@ -112,6 +112,6 @@ export default class Index extends Vue {
 
 <style scoped>
 .banner {
-    height: 200px;
+    height: 50vw;
 }
 </style>
