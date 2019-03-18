@@ -171,7 +171,7 @@ export interface IRegion {
     name: string;
     parent_id?: number;
     children?: IRegionObject | IRegion[];
-    full_name: string;
+    full_name?: string;
 }
 
 export interface IRegionObject {

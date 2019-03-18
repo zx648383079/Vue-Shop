@@ -6,22 +6,21 @@
             </a>
         </BackHeader>
         <div class="has-header">
-            <form class="form-inline" data-type="ajax" action="<?=$this->url('./mobile/address/save')?>" method="post">
+            <form class="form-inline" method="post">
                 <div class="input-group">
-                    <input type="text" name="name" placeholder="收货人" required  value="<?=$model->name?>">
+                    <input type="text" name="name" placeholder="收货人" required  v-model="address.name">
                 </div>
                 <div class="input-group">
-                    <input type="text" name="tel" placeholder="手机号" required value="<?=$model->tel?>">
+                    <input type="text" name="tel" placeholder="手机号" required v-model="address.tel">
                 </div>
-                <SelectPicker :items="regions" :column="3">
+                <SelectPicker :items="regions" :column="3" v-model="address.region">
                     <div class="input-group region-box">
-                        <span>地址</span>
-                        <input type="hidden" name="region_id" value="<?=$model->region_id ?: 1?>">
+                        <span>{{ address.region && address.region.full_name ? address.region.full_name : '地址' }}</span>
                     </div>
                 </SelectPicker>
                 
                 <div class="input-group">
-                    <textarea name="address" placeholder="详细地址" required><?=$model->address?></textarea>
+                    <textarea name="address" placeholder="详细地址" required v-model="address.address"></textarea>
                 </div>
 
                 <div class="input-radio">
@@ -61,6 +60,10 @@ export default class Edit extends Vue {
         tel: '',
         region_id: 0,
         region_name: '',
+        region: {
+            id: 377,
+            name: '朝阳区'
+        },
         address: '',
     };
 
