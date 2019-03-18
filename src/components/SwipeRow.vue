@@ -20,20 +20,33 @@
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 
 @Component
-export default class Index extends Vue {
+export default class SwipeRow extends Vue {
     @Prop([String, Array]) readonly name!: string| string[];
     @Prop([Number, String]) readonly index!: number|string;
     oldLeft: number = 0;
     left = 0;
     startX = 0;
     isTouch = false;
+    leftBox: HTMLDivElement | null = null;
+    rightBox: HTMLDivElement | null = null;
+
+    mounted() {
+        this.leftBox = this.$refs.left as HTMLDivElement;
+        this.rightBox = this.$refs.right as HTMLDivElement;
+    }
 
     getLeftWidth(): number {
-        return this.$refs.left.clientWidth || this.$refs.left.offsetWidth;
+        if (!this.leftBox) {
+            return 0;
+        }
+        return this.leftBox.clientWidth || this.leftBox.offsetWidth;
     }
 
     getRightWidth(): number {
-        return this.$refs.right.clientWidth || this.$refs.right.offsetWidth;
+        if (!this.rightBox) {
+            return 0;
+        }
+        return this.rightBox.clientWidth || this.rightBox.offsetWidth;
     }
 
     tapRemove(item: any) {
@@ -117,14 +130,15 @@ export default class Index extends Vue {
         if (!this.index) {
             return;
         }
-        if (!this.$parent.$refs.swiperow || this.$parent.$refs.swiperow.length < 1) {
+        const items: SwipeRow[] = this.$parent.$refs.swiperow as SwipeRow[];
+        if (!items || items.length < 1) {
             return;
         }
-        for (let i = 0; i < this.$parent.$refs.swiperow.length; i++) {
-            if (this.$parent.$refs.swiperow[i].index == this.index) {
+        for (let i = 0; i < items.length; i++) {
+            if (items[i].index == this.index) {
                 continue;
             }
-            this.$parent.$refs.swiperow[i].reset();
+            items[i].reset();
         }
     }
 }
