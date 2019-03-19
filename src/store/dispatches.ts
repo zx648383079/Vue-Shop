@@ -1,5 +1,5 @@
 import store from './';
-import { ICategory, IUser, ILogin, ISubtotal, ICart, IAddress } from '@/api/model';
+import { ICategory, IUser, ILogin, ISubtotal, ICart, IAddress, IOrder } from '@/api/model';
 
 export const dispatchCategories = (): Promise<ICategory[]> => store.dispatch('getCategories');
 
@@ -16,3 +16,11 @@ export const dispatchLogin =
 export const dispatchLogout = (): Promise<any> => store.dispatch('logoutUser');
 
 export const dispatchSetCart = (cart: ICart[]) => store.dispatch('setCart', cart);
+
+export const dispatchSetAddress = (address: IAddress) => store.dispatch('setAddress', address);
+
+export const dispatchSetAddressIfEmpty = (address: IAddress) => store.dispatch('setAddressIfEmpty', address);
+
+export const dispatchSetOrder = (order?: IOrder) => store.dispatch('setOrder', order);
+
+export const dispatchOrder = (id: number): Promise<IOrder> => store.dispatch('getOrder', id);

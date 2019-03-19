@@ -1,13 +1,13 @@
 <template>
     <div>
-        <BackHeader title="我的地址">
+        <BackHeader :title="mode > 0 ? '选择地址' : '我的地址'">
             <a class="right" @click="$router.push('/address/create')">
                 <i class="fa fa-plus"></i>
             </a>
         </BackHeader>
       <div class="has-header">
             <div class="swipe-box address-list">
-                <SwipeRow v-for="(item, index) in items" :name="['address-item', selected == item.id ? ' selected' : '']"  :key="index" :index="item.id" ref="swiperow">
+                <SwipeRow v-for="(item, index) in items" :name="['address-item', selected == item.id ? ' selected' : '']"  :key="index" :index="item.id" ref="swiperow" @click="tapSelected(item)">
                     <div slot="left" v-if="!item.is_default">
                         <a class="set-default" @click="tapDefault(item)">
                             设为默认
@@ -43,6 +43,7 @@ import { IAddress } from '@/api/model';
 import { getAddressList, deleteAddress, defaultAddress } from '@/api/address';
 import BackHeader from '@/components/BackHeader.vue';
 import SwipeRow from '@/components/SwipeRow.vue';
+import { dispatchSetAddress, dispatchAddressList } from '@/store/dispatches';
 
 @Component({
     components: {
@@ -53,18 +54,32 @@ import SwipeRow from '@/components/SwipeRow.vue';
 export default class Index extends Vue {
     items: IAddress[] = [];
     selected: number = 0;
+    mode: number = 0;
 
     created() {
-        getAddressList().then(res => {
-            if (!res.data) {
+        if (this.$route.query.selected) {
+            this.mode = 1;
+            this.selected = parseInt(this.$route.query.selected + '');
+        }
+        dispatchAddressList().then(res => {
+            if (!res) {
                 return;
             }
-            this.items = res.data;
+            this.items = res;
         });
     }
 
-    tapEdit(item: IAddress) {
+    public tapEdit(item: IAddress) {
         this.$router.push({name: 'address-edit', params: { id: item.id + ''}});
+    }
+
+    public tapSelected(item: IAddress) {
+        if (this.mode < 1) {
+            return;
+        }
+        this.selected = item.id;
+        dispatchSetAddress(item);
+        this.$router.replace('/cashier');
     }
 
     tapDefault(item: IAddress) {
@@ -75,6 +90,9 @@ export default class Index extends Vue {
             const rows: SwipeRow[] = this.$refs.swiperow as SwipeRow[];
             for (const box of rows) {
                 box.reset();
+            }
+            if (this.mode > 0) {
+                dispatchSetAddressIfEmpty(item);
             }
         });
     }

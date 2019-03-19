@@ -9,6 +9,7 @@ import Category from '@/pages/Category/Index.vue';
 
 import Cart from '@/pages/Cart/Index.vue';
 import Cashier from '@/pages/Cashier/Index.vue';
+import Pay from '@/pages/Cashier/Pay.vue';
 import Member from '@/pages/Member/Index.vue';
 import Profile from '@/pages/Member/Profile.vue';
 import Login from '@/pages/Member/Login.vue';
@@ -87,6 +88,15 @@ export default new Router({
             component: Cashier,
             meta: {
                 title: '结算',
+                requireAuth: true,
+            },
+        },
+        {
+            path: '/pay/:id',
+            name: 'pay',
+            component: Pay,
+            meta: {
+                title: '支付',
                 requireAuth: true,
             },
         },

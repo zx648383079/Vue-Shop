@@ -63,8 +63,8 @@
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import { IOrder, ORDER_STATUS } from '@/api/model';
-import { getOrderInfo } from '@/api/order';
 import { Toast, MessageBox } from 'mint-ui';
+import { dispatchOrder } from '@/store/dispatches';
 
 @Component({
     components: {
@@ -82,7 +82,7 @@ export default class Detail extends Vue {
             this.$router.push('/');
             return;
         }
-        getOrderInfo(id).then(res => {
+        dispatchOrder(id).then(res => {
             this.order = res;
         });
     }
@@ -91,7 +91,7 @@ export default class Detail extends Vue {
         if (!this.order) {
             return;
         }
-        this.$router.push({name: 'cashier-pay', params: {id: this.order.id + ''}});
+        this.$router.push({name: 'pay', params: {id: this.order.id + ''}});
     }
 
     tapRefund() {

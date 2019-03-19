@@ -16,7 +16,7 @@
                         </div>
                         <div class="goods-info">
                             <h4>{{ goods.goods.name }}</h4>
-                            <span class="price">{{ goods.price }}</span>
+                            <span class="price">{{ goods.price | price }}</span>
                             <span class="amount"> x {{ goods.amount }}</span>
                         </div>
                     </div>
@@ -26,29 +26,38 @@
                 
 
                 <div class="checkout-amount" v-if="order">
-                    <p class="line-item"><span>商品总价</span> <span data-key="goods_amount">{{ order.goods_amount }}</span> </p>
-                    <p class="line-item"><span>+运费</span> <span data-key="shipping_fee">{{ order.shipping_fee }}</span> </p>
-                    <p class="line-item"><span>+支付手续费</span> <span data-key="pay_fee">{{ order.pay_fee }}</span> </p>
-                    <p class="line-item"><span>-优惠</span> <span data-key="discount">{{ order.discount }}</span> </p>
-                    <p class="line-item"><span>订单总价</span> <span data-key="order_amount">{{ order.order_amount }}</span> </p>
+                    <p class="line-item"><span>商品总价</span> <span data-key="goods_amount">{{ order.goods_amount | price }}</span> </p>
+                    <p class="line-item"><span>+运费</span> <span data-key="shipping_fee">{{ order.shipping_fee | price }}</span> </p>
+                    <p class="line-item"><span>+支付手续费</span> <span data-key="pay_fee">{{ order.pay_fee | price }}</span> </p>
+                    <p class="line-item"><span>-优惠</span> <span data-key="discount">{{ order.discount | price }}</span> </p>
+                    <p class="line-item"><span>订单总价</span> <span data-key="order_amount">{{ order.order_amount | price }}</span> </p>
+                </div>
+
+                <div class="address-tip" v-if="address">
+                    {{ address.region.full_name }} {{ address.address }}
                 </div>
                 <div class="checkout-footer" v-if="order">
-                    <span data-key="order_amount">{{ order.order_amount }}</span>
-                    <a class="btn">立即支付</a>
+                    <span data-key="order_amount">{{ order.order_amount | price }}</span>
+                    <a @click="tapCheckout" class="btn">立即支付</a>
                 </div>
         </div>
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Component, Prop, Emit, Watch } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
-import { IAddress, ICart, IOrder, IPayment, IShipping } from '@/api/model';
-import { dispatchAddress } from '@/store/dispatches';
+import { IAddress, ICart, IOrder, IPayment, IShipping, ICartItem } from '@/api/model';
+import { dispatchAddress, dispatchSetCart, dispatchSetOrder } from '@/store/dispatches';
 import { Getter } from 'vuex-class';
 import AddressLine from './Child/AddressLine.vue';
 import PaymentLine from './Child/PaymentLine.vue';
 import ShippingLine from './Child/ShippingLine.vue';
-import { getPaymentList } from '@/api/cart';
+import { getPaymentList, previewOrder, getShippingList, checkoutOrder } from '@/api/cart';
+
+interface ICartBox {
+    type: number,
+    goods: ICartItem[] | number[];
+}
 
 @Component({
     components: {
@@ -60,18 +69,21 @@ import { getPaymentList } from '@/api/cart';
 })
 export default class Index extends Vue {
     address: IAddress | null = null;
+    @Getter('addressList') address_list?: IAddress[];
     @Getter('cart') cart?: ICart[];
     order: IOrder| null = null;
     payment_list: IPayment[] = [];
     payment: IPayment| null = null;
     shipping_list: IShipping[] = [];
     shipping: IShipping| null = null;
+    cart_box: ICartBox | null = null;
 
     created() {
         if (!this.cart || this.cart.length < 1) {
             this.$router.push('/cart');
             return;
         }
+        this.cart_box = this.getGoodsIds();
         dispatchAddress().then(res => {
             this.address = res;
         });
@@ -82,11 +94,94 @@ export default class Index extends Vue {
         });
     }
 
-    tapAddress() {
+    @Watch('address')
+    onAddressChanged() {
+        this.refreshPrice();
+        if (!this.address || !this.cart_box) {
+            return;
+        }
+        getShippingList(this.cart_box.goods, this.address.id, this.cart_box.type).then(res => {
+            if (res.data) {
+                this.shipping_list = res.data;
+            }
+        })
+    }
 
+    @Watch('payment')
+    onPaymentChanged() {
+        this.refreshPrice();
+    }
+
+    @Watch('shipping')
+    onShippingChanged() {
+        this.refreshPrice();
+    }
+
+    public refreshPrice() {
+        if (!this.address || !this.cart_box) {
+            return;
+        }
+        previewOrder(this.cart_box.goods, this.address.id, this.shipping ? this.shipping.id : 0, this.payment ? this.payment.id : 0, this.cart_box.type).then(res => {
+            this.order = res;
+        });
+    }
+
+    public tapCheckout() {
+        if (!this.address || !this.cart_box || !this.shipping || !this.payment) {
+            return;
+        }
+        checkoutOrder(this.cart_box.goods, this.address.id, this.shipping.id, this.payment.id, this.cart_box.type).then(res => {
+            dispatchSetCart([]);
+            dispatchSetOrder(res);
+            this.$router.replace('/pay/' + res.id);
+        });
+    }
+
+    public tapAddress() {
+        if (!this.address_list || this.address_list.length < 1) {
+            this.$router.push({path: '/address/create', query: {}});
+            return;
+        }
+        this.$router.push({name: 'address', query: {selected: (this.address ?this.address.id + '' : '0')}});
+    }
+
+
+
+    getGoodsIds(): ICartBox {
+        let goods: ICartItem[] = [],
+            cart: number[]  = [],
+            type: number = -1;
+        for (const group of this.cart) {
+            for (const item of group.goods_list) {
+                if (type == -1) {
+                    type = item.id && item.id > 0 ? 0 : 1; 
+                }
+                if (type > 0) {
+                    goods.push({
+                        goods_id: item.goods_id,
+                        amount: item.amount,
+                    });
+                    continue;
+                }
+                cart.push(item.id as number);
+            }
+        }
+        return type > 0 ? {type, goods} : {type, goods: cart};
     }
 }
 </script>
 <style lang="scss" scoped>
-
+.address-tip {
+    background-color: bisque;
+    color: red;
+    line-height: 30px;
+    position: fixed;
+    bottom: 40px;
+    left: 0;
+    width: 100%;
+    z-index: 97;
+}
+.has-footer {
+    margin-bottom: 5.625rem;
+}
 </style>

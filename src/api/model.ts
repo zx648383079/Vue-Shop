@@ -99,10 +99,11 @@ export interface IStore {
 }
 
 export interface ICartItem {
-    id: number;
+    id?: number;
     amount: number;
-    price: number;
+    price?: number;
     checked?: boolean;
+    goods_id: number,
     goods?: IProduct;
 }
 
@@ -195,6 +196,10 @@ export interface IOrder {
     status_label: string,
     status: number;
     goods_amount: number,
+    payment_id: number,
+    payment_name: string,
+    shipping_id: number,
+    shipping_name: string,
     goods?: IOrderGoods[];
     address?: IAddress
 }

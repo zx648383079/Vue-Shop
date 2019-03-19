@@ -46,7 +46,7 @@ export default class Logistics extends Vue {
         if (!this.item) {
             return;
         }
-        this.$router.push({name: 'cashier-pay', params: {id: this.item.id + ''}});
+        this.$router.push({name: 'pay', params: {id: this.item.id + ''}});
     }
 
     tapOrder() {

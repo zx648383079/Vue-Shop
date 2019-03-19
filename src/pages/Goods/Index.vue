@@ -181,13 +181,14 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import { Toast } from 'mint-ui';
-import { IProduct, ICommentSubtotal } from '@/api/model';
+import { IProduct, ICommentSubtotal, ICart } from '@/api/model';
 import { getInfo, getRecommend } from '@/api/product';
 import { getCommentSubtotal } from '@/api/comment';
 import { toggleCollect } from '@/api/user';
 import { Getter, Action } from 'vuex-class';
 import { addGoods } from '@/api/cart';
 import CommentPage from './Child/Page.vue';
+import { dispatchSetCart } from '@/store/dispatches';
 
 @Component({
     components: {
@@ -317,6 +318,22 @@ export default class Index extends Vue {
             });
             return;
         }
+        const data: ICart[] = [
+            {
+                name: this.goods.shop + '',
+                goods_list: [
+                    {
+                        goods_id: this.goods.id,
+                        amount: this.amount,
+                        goods: this.goods,
+                        price: this.goods.price
+                    }
+                ]
+            }
+        ];
+        dispatchSetCart(data).then(() => {
+            this.$router.push('/cashier');
+        });
     }
 }
 </script>

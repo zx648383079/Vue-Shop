@@ -1,14 +1,15 @@
 import {
-    SET_CATEGORIES, SET_SUBTOTAL, SET_CART, SET_ADDRESS_LIST, SET_ADDRESS,
+    SET_CATEGORIES, SET_SUBTOTAL, SET_CART, SET_ADDRESS_LIST, SET_ADDRESS, SET_ORDER,
 } from '../types';
 import {
     Commit,
 } from 'vuex';
-import { ICategory, ISubtotal, ICart, IAddress } from '@/api/model';
+import { ICategory, ISubtotal, ICart, IAddress, IOrder } from '@/api/model';
 import { getCategories } from '@/api/category';
 import { getSubtotal } from '@/api/product';
 import { getAddressList } from '@/api/address';
 import { dispatchAddressList } from '../dispatches';
+import { getOrderInfo } from '@/api/order';
 
 
 export interface State {
@@ -17,6 +18,7 @@ export interface State {
     cart: ICart[];
     addressList: IAddress[];
     address: IAddress | null;
+    order: IOrder | null;
 };
 
 interface IActionContext {
@@ -32,12 +34,16 @@ const initState: State = {
     cart: [],
     addressList: [],
     address: null,
+    order: null,
 };
 
 // getters
 const getters = {
     cart(state: State) {
         return state.cart;
+    },
+    addressList(state: State) {
+        return state.addressList;
     },
 };
 
@@ -100,6 +106,31 @@ const actions = {
             }).catch(reject);
         });
     },
+    setAddress(context: IActionContext, address: IAddress) {
+        context.commit(SET_ADDRESS, address);
+    },
+    setAddressIfEmpty(context: IActionContext, address: IAddress) {
+        if (context.state.address) {
+            return;
+        }
+        context.commit(SET_ADDRESS, address);
+    },
+    setOrder(context: IActionContext, order: IOrder) {
+        context.commit(SET_ORDER, order);
+    },
+    getOrder(context: IActionContext, id: number) {
+        return new Promise((resolve, reject) => {
+            if (context.state.order && context.state.order.id === id) {
+                resolve(context.state.order);
+                return;
+            }
+            getOrderInfo(id).then(res => {
+                context.commit(SET_ORDER, res);
+                resolve(res);
+                return;
+            }).catch(reject);
+        });
+    },
 };
 
 // mutations
@@ -118,6 +149,9 @@ const mutations = {
     },
     [SET_ADDRESS](state: State, item: IAddress) {
         state.address = item;
+    },
+    [SET_ORDER](state: State, order: IOrder) {
+        state.order = order;
     },
 };
 

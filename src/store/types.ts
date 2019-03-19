@@ -7,6 +7,7 @@ export const SET_ADDRESS = 'SET_ADDRESS';
 export const SET_PAYMENT_LIST = 'SET_PAYMENT_LIST';
 export const SET_PAYMENT = 'SET_PAYMENT';
 export const SET_SHIPPING_LIST = 'SET_SHIPPING_LIST';
+export const SET_ORDER = 'SET_ORDER';
 
 export const SET_USER = 'SET_USER'
 export const TOKEN_KEY = 'token'
