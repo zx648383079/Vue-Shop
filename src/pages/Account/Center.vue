@@ -18,6 +18,15 @@ import BackHeader from '@/components/BackHeader.vue';
 import { getConnect } from '@/api/user';
 import { IConnect } from '@/api/model';
 
+interface IConnectMapItem {
+    name?: string;
+    icon?: string;
+}
+
+interface IConnectMap {
+    [key: string]: IConnectMapItem
+}
+
 @Component({
     components: {
         BackHeader
@@ -38,7 +47,7 @@ export default class Center extends Vue {
     }
 
     refresh() {
-        const maps = {
+        const maps: IConnectMap = {
             qq: {
                 name: 'QQ',
                 icon: 'fa-qq'
@@ -69,8 +78,11 @@ export default class Center extends Vue {
             },
         };
         for (const item of this.items) {
-            if (!maps.hasOwnProperty(item.vendor)) {
+            if (item.vendor && !maps.hasOwnProperty(item.vendor)) {
                 maps[item.vendor] = item;
+                continue;
+            }
+            if (!item.vendor) {
                 continue;
             }
             maps[item.vendor] = Object.assign(maps[item.vendor], item);

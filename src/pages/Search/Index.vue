@@ -15,96 +15,112 @@
                 </div>
             </header>
             <div class="has-header">
-                <load-more style="width:100%;" @loadMore="infiniteCallback" :commad="commad" :param="searchParams"
-                        ref="searchRusultloadMore">
+                <PullToRefresh :loading="is_loading" :more="has_more"   @refresh="tapRefresh" @more="tapMore">
                     <div class="goods-list">
                         <GoodsItem v-for="(item, index) in items" :key="index" @enter="tapProduct" :item="item" @addCart="tapAddCart"></GoodsItem>
                     </div>
-                </load-more>
+                </PullToRefresh>
             </div>
         </div>
     </div>
 </template>
 <script lang="ts">
-import Vue from 'vue';
+import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import { getList } from "../../api/product";
-import LoadMore from '@/components/loadMore.vue'
+import PullToRefresh from '@/components/PullToRefresh.vue';
 import GoodsItem from "../Home/Child/GoodsItem.vue";
 import SearchBar from './Child/SearchBar.vue'
 import { IProduct } from '@/api/model';
 
-export default Vue.extend({
-    components: {
-      LoadMore,
-      GoodsItem,
-      SearchBar
-    },
-    data() {
-        const items: any[] = [];
-        return {
-            isSearch: true,
-            keywords: '',
-            items,
-            commad: getList,
-            searchParams: {
-                keywords: '',
-                category: null,
-                brand: null,
-                per_page: 20,
-                page: 1
-            }
-        }
-    },
-    created() {
+interface ISearch {
+    keywords: string,
+    category: number,
+    brand: number,
+    page: number
+}
 
-    },
-    mounted: function () {
-        this.isSearch = Object.keys(this.$route.query).length == 0
-        this.searchParams = JSON.parse(JSON.stringify(Object.assign(this.searchParams, this.$route.query)))
+@Component({
+    components: {
+        PullToRefresh,
+        GoodsItem,
+        SearchBar,
+    }
+})
+export default class Index extends Vue {
+
+    items: IProduct[] = [];
+    isSearch = true;
+    keywords = '';
+    has_more = true;
+    is_loading = false;
+    searchParams: ISearch = {
+        keywords: '',
+        category: 0,
+        brand: 0,
+        page: 1
+    };
+
+    created() {
+        this.isSearch = Object.keys(this.$route.query).length == 0;
+        this.searchParams = Object.assign(this.searchParams, this.$route.query);
         if (!this.isSearch) {
-            (this.$refs.searchRusultloadMore as any).onloadMoreScroll();
+            this.tapRefresh();
         }
-    },
-    methods: {
-        async searchRusult() {
-            this.searchParams.per_page = 20;
-            this.searchParams.page = 1;
-            for (const key in this.searchParams) {
-                if (this.searchParams.hasOwnProperty(key) && this.$route.query.hasOwnProperty(key)) {
-                    this.searchParams[key] = this.$route.query[key];
-                }
-            }
-            (this.$refs.searchRusultloadMore as any).onloadMoreScroll();
-        },
-        async infiniteCallback(response: any) { //下拉加载
-            if (response.data.length > 0) {
-                response.data.map((i: any) => {
-                    this.items.push(i)
-                })
-            }
-        },
-        tapProduct(item: IProduct) {
-            this.$router.push({name: 'product', params: {id: item.id + ''}});
-        },
-        tapAddCart(item: IProduct) {
-            console.log(item);
-        },
-        tapSearch(keywords: string) {
-            this.searchParams.keywords = keywords
-            this.isSearch = false;
-            this.searchRusult();
-        },
-        tapHome() {
-            this.$router.push('/');
-        },
-        tapEnterSearch() {
-            this.keywords = this.searchParams.keywords
-            this.isSearch = true
-        },
-        tapNewSearch() {
-            this.searchParams.keywords = this.keywords = ''
-            this.isSearch = true
+    }
+
+    tapRefresh() {
+        this.goPage(1);
+    }
+
+    tapMore() {
+        if (!this.has_more) {
+            return;
+        }  
+        this.goPage(this.searchParams.page + 1);
+    }
+
+    goPage(page: number) {
+        if (this.is_loading) {
+            return;
         }
-    },
-});
+        this.is_loading = true;
+        getList({
+            page: page,
+            keywords: this.searchParams.keywords,
+            category: this.searchParams.category,
+            brand: this.searchParams.brand,
+        }).then(res => {
+            this.searchParams.page = page;
+            this.has_more = res.paging.more;
+            this.is_loading = false;
+            if (page < 2) {
+                this.items = res.data;
+                return;
+            }
+            this.items = [].concat(this.items as never[], res.data as never[]);
+        });
+    }
+    tapProduct(item: IProduct) {
+        this.$router.push({name: 'product', params: {id: item.id + ''}});
+    }
+    tapAddCart(item: IProduct) {
+        console.log(item);
+    }
+    tapSearch(keywords: string) {
+        this.searchParams.keywords = keywords;
+        this.isSearch = false;
+        this.tapRefresh();
+    }
+    tapHome() {
+        this.$router.push('/');
+    }
+    tapEnterSearch() {
+        this.keywords = this.searchParams.keywords;
+        this.isSearch = true;
+    }
+    tapNewSearch() {
+        this.searchParams.keywords = this.keywords = '';
+        this.isSearch = true;
+    }
+}
 </script>

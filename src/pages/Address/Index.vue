@@ -72,7 +72,8 @@ export default class Index extends Vue {
             for (const it of this.items) {
                 it.is_default = item.id == it.id;
             }
-            for (const box of this.$refs.swiperow) {
+            const rows: SwipeRow[] = this.$refs.swiperow as SwipeRow[];
+            for (const box of rows) {
                 box.reset();
             }
         });

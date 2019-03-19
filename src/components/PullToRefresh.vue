@@ -61,10 +61,14 @@ export enum ESTATE {
     REFRESHED = 5,
     MORE = 6,
     LOADING = 7,
-    LOADED = 8
+    LOADED = 8,
 }
 
-
+enum EDIRECTION {
+    NONE = 0,
+    DOWN = 1,
+    UP = 2,
+}
 
 @Component
 export default class PullToRefresh extends Vue {
@@ -77,6 +81,7 @@ export default class PullToRefresh extends Vue {
     ESTATE = ESTATE;
     state: ESTATE = ESTATE.NONE;
     startY: number = 0;
+    startUp: EDIRECTION = EDIRECTION.NONE; // 一开始滑动的方向
     box: HTMLDivElement | null = null;
     scrollTop: number = 0;
     topHeight = 0;
@@ -86,9 +91,25 @@ export default class PullToRefresh extends Vue {
         window.addEventListener('scroll', this.onScroll)
     }
 
+    beforeDestroy() {
+        window.removeEventListener('scroll', this.onScroll);
+    }
+
     @Watch('state')
     onStateChanged(val: ESTATE, oldVal: ESTATE) {
         this.$emit('change', val, oldVal);
+    }
+
+    @Watch('more')
+    onMoreChanged(val: boolean, oldVal: boolean) {
+        if (!val && this.state == ESTATE.MORE) {
+            this.state = ESTATE.NONE;
+        }
+    }
+
+    @Watch('topHeight')
+    onToHeightChanged(val: number, oldVal: number) {
+        this.$emit('top.height.change', val, oldVal);
     }
 
     @Watch('loading')
@@ -122,7 +143,7 @@ export default class PullToRefresh extends Vue {
         }
     }
 
-    onScroll(event: any) {
+    public onScroll(event: any) {
         if (!this.more) {
             return;
         }
@@ -133,33 +154,44 @@ export default class PullToRefresh extends Vue {
         this.$emit('more');
     }
 
-    touchStart(event: TouchEvent) {
+    public touchStart(event: TouchEvent) {
         if (this.scrollTop > 0) {
             return;
         }
         this.startY = event.targetTouches[0].pageY;
+        this.startUp = EDIRECTION.NONE;
     }
 
-    touchMove(event: TouchEvent) {
+    public touchMove(event: TouchEvent) {
         if (this.scrollTop > 0 && this.state == ESTATE.NONE) {
             return;
         }
         const diff = event.changedTouches[0].pageY - this.startY;
-        if (this.state == ESTATE.NONE && diff > 0) {
-            this.state = ESTATE.PULL;
+        if (this.startUp == EDIRECTION.NONE) {
+            this.startUp = diff > 0 ? EDIRECTION.DOWN : EDIRECTION.UP;
         }
-        if (this.state == ESTATE.PULL && diff >= this.maxHeight) {
-            this.state = ESTATE.PULLED;
+        // 进行滑动操作
+        if (this.startUp == EDIRECTION.DOWN) {
+            if (this.state == ESTATE.NONE && diff > 0) {
+                this.state = ESTATE.PULL;
+            }
+            if (this.state == ESTATE.PULL && diff >= this.maxHeight) {
+                this.state = ESTATE.PULLED;
+            }
+            if (this.state == ESTATE.PULLED && diff < this.maxHeight) {
+                this.state = ESTATE.CANCEL;
+            }
+            if (this.state == ESTATE.PULL) {
+                this.topHeight = diff;
+            }
         }
-        if (this.state == ESTATE.PULLED && diff < this.maxHeight) {
-            this.state = ESTATE.CANCEL;
-        }
-        if (this.state == ESTATE.PULL) {
-            this.topHeight = diff;
+        // 上拉加载更多
+        if (this.startUp == EDIRECTION.UP && this.more) {
+            this.state = Math.abs(diff) > this.distance ? ESTATE.MORE : ESTATE.NONE;
         }
     }
 
-    touchEnd(event: TouchEvent) {
+    public touchEnd(event: TouchEvent) {
         if (this.scrollTop > 0) {
             return;
         }
@@ -172,9 +204,12 @@ export default class PullToRefresh extends Vue {
             this.$emit('refresh');
             return;
         }
+        if (this.state == ESTATE.MORE) {
+            this.$emit('more');
+        }
     }
 
-    animation(
+    public animation(
         start: number, end: number, endHandle?: Function) {
         const diff = start > end ? -1 : 1;
         let step = 1;
@@ -190,25 +225,29 @@ export default class PullToRefresh extends Vue {
         }, 16);
     }
 
-    reset() {
+    public reset() {
         this.animation(this.topHeight, 0, () => {
             this.state = ESTATE.NONE;
         });
     }
 
     //滚动条到底部的距离
-    getScrollBottomHeight() {
+    public getScrollBottomHeight() {
         this.scrollTop = this.getScrollTop();
         return this.getPageHeight() - this.scrollTop - this.getWindowHeight();
     }
 
     //页面高度
-    getPageHeight() {
-        return document.querySelector("html").scrollHeight
+    public getPageHeight() {
+        const box = document.querySelector("html");
+        if (!box) {
+            return 0;
+        }
+        return box.scrollHeight
     }
 
     //滚动条顶 高度
-    getScrollTop() {
+    public getScrollTop() {
         var scrollTop = 0, bodyScrollTop = 0, documentScrollTop = 0;
         if (document.body) {
             bodyScrollTop = document.body.scrollTop;
@@ -220,7 +259,7 @@ export default class PullToRefresh extends Vue {
         return scrollTop;
     }
 
-    getWindowHeight() {
+    public getWindowHeight() {
         var windowHeight = 0;
         if (document.compatMode == "CSS1Compat") {
             windowHeight = document.documentElement.clientHeight;

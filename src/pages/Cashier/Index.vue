@@ -2,15 +2,9 @@
     <div>
         <BackHeader title="结算"/>
         <div class="has-header has-footer checkout-box">
-                <AddressItem :address="address" @click="tapAddress"/>
+                <AddressLine :address="address" @click="tapAddress"/>
 
-                <div class="line-item payment-box">
-                    <span>支付方式</span>
-                    <span>
-                        请选择
-                    </span>
-                    <i class="fa fa-chevron-right"></i>
-                </div>
+                <PaymentLine v-model="payment" :items="payment_list"/>
                 
                 <div class="goods-list" v-for="(item, index) in cart" :key="index">
                     <div class="group-header">
@@ -26,13 +20,8 @@
                             <span class="amount"> x {{ goods.amount }}</span>
                         </div>
                     </div>
-                    <div class="line-item shipping-box">
-                        <span>配送方式</span>
-                        <span>
-                            请选择
-                        </span>
-                        <i class="fa fa-chevron-right"></i>
-                    </div>
+                    <ShippingLine v-model="shipping" :items="shipping_list"/>
+                    
                 </div>
                 
 
@@ -53,21 +42,30 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
-import { IAddress, ICart, IOrder } from '@/api/model';
+import { IAddress, ICart, IOrder, IPayment, IShipping } from '@/api/model';
 import { dispatchAddress } from '@/store/dispatches';
 import { Getter } from 'vuex-class';
-import AddressItem from './Child/Address.vue';
+import AddressLine from './Child/AddressLine.vue';
+import PaymentLine from './Child/PaymentLine.vue';
+import ShippingLine from './Child/ShippingLine.vue';
+import { getPaymentList } from '@/api/cart';
 
 @Component({
     components: {
         BackHeader,
-        AddressItem,
+        AddressLine,
+        PaymentLine,
+        ShippingLine,
     }
 })
 export default class Index extends Vue {
     address: IAddress | null = null;
     @Getter('cart') cart?: ICart[];
     order: IOrder| null = null;
+    payment_list: IPayment[] = [];
+    payment: IPayment| null = null;
+    shipping_list: IShipping[] = [];
+    shipping: IShipping| null = null;
 
     created() {
         if (!this.cart || this.cart.length < 1) {
@@ -76,6 +74,11 @@ export default class Index extends Vue {
         }
         dispatchAddress().then(res => {
             this.address = res;
+        });
+        getPaymentList().then(res => {
+            if (res.data) {
+                this.payment_list = res.data;
+            }
         });
     }
 

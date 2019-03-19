@@ -88,10 +88,16 @@ export default class Detail extends Vue {
     }
 
     tapPay() {
+        if (!this.order) {
+            return;
+        }
         this.$router.push({name: 'cashier-pay', params: {id: this.order.id + ''}});
     }
 
     tapRefund() {
+        if (!this.order) {
+            return;
+        }
         this.$router.push({name: 'refund', params: {id: this.order.id + ''}});
     }
 

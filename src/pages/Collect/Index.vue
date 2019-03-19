@@ -88,7 +88,7 @@ export default class Index extends Vue {
             if (!res.data) {
                 return;
             }
-            this.items = [].concat(this.items, res.data);
+            this.items = [].concat(this.items as never[], res.data as never[]);
         });
     }
 }

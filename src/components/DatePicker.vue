@@ -63,6 +63,7 @@
             </div>
 
         </div>
+        <div class="dialog-bg" v-if="calendarVisible" @click="hideCalerdar"/>
     </div>
 </template>
 <script lang="ts">
@@ -146,6 +147,10 @@ export default class DatePicker extends Vue {
         }
         this.currentDate = date;
         this.refresh();
+    }
+
+    public hideCalerdar() {
+       this.calendarVisible = false; 
     }
 
     isSameTime(date: Date): boolean {

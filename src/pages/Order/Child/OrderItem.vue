@@ -43,14 +43,23 @@ export default class Logistics extends Vue {
     @Prop(Object) readonly item?: IOrder;
 
     tapPay() {
+        if (!this.item) {
+            return;
+        }
         this.$router.push({name: 'cashier-pay', params: {id: this.item.id + ''}});
     }
 
     tapOrder() {
+        if (!this.item) {
+            return;
+        }
         this.$router.push({name: 'order-detail', params: {id: this.item.id + ''}});
     }
 
     tapRefund() {
+        if (!this.item) {
+            return;
+        }
         this.$router.push({name: 'refund', params: {id: this.item.id + ''}});
     }
 

@@ -218,12 +218,18 @@ export default class Index extends Vue {
     }
 
     loadComment() {
+        if (!this.goods) {
+            return;
+        }
         getCommentSubtotal(this.goods.id).then(res => {
             this.comment = res;
         });
     }
 
     loadRecommend() {
+        if (!this.goods) {
+            return;
+        }
         getRecommend(this.goods.id).then(res => {
             if (!res.data) {
                 return;
@@ -263,7 +269,7 @@ export default class Index extends Vue {
         if (!this.goods) {
             return 1;
         }
-        return this.goods.stock;
+        return this.goods.stock as number;
     }
 
     tapMinus() {
@@ -293,6 +299,9 @@ export default class Index extends Vue {
             return;
         }
         toggleCollect(this.goods.id).then(res => {
+            if (!this.goods) {
+                return;
+            }
             this.goods.is_collect = res.data;
         });
     }

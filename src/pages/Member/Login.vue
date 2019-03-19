@@ -149,10 +149,10 @@ export default class Login extends Vue {
 
     tapLoginBack() {
         if (this.$route.query.redirect_uri) {
-            this.$router.push(this.$route.query.redirect_uri + '');
+            this.$router.replace(this.$route.query.redirect_uri + '');
             return;
         }
-        this.$router.push('/');
+        this.$router.replace('/');
     }
 }
 </script>

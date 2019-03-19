@@ -99,10 +99,10 @@ export default class Index extends Vue {
             this.is_loading = false;
             const data = [1,2,3,4,5,6,7];
             if (this.page < 2) {
-                this.items = data;
+                this.items = data as never[];
                 return;
             }
-            this.items = [].concat(this.items, data);
+            this.items = [].concat(this.items as never[], data as never[]);
         }, 2000);
     }
 

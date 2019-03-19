@@ -18,7 +18,7 @@ export const deleteItem = (id: number) => post<IData<ICart>>('shop/cart/delete',
     id,
 });
 
-export const getPaymentList = (goods: number[], shipping: number) =>
+export const getPaymentList = (goods?: number[], shipping?: number) =>
     fetch<IData<IPayment>>('shop/cashier/payment', {goods, shipping});
 export const getShippingList = (goods: ICartItem[], address: number) =>
     fetch<IData<IShipping>>('shop/cashier/shipping', {goods, address});

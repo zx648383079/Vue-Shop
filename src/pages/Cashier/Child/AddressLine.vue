@@ -25,7 +25,7 @@ import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import { IAddress } from '@/api/model';
 
 @Component
-export default class Address extends Vue {
+export default class AddressLine extends Vue {
     @Prop(Object) readonly address?: IAddress;
 
     @Emit('click')

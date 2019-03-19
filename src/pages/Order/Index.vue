@@ -6,11 +6,10 @@
                 <a v-for="(item, index) in status_list" :key="index" @click="tapStatus(item)" :class="status == item.status ? 'active' : ''">{{ item.name }}</a>
             </div>
 
-            <div class="order-box" 
-                v-infinite-scroll="loadMore"
-                infinite-scroll-disabled="is_loading"
-                infinite-scroll-distance="10">
-                <OrderItem v-for="(item, index) in items" :key="index" :item="item"/>
+            <div class="order-box">
+                <PullToRefresh :loading="is_loading" :more="has_more" @refresh="tapRefresh" @more="tapMore">
+                    <OrderItem v-for="(item, index) in items" :key="index" :item="item"/>
+                </PullToRefresh>
             </div>
         </div>
 
@@ -19,17 +18,16 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
-import { InfiniteScroll } from 'mint-ui';
+import PullToRefresh from '@/components/PullToRefresh.vue';
 import { ORDER_STATUS, IOrder } from '@/api/model';
 import { getOrder } from '@/api/order';
 import OrderItem from './Child/OrderItem.vue';
-
-Vue.use(InfiniteScroll);
 
 @Component({
     components: {
         BackHeader,
         OrderItem,
+        PullToRefresh,
     }
 })
 export default class Index extends Vue {
@@ -65,25 +63,22 @@ export default class Index extends Vue {
         if (this.$route.query && this.$route.query.status) {
             this.status = parseInt(this.$route.query.status + '') || 0;
         }
-        this.refresh();
+        this.tapRefresh();
     }
 
-    public loadMore() {
-        this.goPage( ++ this.page);
+    public tapRefresh() {
+        this.goPage(1);
     }
 
-    /**
-     * refresh
-     */
-    public refresh() {
-        this.items = [];
-        this.is_loading = false;
-        this.has_more = true;
-        this.goPage(this.page = 1);
+    public tapMore() {
+        if (!this.has_more) {
+            return;
+        }  
+        this.goPage(this.page + 1);
     }
 
     public goPage(page: number) {
-        if (this.is_loading || !this.has_more) {
+        if (this.is_loading) {
             return;
         }
         this.is_loading = true;
@@ -93,19 +88,20 @@ export default class Index extends Vue {
         }).then(res => {
             this.has_more = res.paging.more;
             this.is_loading = false;
-            if (!res.data) {
+            if (this.page < 2) {
+                this.items = res.data as never[];
                 return;
             }
-            this.items = [].concat(this.items, res.data);
+            this.items = [].concat(this.items as never[], res.data as never[]);
         });
     }
 
-    tapStatus(item: any) {
+    public tapStatus(item: any) {
         if (this.status == item.status) {
             return;
         }
         this.status = item.status;
-        this.refresh();
+        this.tapRefresh();
     }
 }
 </script>

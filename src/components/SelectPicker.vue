@@ -19,6 +19,7 @@
                 <hr class="dialog-bottom-hr">
             </div>
         </div>
+        <div class="dialog-bg" v-if="calendarVisible" @click="hideCalerdar"/>
     </div>
 </template>
 <script lang="ts">
@@ -51,7 +52,7 @@ export default class SelectPicker extends Vue {
 
     column_list: IColumn[] = [];
     calendarVisible: boolean = false;
-    startPoint: IPoint | null = null;
+    startPoint: IPoint = {x: 0, y: 0};
 
     @Watch('items')
     onItemsChanged(val: any, oldVal: any) {
@@ -63,16 +64,16 @@ export default class SelectPicker extends Vue {
         }
     }
 
-    showCalendar() {
+    public showCalendar() {
         this.calendarVisible = true;
         this.refresh();
     }
 
-    hideCalerdar() {
+    public hideCalerdar() {
        this.calendarVisible = false; 
     }
 
-    tapItem(index: number, i: number) {
+    public tapItem(index: number, i: number) {
         this.column_list[index].index = i;
         this.column_list[index].style = this.getIndexStyle(i);
         for (let j = index + 1; j < this.column_list.length; j ++) {
@@ -80,7 +81,7 @@ export default class SelectPicker extends Vue {
         }
     }
 
-    touchStart(event: TouchEvent) {
+    public touchStart(event: TouchEvent) {
         let touch = event.targetTouches[0];
         this.startPoint = {
             x: touch.pageX,
@@ -89,7 +90,7 @@ export default class SelectPicker extends Vue {
         
     }
 
-    touchMove(event: TouchEvent) {
+    public touchMove(event: TouchEvent) {
         let touch = event.targetTouches[0];
         if(event.targetTouches.length > 1 || (event.scale && event.scale !== 1)) {
             return;
@@ -104,7 +105,7 @@ export default class SelectPicker extends Vue {
         }
     }
 
-    getClientWidth(): number {
+    public getClientWidth(): number {
         if(window.innerHeight !== undefined){
             return window.innerWidth;
         }
@@ -132,7 +133,7 @@ export default class SelectPicker extends Vue {
         this.tapItem(column, this.column_list[column].index + diff);
     }
 
-    tapOutput() {
+    public tapOutput() {
         this.hideCalerdar();
         if (this.column_list.length < 1) {
             return;
@@ -161,7 +162,7 @@ export default class SelectPicker extends Vue {
         this.$emit('input', item);
     }
 
-    cloneItem(obj: any): any {
+    public cloneItem(obj: any): any {
         let item = new Object();
         for (const key in obj) {
             if (obj.hasOwnProperty(key) && key != this.childrenTag) {
@@ -171,7 +172,7 @@ export default class SelectPicker extends Vue {
         return item;
     }
 
-    refresh() {
+    public refresh() {
         if (Object.keys(this.items).length == 0) {
             return;
         }
@@ -181,7 +182,7 @@ export default class SelectPicker extends Vue {
         }
     }
 
-    refreshColumn(index: number, selected: number = 0) {
+    public refreshColumn(index: number, selected: number = 0) {
         const data: any[] = [];
         each(this.getColumnData(index), (item) => {
             data.push(item);
@@ -199,7 +200,7 @@ export default class SelectPicker extends Vue {
         this.column_list[index].style = this.getIndexStyle(selected);
     }
 
-    getColumnData(index: number) {
+    public getColumnData(index: number) {
         if (index < 1) {
             return this.items;
         }
@@ -218,7 +219,7 @@ export default class SelectPicker extends Vue {
         return item[this.childrenTag];
     }
 
-    getIndexStyle(index: number) {
+    public getIndexStyle(index: number) {
         const top = 2 * this.lineHeight - index  * this.lineHeight;
         return 'transform: translate(0px, ' + top +'px) translateZ(0px)';
     }
@@ -227,7 +228,7 @@ export default class SelectPicker extends Vue {
      * 根据ID查找无限树的路径
      * @param id 
      */
-    getPath(): number[] {
+    public getPath(): number[] {
         if (!this.value) {
             return [];
         }
@@ -283,7 +284,7 @@ export default class SelectPicker extends Vue {
         return path;
     }
 
-    getPathByArr() {
+    public getPathByArr() {
         let data = this.items,
             path: number[] = [];
         each(this.value, (item) => {
@@ -297,7 +298,7 @@ export default class SelectPicker extends Vue {
         return path;
     }
 
-    getIndexWithItems(item: any, data: any) {
+    public getIndexWithItems(item: any, data: any) {
         if (!data) {
             return [0, undefined];
         }
