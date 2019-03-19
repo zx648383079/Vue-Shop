@@ -32,72 +32,13 @@
                 </div>
             </div>
             <div class="login-box" v-if="mode > 0 && mode < 4">
-                <div class="logo">
-                    <img :src="'/assets/images/wap_logo.png' | assets" alt="">
-                </div>
-                <div class="phone-code" v-if="mode == 1">
-                    <div class="input-box">
-                        <input type="text">
-                    </div>
-                    <div class="code-input">
-                        <input type="text">
-                        <a href="">获取验证码</a>
-                    </div>
-                    <div class="unlogin">
-                        <a href="">遇到问题？</a>
-                        <a @click="mode = 2">使用密码验证登录</a>
-                    </div>
-                    <button>登录</button>
-                    <a @click="mode = 0" class="btn btn-none">其他登录方式</a>
-                </div>
-                <div class="phone-password" v-if="mode == 2">
-                    <div class="input-box">
-                        <input type="text">
-                    </div>
-                    <div class="input-box">
-                        <input type="password">
-                    </div>
-                    <div class="unlogin">
-                        <a href="">忘记密码</a>
-                        <a @click="mode = 1">使用短信验证登录</a>
-                    </div>
-                    <button>登录</button>
-                    <a @click="mode = 0" class="btn btn-none">其他登录方式</a>
-                </div>
-                <div class="email-password" v-if="mode == 3">
-                    <div class="input-box">
-                        <input type="email" name="email" required autocomplete="off" v-model="email" placeholder="请输入账号">
-                    </div>
-                    <div class="input-box">
-                        <input type="password" name="password" required autocomplete="off" @keyup="tapKey" v-model="password" placeholder="请输入密码">
-                    </div>
-                    <div class="unlogin">
-                        <a @click="mode = 4">注册账号</a>
-                        <a href="">忘记密码</a>
-                    </div>
-                    <button @click="tapLogin">登录</button>
-                    <a @click="mode = 0" class="btn btn-none">其他登录方式</a>
-                </div>
+                <MobileLogin v-if="mode == 1" @click="tapChange" @back="tapLoginBack"/>
+                <MobileCodeLogin v-if="mode == 2" @click="tapChange" @back="tapLoginBack"/>
+                <EmailLogin v-if="mode == 3" @click="tapChange" @back="tapLoginBack"/>
             </div>
-            <div class="register-box" v-if="mode == 4">
-                <div class="input-box">
-                    <input type="text">
-                </div>
-                <div class="code-input">
-                    <input type="text">
-                    <a href="">获取验证码</a>
-                </div>
-                <div class="input-box">
-                    <input type="password">
-                </div>
-                <button>注册</button>
-                <div class="input-group">
-                    <div class="checkbox">
-                        <input type="checkbox" name="agree" value="1" id="checkboxInput"/>
-                        <label for="checkboxInput"></label>
-                    </div>
-                    同意本站协议
-                </div>
+            <div class="register-box" v-if="mode >= 4">
+                <MobileRegister v-if="mode == 4" @click="tapChange" @back="tapLoginBack"/>
+                <EmailRegister v-if="mode == 5" @click="tapChange" @back="tapLoginBack"/>
             </div>
 
         </div>
@@ -105,46 +46,32 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
-import { IUser } from '@/api/model';
-import { dispatchUser, dispatchLogin } from '@/store/dispatches';
 import { Toast } from 'mint-ui';
+import MobileLogin from './Child/MobileLogin.vue';
+import MobileCodeLogin from './Child/MobileCodeLogin.vue';
+import MobileRegister from './Child/MobileRegister.vue';
+import EmailLogin from './Child/EmailLogin.vue';
+import EmailRegister from './Child/EmailRegister.vue';
 
-@Component
+@Component({
+    components: {
+        MobileLogin,
+        MobileCodeLogin,
+        MobileRegister,
+        EmailLogin,
+        EmailRegister
+    }
+})
 export default class Login extends Vue {
 
     mode: number = 0;
-
-    email: string = '';
-
-    password: string = '';
 
     tapHome() {
         this.$router.push('/');
     }
 
-    tapKey(e: KeyboardEvent) {
-        if (e.which !== 13) {
-            return;
-        }
-        if (this.mode < 4) {
-            this.tapLogin();
-        }
-    }
-
-    tapLogin() {
-        const email = this.email;
-        const password = this.password;
-        if (!email || !/.+@.+/.test(email)) {
-            Toast('请输入账号');
-            return;
-        }
-        if (!password || password.length < 4) {
-            Toast('请输入密码');
-            return;
-        }
-        dispatchLogin({email, password}).then((res: IUser) => {
-            this.tapLoginBack();
-        });
+    tapChange(mode: number) {
+        this.mode = mode;
     }
 
     tapLoginBack() {
