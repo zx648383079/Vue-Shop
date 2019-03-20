@@ -35,6 +35,36 @@ a {
     vertical-align: middle;
 }
 
+
+.form-inline {
+    .input-group {
+        display: block;
+        border-bottom: 1px solid #777;
+        min-height: $lineHeight;
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="password"],
+        input[type="url"], 
+        input[type="number"], 
+        select,
+        textarea {
+            border: none;
+            background: transparent;
+            height: $lineHeight;
+            box-sizing: border-box;
+            &.height-auto {
+                height: auto;
+            }
+        }
+        
+    }
+    .btn {
+        line-height: $lineHeight;
+        margin-top: 8px;
+    }
+}
+
 .scroll-nav {
     position: relative;
     height: 45px;

@@ -1,9 +1,11 @@
 import {fetch, post, deleteRequest} from '../utils/http';
-import {IUser, ILogin, IPage, IAccountLog, ICollect, IData, IConnect, IDataOne} from './model';
+import {IUser, ILogin, IPage, IAccountLog, ICollect, IData, IConnect, IDataOne, ICard} from './model';
 
 export const getProfile = () => fetch<IUser>('auth/user');
 
 export const getAccountLog = (params: any) => fetch<IPage<IAccountLog>>('shop/account/log', params);
+
+export const getBankCardList = (params: any) => fetch<IPage<ICard>>('shop/account/card', params);
 
 export const getConnect = () => fetch<IData<IConnect>>('shop/account/connect');
 

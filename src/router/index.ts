@@ -1,10 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/pages/Home/Index.vue';
-import Account from '@/pages/Account/Index.vue';
 
+import Account from '@/pages/Account/Index.vue';
 import AccountCenter from '@/pages/Account/Center.vue';
 import AccountLog from '@/pages/Account/Log.vue';
+import AccountCard from '@/pages/Account/Card.vue';
+import AccountCardNew from '@/pages/Account/CardNew.vue'
+
 import Category from '@/pages/Category/Index.vue';
 
 import Cart from '@/pages/Cart/Index.vue';
@@ -173,6 +176,24 @@ export default new Router({
             component: AccountLog,
             meta: {
                 title: '记录',
+                requireAuth: true,
+            },
+        },
+        {
+            path: '/account/card',
+            name: 'account-card',
+            component: AccountCard,
+            meta: {
+                title: '我的银行卡',
+                requireAuth: true,
+            },
+        },
+        {
+            path: '/account/card/create',
+            name: 'account-card-create',
+            component: AccountCardNew,
+            meta: {
+                title: '添加银行卡',
                 requireAuth: true,
             },
         },

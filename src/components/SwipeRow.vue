@@ -127,7 +127,7 @@ export default class SwipeRow extends Vue {
     }
 
     resetOther() {
-        if (!this.index) {
+        if (typeof this.index == 'undefined') {
             return;
         }
         const items: SwipeRow[] = this.$parent.$refs.swiperow as SwipeRow[];

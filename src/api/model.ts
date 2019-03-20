@@ -153,6 +153,16 @@ export interface IAccountLog {
     created_at?: string;
 }
 
+export interface ICard {
+    id: number,
+    type: number,
+    icon: string,
+    bank: string,
+    card_number: string,
+    status: number,
+    created_at: string
+}
+
 export interface ICollect {
     id?: number,
     goods: IProduct;

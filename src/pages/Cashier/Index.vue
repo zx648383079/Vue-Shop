@@ -139,7 +139,7 @@ export default class Index extends Vue {
 
     public tapAddress() {
         if (!this.address_list || this.address_list.length < 1) {
-            this.$router.push({path: '/address/create', query: {}});
+            this.$router.push({path: '/address/create', query: {back: '1'}});
             return;
         }
         this.$router.push({name: 'address', query: {selected: (this.address ?this.address.id + '' : '0')}});

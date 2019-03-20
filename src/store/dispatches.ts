@@ -6,6 +6,10 @@ export const dispatchCategories = (): Promise<ICategory[]> => store.dispatch('ge
 export const dispatchSubtotal = (): Promise<ISubtotal> => store.dispatch('getSubtotal');
 
 export const dispatchAddressList = (): Promise<IAddress[]> => store.dispatch('getAddressList');
+
+export const dispatchSetAddressList = (address: IAddress[])
+    => store.dispatch('setAddressList', address);
+
 export const dispatchAddress = (): Promise<IAddress> => store.dispatch('getAddress');
 
 export const dispatchUser = (): Promise<IUser> => store.dispatch('getUser');

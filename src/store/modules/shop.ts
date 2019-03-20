@@ -88,6 +88,9 @@ const actions = {
             }).catch(reject);
         });
     },
+    setAddressList(context: IActionContext, data: IAddress[]) {
+        context.commit(SET_ADDRESS_LIST, data);
+    },
     getAddress(context: IActionContext) {
         return new Promise((resolve, reject) => {
             if (context.state.address) {

@@ -23,17 +23,15 @@
                     <textarea name="address" placeholder="详细地址" required v-model="address.address"></textarea>
                 </div>
 
-                <div class="input-radio">
+                <div class="input-radio" @click="address.is_default = !address.is_default">
                     <span>设为默认地址</span>
-                    <i class="fa toggle-box"></i>
+                    <i class="fa toggle-box" :class="{active: address.is_default}"></i>
                 </div>
-
-                <input type="hidden" name="id" value="<?=$model->id?>">
             </form>
         </div>
 
-        <div class="fixed-footer">
-            <button class="btn" type="button">删除地址</button> 
+        <div class="fixed-footer" v-if="address.id > 0">
+            <button class="btn" type="button" @click="tapRemove">删除地址</button> 
         </div>
 
     </div>
@@ -42,9 +40,11 @@
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import { IAddress, IRegionObject } from '@/api/model';
 import { getRegionTree } from '@/api/region';
-import { getAddressList, deleteAddress, getAddress } from '@/api/address';
+import { Toast } from 'mint-ui';
+import { getAddressList, deleteAddress, getAddress, updateAddress, createAddress } from '@/api/address';
 import BackHeader from '@/components/BackHeader.vue';
 import SelectPicker from '@/components/SelectPicker.vue';
+import { dispatchSetAddress, dispatchSetAddressList } from '@/store/dispatches';
 
 @Component({
     components: {
@@ -60,16 +60,18 @@ export default class Edit extends Vue {
         tel: '',
         region_id: 0,
         region_name: '',
-        region: {
-            id: 377,
-            name: '朝阳区'
-        },
         address: '',
+        is_default: false,
     };
+
+    back: number = 0;
 
     regions: IRegionObject = {};
 
     created() {
+        if (this.$route.query.back) {
+            this.back = parseInt(this.$route.query.back + '');
+        }
         getRegionTree().then(res => {
             if (res.data) {
                 this.regions = res.data;
@@ -85,7 +87,55 @@ export default class Edit extends Vue {
     }
 
     tapSubmit() {
+        if (!this.address.region) {
+            Toast('请选择收货地址');
+            return;
+        }
+        const data: IAddress = {
+            id: this.address.id,
+            name: this.address.name,
+            tel: this.address.tel,
+            region_id: this.address.region.id,
+            address: this.address.address,
+            is_default: this.address.is_default
+        };
+        if (!data.name) {
+            Toast('请输入收货人');
+            return;
+        }
+        if (!data.tel) {
+            Toast('请输入手机号');
+            return;
+        }
+        if (this.address.id > 0) {
+            updateAddress(data).then(res => {
+                this.saveBack(res);
+            });
+        }
+        createAddress(data).then(res => {
+            this.saveBack(res);
+        });
+    }
 
+    tapRemove() {
+        if (this.address.id < 1) {
+            return;
+        }
+        
+        deleteAddress(this.address.id).then(res => {
+            dispatchSetAddressList([]);
+            this.$router.back();
+        });
+    }
+
+    saveBack(address: IAddress) {
+        dispatchSetAddressList([]);
+        if (this.back < 1) {
+            this.$router.back();
+            return;
+        }
+        dispatchSetAddress(address);
+        this.$router.replace('/cashier');
     }
 }
 </script>
