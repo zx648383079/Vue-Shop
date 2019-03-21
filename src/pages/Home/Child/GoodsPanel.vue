@@ -14,11 +14,11 @@ import GoodsItem from "./GoodsItem.vue";
 import { IProduct } from '@/api/model';
 export default Vue.extend({
     components: {
-        GoodsItem
+        GoodsItem,
     },
     props: {
         title: String,
-        items: Array
+        items: Array,
     },
     methods: {
         tapProduct(item: IProduct) {
@@ -26,7 +26,7 @@ export default Vue.extend({
         },
         tapAddCart(item: IProduct) {
             this.$emit('addCart', item);
-        }
-    }
+        },
+    },
 });
 </script>

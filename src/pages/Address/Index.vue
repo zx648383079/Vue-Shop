@@ -43,7 +43,7 @@ import { IAddress } from '@/api/model';
 import { getAddressList, deleteAddress, defaultAddress } from '@/api/address';
 import BackHeader from '@/components/BackHeader.vue';
 import SwipeRow from '@/components/SwipeRow.vue';
-import { dispatchSetAddress, dispatchAddressList } from '@/store/dispatches';
+import { dispatchSetAddress, dispatchAddressList, dispatchSetAddressIfEmpty } from '@/store/dispatches';
 
 @Component({
     components: {

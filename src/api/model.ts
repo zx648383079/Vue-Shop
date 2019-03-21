@@ -243,6 +243,13 @@ export interface IOrderGoods {
     goods: IProduct;
 }
 
+export interface ICheckIn {
+    id: number,
+    created_at: string,
+    running: number,
+    type: number
+}
+
 export enum ORDER_STATUS {
     CANCEL = 1,
     INVALID = 2,

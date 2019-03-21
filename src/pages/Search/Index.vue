@@ -26,9 +26,9 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
-import { getList } from "../../api/product";
+import { getList } from '../../api/product';
 import PullToRefresh from '@/components/PullToRefresh.vue';
-import GoodsItem from "../Home/Child/GoodsItem.vue";
+import GoodsItem from '../Home/Child/GoodsItem.vue';
 import SearchBar from './Child/SearchBar.vue'
 import { IProduct } from '@/api/model';
 
@@ -48,38 +48,38 @@ interface ISearch {
 })
 export default class Index extends Vue {
 
-    items: IProduct[] = [];
-    isSearch = true;
-    keywords = '';
-    has_more = true;
-    is_loading = false;
-    searchParams: ISearch = {
+    public items: IProduct[] = [];
+    public isSearch = true;
+    public keywords = '';
+    public has_more = true;
+    public is_loading = false;
+    public searchParams: ISearch = {
         keywords: '',
         category: 0,
         brand: 0,
         page: 1
     };
 
-    created() {
-        this.isSearch = Object.keys(this.$route.query).length == 0;
+    public created() {
+        this.isSearch = Object.keys(this.$route.query).length === 0;
         this.searchParams = Object.assign(this.searchParams, this.$route.query);
         if (!this.isSearch) {
             this.tapRefresh();
         }
     }
 
-    tapRefresh() {
+    public tapRefresh() {
         this.goPage(1);
     }
 
-    tapMore() {
+    public tapMore() {
         if (!this.has_more) {
             return;
         }  
         this.goPage(this.searchParams.page + 1);
     }
 
-    goPage(page: number) {
+    public goPage(page: number) {
         if (this.is_loading) {
             return;
         }
@@ -100,25 +100,25 @@ export default class Index extends Vue {
             this.items = [].concat(this.items as never[], res.data as never[]);
         });
     }
-    tapProduct(item: IProduct) {
+    public tapProduct(item: IProduct) {
         this.$router.push({name: 'product', params: {id: item.id + ''}});
     }
-    tapAddCart(item: IProduct) {
+    public tapAddCart(item: IProduct) {
         console.log(item);
     }
-    tapSearch(keywords: string) {
+    public tapSearch(keywords: string) {
         this.searchParams.keywords = keywords;
         this.isSearch = false;
         this.tapRefresh();
     }
-    tapHome() {
+    public tapHome() {
         this.$router.push('/');
     }
-    tapEnterSearch() {
+    public tapEnterSearch() {
         this.keywords = this.searchParams.keywords;
         this.isSearch = true;
     }
-    tapNewSearch() {
+    public tapNewSearch() {
         this.searchParams.keywords = this.keywords = '';
         this.isSearch = true;
     }

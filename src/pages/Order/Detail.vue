@@ -69,14 +69,14 @@ import { receiveOrder, cancelOrder } from '@/api/order';
 
 @Component({
     components: {
-        BackHeader
-    }
+        BackHeader,
+    },
 })
 export default class Detail extends Vue {
-    order: IOrder | null = null;
-    ORDER_STATUS = ORDER_STATUS;
+    public order: IOrder | null = null;
+    public ORDER_STATUS = ORDER_STATUS;
 
-    created() {
+    public created() {
         const id = parseInt(this.$route.params.id);
         if (!id) {
             Toast('订单错误');
@@ -88,25 +88,25 @@ export default class Detail extends Vue {
         });
     }
 
-    tapPay() {
+    public tapPay() {
         if (!this.order) {
             return;
         }
         this.$router.push({name: 'pay', params: {id: this.order.id + ''}});
     }
 
-    tapRefund() {
+    public tapRefund() {
         if (!this.order) {
             return;
         }
         this.$router.push({name: 'refund', params: {id: this.order.id + ''}});
     }
 
-    tapComment() {
+    public tapComment() {
         this.$router.push({name: 'comment'});
     }
 
-    tapReceive() {
+    public tapReceive() {
         MessageBox.confirm('确认取消此订单？').then(action => {
             if (action !== 'confirm' || !this.order) {
                 return;
@@ -117,7 +117,7 @@ export default class Detail extends Vue {
         });
     }
 
-    tapCancel() {
+    public tapCancel() {
         MessageBox.confirm('确认取消此订单？').then(action => {
             if (action !== 'confirm' || !this.order) {
                 return;

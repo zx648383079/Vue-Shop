@@ -23,11 +23,11 @@ import BackHeader from '@/components/BackHeader.vue';
 
 @Component({
     components: {
-        BackHeader
-    }
+        BackHeader,
+    },
 })
 export default class Log extends Vue {
-    items = [];
+    public items = [];
 }
 </script>
 <style lang="scss" scoped>

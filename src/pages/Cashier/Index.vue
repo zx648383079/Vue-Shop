@@ -68,17 +68,17 @@ interface ICartBox {
     }
 })
 export default class Index extends Vue {
-    address: IAddress | null = null;
+    public address: IAddress | null = null;
     @Getter('addressList') address_list?: IAddress[];
     @Getter('cart') cart?: ICart[];
-    order: IOrder| null = null;
-    payment_list: IPayment[] = [];
-    payment: IPayment| null = null;
-    shipping_list: IShipping[] = [];
-    shipping: IShipping| null = null;
-    cart_box: ICartBox | null = null;
+    public order: IOrder| null = null;
+    public payment_list: IPayment[] = [];
+    public payment: IPayment| null = null;
+    public shipping_list: IShipping[] = [];
+    public shipping: IShipping| null = null;
+    public cart_box: ICartBox | null = null;
 
-    created() {
+    public created() {
         if (!this.cart || this.cart.length < 1) {
             this.$router.push('/cart');
             return;
@@ -95,7 +95,7 @@ export default class Index extends Vue {
     }
 
     @Watch('address')
-    onAddressChanged() {
+    public onAddressChanged() {
         this.refreshPrice();
         if (!this.address || !this.cart_box) {
             return;
@@ -108,12 +108,12 @@ export default class Index extends Vue {
     }
 
     @Watch('payment')
-    onPaymentChanged() {
+    public onPaymentChanged() {
         this.refreshPrice();
     }
 
     @Watch('shipping')
-    onShippingChanged() {
+    public onShippingChanged() {
         this.refreshPrice();
     }
 
@@ -147,7 +147,10 @@ export default class Index extends Vue {
 
 
 
-    getGoodsIds(): ICartBox {
+    public getGoodsIds(): ICartBox {
+        if (!this.cart) {
+            return {type: 0, goods: []};
+        }
         let goods: ICartItem[] = [],
             cart: number[]  = [],
             type: number = -1;

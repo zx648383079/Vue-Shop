@@ -59,22 +59,22 @@ import EmailRegister from './Child/EmailRegister.vue';
         MobileCodeLogin,
         MobileRegister,
         EmailLogin,
-        EmailRegister
-    }
+        EmailRegister,
+    },
 })
 export default class Login extends Vue {
 
-    mode: number = 0;
+    public mode: number = 0;
 
-    tapHome() {
+    public tapHome() {
         this.$router.push('/');
     }
 
-    tapChange(mode: number) {
+    public tapChange(mode: number) {
         this.mode = mode;
     }
 
-    tapLoginBack() {
+    public tapLoginBack() {
         if (this.$route.query.redirect_uri) {
             this.$router.replace(this.$route.query.redirect_uri + '');
             return;

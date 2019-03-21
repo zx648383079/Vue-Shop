@@ -26,8 +26,8 @@ import BackHeader from '@/components/BackHeader.vue';
 
 @Component({
     components: {
-        BackHeader
-    }
+        BackHeader,
+    },
 })
 export default class Edit extends Vue {
 

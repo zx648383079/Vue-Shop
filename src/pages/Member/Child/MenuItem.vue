@@ -23,6 +23,6 @@ export default Vue.extend({
                 this.$router.push(this.uri);
             }
         },
-    }
+    },
 })
 </script>

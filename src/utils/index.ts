@@ -50,8 +50,8 @@ export function getCurrentTime() {
     return formatTime(new Date());
 }
 
-export function twoPad(i: number) {
-    return i < 10 ? '0' + i : i;
+export function twoPad(i: number): string {
+    return i < 10 ? '0' + i : i + '';
 }
 
 export function formatTime(time: Date) {

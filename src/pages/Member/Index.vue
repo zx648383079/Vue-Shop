@@ -74,6 +74,7 @@
             </div>
 
             <div class="menu-list">
+                <MenuItem title="签到" icon="fa-calendar-check" uri="/checkin"/>
                 <MenuItem title="我的收货地址" icon="fa-map-marker" uri="/address"/>
                 <MenuItem title="浏览历史" icon="fa-history" uri="/history"/>
                 <MenuItem title="我的推荐" icon="fa-share" uri="/affiliate"/>
@@ -99,16 +100,16 @@ import { getOrderSubtotal } from '@/api/order';
         BackHeader,
         TabBar,
         MenuItem,
-        MenuLargeItem
+        MenuLargeItem,
     },
 })
 export default class Index extends Vue {
 
-    user: IUser | null = null;
-    ORDER_STATUS = ORDER_STATUS;
-    order_subtotal: IOrderCount = {};
+    public user: IUser | null = null;
+    public ORDER_STATUS = ORDER_STATUS;
+    public order_subtotal: IOrderCount = {};
 
-    created() {
+    public created() {
         dispatchUser().then(res => {
             this.user = res;
         });
@@ -117,15 +118,15 @@ export default class Index extends Vue {
         });
     }
 
-    tapLogin() {
+    public tapLogin() {
         this.$router.push('/login');
     }
 
-    tapProfile() {
+    public tapProfile() {
         this.$router.push('/member/profile');
     }
 
-    tapLogout() {
+    public tapLogout() {
         dispatchLogout().then(() => {
             this.user = null;
         });

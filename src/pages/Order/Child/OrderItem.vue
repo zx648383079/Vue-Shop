@@ -40,40 +40,40 @@ import { receiveOrder } from '@/api/order';
 
 @Component
 export default class Logistics extends Vue {
-    ORDER_STATUS = ORDER_STATUS;
+    public ORDER_STATUS = ORDER_STATUS;
     @Prop(Object) readonly item?: IOrder;
 
-    tapPay() {
+    public tapPay() {
         if (!this.item) {
             return;
         }
         this.$router.push({name: 'pay', params: {id: this.item.id + ''}});
     }
 
-    tapOrder() {
+    public tapOrder() {
         if (!this.item) {
             return;
         }
         this.$router.push({name: 'order-detail', params: {id: this.item.id + ''}});
     }
 
-    tapRefund() {
+    public tapRefund() {
         if (!this.item) {
             return;
         }
         this.$router.push({name: 'refund', params: {id: this.item.id + ''}});
     }
 
-    tapComment() {
+    public tapComment() {
         this.$router.push({name: 'comment'});
     }
 
     @Emit('receive')
-    tapReceive() {
+    public tapReceive() {
     }
 
     @Emit('cancel')
-    tapCancel() {
+    public tapCancel() {
     }
 }
 </script>

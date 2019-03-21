@@ -23,12 +23,12 @@ import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 
 @Component
 export default class MobileRegister extends Vue {
-    agree = true;
-    email: string = '';
+    public agree = true;
+    public email: string = '';
 
-    password: string = '';
+    public password: string = '';
 
-    tapKey(e: KeyboardEvent) {
+    public tapKey(e: KeyboardEvent) {
         if (e.which !== 13) {
             return;
         }

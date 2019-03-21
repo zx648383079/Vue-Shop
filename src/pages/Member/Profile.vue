@@ -65,18 +65,18 @@ import { dispatchUser, dispatchLogout } from '@/store/dispatches';
     components: {
         BackHeader,
         DatePicker,
-    }
+    },
 })
 export default class Profile extends Vue {
-    user: IUser | null = null;
+    public user: IUser | null = null;
 
-    created() {
+    public created() {
         dispatchUser().then(res => {
             this.user = res;
         });
     }
 
-    tapLogout() {
+    public tapLogout() {
         dispatchLogout().then(() => {
             this.$router.push('/login');
         });

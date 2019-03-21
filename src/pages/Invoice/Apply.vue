@@ -37,11 +37,11 @@ import BackHeader from '@/components/BackHeader.vue';
 
 @Component({
     components: {
-        BackHeader
-    }
+        BackHeader,
+    },
 })
 export default class Apply extends Vue {
-    items = [1, 1, 2, 3];
+    public items = [1, 1, 2, 3];
 }
 </script>
 <style lang="scss" scoped>

@@ -57,17 +57,17 @@ import { Getter } from 'vuex-class';
     components: {
         TabBar,
         GoodsPanel,
-    }
+    },
 })
 export default class Index extends Vue {
-    banners: IAd[] = [];
-    categories: ICategory[] = [];
-    data: IHomeProduct = {};
-    subtotal: ISubtotal| null = null;
+    public banners: IAd[] = [];
+    public categories: ICategory[] = [];
+    public data: IHomeProduct = {};
+    public subtotal: ISubtotal| null = null;
 
     @Getter('isGuest') isGuest?: boolean;
 
-    created() {
+    public created() {
         getHome().then(res => {
             this.data = res;
         });
@@ -88,23 +88,23 @@ export default class Index extends Vue {
         });
     }
 
-    tapProduct(item: IProduct) {
+    public tapProduct(item: IProduct) {
         this.$router.push({name: 'product', params: {id: item.id + ''}});
     }
 
-    tapAddCart(item: IProduct) {
+    public tapAddCart(item: IProduct) {
         console.log(item);
     }
 
-    tapSearch() {
+    public tapSearch() {
         this.$router.push('/search');
     }
 
-    tapLogin() {
+    public tapLogin() {
         this.$router.push('/login');
     }
 
-    tapMessage() {
+    public tapMessage() {
         this.$router.push('/message');
     }
 }

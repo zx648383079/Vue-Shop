@@ -91,7 +91,7 @@ export default class Index extends Vue {
         }
         for (const item of this.items) {
             for (const cart of item.goods_list) {
-                if (cart.checked) {
+                if (cart.checked && cart.price) {
                     total += cart.amount * cart.price;
                 }
             }

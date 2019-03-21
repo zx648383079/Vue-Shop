@@ -34,8 +34,8 @@ import BackHeader from '@/components/BackHeader.vue';
 
 @Component({
     components: {
-        BackHeader
-    }
+        BackHeader,
+    },
 })
 export default class Index extends Vue {
 

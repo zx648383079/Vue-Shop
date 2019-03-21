@@ -41,6 +41,7 @@ import CouponMy from '@/pages/Coupon/My.vue';
 
 import Comment from '@/pages/Comment/Index.vue';
 import CommentCreate from '@/pages/Comment/Create.vue';
+import CheckIn from '@/pages/CheckIn/Index.vue';
 
 
 Vue.use(Router);
@@ -144,6 +145,15 @@ export default new Router({
             component: Profile,
             meta: {
                 title: '我的资料',
+                requireAuth: true,
+            },
+        },
+        {
+            path: '/checkin',
+            name: 'check-in',
+            component: CheckIn,
+            meta: {
+                title: '每日签到',
                 requireAuth: true,
             },
         },
