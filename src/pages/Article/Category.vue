@@ -1,40 +1,50 @@
 <template>
     <div>
+        <BackHeader :title="$route.meta.title"/>
         <div class="has-header">
-            <div class="article-box">
-                <dl class="article-item" v-for="(item, index) in items" :key="index">
-                    <dt><a href="http://zodream.localhost/blog/detail?id=16">CentOs 7 安装apche php mysql</a>
-                        <span class="book-time">2018-06-20 12:47:23</span></dt>
-                    <dd>
-                        <p>CentOs 7 安装apche php mysql,yum 安装，源码安装</p>
-                        <span class="author"><i class="fa fa-edit"></i><b>admin</b></span>
-                        <span class="category"><i class="fa fa-bookmark"></i><b>其他</b></span>
-                        <span class="comment"><i class="fa fa-comments"></i><b>0</b></span>
-                        <span class="agree"><i class="fa fa-thumbs-o-up"></i><b>0</b></span>
-                        <span class="click"><i class="fa fa-eye"></i><b>31</b></span>
-                    </dd>
-                </dl>
-
-            </div>
-            
+            <CatItem :items="items" @click="tapCategory"/>
         </div>
-      
     </div>
 </template>
-<script>
-export default {
-    data() {
-        return {
-            items: [
+<script lang="ts">
+import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import BackHeader from '@/components/BackHeader.vue';
+import CatItem from './Child/CatItem.vue';
+import { IArticleCategory } from '@/api/model';
+import { getCategories } from '@/api/article';
 
-            ]
-        }
+@Component({
+    components: {
+        BackHeader,
+        CatItem
     },
+})
+export default class Category extends Vue {
+    public items: IArticleCategory[] = [];
+    public id: number = 0;
+
     created() {
+        const id = parseInt(this.$route.query.id + '');
+        if (id) {
+            this.id = id;
+        }
+    }
+    /**
+     * tapCategory
+     */
+    public tapCategory(item: IArticleCategory) {
+        this.id = item.id;
+        this.$route.meta.title = item.name;
+        this.tapRefresh();
+    }
 
-    },
-    methods: {
-
+    public tapRefresh() {
+        getCategories(this.id).then(res => {
+            if (!res.data) {
+                return;
+            }
+            this.items = res.data;
+        });
     }
 }
 </script>

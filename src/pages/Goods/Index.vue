@@ -192,19 +192,19 @@ import { dispatchSetCart } from '@/store/dispatches';
 
 @Component({
     components: {
-        CommentPage
-    }
+        CommentPage,
+    },
 })
 export default class Index extends Vue {
-    goods: IProduct | null = null;
-    amount: number = 1;
-    mode: number = 0;
-    tab: number = 0;
-    comment: ICommentSubtotal | null = null;
-    items: IProduct[] = [];
+    public goods: IProduct | null = null;
+    public amount: number = 1;
+    public mode: number = 0;
+    public tab: number = 0;
+    public comment: ICommentSubtotal | null = null;
+    public items: IProduct[] = [];
     @Getter('isGuest') isGuest?: boolean;
 
-    created() {
+    public created() {
         const id = parseInt(this.$route.params.id);
         if (!id) {
             Toast('商品错误');
@@ -218,7 +218,7 @@ export default class Index extends Vue {
         });  
     }
 
-    loadComment() {
+    public loadComment() {
         if (!this.goods) {
             return;
         }
@@ -227,7 +227,7 @@ export default class Index extends Vue {
         });
     }
 
-    loadRecommend() {
+    public loadRecommend() {
         if (!this.goods) {
             return;
         }
@@ -239,7 +239,7 @@ export default class Index extends Vue {
         })
     }
 
-    tapBack() {
+    public tapBack() {
         if (window.history.length <= 1) {
             this.$router.push('/');
             return;
@@ -247,37 +247,37 @@ export default class Index extends Vue {
         this.$router.go(-1);
     }
 
-    tapGoComment() {
+    public tapGoComment() {
         if (!this.goods) {
             return;
         }
         this.$router.push({name: 'product-comment', params: {id: this.goods.id + ''}});
     }
 
-    tapProduct(item: IProduct) {
+    public tapProduct(item: IProduct) {
         this.$router.push({name: 'product', params: {id: item.id + ''}});
     }
 
-    tapAddCart() {
+    public tapAddCart() {
         this.mode = 1;
     }
 
-    tapBuy() {
+    public tapBuy() {
         this.mode = 2;
     }
 
-    getStock(): number {
+    public getStock(): number {
         if (!this.goods) {
             return 1;
         }
         return this.goods.stock as number;
     }
 
-    tapMinus() {
+    public tapMinus() {
         this.amount = Math.max(this.amount - 1, 1);
     }
 
-    tapChangeAmount() {
+    public tapChangeAmount() {
         if (this.amount < 1) {
             this.amount = 1;
             return;
@@ -288,11 +288,11 @@ export default class Index extends Vue {
         }
     }
 
-    tapPlus() {
+    public tapPlus() {
         this.amount = Math.min(this.amount + 1, this.getStock());
     }
 
-    tapCollect() {
+    public tapCollect() {
         if (!this.goods) {
             return;
         }
@@ -307,7 +307,7 @@ export default class Index extends Vue {
         });
     }
 
-    tapDoCart() {
+    public tapDoCart() {
         if (!this.goods) {
             return;
         }

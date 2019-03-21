@@ -40,10 +40,10 @@ import RechargePanel from './Child/RechargePanel.vue'
         BackHeader,
         WithdrawPanel,
         RechargePanel,
-    }
+    },
 })
 export default class Index extends Vue {
-    mode: number = 0;
+    public mode: number = 0;
 }
 </script>
 <style lang="scss" scoped>

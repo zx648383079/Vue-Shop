@@ -29,14 +29,14 @@ interface IConnectMap {
 
 @Component({
     components: {
-        BackHeader
-    }
+        BackHeader,
+    },
 })
 export default class Center extends Vue {
 
-    items: IConnect[] = [];
+    public items: IConnect[] = [];
 
-    created() {
+    public created() {
         getConnect().then(res => {
             if (!res.data) {
                 return;
@@ -46,7 +46,7 @@ export default class Center extends Vue {
         }); 
     }
 
-    refresh() {
+    public refresh() {
         const maps: IConnectMap = {
             qq: {
                 name: 'QQ',

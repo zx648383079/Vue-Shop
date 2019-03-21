@@ -1,27 +1,24 @@
 <template>
     <div>
-      <div class="has-header">
+        <BackHeader :title="$route.meta.title"/>
+        <div class="has-header">
             <div class="share-box">
-                <img src="<?=$this->url('./mobile/affiliate/qr')?>" alt="">
+                <img src="" alt="">
             </div>
         </div>
     </div>
 </template>
-<script>
-export default {
-    data() {
-        return {
-            items: [
+<script lang="ts">
+import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import BackHeader from '@/components/BackHeader.vue';
 
-            ]
-        }
+@Component({
+    components: {
+        BackHeader,
     },
-    created() {
+})
+export default class Share extends Vue {
 
-    },
-    methods: {
-
-    }
 }
 </script>
 <style lang="scss" scoped>

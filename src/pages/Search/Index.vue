@@ -36,7 +36,7 @@ interface ISearch {
     keywords: string,
     category: number,
     brand: number,
-    page: number
+    page: number,
 }
 
 @Component({
@@ -44,7 +44,7 @@ interface ISearch {
         PullToRefresh,
         GoodsItem,
         SearchBar,
-    }
+    },
 })
 export default class Index extends Vue {
 
@@ -57,7 +57,7 @@ export default class Index extends Vue {
         keywords: '',
         category: 0,
         brand: 0,
-        page: 1
+        page: 1,
     };
 
     public created() {

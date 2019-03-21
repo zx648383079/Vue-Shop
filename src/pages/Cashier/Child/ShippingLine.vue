@@ -19,8 +19,8 @@ import DialogPanel from '@/components/DialogPanel.vue';
 
 @Component({
     components: {
-        DialogPanel
-    }
+        DialogPanel,
+    },
 })
 export default class ShippingLine extends Vue {
     @Prop(Object) readonly value?: IShipping;

@@ -36,14 +36,14 @@ Vue.use(InfiniteScroll);
 
 @Component({
     components: {
-        BackHeader
-    }
+        BackHeader,
+    },
 })
 export default class Log extends Vue {
-    items: IAccountLog[] = [];
-    has_more = true;
-    page = 1;
-    is_loading = false;
+    public items: IAccountLog[] = [];
+    public has_more = true;
+    public page = 1;
+    public is_loading = false;
 
     get itemGroups(): IAccountLog[] {
         const data = [];
@@ -65,7 +65,7 @@ export default class Log extends Vue {
         return data;
     }
 
-    created() {
+    public created() {
         this.refresh();
     }
 

@@ -26,11 +26,11 @@ import SwipeRow from '@/components/SwipeRow.vue';
 @Component({
     components: {
         BackHeader,
-        SwipeRow
-    }
+        SwipeRow,
+    },
 })
 export default class Index extends Vue {
-    items = ['1231231', 1002];
+    public items = ['1231231', 1002];
 
     public tapRemove(item: any) {
         console.log(item)

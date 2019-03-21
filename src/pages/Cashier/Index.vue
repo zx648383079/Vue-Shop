@@ -65,7 +65,7 @@ interface ICartBox {
         AddressLine,
         PaymentLine,
         ShippingLine,
-    }
+    },
 })
 export default class Index extends Vue {
     public address: IAddress | null = null;

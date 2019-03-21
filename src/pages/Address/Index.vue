@@ -49,14 +49,14 @@ import { dispatchSetAddress, dispatchAddressList, dispatchSetAddressIfEmpty } fr
     components: {
         BackHeader,
         SwipeRow,
-    }
+    },
 })
 export default class Index extends Vue {
-    items: IAddress[] = [];
-    selected: number = 0;
-    mode: number = 0;
+    public items: IAddress[] = [];
+    public selected: number = 0;
+    public mode: number = 0;
 
-    created() {
+    public created() {
         if (this.$route.query.selected) {
             this.mode = 1;
             this.selected = parseInt(this.$route.query.selected + '');
@@ -82,7 +82,7 @@ export default class Index extends Vue {
         this.$router.replace('/cashier');
     }
 
-    tapDefault(item: IAddress) {
+    public tapDefault(item: IAddress) {
         defaultAddress(item.id).then(() => {
             for (const it of this.items) {
                 it.is_default = item.id == it.id;
@@ -97,7 +97,7 @@ export default class Index extends Vue {
         });
     }
 
-    tapRemove(item: IAddress) {
+    public tapRemove(item: IAddress) {
         deleteAddress(item.id).then(() => {
             for (let i = 0; i < this.items.length; i++) {
                 if (this.items[i].id == item.id) {

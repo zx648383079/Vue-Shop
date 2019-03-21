@@ -29,7 +29,7 @@ import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import { twoPad } from '@/utils';
 import { getCanCheckIn, checkIn, getMonth } from '@/api/check';
-import { ICheckIn } from './model';
+import { ICheckIn } from '@/api/model';
 
 interface IDay {
     val: string,

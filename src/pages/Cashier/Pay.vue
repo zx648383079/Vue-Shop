@@ -53,14 +53,14 @@ import { getPaymentList } from '@/api/cart';
 @Component({
     components: {
         BackHeader,
-    }
+    },
 })
 export default class Pay extends Vue {
-    order: IOrder | null = null;
-    payment: IPayment | null = null;
-    payment_list: IPayment[] = [];
+    public order: IOrder | null = null;
+    public payment: IPayment | null = null;
+    public payment_list: IPayment[] = [];
 
-    created() {
+    public created() {
         const id = parseInt(this.$route.params.id);
         if (!id) {
             Toast('订单错误');

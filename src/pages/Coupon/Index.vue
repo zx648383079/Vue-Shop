@@ -61,35 +61,35 @@ import { dispatchCategories } from '@/store/dispatches';
     components: {
         BackHeader,
         PullToRefresh,
-    }
+    },
 })
 export default class Index extends Vue {
-    categories: ICategory[] = [];
-    status: number = 0;
-    items = [];
-    isExpand: boolean = false;
-    has_more = true;
-    page = 1;
-    is_loading = false;
+    public categories: ICategory[] = [];
+    public status: number = 0;
+    public items = [];
+    public isExpand: boolean = false;
+    public has_more = true;
+    public page = 1;
+    public is_loading = false;
 
-    created() {
+    public created() {
         dispatchCategories().then(res => {
             this.categories = res;
         });
     }
 
-    tapRefresh() {
+    public tapRefresh() {
         this.goPage(1);
     }
 
-    tapMore() {
+    public tapMore() {
         if (!this.has_more) {
             return;
         }  
         this.goPage(this.page + 1);
     }
 
-    goPage(page: number) {
+    public goPage(page: number) {
         if (this.is_loading) {
             return;
         }

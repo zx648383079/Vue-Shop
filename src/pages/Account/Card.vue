@@ -39,15 +39,15 @@ import { ICard } from '@/api/model';
     components: {
         BackHeader,
         PullToRefresh,
-    }
+    },
 })
 export default class Card extends Vue {
-    items: ICard[] = [];
-    has_more = true;
-    page = 1;
-    is_loading = false;
+    public items: ICard[] = [];
+    public has_more = true;
+    public page = 1;
+    public is_loading = false;
 
-    created() {
+    public created() {
         this.tapRefresh();
     }
 

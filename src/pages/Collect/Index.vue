@@ -32,15 +32,15 @@ Vue.use(InfiniteScroll);
 @Component({
     components: {
         BackHeader,
-        SwipeRow
-    }
+        SwipeRow,
+    },
 })
 export default class Index extends Vue {
-    items: ICollect[] = [];
+    public items: ICollect[] = [];
 
-    has_more = true;
-    page = 1;
-    is_loading = false;
+    public has_more = true;
+    public page = 1;
+    public is_loading = false;
 
 
     get filterItems(): ICollect[] {
@@ -49,11 +49,11 @@ export default class Index extends Vue {
         });
     }
 
-    created() {
+    public created() {
         this.refresh();
     }
 
-    tapRemove(item: ICollect, index: number) {
+    public tapRemove(item: ICollect, index: number) {
         removeCollect(item.goods_id).then(res => {
             if (!res.data) {
                 this.items.splice(index, 1);

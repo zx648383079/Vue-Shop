@@ -63,13 +63,13 @@ import { dispatchSubtotal, dispatchCategories } from '@/store/dispatches';
     },
 })
 export default class Index extends Vue {
-    categories: ICategory[] = [];
+    public categories: ICategory[] = [];
 
-    category: ICategory | null = null;
+    public category: ICategory | null = null;
 
-    subtotal: ISubtotal | null = null;
+    public subtotal: ISubtotal | null = null;
 
-    created() {
+    public created() {
         dispatchCategories().then(res => {
             if (!res) {
                 return;
@@ -82,7 +82,7 @@ export default class Index extends Vue {
         });
     }
 
-    tapSelected(item: ICategory, index: number) {
+    public tapSelected(item: ICategory, index: number) {
         if (item.goods_list) {
             this.category = item;
             return;
@@ -92,11 +92,11 @@ export default class Index extends Vue {
         });
     }
 
-    tapSearch(item: ICategory) {
+    public tapSearch(item: ICategory) {
         this.$router.push({name: 'search', query: {category: item.id + ''}});
     }
 
-    tapProduct(item: IProduct) {
+    public tapProduct(item: IProduct) {
         this.$router.push({name: 'product', params: {id: item.id + ''}});
     }
 }

@@ -1,23 +1,103 @@
 <template>
     <div>
+        <BackHeader :title="$route.meta.title"/>
         <div class="has-header">
-            <div class="item-list">
-                <a v-for="(item, index) in items" :key="index" href="<?=$this->url('./mobile/article/category', ['id' => $item->id])?>">
-                    <?=$item->name?>
-                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                </a>
-
+            <div :class="['scroll-nav', isExpand ? 'unfold' : '']">
+                <ul>
+                    <li v-for="(item, index) in categories" :key="index" :class="{active: category == item.id}">
+                            <a>{{ item.name }}</a>
+                    </li>
+                </ul>
+                <a @click="isExpand = !isExpand" class="fa nav-arrow"></a>
             </div>
-            
+            <PullToRefresh :loading="is_loading" :more="has_more" @refresh="tapRefresh" @more="tapMore">
+                <ArticleItem :items="items"/>
+            </PullToRefresh>
         </div>
     </div>
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import PullToRefresh from '@/components/PullToRefresh.vue';
+import BackHeader from '@/components/BackHeader.vue';
+import {getArticleList, getCategories} from '@/api/article';
+import { IArticleCategory, IArticle } from '@/api/model';
+import ArticleItem from './Child/ArticleItem.vue';
 
-@Component
+@Component({
+    components: {
+        BackHeader,
+        PullToRefresh,
+        ArticleItem,
+    },
+})
 export default class Index extends Vue {
+    public categories: IArticleCategory[] = [];
+    public category: number = 0;
+    public status: number = 0;
+    public items: IArticle[] = [];
+    public isExpand: boolean = false;
+    public has_more = true;
+    public page = 1;
+    public is_loading = false;
 
+    public created() {
+        if (this.$route.query.category) {
+            this.category = parseInt(this.$route.query.category + '');
+        }
+        getCategories().then(res => {
+            if (!res.data) {
+                return;
+            }
+            this.categories = res.data;
+            if (!this.category || this.category < 1) {
+                this.tapCategory(res.data[0]);
+            }
+        });
+        if (this.category && this.category > 0) {
+            this.tapRefresh();
+        }
+    }
+
+    /**
+     * tapCategory
+     */
+    public tapCategory(item: IArticleCategory) {
+        this.category = item.id;
+        this.$route.meta.title = item.name;
+        this.isExpand = false;
+        this.tapRefresh();
+    }
+
+    public tapRefresh() {
+        this.goPage(1);
+    }
+
+    public tapMore() {
+        if (!this.has_more) {
+            return;
+        }  
+        this.goPage(this.page + 1);
+    }
+
+    public goPage(page: number) {
+        if (this.is_loading) {
+            return;
+        }
+        this.is_loading = true;
+        getArticleList({
+            category: this.category,
+            page: page,
+        }).then(res => {
+            this.page = page;
+            this.is_loading = false;
+            if (this.page < 2) {
+                this.items = res.data as never[];
+                return;
+            }
+            this.items = [].concat(this.items as never[], res.data as never[]);
+        });
+    }
 }
 </script>
 <style lang="scss" scoped>

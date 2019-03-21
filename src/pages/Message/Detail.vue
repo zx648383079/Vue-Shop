@@ -3,21 +3,12 @@
 
     </div>
 </template>
-<script>
-export default {
-    data() {
-        return {
-            items: [
+<script lang="ts">
+import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 
-            ]
-        }
-    },
-    created() {
+@Component
+export default class Detail extends Vue {
 
-    },
-    methods: {
-
-    }
 }
 </script>
 <style lang="scss" scoped>

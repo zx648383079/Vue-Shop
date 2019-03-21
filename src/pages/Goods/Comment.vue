@@ -47,18 +47,18 @@ Vue.use(InfiniteScroll);
     components: {
         CommentPage,
         Star,
-    }
+    },
 })
 export default class Comment extends Vue {
-    comment: ICommentSubtotal | null = null;
-    items: IComment[] = [];
-    item_id: number = 0;
-    item_type: number = 0;
-    has_more = true;
-    page = 1;
-    is_loading = false;
+    public comment: ICommentSubtotal | null = null;
+    public items: IComment[] = [];
+    public item_id: number = 0;
+    public item_type: number = 0;
+    public has_more = true;
+    public page = 1;
+    public is_loading = false;
 
-    created() {
+    public created() {
         this.item_id = parseInt(this.$route.params.id);
         if (!this.item_id) {
             Toast('商品错误');
@@ -71,7 +71,7 @@ export default class Comment extends Vue {
         this.refresh();
     }
 
-    tapBack() {
+    public tapBack() {
         if (window.history.length <= 1) {
             this.$router.push('/');
             return;

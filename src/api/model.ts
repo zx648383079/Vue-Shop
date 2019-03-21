@@ -34,6 +34,20 @@ export interface IAd {
     content: string
 }
 
+export interface IArticle {
+    id: number,
+    title: string,
+    thumb: string,
+    category?: IArticleCategory,
+    url?: string,
+    content: string
+}
+
+export interface IArticleCategory {
+    id: number,
+    name: string,
+}
+
 export interface ICategory {
     id: number,
     name: string,

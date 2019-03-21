@@ -53,11 +53,11 @@ export default Vue.extend({
         return {
             hot_keywords,
             tip_list,
-            history_list
+            history_list,
         };
     },
     props: {
-        value: String
+        value: String,
     },
     created() {
         this.history_list = getLocalStorage(KEYWORDS_HISTORY, true) || []
@@ -109,7 +109,7 @@ export default Vue.extend({
         },
         tapSearch(keywords: string) {
             this.$emit('search', keywords);
-        }
-    }
+        },
+    },
 });
 </script>

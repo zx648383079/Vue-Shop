@@ -9,6 +9,9 @@
             <div class="order-box">
                 <PullToRefresh :loading="is_loading" :more="has_more" @refresh="tapRefresh" @more="tapMore">
                     <OrderItem v-for="(item, index) in items" :key="index" :item="item" @receive="tapReceive(item)" @cancel="tapCancel(item)"/>
+                    <div class="order-empty" v-if="!items || items.length < 1">
+                        您还没有订单
+                    </div>
                 </PullToRefresh>
             </div>
         </div>
@@ -29,10 +32,10 @@ import { MessageBox } from 'mint-ui';
         BackHeader,
         OrderItem,
         PullToRefresh,
-    }
+    },
 })
 export default class Index extends Vue {
-    status_list = [
+    public status_list = [
         {
             name: '全部',
             status: 0
@@ -54,13 +57,13 @@ export default class Index extends Vue {
             status: ORDER_STATUS.CANCEL
         },
     ];
-    items: IOrder[] = [];
-    status = 0;
-    has_more = true;
-    page = 1;
-    is_loading = false;
+    public items: IOrder[] = [];
+    public status = 0;
+    public has_more = true;
+    public page = 1;
+    public is_loading = false;
 
-    created() {
+    public created() {
         if (this.$route.query && this.$route.query.status) {
             this.status = parseInt(this.$route.query.status + '') || 0;
         }
@@ -105,7 +108,7 @@ export default class Index extends Vue {
         this.tapRefresh();
     }
 
-    tapReceive(item: IOrder) {
+    public tapReceive(item: IOrder) {
         MessageBox.confirm('确认取消此订单？').then(action => {
             if (action !== 'confirm') {
                 return;
@@ -116,7 +119,7 @@ export default class Index extends Vue {
         });
     }
 
-    refreshItem(item: IOrder) {
+    public refreshItem(item: IOrder) {
         for (let i = 0; i < this.items.length; i++) {
             if (this.items[i].id = item.id) {
                 this.items[i] = item;
@@ -124,7 +127,7 @@ export default class Index extends Vue {
         }
     }
 
-    tapCancel(item: IOrder) {
+    public tapCancel(item: IOrder) {
         MessageBox.confirm('确认取消此订单？').then(action => {
             if (action !== 'cancel') {
                 return;
@@ -137,5 +140,10 @@ export default class Index extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-
+.order-empty {
+    font-size: 40px;
+    color: #ccc;
+    text-align: center;
+    padding-top: 20vh;
+}
 </style>

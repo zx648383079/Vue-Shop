@@ -25,7 +25,7 @@ import { ICard } from '@/api/model';
 @Component({
     components: {
         BackHeader,
-    }
+    },
 })
 export default class CardNew extends Vue {
     

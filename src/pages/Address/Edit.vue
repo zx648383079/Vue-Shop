@@ -50,11 +50,11 @@ import { dispatchSetAddress, dispatchSetAddressList } from '@/store/dispatches';
     components: {
         BackHeader,
         SelectPicker,
-    }
+    },
 })
 export default class Edit extends Vue {
 
-    address: IAddress = {
+    public address: IAddress = {
         id: 0,
         name: '',
         tel: '',
@@ -64,11 +64,11 @@ export default class Edit extends Vue {
         is_default: false,
     };
 
-    back: number = 0;
+    public back: number = 0;
 
-    regions: IRegionObject = {};
+    public regions: IRegionObject = {};
 
-    created() {
+    public created() {
         if (this.$route.query.back) {
             this.back = parseInt(this.$route.query.back + '');
         }
@@ -86,7 +86,7 @@ export default class Edit extends Vue {
         });
     }
 
-    tapSubmit() {
+    public tapSubmit() {
         if (!this.address.region) {
             Toast('请选择收货地址');
             return;
@@ -117,7 +117,7 @@ export default class Edit extends Vue {
         });
     }
 
-    tapRemove() {
+    public tapRemove() {
         if (this.address.id < 1) {
             return;
         }
@@ -128,7 +128,7 @@ export default class Edit extends Vue {
         });
     }
 
-    saveBack(address: IAddress) {
+    public saveBack(address: IAddress) {
         dispatchSetAddressList([]);
         if (this.back < 1) {
             this.$router.back();

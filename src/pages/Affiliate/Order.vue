@@ -1,5 +1,6 @@
 <template>
     <div>
+        <BackHeader :title="$route.meta.title"/>
         <div class="has-header">
             <div class="log-hr">
                 2018年12月
@@ -16,21 +17,17 @@
         </div>
     </div>
 </template>
-<script>
-export default {
-    data() {
-        return {
-            items: [
+<script lang="ts">
+import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import BackHeader from '@/components/BackHeader.vue';
 
-            ]
-        }
+@Component({
+    components: {
+        BackHeader,
     },
-    created() {
-
-    },
-    methods: {
-
-    }
+})
+export default class Order extends Vue {
+    public items = [1];
 }
 </script>
 <style lang="scss" scoped>

@@ -29,7 +29,7 @@ export default class AddressLine extends Vue {
     @Prop(Object) readonly address?: IAddress;
 
     @Emit('click')
-    tapClick() {
+    public tapClick() {
     }
 }
 </script>

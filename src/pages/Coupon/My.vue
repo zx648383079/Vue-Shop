@@ -60,7 +60,7 @@ import BackHeader from '@/components/BackHeader.vue';
 @Component({
     components: {
         BackHeader,
-    }
+    },
 })
 export default class My extends Vue {
 

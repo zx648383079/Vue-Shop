@@ -31,11 +31,11 @@ import Star from './Star.vue';
 @Component({
     components: {
         Star,
-    }
+    },
 })
 export default class Page extends Vue {
     @Prop(Object) readonly items?: IComment[];
-    star_list = [1, 2, 3, 4, 5];
+    public star_list = [1, 2, 3, 4, 5];
 }
 </script>
 <style lang="scss" scoped>

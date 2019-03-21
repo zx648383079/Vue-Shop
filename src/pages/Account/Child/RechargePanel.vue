@@ -23,8 +23,8 @@ import DialogPanel from '@/components/DialogPanel.vue';
 
 @Component({
     components: {
-        DialogPanel
-    }
+        DialogPanel,
+    },
 })
 export default class RechargePanel extends Vue {
 

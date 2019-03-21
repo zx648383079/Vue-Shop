@@ -2,6 +2,10 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/pages/Home/Index.vue';
 
+import Article from '@/pages/Article/Index.vue';
+import ArticleCategory from '@/pages/Article/Category.vue';
+import ArticleDetail from '@/pages/Article/Detail.vue';
+
 import Account from '@/pages/Account/Index.vue';
 import AccountCenter from '@/pages/Account/Center.vue';
 import AccountLog from '@/pages/Account/Log.vue';
@@ -43,6 +47,12 @@ import Comment from '@/pages/Comment/Index.vue';
 import CommentCreate from '@/pages/Comment/Create.vue';
 import CheckIn from '@/pages/CheckIn/Index.vue';
 
+import Affiliate from '@/pages/Affiliate/Index.vue';
+import AffiliateOrder from '@/pages/Affiliate/Order.vue';
+import AffiliateRule from '@/pages/Affiliate/Rule.vue';
+import AffiliateShare from '@/pages/Affiliate/Share.vue';
+import AffiliateUser from '@/pages/Affiliate/User.vue';
+
 
 Vue.use(Router);
 
@@ -54,6 +64,30 @@ export default new Router({
             component: Home,
             meta: {
                 title: '首页',
+            },
+        },
+        {
+            path: '/article',
+            name: 'article',
+            component: Article,
+            meta: {
+                title: '文章列表',
+            },
+        },
+        {
+            path: '/article/category',
+            name: 'article-category',
+            component: ArticleCategory,
+            meta: {
+                title: '文章分类列表',
+            },
+        },
+        {
+            path: '/article/:id',
+            name: 'article-detail',
+            component: ArticleDetail,
+            meta: {
+                title: '文章详情',
             },
         },
         {
@@ -342,6 +376,51 @@ export default new Router({
             component: CommentCreate,
             meta: {
                 title: '评价晒单',
+                requireAuth: true,
+            },
+        },
+        {
+            path: '/affiliate',
+            name: 'affiliate',
+            component: Affiliate,
+            meta: {
+                title: '我的推荐',
+                requireAuth: true,
+            },
+        },
+        {
+            path: '/affiliate/order',
+            name: 'affiliate-order',
+            component: AffiliateOrder,
+            meta: {
+                title: '推荐的订单',
+                requireAuth: true,
+            },
+        },
+        {
+            path: '/affiliate/rule',
+            name: 'affiliate-rule',
+            component: AffiliateRule,
+            meta: {
+                title: '推荐规则',
+                requireAuth: true,
+            },
+        },
+        {
+            path: '/affiliate/share',
+            name: 'affiliate-share',
+            component: AffiliateShare,
+            meta: {
+                title: '我的分享',
+                requireAuth: true,
+            },
+        },
+        {
+            path: '/affiliate/user',
+            name: 'affiliate-user',
+            component: AffiliateUser,
+            meta: {
+                title: '推荐的会员',
                 requireAuth: true,
             },
         },

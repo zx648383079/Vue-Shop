@@ -68,14 +68,14 @@ import { Toast } from 'mint-ui';
         TabBar,
         BackHeader,
         SwipeRow,
-    }
+    },
 })
 export default class Index extends Vue {
     items: ICart[] = [];
     checkedAll: boolean = false;
     @Getter('isGuest') isGuest?: boolean;
 
-    created() {
+    public created() {
         getCart().then(res => {
             if (!res.data) {
                 return;
@@ -84,7 +84,7 @@ export default class Index extends Vue {
         }); 
     }
 
-    total(): number {
+    public total(): number {
         let total = 0;
         if (!this.items || this.items.length < 1) {
             return total;
@@ -99,7 +99,7 @@ export default class Index extends Vue {
         return total;
     }
 
-    toggleCheckAll() {
+    public toggleCheckAll() {
         this.checkedAll = !this.checkedAll;
         for (const item of this.items) {
             item.checked = this.checkedAll;
@@ -109,7 +109,7 @@ export default class Index extends Vue {
         }
     }
 
-    toggleCheckGroup(item: ICart) {
+    public toggleCheckGroup(item: ICart) {
         item.checked = !item.checked;
         for (const cart of item.goods_list) {
             cart.checked = item.checked;
@@ -120,7 +120,7 @@ export default class Index extends Vue {
         this.$forceUpdate();
     }
 
-    toggleCheck(item: ICart, cart: ICartItem) {
+    public toggleCheck(item: ICart, cart: ICartItem) {
         cart.checked = !cart.checked;
         if (!cart.checked) {
             this.checkedAll = false;
@@ -129,7 +129,7 @@ export default class Index extends Vue {
         this.$forceUpdate();
     }
 
-    tapCashier() {
+    public tapCashier() {
         const data: ICart[] = [];
         for (const item of this.items) {
             const items: ICartItem[] = [];
