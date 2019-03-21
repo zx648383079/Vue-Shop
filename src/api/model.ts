@@ -68,13 +68,17 @@ export interface IHomeProduct {
     best_products?: IProduct[];
 }
 
+export interface IImage {
+    image: string
+}
+
 export interface IComment {
-    id: number;
+    id?: number;
     title: string;
     content: string;
     rank: number;
     user?: IUser;
-    images?: {image: string}
+    images?: IImage[]
 }
 
 export interface ITag {
@@ -232,6 +236,7 @@ export interface IOrderCount {
 
 export interface IOrderGoods {
     id: number;
+    name?: string;
     amount: number;
     price: number;
     goods_id: number;

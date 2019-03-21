@@ -36,6 +36,7 @@
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import { IOrder, ORDER_STATUS } from '@/api/model';
 import { MessageBox } from 'mint-ui';
+import { receiveOrder } from '@/api/order';
 
 @Component
 export default class Logistics extends Vue {
@@ -67,16 +68,12 @@ export default class Logistics extends Vue {
         this.$router.push({name: 'comment'});
     }
 
+    @Emit('receive')
     tapReceive() {
-        MessageBox.confirm('确认取消此订单？').then(action => {
-            console.log(action);
-        });
     }
 
+    @Emit('cancel')
     tapCancel() {
-        MessageBox.confirm('Are you sure?').then(action => {
-            console.log(action);
-        });
     }
 }
 </script>

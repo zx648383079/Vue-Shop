@@ -1,38 +1,101 @@
 <template>
     <div>
+        <BackHeader :title="$route.meta.title"/>
         <div class="has-header">
             <div class="tab-bar order-header">
-                <?php foreach($status_list as $key => $item):?>
-                <a href="<?=$this->url('./mobile/comment', ['status' => $key])?>" <?=$status == $key ? 'class="active"': ''?>><?=$item?></a>
-                <?php endforeach;?>
+                <a v-for="(item, index) in status_list" :key="index" @click="tapStatus(item)" :class="status == item.status ? 'active' : ''">{{ item.name }}</a>
             </div>
 
             <div class="comment-list-box">
-                <div class="goods-list">
-                    <?php foreach($goods_list as $goods):?>
-                    <div class="goods-item">
-                        <div class="goods-img">
-                            <img src="<?=$goods->thumb?>" alt="">
-                        </div>
-                        <div class="goods-info">
-                            <h4><?=$goods->name?></h4>
-                            <?php if($goods->comment_id < 1):?>
-                            <a href="<?=$this->url('./mobile/comment/create', ['goods' => $goods->id])?>" class="comment-btn">评价</a>
-                            <?php endif;?>
-                        </div>
+                <PullToRefresh :loading="is_loading" :more="has_more" @refresh="tapRefresh" @more="tapMore">
+                    <div class="goods-list">
+                        <GoodsItem v-for="(item, index) in items" :key="index" :item="item" @comment="tapComment(item)"/>
                     </div>
-                    <?php endforeach;?>
-                </div>
+                </PullToRefresh>
             </div>
         </div>
     </div>
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import PullToRefresh from '@/components/PullToRefresh.vue';
+import BackHeader from '@/components/BackHeader.vue';
+import GoodsItem from './Child/GoodsItem.vue';
+import { IOrderGoods } from '@/api/model';
+import { getCommentGoods } from '@/api/order';
 
-@Component
+@Component({
+    components: {
+        BackHeader,
+        PullToRefresh,
+        GoodsItem,
+    }
+})
 export default class Index extends Vue {
+    status_list = [
+        {
+            name: '待评价',
+            status: 0
+        },
+        {
+            name: '已评价',
+            status: 1
+        },
+    ];
+    items: IOrderGoods[] = [];
+    status = 0;
+    has_more = true;
+    page = 1;
+    is_loading = false;
 
+    created() {
+        if (this.$route.query && this.$route.query.status) {
+            this.status = parseInt(this.$route.query.status + '') || 0;
+        }
+        this.tapRefresh();
+    }
+
+    public tapRefresh() {
+        this.goPage(1);
+    }
+
+    public tapMore() {
+        if (!this.has_more) {
+            return;
+        }  
+        this.goPage(this.page + 1);
+    }
+
+    public goPage(page: number) {
+        if (this.is_loading) {
+            return;
+        }
+        this.is_loading = true;
+        getCommentGoods({
+            status: this.status,
+            page,
+        }).then(res => {
+            this.has_more = res.paging.more;
+            this.is_loading = false;
+            if (this.page < 2) {
+                this.items = res.data as never[];
+                return;
+            }
+            this.items = [].concat(this.items as never[], res.data as never[]);
+        });
+    }
+
+    public tapStatus(item: any) {
+        if (this.status == item.status) {
+            return;
+        }
+        this.status = item.status;
+        this.tapRefresh();
+    }
+
+    tapComment(item:IOrderGoods) {
+        this.$router.push({name: 'comment-create', query: {goods: item.id + ''}});
+    }
 }
 </script>
 <style lang="scss" scoped>

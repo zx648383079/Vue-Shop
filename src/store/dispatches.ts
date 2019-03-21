@@ -7,8 +7,7 @@ export const dispatchSubtotal = (): Promise<ISubtotal> => store.dispatch('getSub
 
 export const dispatchAddressList = (): Promise<IAddress[]> => store.dispatch('getAddressList');
 
-export const dispatchSetAddressList = (address: IAddress[])
-    => store.dispatch('setAddressList', address);
+export const dispatchSetAddressList = (address: IAddress[]) => store.dispatch('setAddressList', address);
 
 export const dispatchAddress = (): Promise<IAddress> => store.dispatch('getAddress');
 

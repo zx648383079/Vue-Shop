@@ -1,53 +1,47 @@
 <template>
     <div>
+        <BackHeader :title="$route.meta.title"/>
         <div class="has-header">
-            <?php foreach($goods_list as $goods):?>
-            <form method="POST" action="<?=$this->url('./mobile/comment/save')?>" class="comment-form-item">
-                <div class="goods-img">
-                    <img src="<?=$goods->thumb?>" alt="">
-                </div>
-                <div class="comment-star">
-                    <i class="fa fa-star active"></i>
-                    <i class="fa fa-star active"></i>
-                    <i class="fa fa-star active"></i>
-                    <i class="fa fa-star active"></i>
-                    <i class="fa fa-star active"></i>
-                    <input type="hidden" name="rank" value="5">
-                </div>
-                <div class="comment-input">
-                    <p>分享您的使用体验吧</p>
-                    <textarea name="content"></textarea>
-                    <div id="multi-image-box-<?=$goods->id?>" class="multi-image-box">
-                        <div class="add-item" data-grid="#multi-image-box-<?=$goods->id?>">
-                            <i class="fa fa-plus"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="input-radio">
-                    <span>匿名评价</span>
-                    <i class="fa toggle-box"></i>
-                </div>
-                <button class="btn">提交评价</button>
-                <input type="hidden" name="goods" value="<?=$goods->id?>">
-            </form>
-            <?php endforeach;?>
+            <CommentItem v-for="(item, index) in items" :key="index" :item="item" @commented="tapCommented(index)"/>
         </div>
     </div>
 </template>
-<script>
-export default {
-    data() {
-        return {
-            items: [
+<script lang="ts">
+import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import BackHeader from '@/components/BackHeader.vue';
+import { IOrderGoods } from '@/api/model';
+import { getUnCommentGoods } from '@/api/order';
+import CommentItem from './Child/CommentItem.vue';
 
-            ]
-        }
-    },
+@Component({
+    components: {
+        BackHeader,
+        CommentItem,
+    }
+})
+export default class Index extends Vue {
+    items: IOrderGoods[] = [];
+
     created() {
+        getUnCommentGoods(this.$route.query).then(res => {
+            if (!res.data || res.data.length < 1) {
+                this.tapBack();
+                return;
+            }
+            this.items = res.data;
+        });
+    }
 
-    },
-    methods: {
+    public tapBack() {
+        this.$router.back();
+    }
 
+    public tapCommented(i: number) {
+        if (this.items.length < 2) {
+            this.tapBack();
+            return;
+        }
+        this.items.splice(i, 1);
     }
 }
 </script>

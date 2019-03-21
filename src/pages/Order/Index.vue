@@ -8,7 +8,7 @@
 
             <div class="order-box">
                 <PullToRefresh :loading="is_loading" :more="has_more" @refresh="tapRefresh" @more="tapMore">
-                    <OrderItem v-for="(item, index) in items" :key="index" :item="item"/>
+                    <OrderItem v-for="(item, index) in items" :key="index" :item="item" @receive="tapReceive(item)" @cancel="tapCancel(item)"/>
                 </PullToRefresh>
             </div>
         </div>
@@ -20,8 +20,9 @@ import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import PullToRefresh from '@/components/PullToRefresh.vue';
 import { ORDER_STATUS, IOrder } from '@/api/model';
-import { getOrder } from '@/api/order';
+import { getOrder, receiveOrder, cancelOrder } from '@/api/order';
 import OrderItem from './Child/OrderItem.vue';
+import { MessageBox } from 'mint-ui';
 
 @Component({
     components: {
@@ -102,6 +103,36 @@ export default class Index extends Vue {
         }
         this.status = item.status;
         this.tapRefresh();
+    }
+
+    tapReceive(item: IOrder) {
+        MessageBox.confirm('确认取消此订单？').then(action => {
+            if (action !== 'confirm') {
+                return;
+            }
+            receiveOrder(item.id).then(res => {
+                this.refreshItem(res);
+            });
+        });
+    }
+
+    refreshItem(item: IOrder) {
+        for (let i = 0; i < this.items.length; i++) {
+            if (this.items[i].id = item.id) {
+                this.items[i] = item;
+            }
+        }
+    }
+
+    tapCancel(item: IOrder) {
+        MessageBox.confirm('确认取消此订单？').then(action => {
+            if (action !== 'cancel') {
+                return;
+            }
+            cancelOrder(item.id).then(res => {
+                this.refreshItem(res);
+            })
+        });
     }
 }
 </script>

@@ -39,6 +39,9 @@ import AddressEdit from '@/pages/Address/Edit.vue';
 import Coupon from '@/pages/Coupon/Index.vue';
 import CouponMy from '@/pages/Coupon/My.vue';
 
+import Comment from '@/pages/Comment/Index.vue';
+import CommentCreate from '@/pages/Comment/Create.vue';
+
 
 Vue.use(Router);
 
@@ -311,6 +314,24 @@ export default new Router({
             component: AddressEdit,
             meta: {
                 title: '编辑地址',
+                requireAuth: true,
+            },
+        },
+        {
+            path: '/comment',
+            name: 'comment',
+            component: Comment,
+            meta: {
+                title: '评价管理',
+                requireAuth: true,
+            },
+        },
+        {
+            path: '/comment/create',
+            name: 'comment-create',
+            component: CommentCreate,
+            meta: {
+                title: '评价晒单',
                 requireAuth: true,
             },
         },

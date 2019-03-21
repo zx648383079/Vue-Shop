@@ -65,6 +65,7 @@ import BackHeader from '@/components/BackHeader.vue';
 import { IOrder, ORDER_STATUS } from '@/api/model';
 import { Toast, MessageBox } from 'mint-ui';
 import { dispatchOrder } from '@/store/dispatches';
+import { receiveOrder, cancelOrder } from '@/api/order';
 
 @Component({
     components: {
@@ -107,13 +108,23 @@ export default class Detail extends Vue {
 
     tapReceive() {
         MessageBox.confirm('确认取消此订单？').then(action => {
-            console.log(action);
+            if (action !== 'confirm' || !this.order) {
+                return;
+            }
+            receiveOrder(this.order.id).then(res => {
+                this.order = res;
+            });
         });
     }
 
     tapCancel() {
-        MessageBox.confirm('Are you sure?').then(action => {
-            console.log(action);
+        MessageBox.confirm('确认取消此订单？').then(action => {
+            if (action !== 'confirm' || !this.order) {
+                return;
+            }
+            cancelOrder(this.order.id).then(res => {
+                this.order = res;
+            });
         });
     }
 }
