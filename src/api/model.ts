@@ -251,6 +251,7 @@ export interface IOrderCount {
 export interface IOrderGoods {
     id: number;
     name?: string;
+    status?: number;
     amount: number;
     price: number;
     goods_id: number;

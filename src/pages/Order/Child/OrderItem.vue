@@ -25,7 +25,8 @@
                 <a @click="tapOrder">详情</a>
                 <a @click="tapReceive" v-if="item.status == ORDER_STATUS.SHIPPED">确认收货</a>
                 <a @click="tapComment" v-if="item.status == ORDER_STATUS.RECEIVED">评价</a>
-                <a @click="tapRefund" v-if="item.status == ORDER_STATUS.SHIPPED || item.status == ORDER_STATUS.RECEIVED">退换货</a>
+                <a @click="tapRefund" v-if="item.status == ORDER_STATUS.SHIPPED || item.status == ORDER_STATUS.PAID_UN_SHIP">申请退款</a>
+                <a @click="tapRefund" v-if="item.status == ORDER_STATUS.RECEIVED">退换货</a>
                 <a @click="tapRefund" v-if="item.status == ORDER_STATUS.FINISH">售后</a>
                 <a @click="tapCancel" v-if="item.status == ORDER_STATUS.UN_PAY || item.status == ORDER_STATUS.PAID_UN_SHIP">取消</a>
             </div>
@@ -61,7 +62,7 @@ export default class Logistics extends Vue {
         if (!this.item) {
             return;
         }
-        this.$router.push({name: 'refund', params: {id: this.item.id + ''}});
+        this.$router.push({name: 'refund-create', params: {order: this.item.id + ''}});
     }
 
     public tapComment() {

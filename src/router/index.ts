@@ -45,6 +45,10 @@ import CouponMy from '@/pages/Coupon/My.vue';
 
 import Comment from '@/pages/Comment/Index.vue';
 import CommentCreate from '@/pages/Comment/Create.vue';
+
+import Refund from '@/pages/Refund/Index.vue';
+import RefundCreate from '@/pages/Refund/Create.vue';
+
 import CheckIn from '@/pages/CheckIn/Index.vue';
 
 import Affiliate from '@/pages/Affiliate/Index.vue';
@@ -376,6 +380,24 @@ export default new Router({
             component: CommentCreate,
             meta: {
                 title: '评价晒单',
+                requireAuth: true,
+            },
+        },
+        {
+            path: '/refund',
+            name: 'refund',
+            component: Refund,
+            meta: {
+                title: '售后管理',
+                requireAuth: true,
+            },
+        },
+        {
+            path: '/refund/create',
+            name: 'refund-create',
+            component: RefundCreate,
+            meta: {
+                title: '申请售后',
                 requireAuth: true,
             },
         },

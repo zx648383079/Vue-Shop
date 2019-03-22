@@ -12,6 +12,10 @@ export const receiveOrder = (id: number) => post<IOrder>('shop/order/receive', {
 
 export const cancelOrder = (id: number) => post<IOrder>('shop/order/cancel', {id});
 
+export const getRefundGoodsList = (params: any) => fetch<IPage<IOrderGoods>>('shop/refund', params);
+
+export const getRefundGoods = (params: any) => fetch<IData<IOrderGoods>>('shop/refund/goods', params);
+
 export const getCommentGoods = (params: any) => fetch<IPage<IOrderGoods>>('shop/order/comment', params);
 
 export const getUnCommentGoods = (params: any) => fetch<IData<IOrderGoods>>('shop/order/comment_goods', params);

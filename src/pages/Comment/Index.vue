@@ -29,10 +29,10 @@ import { getCommentGoods } from '@/api/order';
         BackHeader,
         PullToRefresh,
         GoodsItem,
-    }
+    },
 })
 export default class Index extends Vue {
-    status_list = [
+    public status_list = [
         {
             name: '待评价',
             status: 0
@@ -42,13 +42,13 @@ export default class Index extends Vue {
             status: 1
         },
     ];
-    items: IOrderGoods[] = [];
-    status = 0;
-    has_more = true;
-    page = 1;
-    is_loading = false;
+    public items: IOrderGoods[] = [];
+    public status = 0;
+    public has_more = true;
+    public page = 1;
+    public is_loading = false;
 
-    created() {
+    public created() {
         if (this.$route.query && this.$route.query.status) {
             this.status = parseInt(this.$route.query.status + '') || 0;
         }
@@ -93,7 +93,7 @@ export default class Index extends Vue {
         this.tapRefresh();
     }
 
-    tapComment(item:IOrderGoods) {
+    public tapComment(item:IOrderGoods) {
         this.$router.push({name: 'comment-create', query: {goods: item.id + ''}});
     }
 }

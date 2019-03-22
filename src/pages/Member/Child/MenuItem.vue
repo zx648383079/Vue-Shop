@@ -21,7 +21,9 @@ export default Vue.extend({
         tapGo() {
             if (this.uri) {
                 this.$router.push(this.uri);
+                return;
             }
+            this.$emit('click');
         },
     },
 })

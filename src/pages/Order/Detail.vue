@@ -50,7 +50,8 @@
                        <a @click="tapPay" v-if="order.status == ORDER_STATUS.UN_PAY">支付</a>
                         <a @click="tapReceive" v-if="order.status == ORDER_STATUS.SHIPPED">确认收货</a>
                         <a @click="tapComment" v-if="order.status == ORDER_STATUS.RECEIVED">评价</a>
-                        <a @click="tapRefund" v-if="order.status == ORDER_STATUS.SHIPPED || order.status == ORDER_STATUS.RECEIVED">退换货</a>
+                        <a @click="tapRefund" v-if="order.status == ORDER_STATUS.SHIPPED || order.status == ORDER_STATUS.PAID_UN_SHIP">申请退款</a>
+                        <a @click="tapRefund" v-if="order.status == ORDER_STATUS.RECEIVED">退换货</a>
                         <a @click="tapRefund" v-if="order.status == ORDER_STATUS.FINISH">售后</a>
                         <a @click="tapCancel" v-if="order.status == ORDER_STATUS.UN_PAY || order.status == ORDER_STATUS.PAID_UN_SHIP">取消</a>
                     </div>
@@ -99,7 +100,7 @@ export default class Detail extends Vue {
         if (!this.order) {
             return;
         }
-        this.$router.push({name: 'refund', params: {id: this.order.id + ''}});
+        this.$router.push({name: 'refund-create', params: {order: this.order.id + ''}});
     }
 
     public tapComment() {
