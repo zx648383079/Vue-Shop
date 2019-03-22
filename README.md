@@ -92,7 +92,7 @@
 
 ## 组件
 
-[√] 下拉刷新、加载更多
+[√] 下拉刷新、滑动加载更多
 
 [√] 左右滑动操作
 
@@ -100,6 +100,22 @@
 
 [√] 地区滑动选择
 
+## BUG
+
+```html
+<PullToRefresh :loading="is_loading" :more="has_more" @refresh="tapRefresh" @more="tapMore">
+</PullToRefresh>
+
+```
+
+下拉刷新如果提前知道无数据，那么需要伪造刷新请求，来完成此次刷新过程
+
+```ts
+this.is_loading = true;
+setTimeout(() => {
+    this.is_loading = false;
+}, 500);
+```
 ## 待完成
 
 [×] 商品活动

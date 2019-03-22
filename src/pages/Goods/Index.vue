@@ -189,6 +189,8 @@ import { Getter, Action } from 'vuex-class';
 import { addGoods } from '@/api/cart';
 import CommentPage from './Child/Page.vue';
 import { dispatchSetCart } from '@/store/dispatches';
+import { getLocalStorage, setLocalStorage } from '@/utils';
+import { SET_GOODS_HISTORY } from '@/store/types';
 
 @Component({
     components: {
@@ -215,7 +217,24 @@ export default class Index extends Vue {
             this.goods = res;
             this.loadComment();
             this.loadRecommend();
+            this.setHistory();
         });  
+    }
+
+    /**
+     * setHistory
+     */
+    public setHistory() {
+        if (!this.goods) {
+            return;
+        }
+        let data = getLocalStorage<number[]>(SET_GOODS_HISTORY, true);
+        if (!data) {
+            data = [this.goods.id];
+        } else if (data.indexOf(this.goods.id) < 0) {
+            data.push(this.goods.id);
+        }
+        setLocalStorage(SET_GOODS_HISTORY, data);
     }
 
     public loadComment() {

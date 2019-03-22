@@ -22,6 +22,7 @@ import Profile from '@/pages/Member/Profile.vue';
 import Login from '@/pages/Member/Login.vue';
 import Search from '@/pages/Search/Index.vue';
 import Product from '@/pages/Goods/Index.vue';
+import ProductHistory from '@/pages/Goods/History.vue';
 import ProductComment from '@/pages/Goods/Comment.vue';
 
 import Invoice from '@/pages/Invoice/Index.vue';
@@ -143,6 +144,14 @@ export default new Router({
             meta: {
                 title: '支付',
                 requireAuth: true,
+            },
+        },
+        {
+            path: '/product/history',
+            name: 'product-history',
+            component: ProductHistory,
+            meta: {
+                title: '浏览记录',
             },
         },
         {

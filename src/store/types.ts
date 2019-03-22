@@ -9,5 +9,7 @@ export const SET_PAYMENT = 'SET_PAYMENT';
 export const SET_SHIPPING_LIST = 'SET_SHIPPING_LIST';
 export const SET_ORDER = 'SET_ORDER';
 
+export const SET_GOODS_HISTORY = 'SET_GOODS_HISTORY';
+
 export const SET_USER = 'SET_USER'
 export const TOKEN_KEY = 'token'

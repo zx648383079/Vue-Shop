@@ -34,7 +34,7 @@ import Star from './Star.vue';
     },
 })
 export default class Page extends Vue {
-    @Prop(Object) readonly items?: IComment[];
+    @Prop(Array) readonly items?: IComment[];
     public star_list = [1, 2, 3, 4, 5];
 }
 </script>

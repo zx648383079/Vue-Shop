@@ -61,9 +61,11 @@ export default class Index extends Vue {
             if (!res.data) {
                 return;
             }
+            const days = [];
             for (const item of res.data) {
-                this.checkDay(new Date(item.created_at).getDate());
+                days.push(new Date(item.created_at).getDate());
             }
+            this.checkDay(...days);
         });
     }
 
@@ -101,12 +103,21 @@ export default class Index extends Vue {
     /**
      * checkDay
      */
-    public checkDay(day: number) {
-        for (const item of this.day_list) {
-            if (item.day && day === item.day) {
-                item.active = true;
+    public checkDay(...days: number[]) {
+        let len = days.length;
+        if (len < 1) {
+            return;
+        }
+        for (let i = 0; i < this.day_list.length; i++) {
+            if (this.day_list[i].day && days.indexOf(this.day_list[i].day) >= 0) {
+                this.day_list[i].active = true;
+                len --;
+            }
+            if (len < 1) {
+                break;
             }
         }
+        this.$forceUpdate();
     }
 
 }

@@ -121,10 +121,17 @@ export default class Index extends Vue {
 
     public refreshItem(item: IOrder) {
         for (let i = 0; i < this.items.length; i++) {
-            if (this.items[i].id = item.id) {
-                this.items[i] = item;
+            if (this.items[i].id !== item.id) {
+                continue;
             }
+            if (this.status > 0 && item.status !== this.status) {
+                this.items.splice(i, 1);
+                break;
+            }
+            this.items[i] = item;
+            break;
         }
+        this.$forceUpdate();
     }
 
     public tapCancel(item: IOrder) {

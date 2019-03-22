@@ -76,7 +76,7 @@
             <div class="menu-list">
                 <MenuItem title="签到" icon="fa-calendar-check" uri="/checkin"/>
                 <MenuItem title="我的收货地址" icon="fa-map-marker" uri="/address"/>
-                <MenuItem title="浏览历史" icon="fa-history" uri="/history"/>
+                <MenuItem title="浏览历史" icon="fa-history" uri="/product/history"/>
                 <MenuItem title="我的推荐" icon="fa-share" uri="/affiliate"/>
                 <MenuItem title="帮助" icon="fa-gift" uri="/article"/>
             </div>
