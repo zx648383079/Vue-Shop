@@ -135,7 +135,14 @@ export default class Edit extends Vue {
             return;
         }
         dispatchSetAddress(address);
-        this.$router.replace('/cashier');
+        if (this.back === 1) {
+            this.$router.replace('/cashier');
+            return;
+        }
+        if (this.back === 2) {
+            this.$router.back();
+            return;
+        }
     }
 }
 </script>

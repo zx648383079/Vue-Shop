@@ -58,7 +58,7 @@ export default class Index extends Vue {
 
     public created() {
         if (this.$route.query.selected) {
-            this.mode = 1;
+            this.mode = this.$route.query.back ? parseInt(this.$route.query.back + '') :1;
             this.selected = parseInt(this.$route.query.selected + '');
         }
         dispatchAddressList().then(res => {
@@ -79,7 +79,14 @@ export default class Index extends Vue {
         }
         this.selected = item.id;
         dispatchSetAddress(item);
-        this.$router.replace('/cashier');
+        if (this.mode === 1) {
+            this.$router.replace('/cashier');
+            return;
+        }
+        if (this.mode === 2) {
+            this.$router.back();
+            return;
+        }
     }
 
     public tapDefault(item: IAddress) {
