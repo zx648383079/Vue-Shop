@@ -12,8 +12,12 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.8.0",
+    "@types/js-cookie": "^2.2.1",
+    "@types/moment": "^2.13.0",
     "axios": "^0.18.0",
+    "js-cookie": "^2.2.0",
     "mint-ui": "^2.2.13",
+    "moment": "^2.24.0",
     "ts-md5": "^1.2.4",
     "vue": "^2.6.10",
     "vue-class-component": "^6.3.2",

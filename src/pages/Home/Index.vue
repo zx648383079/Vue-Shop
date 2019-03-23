@@ -40,23 +40,26 @@
         </div>
 
         <TabBar/>
+        <CartDialog :mode="mode" :product="goods" @close="mode = 0"/>
     </div>
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import TabBar from '@/components/TabBar.vue'
 import GoodsPanel from './Child/GoodsPanel.vue'
-import {getHome} from '../../api/product'
+import {getHome, getInfo} from '../../api/product'
 import {getCategories} from '../../api/category'
 import {getBanners} from '../../api/ad'
 import { IProduct, IAd, ICategory, IHomeProduct, ISubtotal } from '@/api/model';
 import { dispatchSubtotal } from '@/store/dispatches';
 import { Getter } from 'vuex-class';
+import CartDialog from '@/pages/Goods/Child/CartDialog.vue';
 
 @Component({
     components: {
         TabBar,
         GoodsPanel,
+        CartDialog,
     },
 })
 export default class Index extends Vue {
@@ -64,6 +67,8 @@ export default class Index extends Vue {
     public categories: ICategory[] = [];
     public data: IHomeProduct = {};
     public subtotal: ISubtotal| null = null;
+    public mode: number = 0;
+    public goods: IProduct | null = null;
 
     @Getter('isGuest') isGuest?: boolean;
 
@@ -93,7 +98,14 @@ export default class Index extends Vue {
     }
 
     public tapAddCart(item: IProduct) {
-        console.log(item);
+        if (this.goods && this.goods.id == item.id) {
+            this.mode = 1;
+            return;
+        }
+        getInfo(item.id).then(res => {
+            this.goods = res;
+            this.mode = 1;
+        }); 
     }
 
     public tapSearch() {

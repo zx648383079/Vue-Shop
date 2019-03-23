@@ -1,5 +1,5 @@
 <template>
-    <header class="top">
+    <header class="top" :class="{fixed: !this.fixed}">
         <a class="back" @click="tapBack">
             <i class="fa fa-chevron-left" aria-hidden="true"></i>
         </a>
@@ -18,6 +18,10 @@ export default Vue.extend({
     },
     props: {
         title: String,
+        fixed: {
+            type: Boolean,
+            default: true,
+        },
     },
     methods: {
         tapBack() {

@@ -13,6 +13,8 @@ export const dispatchAddress = (): Promise<IAddress> => store.dispatch('getAddre
 
 export const dispatchUser = (): Promise<IUser> => store.dispatch('getUser');
 
+export const dispatchSetToken = (token: string) => store.dispatch('setToken', token);
+
 export const dispatchLogin =
     (param: ILogin): Promise<IUser> => store.dispatch('loginUser', param);
 

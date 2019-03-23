@@ -37,7 +37,7 @@
             
 
             <div class="fixed-footer">
-                <button class="btn">立即支付</button> 
+                <button class="btn" @click="tapPay">立即支付</button> 
             </div>
         </div>
     </div>
@@ -45,10 +45,11 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
-import { IOrder, ORDER_STATUS, IPayment } from '@/api/model';
+import { IOrder, ORDER_STATUS, IPayment, IPrePay } from '@/api/model';
 import { Toast, MessageBox } from 'mint-ui';
 import { dispatchOrder } from '@/store/dispatches';
 import { getPaymentList } from '@/api/cart';
+import { payOrder } from '@/api/order';
 
 @Component({
     components: {
@@ -101,7 +102,40 @@ export default class Pay extends Vue {
         });
     }
 
+    tapPay() {
+        if (!this.payment || !this.order) {
+            Toast('请选择支付方式');
+            return;
+        }
+        payOrder(this.order.id, this.payment.id).then(res => {
+            if (res.data) {
+                this.doPay(res.data);
+            }
+        });
+    }
 
+    doPay(data: IPrePay) {
+        if (!this.order) {
+            return;
+        }
+        if (data.success) {
+            this.$router.replace('/order/' + this.order.id);
+            return;
+        }
+        if (data.url) {
+            window.location.href = data.url;
+            return;
+        }
+        if (data.html) {
+            const div = document.createElement('div');
+            div.innerHTML = data.html;
+            document.body.appendChild(div);
+            return;
+        }
+        if (data.params) {
+            
+        }
+    }
 }
 </script>
 <style lang="scss" scoped>

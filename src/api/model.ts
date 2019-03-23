@@ -265,6 +265,13 @@ export interface ICheckIn {
     type: number
 }
 
+export interface IPrePay {
+    success?: boolean,
+    url?: string,
+    html?: string,
+    params?: {[key: string]: string}
+}
+
 export enum ORDER_STATUS {
     CANCEL = 1,
     INVALID = 2,

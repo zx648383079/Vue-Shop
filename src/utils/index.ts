@@ -1,7 +1,53 @@
-export const apiEndpoint = 'http://zodream.localhost/open/'
-export const assetUri = 'http://zodream.localhost'
-export const appId = '11543906547'
-export const secret = '012e936d3d3653b40c6fc5a32e4ea685'
+import { Md5 } from 'ts-md5';
+import Cookies from 'js-cookie';
+import { Toast } from 'mint-ui';
+import { dispatchSetToken } from '@/store/dispatches';
+
+export const apiEndpoint = 'http://zodream.localhost/open/';
+export const assetUri = 'http://zodream.localhost';
+export const appId = '11543906547';
+export const secret = '012e936d3d3653b40c6fc5a32e4ea685';
+
+interface IAppParam {
+    appid: string,
+    timestamp: string,
+    sign: string,
+}
+
+export function getAuthUri(type: string, redirectUri: string): string {
+    const params = getAppParams();
+    return apiEndpoint + 'auth/oauth?appid=' + params.appid +
+     '&timestamp=' + params.timestamp + '&sign=' + params.sign +'&type=' +
+     type + '&redirect_uri=' +
+     encodeURIComponent(window.location.protocol + '//' +
+        window.location.hostname +
+        (window.location.port !== '80' ? ':' + window.location.port : '') +
+        window.location.pathname + '#') + redirectUri;
+}
+
+export function getAppParams(): IAppParam {
+    const timestamp = getCurrentTime();
+    const sign = Md5.hashStr(appId + timestamp + secret) + '';
+    return {
+        appid: appId,
+        timestamp,
+        sign,
+    };
+}
+
+export function checkTokenFromCookie() {
+    const key = appId + 'token';
+    const data = Cookies.getJSON(key);
+    if (!data) {
+        return;
+    }
+    Cookies.remove(key);
+    if (data.code !== 200) {
+        Toast(data.error);
+        return;
+    }
+    dispatchSetToken(data.token);
+}
 
 export function setLocalStorage(key: string, value: any) {
     let val = value;

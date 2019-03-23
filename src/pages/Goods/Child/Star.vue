@@ -8,7 +8,7 @@ import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 
 @Component
 export default class Star extends Vue {
-    @Prop(Number) readonly star?: number;
+    @Prop(Number) readonly star!: number;
     public star_list = [1, 2, 3, 4, 5];
 }
 </script>

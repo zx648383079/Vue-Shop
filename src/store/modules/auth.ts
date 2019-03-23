@@ -1,5 +1,5 @@
 import {
-    SET_USER, TOKEN_KEY,
+    SET_USER, TOKEN_KEY, SET_TOKEN,
 } from '../types';
 import {
     Commit,
@@ -10,6 +10,7 @@ import { getProfile, login, logout } from '@/api/user';
 
 
 export interface State {
+    token: string | null,
     user: IUser | null,
 };
 
@@ -22,6 +23,7 @@ interface IActionContext {
 // shape: [{ id, quantity }]
 const initState: State = {
     user: null,
+    token: null,
 };
 
 // getters
@@ -41,6 +43,21 @@ const getters = {
 
 // actions
 const actions = {
+    getToken(context: IActionContext) {
+        if (context.state.token) {
+            return context.state.token;
+        }
+        const token = getSessionStorage<string>(TOKEN_KEY);
+        if (!token) {
+            return token;
+        }
+        context.commit(SET_TOKEN, token);
+        return token;
+    },
+    setToken(context: IActionContext, token: string) {
+        context.commit(SET_TOKEN, token);
+        return token;
+    },
     getUser(context: IActionContext) {
         return new Promise((resolve, reject) => {
             if (context.state.user) {
@@ -60,7 +77,7 @@ const actions = {
     },
     loginUser(context: IActionContext, params: ILogin) {
         return login(params).then((res: IUser) => {
-            setSessionStorage(TOKEN_KEY, res.token);
+            context.commit(SET_TOKEN, res.token);
             context.commit(SET_USER, res);
         });
     },
@@ -73,7 +90,7 @@ const actions = {
             }
             logout().then(() => {
                 context.commit(SET_USER, null);
-                removeSessionStorage(TOKEN_KEY);
+                context.commit(SET_TOKEN, null);
                 resolve();
             }).catch(reject);
         });
@@ -84,6 +101,14 @@ const actions = {
 const mutations = {
     [SET_USER](state: State, user: IUser) {
         state.user = user;
+    },
+    [SET_TOKEN](state: State, token: string) {
+        state.token = token;
+        if (token) {
+            setSessionStorage(TOKEN_KEY, token);
+            return;
+        }
+        removeSessionStorage(TOKEN_KEY);
     },
 };
 

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <BackHeader title="个人中心">
+        <BackHeader title="个人中心" :fixed="isFixed">
             <a v-if="user" class="right" @click="tapLogout">
                 <i class="fa fa-sign-out-alt"></i>
             </a>
@@ -108,6 +108,7 @@ export default class Index extends Vue {
     public user: IUser | null = null;
     public ORDER_STATUS = ORDER_STATUS;
     public order_subtotal: IOrderCount = {};
+    public isFixed = false;
 
     public created() {
         dispatchUser().then(res => {
@@ -116,6 +117,25 @@ export default class Index extends Vue {
         getOrderSubtotal().then(res => {
             this.order_subtotal = res;
         });
+    }
+
+        /**
+     * name
+     */
+    public mounted(){
+        window.addEventListener('scroll', this.handleScroll);
+    }
+
+    public destroyed() {
+        window.removeEventListener('scroll', this.handleScroll);   //  离开页面清除（移除）滚轮滚动事件
+    }
+
+    /**
+     * handleScroll
+     */
+    public handleScroll() {
+        const top = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+        this.isFixed = top > 176;
     }
 
     public tapLogin() {

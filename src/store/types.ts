@@ -11,5 +11,6 @@ export const SET_ORDER = 'SET_ORDER';
 
 export const SET_GOODS_HISTORY = 'SET_GOODS_HISTORY';
 
-export const SET_USER = 'SET_USER'
-export const TOKEN_KEY = 'token'
+export const SET_USER = 'SET_USER';
+export const SET_TOKEN = 'SET_TOKEN';
+export const TOKEN_KEY = 'token';

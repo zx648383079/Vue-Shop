@@ -22,15 +22,17 @@
                 </PullToRefresh>
             </div>
         </div>
+        <CartDialog :mode="mode" :product="goods" @close="mode = 0"/>
     </div>
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
-import { getList } from '../../api/product';
+import { getList, getInfo } from '../../api/product';
 import PullToRefresh from '@/components/PullToRefresh.vue';
 import GoodsItem from '../Home/Child/GoodsItem.vue';
 import SearchBar from './Child/SearchBar.vue'
 import { IProduct } from '@/api/model';
+import CartDialog from '@/pages/Goods/Child/CartDialog.vue';
 
 interface ISearch {
     keywords: string,
@@ -44,6 +46,7 @@ interface ISearch {
         PullToRefresh,
         GoodsItem,
         SearchBar,
+        CartDialog,
     },
 })
 export default class Index extends Vue {
@@ -59,6 +62,8 @@ export default class Index extends Vue {
         brand: 0,
         page: 1,
     };
+    public mode: number = 0;
+    public goods: IProduct | null = null;
 
     public created() {
         this.isSearch = Object.keys(this.$route.query).length === 0;
@@ -104,7 +109,14 @@ export default class Index extends Vue {
         this.$router.push({name: 'product', params: {id: item.id + ''}});
     }
     public tapAddCart(item: IProduct) {
-        console.log(item);
+        if (this.goods && this.goods.id == item.id) {
+            this.mode = 1;
+            return;
+        }
+        getInfo(item.id).then(res => {
+            this.goods = res;
+            this.mode = 1;
+        }); 
     }
     public tapSearch(keywords: string) {
         this.searchParams.keywords = keywords;

@@ -1,10 +1,12 @@
-import { IOrder, IPage, IOrderCount, IOrderGoods, IData, IDataOne } from './model';
+import { IOrder, IPage, IOrderCount, IOrderGoods, IData, IDataOne, IPrePay } from './model';
 import { fetch, post } from '@/utils/http';
 
 
 export const getOrder = (params: any) => fetch<IPage<IOrder>>('shop/order', params);
 
 export const getOrderInfo = (id: number) => fetch<IOrder>('shop/order', {id});
+
+export const payOrder = (order: number, payment: number) => post<IDataOne<IPrePay>>('shop/pay', {order, payment});
 
 export const getOrderSubtotal = () => fetch<IOrderCount>('shop/order/count');
 

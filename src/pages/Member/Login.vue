@@ -25,10 +25,13 @@
                 <a @click="mode = 4">手机号快捷注册</a>
 
                 <div class="login-oauth-box">
-                    <a ><i class="fab fa-qq"></i></a>
-                    <a ><i class="fab fa-weixin"></i></a>
-                    <a ><i class="fab fa-weibo"></i></a>
-                    <a ><i class="fab fa-github"></i></a>
+                    <a @click="tapAuth('qq')"><i class="fab fa-qq"></i></a>
+                    <a @click="tapAuth('wx')"><i class="fab fa-weixin"></i></a>
+                    <a @click="tapAuth('weibo')"><i class="fab fa-weibo"></i></a>
+                    <a @click="tapAuth('github')"><i class="fab fa-github"></i></a>
+                    <a @click="tapAuth('zd')">
+                        <i class="fa fa-handshake"></i>
+                    </a>
                 </div>
             </div>
             <div class="login-box" v-if="mode > 0 && mode < 4">
@@ -52,6 +55,7 @@ import MobileCodeLogin from './Child/MobileCodeLogin.vue';
 import MobileRegister from './Child/MobileRegister.vue';
 import EmailLogin from './Child/EmailLogin.vue';
 import EmailRegister from './Child/EmailRegister.vue';
+import { getAuthUri } from '@/utils';
 
 @Component({
     components: {
@@ -80,6 +84,13 @@ export default class Login extends Vue {
             return;
         }
         this.$router.replace('/');
+    }
+
+    /**
+     * tapAuth
+     */
+    public tapAuth(type: string) {
+        window.location.href = getAuthUri(type, this.$route.query.redirect_uri ?this.$route.query.redirect_uri + '' : '');
     }
 }
 </script>

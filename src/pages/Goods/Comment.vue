@@ -5,29 +5,28 @@
                 <i class="fa fa-chevron-left" aria-hidden="true"></i>
             </a>
             <div class="top-tab">
-                <a >商品</a>
-                <a >详情</a>
-                <a href="#comments" class="active">评价</a>
-                <a >推荐</a>
+                <a @click="tapProductScroll('info')">商品</a>
+                <a @click="tapProductScroll('detail')">详情</a>
+                <a class="active">评价</a>
+                <a  @click="tapProductScroll('recommend')">推荐</a>
             </div>
         </header>
 
         <div class="has-header">
-
-            <div id="comments" class="comment-box"
-                v-infinite-scroll="loadMore"
-                infinite-scroll-disabled="is_loading"
-                infinite-scroll-distance="10">
-                <div class="comment-subtotal" v-if="comment">
-                    评分
-                    <Star :star="comment.avg"/>
-                    <span>{{ comment.favorable_rate }}%</span>好评
+            <PullToRefresh :loading="is_loading" :more="has_more" @refresh="tapRefresh" @more="tapMore">
+                <div id="comments" class="comment-box">
+                    <div class="comment-subtotal" v-if="comment">
+                        评分
+                        <Star :star="comment.avg"/>
+                        <span>{{ comment.favorable_rate }}%</span>好评
+                    </div>
+                    <div class="comment-stats" v-if="comment && comment.tags && comment.tags.length > 0">
+                        <a v-for="(item, index) in comment.tags" :key="index">{{ item.label }}（{{ item.count }}）</a>
+                    </div>
+                    <CommentPage :items="items"/>
                 </div>
-                <div class="comment-stats" v-if="comment && comment.tags && comment.tags.length > 0">
-                    <a v-for="(item, index) in comment.tags" :key="index">{{ item.label }}（{{ item.count }}）</a>
-                </div>
-                <CommentPage :items="items"/>
-            </div>
+            </PullToRefresh>
+            
         </div>
 
     </div>
@@ -38,15 +37,14 @@ import { IComment, ICommentSubtotal } from '@/api/model';
 import CommentPage from './Child/Page.vue';
 import { Toast } from 'mint-ui';
 import { getCommentSubtotal, getCommentList } from '@/api/comment';
-import { InfiniteScroll } from 'mint-ui';
+import PullToRefresh from '@/components/PullToRefresh.vue';
 import Star from './Child/Star.vue';
-
-Vue.use(InfiniteScroll);
 
 @Component({
     components: {
         CommentPage,
         Star,
+        PullToRefresh,
     },
 })
 export default class Comment extends Vue {
@@ -68,7 +66,7 @@ export default class Comment extends Vue {
         getCommentSubtotal(this.item_id).then(res => {
             this.comment = res;
         });
-        this.refresh();
+        this.tapRefresh();
     }
 
     public tapBack() {
@@ -79,14 +77,14 @@ export default class Comment extends Vue {
         this.$router.go(-1);
     }
 
-    public loadMore() {
+    public tapMore() {
         this.goPage( ++ this.page);
     }
 
     /**
      * refresh
      */
-    public refresh() {
+    public tapRefresh() {
         this.items = [];
         this.is_loading = false;
         this.has_more = true;
@@ -110,6 +108,13 @@ export default class Comment extends Vue {
             }
             this.items = [].concat(this.items as never[], res.data as never[]);
         });
+    }
+
+    /**
+     * tapProductScroll
+     */
+    public tapProductScroll(id: string) {
+        this.$router.replace({name: 'product', params: {id: this.item_id + ''}, hash: '#'+id});
     }
 }
 </script>

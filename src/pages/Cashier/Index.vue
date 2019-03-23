@@ -2,44 +2,47 @@
     <div>
         <BackHeader title="结算"/>
         <div class="has-header has-footer checkout-box">
-                <AddressLine :address="address" @click="tapAddress"/>
+            <AddressLine :address="address" @click="tapAddress"/>
 
-                <PaymentLine v-model="payment" :items="payment_list"/>
-                
-                <div class="goods-list" v-for="(item, index) in cart" :key="index">
-                    <div class="group-header">
-                        <span>{{ item.name }}</span>
+            <PaymentLine v-model="payment" :items="payment_list"/>
+            
+            <div class="goods-list" v-for="(item, index) in cart" :key="index">
+                <div class="group-header">
+                    <span>{{ item.name }}</span>
+                </div>
+                <div class="goods-item" v-for="(goods, i) in item.goods_list" :key="i">
+                    <div class="goods-img">
+                        <img :src="goods.goods.thumb" alt="">
                     </div>
-                    <div class="goods-item" v-for="(goods, i) in item.goods_list" :key="i">
-                        <div class="goods-img">
-                            <img :src="goods.goods.thumb" alt="">
-                        </div>
-                        <div class="goods-info">
-                            <h4>{{ goods.goods.name }}</h4>
-                            <span class="price">{{ goods.price | price }}</span>
-                            <span class="amount"> x {{ goods.amount }}</span>
-                        </div>
+                    <div class="goods-info">
+                        <h4>{{ goods.goods.name }}</h4>
+                        <span class="price">{{ goods.price | price }}</span>
+                        <span class="amount"> x {{ goods.amount }}</span>
                     </div>
-                    <ShippingLine v-model="shipping" :items="shipping_list"/>
-                    
                 </div>
+                <ShippingLine v-model="shipping" :items="shipping_list"/>
                 
+            </div>
 
-                <div class="checkout-amount" v-if="order">
-                    <p class="line-item"><span>商品总价</span> <span data-key="goods_amount">{{ order.goods_amount | price }}</span> </p>
-                    <p class="line-item"><span>+运费</span> <span data-key="shipping_fee">{{ order.shipping_fee | price }}</span> </p>
-                    <p class="line-item"><span>+支付手续费</span> <span data-key="pay_fee">{{ order.pay_fee | price }}</span> </p>
-                    <p class="line-item"><span>-优惠</span> <span data-key="discount">{{ order.discount | price }}</span> </p>
-                    <p class="line-item"><span>订单总价</span> <span data-key="order_amount">{{ order.order_amount | price }}</span> </p>
-                </div>
+            <InvoiceLine v-model="invoice"/>
+            <CouponLine v-model="coupon"/>
+            
 
-                <div class="address-tip" v-if="address">
-                    {{ address.region.full_name }} {{ address.address }}
-                </div>
-                <div class="checkout-footer" v-if="order">
-                    <span data-key="order_amount">{{ order.order_amount | price }}</span>
-                    <a @click="tapCheckout" class="btn">立即支付</a>
-                </div>
+            <div class="checkout-amount" v-if="order">
+                <p class="line-item"><span>商品总价</span> <span data-key="goods_amount">{{ order.goods_amount | price }}</span> </p>
+                <p class="line-item"><span>+运费</span> <span data-key="shipping_fee">{{ order.shipping_fee | price }}</span> </p>
+                <p class="line-item"><span>+支付手续费</span> <span data-key="pay_fee">{{ order.pay_fee | price }}</span> </p>
+                <p class="line-item"><span>-优惠</span> <span data-key="discount">{{ order.discount | price }}</span> </p>
+                <p class="line-item"><span>订单总价</span> <span data-key="order_amount">{{ order.order_amount | price }}</span> </p>
+            </div>
+
+            <div class="address-tip" v-if="address">
+                {{ address.region.full_name }} {{ address.address }}
+            </div>
+            <div class="checkout-footer" v-if="order">
+                <span data-key="order_amount">{{ order.order_amount | price }}</span>
+                <a @click="tapCheckout" class="btn">立即支付</a>
+            </div>
         </div>
     </div>
 </template>
@@ -52,6 +55,8 @@ import { Getter } from 'vuex-class';
 import AddressLine from './Child/AddressLine.vue';
 import PaymentLine from './Child/PaymentLine.vue';
 import ShippingLine from './Child/ShippingLine.vue';
+import InvoiceLine from './Child/InvoiceLine.vue';
+import CouponLine from './Child/CouponLine.vue';
 import { getPaymentList, previewOrder, getShippingList, checkoutOrder } from '@/api/cart';
 
 interface ICartBox {
@@ -65,6 +70,8 @@ interface ICartBox {
         AddressLine,
         PaymentLine,
         ShippingLine,
+        CouponLine,
+        InvoiceLine,
     },
 })
 export default class Index extends Vue {
@@ -77,6 +84,8 @@ export default class Index extends Vue {
     public shipping_list: IShipping[] = [];
     public shipping: IShipping| null = null;
     public cart_box: ICartBox | null = null;
+    public invoice = null;
+    public coupon = null;
 
     public created() {
         if (!this.cart || this.cart.length < 1) {

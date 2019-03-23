@@ -5,10 +5,7 @@
                 <i class="fa fa-chevron-left" aria-hidden="true"></i>
             </a>
             <div class="top-tab">
-                <a href="#info" class="active">商品</a>
-                <a href="#detail">详情</a>
-                <a href="#comments">评价</a>
-                <a href="#recommend">推荐</a>
+                <a v-for="(item, index) in tabMenus" :key="index" @click="tapScroll(item.id)" :class="{active: item.id == tabIndex}">{{ item.name }}</a>
             </div>
         </header>
 
@@ -145,37 +142,7 @@
             </a>
         </footer>
 
-        <div class="cart-dialog" v-if="mode > 0" @click="mode = 0">
-            <div class="dialog-body" @click.stop>
-                <div class="dialog-header">
-                    <img :src="goods.thumb" alt="">
-                    <p class="price">{{ goods.price }}</p>
-                    <p class="stock">库存：{{ goods.stock }}</p>
-                    <p class="selected-property"></p>
-                    <i class="fa fa-times dialog-close" @click="mode = 0"></i>
-                </div>
-                <div class="property-box">
-                    <div v-for="(item, index) in goods.properties" :key="index" :class="['group', item.type == 2 ? ' multi-group' : '']">
-                        <div class="group-header">{{ item.name }}</div>
-                        <div class="group-body">
-                            <span v-for="(attr, i) in item.attr_items" :key="i">{{ attr.value }}</span>
-                        </div>
-                    </div>
-
-                    <div class="count-box">
-                        <span>数量</span>
-                        <div class="number-box">
-                            <i class="fa fa-minus" @click="tapMinus"></i>
-                            <input type="text" class="number-input" v-model="amount" @change="tapChangeAmount">
-                            <i class="fa fa-plus" @click="tapPlus"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="dialog-footer">
-                    <a @click="tapDoCart" class="dailog-yes">确认</a>
-                </div>
-            </div>
-        </div>
+        <CartDialog :mode="mode" :product="goods" @close="mode = 0"/>
     </div>
 </template>
 <script lang="ts">
@@ -191,10 +158,12 @@ import CommentPage from './Child/Page.vue';
 import { dispatchSetCart } from '@/store/dispatches';
 import { getLocalStorage, setLocalStorage } from '@/utils';
 import { SET_GOODS_HISTORY } from '@/store/types';
+import CartDialog from './Child/CartDialog.vue';
 
 @Component({
     components: {
         CommentPage,
+        CartDialog,
     },
 })
 export default class Index extends Vue {
@@ -205,6 +174,25 @@ export default class Index extends Vue {
     public comment: ICommentSubtotal | null = null;
     public items: IProduct[] = [];
     @Getter('isGuest') isGuest?: boolean;
+    public tabMenus = [
+        {
+            id: 'info',
+            name: '商品'
+        },
+        {
+            id: 'detail',
+            name: '详情'
+        },
+        {
+            id: 'comments',
+            name: '评价'
+        },
+        {
+            id: 'recommend',
+            name: '推荐'
+        },
+    ];
+    public tabIndex = 'info';
 
     public created() {
         const id = parseInt(this.$route.params.id);
@@ -218,7 +206,39 @@ export default class Index extends Vue {
             this.loadComment();
             this.loadRecommend();
             this.setHistory();
+            if (this.$route.hash) {
+                this.tapScroll(this.$route.hash.replace('#', ''));
+            }
         });  
+    }
+
+    /**
+     * name
+     */
+    public mounted(){
+        window.addEventListener('scroll', this.handleScroll);
+    }
+
+    public destroyed() {
+        window.removeEventListener('scroll', this.handleScroll);   //  离开页面清除（移除）滚轮滚动事件
+    }
+
+    /**
+     * handleScroll
+     */
+    public handleScroll() {
+        const top = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+        for (const item of this.tabMenus) {
+            const ele = document.getElementById(item.id);
+            if (!ele) {
+                continue;
+            }
+            const y = ele.offsetTop;
+            if (y <= top && top < y + ele.offsetHeight) {
+                this.tabIndex = item.id;
+                return;
+            }
+        }
     }
 
     /**
@@ -273,6 +293,14 @@ export default class Index extends Vue {
         this.$router.push({name: 'product-comment', params: {id: this.goods.id + ''}});
     }
 
+    public tapScroll(id: string) {
+        const ele = document.getElementById(id);
+        if (ele) {
+            ele.scrollIntoView();
+            this.tabIndex = id;
+        }
+    }
+
     public tapProduct(item: IProduct) {
         this.$router.push({name: 'product', params: {id: item.id + ''}});
     }
@@ -283,32 +311,6 @@ export default class Index extends Vue {
 
     public tapBuy() {
         this.mode = 2;
-    }
-
-    public getStock(): number {
-        if (!this.goods) {
-            return 1;
-        }
-        return this.goods.stock as number;
-    }
-
-    public tapMinus() {
-        this.amount = Math.max(this.amount - 1, 1);
-    }
-
-    public tapChangeAmount() {
-        if (this.amount < 1) {
-            this.amount = 1;
-            return;
-        }
-        const stock = this.getStock();
-        if (this.amount > stock) {
-            this.amount = stock;
-        }
-    }
-
-    public tapPlus() {
-        this.amount = Math.min(this.amount + 1, this.getStock());
     }
 
     public tapCollect() {
@@ -323,35 +325,6 @@ export default class Index extends Vue {
                 return;
             }
             this.goods.is_collect = res.data;
-        });
-    }
-
-    public tapDoCart() {
-        if (!this.goods) {
-            return;
-        }
-        if (this.mode == 1) {
-            addGoods(this.goods.id, this.amount).then(res => {
-                Toast('已成功加入购物车');
-                this.mode = 0;
-            });
-            return;
-        }
-        const data: ICart[] = [
-            {
-                name: this.goods.shop + '',
-                goods_list: [
-                    {
-                        goods_id: this.goods.id,
-                        amount: this.amount,
-                        goods: this.goods,
-                        price: this.goods.price
-                    }
-                ]
-            }
-        ];
-        dispatchSetCart(data).then(() => {
-            this.$router.push('/cashier');
         });
     }
 }
