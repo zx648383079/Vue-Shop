@@ -15,7 +15,7 @@
                 </div>
             </header>
             <div class="has-header">
-                <PullToRefresh :loading="is_loading" :more="has_more"   @refresh="tapRefresh" @more="tapMore">
+                <PullToRefresh :loading="isLoading" :more="has_more"   @refresh="tapRefresh" @more="tapMore">
                     <div class="goods-list">
                         <GoodsItem v-for="(item, index) in items" :key="index" @enter="tapProduct" :item="item" @addCart="tapAddCart"></GoodsItem>
                     </div>
@@ -55,7 +55,7 @@ export default class Index extends Vue {
     public isSearch = true;
     public keywords = '';
     public has_more = true;
-    public is_loading = false;
+    public isLoading = false;
     public searchParams: ISearch = {
         keywords: '',
         category: 0,
@@ -85,10 +85,10 @@ export default class Index extends Vue {
     }
 
     public goPage(page: number) {
-        if (this.is_loading) {
+        if (this.isLoading) {
             return;
         }
-        this.is_loading = true;
+        this.isLoading = true;
         getList({
             page: page,
             keywords: this.searchParams.keywords,
@@ -97,7 +97,7 @@ export default class Index extends Vue {
         }).then(res => {
             this.searchParams.page = page;
             this.has_more = res.paging.more;
-            this.is_loading = false;
+            this.isLoading = false;
             if (page < 2) {
                 this.items = res.data;
                 return;

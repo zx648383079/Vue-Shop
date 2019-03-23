@@ -6,7 +6,7 @@
             </a>
         </BackHeader>
         <div class="has-header">
-            <PullToRefresh :loading="is_loading" :more="has_more" @refresh="tapRefresh" @more="tapMore">
+            <PullToRefresh :loading="isLoading" :more="has_more" @refresh="tapRefresh" @more="tapMore">
                 <div class="card-item" v-for="(item, index) in items" :key="index">
                     <div class="icon">
                         <img :src="item.icon" alt="">
@@ -45,7 +45,7 @@ export default class Card extends Vue {
     public items: ICard[] = [];
     public has_more = true;
     public page = 1;
-    public is_loading = false;
+    public isLoading = false;
 
     public created() {
         this.tapRefresh();
@@ -60,22 +60,22 @@ export default class Card extends Vue {
      */
     public tapRefresh() {
         this.items = [];
-        this.is_loading = false;
+        this.isLoading = false;
         this.has_more = true;
         this.goPage(this.page = 1);
     }
 
     public goPage(page: number) {
-        if (this.is_loading || !this.has_more) {
+        if (this.isLoading || !this.has_more) {
             return;
         }
-        this.is_loading = true;
+        this.isLoading = true;
         getBankCardList({
             page,
         }).then(res => {
             this.page = page;
             this.has_more = res.paging.more;
-            this.is_loading = false;
+            this.isLoading = false;
             if (!res.data) {
                 return;
             }

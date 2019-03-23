@@ -6,7 +6,7 @@
             </a>
         </BackHeader>
         <div class="has-header collect-page">
-            <PullToRefresh :loading="is_loading" :more="has_more" @refresh="tapRefresh" @more="tapMore">
+            <PullToRefresh :loading="isLoading" :more="has_more" @refresh="tapRefresh" @more="tapMore">
                 <div class="swipe-box goods-list">
                     <SwipeRow name="goods-item" v-for="(item, index) in items" :key="index" @remove="tapRemove(item)" :index="index" ref="swiperow">
                         <div class="goods-img">
@@ -48,7 +48,7 @@ export default class Index extends Vue {
 
     public has_more = true;
     public page = 1;
-    public is_loading = false;
+    public isLoading = false;
     public goodsId: number[] = [];
 
     public created() {
@@ -73,7 +73,7 @@ export default class Index extends Vue {
             this.goodsId = [];
             this.items = [];
             this.has_more = false;
-            this.is_loading = false;
+            this.isLoading = false;
             removeLocalStorage(SET_GOODS_HISTORY);
         });
     }
@@ -87,14 +87,14 @@ export default class Index extends Vue {
      */
     public tapRefresh() {
         this.items = [];
-        this.is_loading = false;
+        this.isLoading = false;
         this.has_more = true;
         this.goodsId = getLocalStorage<number[]>(SET_GOODS_HISTORY, true);
         if (!this.goodsId || this.goodsId.length < 1) {
             this.has_more = false;
-            this.is_loading = true;
+            this.isLoading = true;
             setTimeout(() => {
-                this.is_loading = false;
+                this.isLoading = false;
             }, 500);
             return;
         }
@@ -102,16 +102,16 @@ export default class Index extends Vue {
     }
 
     public goPage(page: number) {
-        if (this.is_loading || !this.has_more) {
+        if (this.isLoading || !this.has_more) {
             return;
         }
-        this.is_loading = true;
+        this.isLoading = true;
         getList({
             id: this.goodsId,
             page,
         }).then(res => {
             this.has_more = res.paging.more;
-            this.is_loading = false;
+            this.isLoading = false;
             if (!res.data) {
                 return;
             }

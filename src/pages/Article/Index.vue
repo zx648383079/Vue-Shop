@@ -10,7 +10,7 @@
                 </ul>
                 <a @click="isExpand = !isExpand" class="fa nav-arrow"></a>
             </div>
-            <PullToRefresh :loading="is_loading" :more="has_more" @refresh="tapRefresh" @more="tapMore">
+            <PullToRefresh :loading="isLoading" :more="has_more" @refresh="tapRefresh" @more="tapMore">
                 <ArticleItem :items="items"/>
             </PullToRefresh>
         </div>
@@ -39,7 +39,7 @@ export default class Index extends Vue {
     public isExpand: boolean = false;
     public has_more = true;
     public page = 1;
-    public is_loading = false;
+    public isLoading = false;
 
     public created() {
         if (this.$route.query.category) {
@@ -81,16 +81,16 @@ export default class Index extends Vue {
     }
 
     public goPage(page: number) {
-        if (this.is_loading) {
+        if (this.isLoading) {
             return;
         }
-        this.is_loading = true;
+        this.isLoading = true;
         getArticleList({
             category: this.category,
             page: page,
         }).then(res => {
             this.page = page;
-            this.is_loading = false;
+            this.isLoading = false;
             if (this.page < 2) {
                 this.items = res.data as never[];
                 return;

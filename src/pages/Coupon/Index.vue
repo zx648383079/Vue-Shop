@@ -11,7 +11,7 @@
                 <a @click="isExpand = !isExpand" class="fa nav-arrow"></a>
             </div>
 
-            <PullToRefresh :loading="is_loading" :more="has_more" @refresh="tapRefresh" @more="tapMore">
+            <PullToRefresh :loading="isLoading" :more="has_more" @refresh="tapRefresh" @more="tapMore">
                 <div class="coupon-item" v-for="(item, index) in items" :key="index">
                     <div class="thumb">
                         <img src="<?=$item->thumb?>" alt="">
@@ -70,7 +70,7 @@ export default class Index extends Vue {
     public isExpand: boolean = false;
     public has_more = true;
     public page = 1;
-    public is_loading = false;
+    public isLoading = false;
 
     public created() {
         dispatchCategories().then(res => {
@@ -90,13 +90,13 @@ export default class Index extends Vue {
     }
 
     public goPage(page: number) {
-        if (this.is_loading) {
+        if (this.isLoading) {
             return;
         }
-        this.is_loading = true;
+        this.isLoading = true;
         setTimeout(() => {
             this.page = page;
-            this.is_loading = false;
+            this.isLoading = false;
             const data = [1,2,3,4,5,6,7];
             if (this.page < 2) {
                 this.items = data as never[];

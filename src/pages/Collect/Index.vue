@@ -2,7 +2,7 @@
     <div>
         <BackHeader :title="$route.meta.title"/>
         <div class="has-header collect-page">
-            <PullToRefresh :loading="is_loading" :more="has_more" @refresh="tapRefresh" @more="tapMore">
+            <PullToRefresh :loading="isLoading" :more="has_more" @refresh="tapRefresh" @more="tapMore">
                 <div class="swipe-box goods-list">
                     <SwipeRow name="goods-item" v-for="(item, index) in filterItems" :key="index" @remove="tapRemove(item, index)" :index="index" ref="swiperow">
                         <div class="goods-img">
@@ -41,7 +41,7 @@ export default class Index extends Vue {
 
     public has_more = true;
     public page = 1;
-    public is_loading = false;
+    public isLoading = false;
 
 
     get filterItems(): ICollect[] {
@@ -71,21 +71,21 @@ export default class Index extends Vue {
      */
     public tapRefresh() {
         this.items = [];
-        this.is_loading = false;
+        this.isLoading = false;
         this.has_more = true;
         this.goPage(this.page = 1);
     }
 
     public goPage(page: number) {
-        if (this.is_loading || !this.has_more) {
+        if (this.isLoading || !this.has_more) {
             return;
         }
-        this.is_loading = true;
+        this.isLoading = true;
         getCollect({
             page,
         }).then(res => {
             this.has_more = res.paging.more;
-            this.is_loading = false;
+            this.isLoading = false;
             if (!res.data) {
                 return;
             }

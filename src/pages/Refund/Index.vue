@@ -7,7 +7,7 @@
             </div>
 
             <div class="order-box">
-                <PullToRefresh :loading="is_loading" :more="has_more" @refresh="tapRefresh" @more="tapMore">
+                <PullToRefresh :loading="isLoading" :more="has_more" @refresh="tapRefresh" @more="tapMore">
                     <div class="goods-list">
                         <div class="goods-item" v-for="(item, index) in items" :key="index">
                             <div class="goods-img">
@@ -57,7 +57,7 @@ export default class Index extends Vue {
     public status = 0;
     public has_more = true;
     public page = 1;
-    public is_loading = false;
+    public isLoading = false;
 
     public created() {
         if (this.$route.query && this.$route.query.status) {
@@ -78,16 +78,16 @@ export default class Index extends Vue {
     }
 
     public goPage(page: number) {
-        if (this.is_loading) {
+        if (this.isLoading) {
             return;
         }
-        this.is_loading = true;
+        this.isLoading = true;
         getRefundGoodsList({
             status: this.status,
             page,
         }).then(res => {
             this.has_more = res.paging.more;
-            this.is_loading = false;
+            this.isLoading = false;
             if (this.page < 2) {
                 this.items = res.data as never[];
                 return;

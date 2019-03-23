@@ -8,25 +8,51 @@
 
 [√] 首页
 
+![](screen/1.png)
+![](screen/9.png)
+
 [√] 分类页
+
+![](screen/4.png)
 
 [√] 搜索页
 
+![](screen/2.png)
+![](screen/3.png)
+
 [√] 商品详情页
+
+![](screen/25.png)
 
 [√] 商品评论显示页
 
+![](screen/26.png)
+
 [√] 购物车页
+
+![](screen/5.png)
+![](screen/10.png)
 
 [√] 结算页
 
+![](screen/11.png)
+![](screen/12.png)
+
 [√] 支付页
 
+![](screen/13.png)
+
 [√] 个人中心页
+
+![](screen/6.png)
+![](screen/15.png)
+![](screen/24.png)
 
 [√] 浏览记录页
 
 [√] 个人账户页（包含提现、充值弹窗）
+
+![](screen/17.png)
 
 [√] 个人账户记录页
 
@@ -46,9 +72,16 @@
 
 [√] 登录注册页
 
+![](screen/7.png)
+![](screen/8.png)
+
 [√] 订单列表页
 
+![](screen/16.png)
+
 [√] 订单详情页
+
+![](screen/14.png)
 
 [√] 商品收藏页
 
@@ -56,11 +89,19 @@
 
 [√] 账号关联页
 
+![](screen/22.png)
+
 [√] 个人信息页
+
+![](screen/23.png)
 
 [√] 收货地址页
 
+![](screen/18.png)
+
 [√] 收货地址编辑页
+
+![](screen/19.png)
 
 [√] 评论商品页
 
@@ -71,6 +112,8 @@
 [√] 退换货申请页
 
 [√] 文章列表页
+
+![](screen/20.png)
 
 [√] 文章分类页
 
@@ -92,6 +135,8 @@
 
 [√] 签到页
 
+![](screen/21.png)
+
 ## 组件
 
 [√] 下拉刷新、滑动加载更多
@@ -105,7 +150,7 @@
 ## BUG
 
 ```html
-<PullToRefresh :loading="is_loading" :more="has_more" @refresh="tapRefresh" @more="tapMore">
+<PullToRefresh :loading="isLoading" :more="has_more" @refresh="tapRefresh" @more="tapMore">
 </PullToRefresh>
 
 ```
@@ -113,9 +158,9 @@
 下拉刷新如果提前知道无数据，那么需要伪造刷新请求，来完成此次刷新过程
 
 ```ts
-this.is_loading = true;
+this.isLoading = true;
 setTimeout(() => {
-    this.is_loading = false;
+    this.isLoading = false;
 }, 500);
 ```
 ## 待完成

@@ -4,7 +4,7 @@
         <div class="has-header">
             <div class="box"
                 v-infinite-scroll="loadMore"
-                infinite-scroll-disabled="is_loading"
+                infinite-scroll-disabled="isLoading"
                 infinite-scroll-distance="10">
                 
                 <div v-for="(item, index) in itemGroups" :key="index" :class="item.id ? 'log-item' : ''">
@@ -43,7 +43,7 @@ export default class Log extends Vue {
     public items: IAccountLog[] = [];
     public has_more = true;
     public page = 1;
-    public is_loading = false;
+    public isLoading = false;
 
     get itemGroups(): IAccountLog[] {
         const data = [];
@@ -78,21 +78,21 @@ export default class Log extends Vue {
      */
     public refresh() {
         this.items = [];
-        this.is_loading = false;
+        this.isLoading = false;
         this.has_more = true;
         this.goPage(this.page = 1);
     }
 
     public goPage(page: number) {
-        if (this.is_loading || !this.has_more) {
+        if (this.isLoading || !this.has_more) {
             return;
         }
-        this.is_loading = true;
+        this.isLoading = true;
         getAccountLog({
             page,
         }).then(res => {
             this.has_more = res.paging.more;
-            this.is_loading = false;
+            this.isLoading = false;
             if (!res.data) {
                 return;
             }
