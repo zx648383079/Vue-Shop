@@ -1,7 +1,6 @@
 import axios from 'axios';
 import router from '@/router'
 import { Toast } from 'mint-ui'
-import { Md5 } from 'ts-md5';
 import * as util from './'
 import { TOKEN_KEY } from '@/store/types'
 
@@ -38,18 +37,6 @@ axios.interceptors.request.use(
 // http response 拦截器
 axios.interceptors.response.use(
     (response) => {
-        if (response.data.errCode === 2) {
-            router.push({
-                path: '/login',
-                query: {
-                    redirect: router.currentRoute.fullPath,
-                }, // 从哪个页面跳转
-            })
-            Toast({
-                message: response.data.Message,
-                position: 'bottom',
-            })
-        }
         return response
     },
     (error) => {
@@ -124,7 +111,7 @@ export function patch<T>(url: string, data = {}): Promise<T> {
 }
 
 export function deleteRequest<T>(url: string): Promise<T> {
-    return new Promise((resolve, reject) => {
+    return new Promise<T>((resolve, reject) => {
         axios.delete(url)
             .then((response) => {
                 resolve(response.data)
@@ -140,8 +127,8 @@ export function deleteRequest<T>(url: string): Promise<T> {
  * @param data
  * @returns {Promise}
  */
-export function put(url: string, data = {}) {
-    return new Promise((resolve, reject) => {
+export function put<T>(url: string, data = {}): Promise<T> {
+    return new Promise<T>((resolve, reject) => {
         axios.put(url, data)
             .then((response) => {
                 resolve(response.data)
