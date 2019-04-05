@@ -14,21 +14,18 @@
             <PullToRefresh :loading="isLoading" :more="has_more" @refresh="tapRefresh" @more="tapMore">
                 <div class="coupon-item" v-for="(item, index) in items" :key="index">
                     <div class="thumb">
-                        <img src="<?=$item->thumb?>" alt="">
+                        <img :src="item.thumb" alt="">
                     </div>
                     <div class="info">
-                        <p><?=$item->name?></p>
-                        <?php if($item->type > 0):?>
-                        <dl class="discount">
+                        <p>{{item.name }}</p>
+                        <dl class="discount" v-if="item.type > 0">
                             <dd>8.8折</dd>
                             <dt>满168可用</dt>
                         </dl>
-                        <?php else:?>
-                        <div class="price">
+                        <div class="price" v-else>
                             <em>¥300</em>
                             满168可用
                         </div>
-                        <?php endif;?>
                     </div>
                     <div class="action">
                         <span class="status-icon">立即<br>领取</span>

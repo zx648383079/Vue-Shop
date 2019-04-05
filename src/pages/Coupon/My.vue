@@ -9,35 +9,19 @@
             </div>
 
             <div>
-                <?php foreach($coupon_list as $item):?>
-                    <div class="my-coupon-item">
-                        <div class="price">
-                            <em>¥300</em>
-                            <p>满168可用</p>
-                        </div>
-                        <div class="info">
-                            <p><?=$item->name?></p>
-                            <div class="time">
-                                <span>2018.12.01-2018.12.01</span>
-                                <a href="">立即使用</a>
-                            </div>
+                <div class="my-coupon-item" v-for="(item, index) in items" :key="index" :calss="{expired: item.expired}">
+                    <div class="price">
+                        <em>¥300</em>
+                        <p>满168可用</p>
+                    </div>
+                    <div class="info">
+                        <p>{{ item.name }}</p>
+                        <div class="time">
+                            <span>2018.12.01-2018.12.01</span>
+                            <a href="" v-if="!item.expired">立即使用</a>
                         </div>
                     </div>
-                <?php endforeach;?>
-                <?php foreach($coupon_list as $item):?>
-                    <div class="my-coupon-item expired">
-                        <div class="price">
-                            <em>¥300</em>
-                            <p>满168可用</p>
-                        </div>
-                        <div class="info">
-                            <p><?=$item->name?></p>
-                            <div class="time">
-                                <span>2018.12.01-2018.12.01</span>
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach;?>
+                </div>
             </div>
         </div>
 

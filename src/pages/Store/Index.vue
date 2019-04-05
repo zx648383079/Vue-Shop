@@ -37,20 +37,18 @@
             <div class="store-body">
 
                 <div class="goods-list">
-                    <?php foreach($new_list as $item):?>
-                    <div class="item-view">
+                    <div class="item-view" v-for="(item, index) in items" :key="index">
                         <div class="item-img">
-                            <a href="<?=$this->url('./mobile/goods', ['id' => $item->id])?>"><img src="<?=$item->thumb?>" alt=""></a>
+                            <a ><img :src="item.thumb" alt=""></a>
                         </div>
                         <div class="item-title">
-                            <?=$item->name?>
+                            {{item.name}}
                         </div>
                         <div class="item-actions">
-                            <span class="item-price"><?=$item->price?></span>
+                            <span class="item-price">{{item.price}}</span>
                             <span>加入购物车</span>
                         </div>
                     </div>
-                    <?php endforeach;?>
                 </div>
 
             </div>
@@ -59,10 +57,11 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { IProduct } from '../../api/model';
 
 @Component
 export default class Index extends Vue {
-
+    items: IProduct[] = [];
 }
 </script>
 <style lang="scss" scoped>
