@@ -109,7 +109,7 @@ export default class Index extends Vue {
             return;
         }
         for (let i = 0; i < this.day_list.length; i++) {
-            if (this.day_list[i].day && days.indexOf(this.day_list[i].day) >= 0) {
+            if (this.day_list[i].day && days.indexOf(this.day_list[i].day as number) >= 0) {
                 this.day_list[i].active = true;
                 len --;
             }

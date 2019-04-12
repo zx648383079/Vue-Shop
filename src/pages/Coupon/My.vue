@@ -26,7 +26,7 @@
         </div>
 
         <footer class="tab-bar">
-            <a @click="$router.push('/coupon')">
+            <a @click="$router.replace('/coupon')">
                 <i class="fa fa-gift" aria-hidden="true"></i>
                 领券
             </a>
@@ -47,7 +47,11 @@ import BackHeader from '@/components/BackHeader.vue';
     },
 })
 export default class My extends Vue {
-
+    public status: number = 0;
+    public items = [];
+    public has_more = true;
+    public page = 1;
+    public isLoading = false;
 }
 </script>
 <style lang="scss" scoped>

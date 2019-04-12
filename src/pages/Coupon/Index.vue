@@ -5,7 +5,7 @@
             <div :class="['scroll-nav', isExpand ? 'unfold' : '']">
                 <ul>
                     <li v-for="(item, index) in categories" :key="index">
-                            <a href="">{{ item.name }}</a>
+                            <a @click="tapCategory(item)">{{ item.name }}</a>
                     </li>
                 </ul>
                 <a @click="isExpand = !isExpand" class="fa nav-arrow"></a>
@@ -40,7 +40,7 @@
                 <i class="fa fa-gift" aria-hidden="true"></i>
                 领券
             </a>
-            <a @click="$router.push('/coupon/my')">
+            <a @click="$router.replace('/coupon/my')">
                 <i class="fa fa-user" aria-hidden="true"></i>
                 我的优惠券
             </a>
@@ -73,6 +73,13 @@ export default class Index extends Vue {
         dispatchCategories().then(res => {
             this.categories = res;
         });
+    }
+
+    /**
+     * tapCategory
+     */
+    public tapCategory(item: ICategory) {
+        this.status = item.id;
     }
 
     public tapRefresh() {
