@@ -43,7 +43,7 @@ import { getHotKeywords, getTips } from '@/api/product';
     }
 })
 export default class SearchBar extends Vue {
-    @Prop(String) readonly value?: string;
+    @Prop(String) readonly value!: string;
 
     hot_keywords?: string[] = [];
     tip_list?: string[] = [];

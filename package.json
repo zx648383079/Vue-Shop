@@ -11,7 +11,7 @@
     "test:e2e": "vue-cli-service test:e2e"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.8.0",
+    "@fortawesome/fontawesome-free": "^5.8.1",
     "@types/js-cookie": "^2.2.2",
     "@types/moment": "^2.13.0",
     "axios": "^0.18.0",
@@ -22,7 +22,7 @@
     "vue": "^2.6.10",
     "vue-class-component": "^6.3.2",
     "vue-property-decorator": "^6.1.0",
-    "vue-router": "^3.0.2",
+    "vue-router": "^3.0.3",
     "vuex": "^3.1.0",
     "vuex-class": "^0.3.2"
   },
@@ -34,7 +34,7 @@
     "@vue/cli-plugin-unit-jest": "^3.5.3",
     "@vue/cli-service": "^3.5.3",
     "@vue/test-utils": "^1.0.0-beta.29",
-    "autoprefixer": "^9.5.0",
+    "autoprefixer": "^9.5.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-plugin-component": "^1.1.1",
     "lint-staged": "^6.1.1",

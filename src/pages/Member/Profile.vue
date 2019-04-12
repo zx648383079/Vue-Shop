@@ -36,12 +36,20 @@
                     我的收货地址
                     <i class="fa fa-chevron-right" aria-hidden="true"></i>
                 </a>
-                <a @click="$router.push('/address')">
+                <a @click="$router.push('/member/password')">
                     修改密码
                     <i class="fa fa-chevron-right" aria-hidden="true"></i>
                 </a>
-                <a @click="$router.push('/address')">
+                <a @click="$router.push('/member/certification')">
                     实名认证
+                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                </a>
+                <a @click="$router.push('/member/driver')">
+                    登陆设备管理
+                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                </a>
+                <a @click="$router.push('/member/cancel')">
+                    账户注销
                     <i class="fa fa-chevron-right" aria-hidden="true"></i>
                 </a>
                 

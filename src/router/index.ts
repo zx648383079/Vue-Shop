@@ -19,6 +19,12 @@ import Cashier from '@/pages/Cashier/Index.vue';
 import Pay from '@/pages/Cashier/Pay.vue';
 import Member from '@/pages/Member/Index.vue';
 import Profile from '@/pages/Member/Profile.vue';
+import MemberCancel from '@/pages/Member/Cancel.vue';
+import MemberPassword from '@/pages/Member/Password.vue';
+import MemberDriver from '@/pages/Member/Driver.vue';
+import MemberCertification from '@/pages/Member/Certification.vue';
+
+
 import Login from '@/pages/Member/Login.vue';
 import Search from '@/pages/Search/Index.vue';
 import Product from '@/pages/Goods/Index.vue';
@@ -62,7 +68,7 @@ import AffiliateUser from '@/pages/Affiliate/User.vue';
 Vue.use(Router);
 
 export default new Router({
-    scrollBehavior(to, from, savedPosition) {
+    scrollBehavior(this: Router, to, from, savedPosition) {
         if (savedPosition) {
             // savedPosition is only available for popstate navigations.
             return savedPosition;
@@ -229,6 +235,42 @@ export default new Router({
             component: Profile,
             meta: {
                 title: '我的资料',
+                requireAuth: true,
+            },
+        },
+        {
+            path: '/member/cancel',
+            name: 'member-cancel',
+            component: MemberCancel,
+            meta: {
+                title: '账户注销',
+                requireAuth: true,
+            },
+        },
+        {
+            path: '/member/driver',
+            name: 'member-driver',
+            component: MemberDriver,
+            meta: {
+                title: '登陆设备管理',
+                requireAuth: true,
+            },
+        },
+        {
+            path: '/member/password',
+            name: 'member-password',
+            component: MemberPassword,
+            meta: {
+                title: '修改密码',
+                requireAuth: true,
+            },
+        },
+        {
+            path: '/member/certification',
+            name: 'member-certification',
+            component: MemberCertification,
+            meta: {
+                title: '实名认证',
                 requireAuth: true,
             },
         },

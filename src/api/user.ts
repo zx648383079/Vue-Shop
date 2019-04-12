@@ -23,3 +23,8 @@ export const register = (email: string, password: string) => post<IUser>('auth/r
     email,
     password,
 });
+
+export const updatePassword = (old_password: string, password: string) => post<IUser>('auth/password/update', {
+    old_password,
+    password,
+});

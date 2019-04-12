@@ -10,29 +10,21 @@
     </header>
 </template>
 <script lang="ts">
-import Vue from 'vue'
-export default Vue.extend({
-      data() {
-        return {
-        };
-    },
-    props: {
-        title: String,
-        fixed: {
-            type: Boolean,
-            default: true,
-        },
-    },
-    methods: {
-        tapBack() {
-            if (window.history.length <= 1) {
-                this.$router.push('/');
-                return;
-            }
-            this.$router.go(-1);
-        },
+import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+
+@Component
+export default class BackHeader extends Vue {
+    @Prop(String) readonly title!: string;
+    @Prop({type: Boolean, default: true}) readonly fixed!: boolean;
+
+    tapBack() {
+        if (window.history.length <= 1) {
+            this.$router.push('/');
+            return;
+        }
+        this.$router.go(-1);
     }
-})
+}
 </script>
 <style lang="scss" scoped>
 header {

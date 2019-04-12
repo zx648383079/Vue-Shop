@@ -1481,6 +1481,7 @@ footer,
 }
 
 .btn {
+    &.btn-primary,
     &.del-btn {
         margin: 0.875rem;
         box-sizing: border-box;
@@ -1489,6 +1490,12 @@ footer,
         text-align: center;
         background-color: $red;
         color: $white;
+    }
+    &.btn-primary {
+        background-color: $headerBg;
+        width: 80%;
+        margin: 1rem auto;
+        padding: 0;
     }
 }
 

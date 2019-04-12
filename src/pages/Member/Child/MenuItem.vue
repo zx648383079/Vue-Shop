@@ -6,25 +6,20 @@
     </a>
 </template>
 <script lang="ts">
-import Vue from 'vue'
-export default Vue.extend({
-    data() {
-        return {
-        };
-    },
-    props: {
-        title: String,
-        icon: String,
-        uri: String
-    },
-    methods: {
-        tapGo() {
-            if (this.uri) {
-                this.$router.push(this.uri);
-                return;
-            }
-            this.$emit('click');
-        },
-    },
-})
+import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+
+@Component
+export default class MenuItem extends Vue {
+    @Prop(String) readonly title!: string;
+    @Prop(String) readonly icon!: string;
+    @Prop(String) readonly uri!: string;
+
+    public tapGo() {
+        if (this.uri) {
+            this.$router.push(this.uri);
+            return;
+        }
+        this.$emit('click');
+    }
+}
 </script>
