@@ -10,7 +10,7 @@
 </template>
 <script lang="ts">
 import Vue from 'vue';
-import GoodsItem from "./GoodsItem.vue";
+import GoodsItem from './GoodsItem.vue';
 import { IProduct } from '@/api/model';
 export default Vue.extend({
     components: {

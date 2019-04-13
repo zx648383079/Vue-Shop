@@ -3,11 +3,11 @@
         <BackHeader title="我的订单"/>
         <div class="has-header">
             <div class="tab-bar order-header">
-                <a v-for="(item, index) in status_list" :key="index" @click="tapStatus(item)" :class="status == item.status ? 'active' : ''">{{ item.name }}</a>
+                <a v-for="(item, index) in statusList" :key="index" @click="tapStatus(item)" :class="status == item.status ? 'active' : ''">{{ item.name }}</a>
             </div>
 
             <div class="order-box">
-                <PullToRefresh :loading="isLoading" :more="has_more" @refresh="tapRefresh" @more="tapMore">
+                <PullToRefresh :loading="isLoading" :more="hasMore" @refresh="tapRefresh" @more="tapMore">
                     <OrderItem v-for="(item, index) in items" :key="index" :item="item" @receive="tapReceive(item)" @cancel="tapCancel(item)"/>
                     <div class="order-empty" v-if="!items || items.length < 1">
                         您还没有订单
@@ -35,37 +35,37 @@ import { MessageBox } from 'mint-ui';
     },
 })
 export default class Index extends Vue {
-    public status_list = [
+    public statusList = [
         {
             name: '全部',
-            status: 0
+            status: 0,
         },
         {
             name: '待支付',
-            status: ORDER_STATUS.UN_PAY
+            status: ORDER_STATUS.UN_PAY,
         },
         {
             name: '待收货',
-            status: ORDER_STATUS.SHIPPED
+            status: ORDER_STATUS.SHIPPED,
         },
         {
             name: '已完成',
-            status: ORDER_STATUS.FINISH
+            status: ORDER_STATUS.FINISH,
         },
         {
             name: '已取消',
-            status: ORDER_STATUS.CANCEL
+            status: ORDER_STATUS.CANCEL,
         },
     ];
     public items: IOrder[] = [];
     public status = 0;
-    public has_more = true;
+    public hasMore = true;
     public page = 1;
     public isLoading = false;
 
     public created() {
         if (this.$route.query && this.$route.query.status) {
-            this.status = parseInt(this.$route.query.status + '') || 0;
+            this.status = parseInt(this.$route.query.status + '', 10) || 0;
         }
         this.tapRefresh();
     }
@@ -75,9 +75,9 @@ export default class Index extends Vue {
     }
 
     public tapMore() {
-        if (!this.has_more) {
+        if (!this.hasMore) {
             return;
-        }  
+        }
         this.goPage(this.page + 1);
     }
 
@@ -90,7 +90,7 @@ export default class Index extends Vue {
             status: this.status,
             page,
         }).then(res => {
-            this.has_more = res.paging.more;
+            this.hasMore = res.paging.more;
             this.isLoading = false;
             if (this.page < 2) {
                 this.items = res.data as never[];
@@ -101,7 +101,7 @@ export default class Index extends Vue {
     }
 
     public tapStatus(item: any) {
-        if (this.status == item.status) {
+        if (this.status === item.status) {
             return;
         }
         this.status = item.status;

@@ -11,27 +11,27 @@
             </div>
         </header>
         <div class="has-header">
-            <div class="search-recommend-box" v-if="!tip_list || tip_list.length == 0">
-                <div class="panel" v-if="history_list && history_list.length > 0">
+            <div class="search-recommend-box" v-if="!tipList || tipList.length == 0">
+                <div class="panel" v-if="historyList && historyList.length > 0">
                     <div class="panel-header">
                         <span>历史记录</span>
                         <i class="fa fa-trash" @click="tapClearHistory"></i>
                     </div>
                     <div class="panel-body">
-                        <a v-for="(item, index) in history_list" :key="index" @click="tapSearch(item)">{{ item }}</a>
+                        <a v-for="(item, index) in historyList" :key="index" @click="tapSearch(item)">{{ item }}</a>
                     </div>
                 </div>
-                <div class="panel" v-if="hot_keywords && hot_keywords.length > 0">
+                <div class="panel" v-if="hotKeywords && hotKeywords.length > 0">
                     <div class="panel-header">
                         <span>热门搜索</span>
                     </div>
                     <div class="panel-body">
-                        <a v-for="(item, index) in hot_keywords" :key="index" @click="tapSearch(item)">{{ item }}</a>
+                        <a v-for="(item, index) in hotKeywords" :key="index" @click="tapSearch(item)">{{ item }}</a>
                     </div>
                 </div>
             </div>
             <ul class="search-tip-box" v-else>
-                <li v-for="(item, index) in tip_list" :key="index">
+                <li v-for="(item, index) in tipList" :key="index">
                     <a @click="tapSearch(item)">{{ item }}</a>
                 </li>
             </ul>
@@ -46,20 +46,20 @@ import { getHotKeywords, getTips } from '@/api/product';
 const KEYWORDS_HISTORY = 'KEYWORDS_HISTORY';
 
 export default class SearchBar extends Vue {
-    @Prop(String) readonly value!: string;
+    @Prop(String) public readonly value!: string;
 
-    public hot_keywords: string[] = [];
-    public tip_list: string[] = [];
-    public history_list: string[] = [];
+    public hotKeywords: string[] = [];
+    public tipList: string[] = [];
+    public historyList: string[] = [];
 
-    created() {
-        this.history_list = getLocalStorage(KEYWORDS_HISTORY, true) || []
+    public created() {
+        this.historyList = getLocalStorage(KEYWORDS_HISTORY, true) || []
         getHotKeywords().then(res => {
-            this.hot_keywords = res.data ? res.data : [];
+            this.hotKeywords = res.data ? res.data : [];
         });
     }
 
-    tapBack() {
+    public tapBack() {
         if (window.history.length <= 1) {
             this.$router.push('/')
             return;
@@ -67,32 +67,32 @@ export default class SearchBar extends Vue {
         this.$router.go(-1)
     }
 
-    tapUpdateVal(val: string) {
+    public tapUpdateVal(val: string) {
         this.$emit('input', val);
     }
 
-    tapClearHistory() {
-        this.history_list = []
+    public tapClearHistory() {
+        this.historyList = []
         removeLocalStorage(KEYWORDS_HISTORY)
     }
 
-    tapClearSearch() {
+    public tapClearSearch() {
         this.tapUpdateVal('');
-        this.tip_list = [];
+        this.tipList = [];
     }
 
-    addHistory(keywords: string) {
-        if (this.history_list.indexOf(keywords) >= 0) {
+    public addHistory(keywords: string) {
+        if (this.historyList.indexOf(keywords) >= 0) {
             return;
         }
-        this.history_list.push(keywords);
-        if (this.history_list.length > 8) {
-            this.history_list.splice(8);
+        this.historyList.push(keywords);
+        if (this.historyList.length > 8) {
+            this.historyList.splice(8);
         }
-        setLocalStorage(KEYWORDS_HISTORY, this.history_list)
+        setLocalStorage(KEYWORDS_HISTORY, this.historyList)
     }
 
-    onKeyUp(event: any) {
+    public onKeyUp(event: any) {
         if (!this.value || this.value.trim().length === 0) {
             return;
         }
@@ -102,11 +102,11 @@ export default class SearchBar extends Vue {
             return;
         }
         getTips(this.value).then(res => {
-            this.tip_list = res.data ? res.data : [];
+            this.tipList = res.data ? res.data : [];
         });
     }
-    
-    tapSearch(keywords: string) {
+
+    public tapSearch(keywords: string) {
         this.$emit('search', keywords);
     }
 }

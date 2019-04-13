@@ -36,26 +36,26 @@ import { commentGoods } from '@/api/order';
 @Component({
     components: {
         Star,
-    }
+    },
 })
 export default class GoodsItem extends Vue {
-    @Prop(Object) readonly item!: IOrderGoods;
+    @Prop(Object) public readonly item!: IOrderGoods;
 
-    comment: IComment = {
+    public comment: IComment = {
         title: '',
         content: '',
         rank: 10,
         images: [],
     };
 
-    tapRemove(i: number) {
+    public tapRemove(i: number) {
         if (!this.comment || !this.comment.images) {
             return;
         }
         this.comment.images.splice(i, 1);
     }
 
-    tapSave() {
+    public tapSave() {
         const comment = {
             title: this.item.name,
             content: this.comment.content,

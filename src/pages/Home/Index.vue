@@ -70,7 +70,7 @@ export default class Index extends Vue {
     public mode: number = 0;
     public goods: IProduct | null = null;
 
-    @Getter('isGuest') isGuest?: boolean;
+    @Getter('isGuest') public isGuest?: boolean;
 
     public created() {
         getHome().then(res => {
@@ -83,10 +83,10 @@ export default class Index extends Vue {
             this.categories = res.data;
         });
         getBanners().then(res => {
-             if (!res.data) {
+            if (!res.data) {
                 return;
             }
-            this.banners = res.data
+            this.banners = res.data;
         });
         dispatchSubtotal().then(res => {
             this.subtotal = res;
@@ -98,14 +98,14 @@ export default class Index extends Vue {
     }
 
     public tapAddCart(item: IProduct) {
-        if (this.goods && this.goods.id == item.id) {
+        if (this.goods && this.goods.id === item.id) {
             this.mode = 1;
             return;
         }
         getInfo(item.id).then(res => {
             this.goods = res;
             this.mode = 1;
-        }); 
+        });
     }
 
     public tapSearch() {

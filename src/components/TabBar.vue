@@ -21,26 +21,26 @@ export default class TabBar extends Vue {
         {
             name: '首页',
             icon: 'fa fa-home',
-            url: 'home'
+            url: 'home',
         },
         {
             name: '分类',
             icon: 'fa fa-th-large',
-            url: 'category'
+            url: 'category',
         },
         {
             name: '购物车',
             icon: 'fa fa-shopping-cart',
-            url: 'cart'
+            url: 'cart',
         },
         {
             name: '我的',
             icon: 'fa fa-user',
-            url: 'member'
+            url: 'member',
         },
     ];
 
-    tapMenu(item: IMenu) {
+    public tapMenu(item: IMenu) {
         this.$router.push({ name: item.url});
     }
 }

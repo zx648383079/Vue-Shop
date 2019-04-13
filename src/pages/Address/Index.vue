@@ -58,8 +58,8 @@ export default class Index extends Vue {
 
     public created() {
         if (this.$route.query.selected) {
-            this.mode = this.$route.query.back ? parseInt(this.$route.query.back + '') :1;
-            this.selected = parseInt(this.$route.query.selected + '');
+            this.mode = this.$route.query.back ? parseInt(this.$route.query.back + '', 10) : 1;
+            this.selected = parseInt(this.$route.query.selected + '', 10);
         }
         dispatchAddressList().then(res => {
             if (!res) {
@@ -92,7 +92,7 @@ export default class Index extends Vue {
     public tapDefault(item: IAddress) {
         defaultAddress(item.id).then(() => {
             for (const it of this.items) {
-                it.is_default = item.id == it.id;
+                it.is_default = item.id === it.id;
             }
             const rows: SwipeRow[] = this.$refs.swiperow as SwipeRow[];
             for (const box of rows) {
@@ -107,7 +107,7 @@ export default class Index extends Vue {
     public tapRemove(item: IAddress) {
         deleteAddress(item.id).then(() => {
             for (let i = 0; i < this.items.length; i++) {
-                if (this.items[i].id == item.id) {
+                if (this.items[i].id === item.id) {
                     this.items.splice(i, 1);
                 }
             }

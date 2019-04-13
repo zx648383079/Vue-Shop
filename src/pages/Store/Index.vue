@@ -61,7 +61,7 @@ import { IProduct } from '../../api/model';
 
 @Component
 export default class Index extends Vue {
-    items: IProduct[] = [];
+    public items: IProduct[] = [];
 }
 </script>
 <style lang="scss" scoped>

@@ -43,38 +43,38 @@ export default class Center extends Vue {
             }
             this.items = res.data;
             this.refresh();
-        }); 
+        });
     }
 
     public refresh() {
         const maps: IConnectMap = {
             qq: {
                 name: 'QQ',
-                icon: 'fa-qq'
+                icon: 'fa-qq',
             },
             wx: {
                 name: '微信',
-                icon: 'fa-weixin'
+                icon: 'fa-weixin',
             },
             alipay: {
                 name: '支付宝',
-                icon: 'fa-alipay'
+                icon: 'fa-alipay',
             },
             weibo: {
                 name: '微博',
-                icon: 'fa-weibo'
+                icon: 'fa-weibo',
             },
             paypal: {
                 name: 'PayPal',
-                icon: 'fa-paypal'
+                icon: 'fa-paypal',
             },
             github: {
                 name: 'Github',
-                icon: 'fa-github'
+                icon: 'fa-github',
             },
             google: {
                 name: 'Google',
-                icon: 'fa-google'
+                icon: 'fa-google',
             },
         };
         for (const item of this.items) {

@@ -13,7 +13,7 @@
         </header>
 
         <div class="has-header">
-            <PullToRefresh :loading="isLoading" :more="has_more" @refresh="tapRefresh" @more="tapMore">
+            <PullToRefresh :loading="isLoading" :more="hasMore" @refresh="tapRefresh" @more="tapMore">
                 <div id="comments" class="comment-box">
                     <div class="comment-subtotal" v-if="comment">
                         评分
@@ -50,20 +50,20 @@ import Star from './Child/Star.vue';
 export default class Comment extends Vue {
     public comment: ICommentSubtotal | null = null;
     public items: IComment[] = [];
-    public item_id: number = 0;
-    public item_type: number = 0;
-    public has_more = true;
+    public itemId: number = 0;
+    public itemType: number = 0;
+    public hasMore = true;
     public page = 1;
     public isLoading = false;
 
     public created() {
-        this.item_id = parseInt(this.$route.params.id);
-        if (!this.item_id) {
+        this.itemId = parseInt(this.$route.params.id, 10);
+        if (!this.itemId) {
             Toast('商品错误');
             this.$router.push('/');
             return;
         }
-        getCommentSubtotal(this.item_id).then(res => {
+        getCommentSubtotal(this.itemId).then(res => {
             this.comment = res;
         });
         this.tapRefresh();
@@ -87,21 +87,21 @@ export default class Comment extends Vue {
     public tapRefresh() {
         this.items = [];
         this.isLoading = false;
-        this.has_more = true;
+        this.hasMore = true;
         this.goPage(this.page = 1);
     }
 
     public goPage(page: number) {
-        if (this.isLoading || !this.has_more) {
+        if (this.isLoading || !this.hasMore) {
             return;
         }
         this.isLoading = true;
         getCommentList({
-            item_id: this.item_id,
-            item_type: this.item_type,
+            item_id: this.itemId,
+            item_type: this.itemType,
             page,
         }).then(res => {
-            this.has_more = res.paging.more;
+            this.hasMore = res.paging.more;
             this.isLoading = false;
             if (!res.data) {
                 return;
@@ -114,7 +114,7 @@ export default class Comment extends Vue {
      * tapProductScroll
      */
     public tapProductScroll(id: string) {
-        this.$router.replace({name: 'product', params: {id: this.item_id + ''}, hash: '#'+id});
+        this.$router.replace({name: 'product', params: {id: this.itemId + ''}, hash: '#' + id});
     }
 }
 </script>

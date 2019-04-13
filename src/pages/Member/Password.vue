@@ -44,7 +44,7 @@ export default class Password extends Vue {
             return;
         }
         updatePassword(this.oldpassword, this.password).then(res => {
-            dispatchLogout().then(res => {
+            dispatchLogout().then(() => {
                 this.$router.push('/login');
             });
         });

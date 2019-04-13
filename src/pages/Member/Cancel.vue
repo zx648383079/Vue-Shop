@@ -30,15 +30,15 @@ export default class Cancel extends Vue {
         '需要解绑手机',
         '需要解绑邮箱',
         '安全/隐私顾虑',
-        '这是多余的账户'
+        '这是多余的账户',
     ];
 
     public selected: number = 0;
 
-    mounted() {
+    public mounted() {
         MessageBox.confirm('账户注销后，您已完成的交易将无法售后。', '账户注销确认', {
             confirmButtonText: '确定继续注销',
-            cancelButtonText: '暂不注销'
+            cancelButtonText: '暂不注销',
         }).catch(() => {
             this.$router.back();
         });

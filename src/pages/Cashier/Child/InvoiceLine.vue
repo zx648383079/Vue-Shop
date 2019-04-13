@@ -56,7 +56,7 @@ import DialogPanel from '@/components/DialogPanel.vue';
     },
 })
 export default class PaymentLine extends Vue {
-    @Prop(Object) readonly value?: IPayment;
+    @Prop(Object) public readonly value!: IPayment;
 }
 </script>
 <style lang="scss" scoped>

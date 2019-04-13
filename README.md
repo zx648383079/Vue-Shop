@@ -158,7 +158,7 @@
 ## BUG
 
 ```html
-<PullToRefresh :loading="isLoading" :more="has_more" @refresh="tapRefresh" @more="tapMore">
+<PullToRefresh :loading="isLoading" :more="hasMore" @refresh="tapRefresh" @more="tapMore">
 </PullToRefresh>
 
 ```

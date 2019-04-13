@@ -4,14 +4,14 @@
         <div class="has-header has-footer">
             <div :class="['scroll-nav', isExpand ? 'unfold' : '']">
                 <ul>
-                    <li v-for="(item, index) in categories" :key="index">
+                    <li v-for="(item, index) in categories" :key="index" :class="{active: category == item.id}">
                             <a @click="tapCategory(item)">{{ item.name }}</a>
                     </li>
                 </ul>
                 <a @click="isExpand = !isExpand" class="fa nav-arrow"></a>
             </div>
 
-            <PullToRefresh :loading="isLoading" :more="has_more" @refresh="tapRefresh" @more="tapMore">
+            <PullToRefresh :loading="isLoading" :more="hasMore" @refresh="tapRefresh" @more="tapMore">
                 <div class="coupon-item" v-for="(item, index) in items" :key="index">
                     <div class="thumb">
                         <img :src="item.thumb" alt="">
@@ -28,8 +28,10 @@
                         </div>
                     </div>
                     <div class="action">
-                        <span class="status-icon">立即<br>领取</span>
-                        <i>剩余76%</i>
+                        <span v-if="item.can_receive && item.received >= item.send_value" class="status-icon status-close">已抢完</span>
+                        <span v-if="item.received < item.send_value && item.can_receive" class="status-icon" @click="tapRecieve(item)">立即<br>领取</span>
+                        <span v-if="!item.can_receive" class="status-icon status-received">已领</span>
+                        <i v-if="item.received < item.send_value">剩余 {{ item.send_value > 0 ? 100 - Math.ceil(item.received * 100 / item.send_value) : 100 }} %</i>
                     </div>
                 </div>
             </PullToRefresh>
@@ -51,8 +53,10 @@
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import PullToRefresh from '@/components/PullToRefresh.vue';
-import { ICategory } from '@/api/model';
+import { ICategory, ICoupon } from '@/api/model';
 import { dispatchCategories } from '@/store/dispatches';
+import {getCouponList, receiveCoupon} from '@/api/coupon';
+import { Toast } from 'mint-ui';
 
 @Component({
     components: {
@@ -62,10 +66,10 @@ import { dispatchCategories } from '@/store/dispatches';
 })
 export default class Index extends Vue {
     public categories: ICategory[] = [];
-    public status: number = 0;
-    public items = [];
+    public category: number = 0;
+    public items: ICoupon[] = [];
     public isExpand: boolean = false;
-    public has_more = true;
+    public hasMore = true;
     public page = 1;
     public isLoading = false;
 
@@ -73,13 +77,30 @@ export default class Index extends Vue {
         dispatchCategories().then(res => {
             this.categories = res;
         });
+        this.tapRefresh();
+    }
+
+    /**
+     * tapRecieve
+     */
+    public tapRecieve(item: ICoupon) {
+        if (!item.can_receive) {
+            return;
+        }
+        receiveCoupon(item.id).then(res => {
+            if (res.data) {
+                Toast('领取成功');
+                item.can_receive = false;
+            }
+        });
     }
 
     /**
      * tapCategory
      */
     public tapCategory(item: ICategory) {
-        this.status = item.id;
+        this.category = item.id;
+        this.tapRefresh();
     }
 
     public tapRefresh() {
@@ -87,9 +108,9 @@ export default class Index extends Vue {
     }
 
     public tapMore() {
-        if (!this.has_more) {
+        if (!this.hasMore) {
             return;
-        }  
+        }
         this.goPage(this.page + 1);
     }
 
@@ -98,16 +119,21 @@ export default class Index extends Vue {
             return;
         }
         this.isLoading = true;
-        setTimeout(() => {
+        getCouponList({
+            category: this.category,
+            page,
+        }).then(res => {
             this.page = page;
             this.isLoading = false;
-            const data = [1,2,3,4,5,6,7];
-            if (this.page < 2) {
-                this.items = data as never[];
+            if (!res.data) {
                 return;
             }
-            this.items = [].concat(this.items as never[], data as never[]);
-        }, 2000);
+            if (this.page < 2) {
+                this.items = res.data;
+                return;
+            }
+            this.items = [].concat(this.items as never[], res.data as never[]);
+        });
     }
 
 }

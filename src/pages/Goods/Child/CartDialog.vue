@@ -40,13 +40,12 @@ import { dispatchSetCart } from '@/store/dispatches';
 
 @Component
 export default class Star extends Vue {
-    @Prop(Object) readonly product!: IProduct;
-    @Prop({type: Number, default: 0}) readonly mode!: number;
+    @Prop(Object) public readonly product!: IProduct;
+    @Prop({type: Number, default: 0}) public readonly mode!: number;
     public amount: number = 1;
 
     @Emit('close')
-    public tapClose() {  
-    }
+    public tapClose() {}
 
     public getStock(): number {
         if (!this.product) {
@@ -78,10 +77,10 @@ export default class Star extends Vue {
         if (!this.product) {
             return;
         }
-        if (this.mode == 1) {
+        if (this.mode === 1) {
             addGoods(this.product.id, this.amount).then(res => {
                 Toast('已成功加入购物车');
-                this.tapClose()
+                this.tapClose();
             });
             return;
         }
@@ -93,10 +92,10 @@ export default class Star extends Vue {
                         goods_id: this.product.id,
                         amount: this.amount,
                         goods: this.product,
-                        price: this.product.price
-                    }
-                ]
-            }
+                        price: this.product.price,
+                    },
+                ],
+            },
         ];
         dispatchSetCart(data).then(() => {
             this.$router.push('/cashier');

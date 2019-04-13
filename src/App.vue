@@ -10,10 +10,10 @@
 import Vue from 'vue';
 export default Vue.extend({
     methods: {
-        afterLeave () {
+        afterLeave() {
             this.$root.$emit('triggerScroll')
-        }
-    }
+        },
+    },
 });
 </script>
 

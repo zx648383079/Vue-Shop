@@ -96,7 +96,6 @@ export default new Router({
                 position.x = 0
                 position.y = 0
             }
-    
             // wait for the out transition to complete (if necessary)
             this.app.$root.$once('triggerScroll', () => {
                 // if the resolved position is falsy or an empty object,

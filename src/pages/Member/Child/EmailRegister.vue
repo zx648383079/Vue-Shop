@@ -29,9 +29,9 @@ export default class MobileRegister extends Vue {
     public password: string = '';
 
     public tapKey(e: KeyboardEvent) {
-        if (e.which !== 13) {
-            return;
-        }
+        // if (e.keyCode !== 13) {
+        //     return;
+        // }
     }
 }
 </script>

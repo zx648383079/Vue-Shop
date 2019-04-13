@@ -35,7 +35,7 @@ import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 
 @Component
 export default class ApplyCertification extends Vue {
-    step = 1;
+    public step = 1;
 }
 </script>
 <style lang="scss" scoped>

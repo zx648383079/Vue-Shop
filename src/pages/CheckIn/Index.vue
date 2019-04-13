@@ -17,7 +17,7 @@
                 <div class="day-grid">
                     <ol><li>日</li><li>一</li><li>二</li><li>三</li><li>四</li><li>五</li><li>六</li></ol>
                     <ul>
-                        <li v-for="(item, index) in day_list" :key="index" :class="{disable: item.disable, active: item.active}">{{ item.val }}</li>
+                        <li v-for="(item, index) in dayList" :key="index" :class="{disable: item.disable, active: item.active}">{{ item.val }}</li>
                     </ul>
                 </div>
             </div>
@@ -41,12 +41,12 @@ interface IDay {
 @Component({
     components: {
         BackHeader,
-    }
+    },
 })
 export default class Index extends Vue {
     public checked: ICheckIn | null = null;
 
-    public day_list: IDay[] = [];
+    public dayList: IDay[] = [];
 
     public title = '';
 
@@ -77,9 +77,9 @@ export default class Index extends Vue {
         const count = date.getDate();
         date.setDate(1);
         const start = date.getDay();
-        this.day_list = [];
+        this.dayList = [];
         for (let i = 0; i < count + start; i++) {
-            this.day_list.push(i < start ? {
+            this.dayList.push(i < start ? {
                 val: '',
             } : {
                 val: twoPad(i - start + 1),
@@ -108,9 +108,9 @@ export default class Index extends Vue {
         if (len < 1) {
             return;
         }
-        for (let i = 0; i < this.day_list.length; i++) {
-            if (this.day_list[i].day && days.indexOf(this.day_list[i].day as number) >= 0) {
-                this.day_list[i].active = true;
+        for (const day of this.dayList) {
+            if (day.day && days.indexOf(day.day as number) >= 0) {
+                day.active = true;
                 len --;
             }
             if (len < 1) {

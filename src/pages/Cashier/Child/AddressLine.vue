@@ -26,11 +26,10 @@ import { IAddress } from '@/api/model';
 
 @Component
 export default class AddressLine extends Vue {
-    @Prop(Object) readonly address?: IAddress;
+    @Prop(Object) public readonly address!: IAddress;
 
     @Emit('click')
-    public tapClick() {
-    }
+    public tapClick() {}
 }
 </script>
 <style lang="scss" scoped>

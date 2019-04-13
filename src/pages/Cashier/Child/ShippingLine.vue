@@ -23,9 +23,9 @@ import DialogPanel from '@/components/DialogPanel.vue';
     },
 })
 export default class ShippingLine extends Vue {
-    @Prop(Object) readonly value?: IShipping;
-    @Prop(Array) readonly items?: IShipping[];
-    
+    @Prop(Object) public readonly value!: IShipping;
+    @Prop(Array) public readonly items!: IShipping[];
+
     public tapSelected(item: IShipping) {
         this.$emit('input', item);
     }

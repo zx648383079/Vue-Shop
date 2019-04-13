@@ -28,22 +28,22 @@ import { IUser } from '@/api/model';
 @Component
 export default class EmailLogin extends Vue {
 
-    email: string = '';
+    public email: string = '';
 
-    password: string = '';
+    public password: string = '';
 
-    tapKey(e: KeyboardEvent) {
-        if (e.which !== 13) {
+    public tapKey(e: KeyboardEvent) {
+        if (e.code !== 'Enter') {
             return;
         }
         this.tapLogin();
     }
 
-    tapChange(mode: number) {
+    public tapChange(mode: number) {
         this.$emit('click', mode);
     }
 
-    tapLogin() {
+    public tapLogin() {
         const email = this.email;
         const password = this.password;
         if (!email || !/.+@.+/.test(email)) {

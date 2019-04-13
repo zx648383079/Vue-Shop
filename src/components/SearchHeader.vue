@@ -16,10 +16,10 @@ import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 
 @Component
 export default class SearchHeader extends Vue {
-    @Prop(String) readonly value!: string;
+    @Prop(String) public readonly value!: string;
     public currrent = '';
 
-    tapBack() {
+    public tapBack() {
         if (this.value && this.value.length > 0) {
             this.tapClear();
             return;
@@ -31,16 +31,16 @@ export default class SearchHeader extends Vue {
         this.$router.go(-1);
     }
 
-    updateVal(val: string) {
+    public updateVal(val: string) {
         this.$emit('input', val);
         this.currrent = val;
     }
 
-    tapClear() {
+    public tapClear() {
         this.updateVal('');
     }
 
-    onKeyUp(event: any) {
+    public onKeyUp(event: any) {
         if (!this.value || this.value.trim().length === 0) {
             return;
         }
@@ -51,11 +51,11 @@ export default class SearchHeader extends Vue {
         this.$emit('keyup', event);
     }
 
-    tapSearch() {
+    public tapSearch() {
         this.$emit('enter', this.value);
     }
-    
-    tapFocus() {
+
+    public tapFocus() {
         this.$emit('focus');
     }
 }

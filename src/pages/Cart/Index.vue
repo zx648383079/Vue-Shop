@@ -74,9 +74,9 @@ import { Toast } from 'mint-ui';
     },
 })
 export default class Index extends Vue {
-    items: ICart[] = [];
-    checkedAll: boolean = false;
-    @Getter('isGuest') isGuest?: boolean;
+    public items: ICart[] = [];
+    public checkedAll: boolean = false;
+    @Getter('isGuest') public isGuest?: boolean;
     public isLoading = false;
 
     public created() {
@@ -94,7 +94,7 @@ export default class Index extends Vue {
                 return;
             }
             this.items = res.data;
-        }); 
+        });
     }
 
     public total(): number {

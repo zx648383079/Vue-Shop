@@ -41,7 +41,7 @@ Vue.use(InfiniteScroll);
 })
 export default class Log extends Vue {
     public items: IAccountLog[] = [];
-    public has_more = true;
+    public hasMore = true;
     public page = 1;
     public isLoading = false;
 
@@ -49,13 +49,13 @@ export default class Log extends Vue {
         const data = [];
         let last: string = '';
         for (const item of this.items) {
-            let match = (item.created_at + '').match(/(\d{4})-(\d{2})(-\d{2} \d{2}:\d{2})/);
+            const match = (item.created_at + '').match(/(\d{4})-(\d{2})(-\d{2} \d{2}:\d{2})/);
             if (!match) {
                 continue;
             }
-            let current = match[1] + '年' + match[2] + '月';
+            const current = match[1] + '年' + match[2] + '月';
             item.created_at = match[2] + match[3];
-            if (last == current) {
+            if (last === current) {
                 data.push(item);
                 continue;
             }
@@ -79,19 +79,19 @@ export default class Log extends Vue {
     public refresh() {
         this.items = [];
         this.isLoading = false;
-        this.has_more = true;
+        this.hasMore = true;
         this.goPage(this.page = 1);
     }
 
     public goPage(page: number) {
-        if (this.isLoading || !this.has_more) {
+        if (this.isLoading || !this.hasMore) {
             return;
         }
         this.isLoading = true;
         getAccountLog({
             page,
         }).then(res => {
-            this.has_more = res.paging.more;
+            this.hasMore = res.paging.more;
             this.isLoading = false;
             if (!res.data) {
                 return;

@@ -17,7 +17,7 @@ interface IAppParam {
 export function getAuthUri(type: string, redirectUri: string): string {
     const params = getAppParams();
     return apiEndpoint + 'auth/oauth?appid=' + params.appid +
-     '&timestamp=' + params.timestamp + '&sign=' + params.sign +'&type=' +
+     '&timestamp=' + params.timestamp + '&sign=' + params.sign + '&type=' +
      type + '&redirect_uri=' +
      encodeURIComponent(window.location.protocol + '//' +
         window.location.hostname +

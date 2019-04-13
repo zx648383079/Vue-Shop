@@ -31,7 +31,7 @@ import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 
 @Component
 export default class MobileRegister extends Vue {
-    agree = true;
+    public agree = true;
 }
 </script>
 <style lang="scss" scoped>

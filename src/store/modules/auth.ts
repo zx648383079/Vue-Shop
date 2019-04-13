@@ -94,7 +94,7 @@ const actions = {
                 resolve();
             }).catch(reject);
         });
-    }
+    },
 };
 
 // mutations
@@ -117,4 +117,4 @@ export default {
     getters,
     actions,
     mutations,
-}
+};

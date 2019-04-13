@@ -12,7 +12,7 @@ import { IArticleCategory } from '@/api/model';
 
 @Component
 export default class CatItem extends Vue {
-    @Prop(Array) readonly items!: IArticleCategory[];
+    @Prop(Array) public readonly items!: IArticleCategory[];
 
     public tapItem(item: IArticleCategory) {
         this.$emit('click', item);

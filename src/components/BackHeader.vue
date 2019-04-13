@@ -14,10 +14,10 @@ import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 
 @Component
 export default class BackHeader extends Vue {
-    @Prop(String) readonly title!: string;
-    @Prop({type: Boolean, default: true}) readonly fixed!: boolean;
+    @Prop(String) public readonly title!: string;
+    @Prop({type: Boolean, default: true}) public readonly fixed!: boolean;
 
-    tapBack() {
+    public tapBack() {
         if (window.history.length <= 1) {
             this.$router.push('/');
             return;

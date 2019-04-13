@@ -4,7 +4,7 @@
         <div class="has-header has-footer checkout-box">
             <AddressLine :address="address" @click="tapAddress"/>
 
-            <PaymentLine v-model="payment" :items="payment_list"/>
+            <PaymentLine v-model="payment" :items="paymentList"/>
             
             <div class="goods-list" v-for="(item, index) in cart" :key="index">
                 <div class="group-header">
@@ -20,7 +20,7 @@
                         <span class="amount"> x {{ goods.amount }}</span>
                     </div>
                 </div>
-                <ShippingLine v-model="shipping" :items="shipping_list"/>
+                <ShippingLine v-model="shipping" :items="shippingList"/>
                 
             </div>
 
@@ -76,14 +76,14 @@ interface ICartBox {
 })
 export default class Index extends Vue {
     public address: IAddress | null = null;
-    @Getter('addressList') address_list?: IAddress[];
-    @Getter('cart') cart?: ICart[];
+    @Getter('addressList') public addressList?: IAddress[];
+    @Getter('cart') public cart?: ICart[];
     public order: IOrder| null = null;
-    public payment_list: IPayment[] = [];
+    public paymentList: IPayment[] = [];
     public payment: IPayment| null = null;
-    public shipping_list: IShipping[] = [];
+    public shippingList: IShipping[] = [];
     public shipping: IShipping| null = null;
-    public cart_box: ICartBox | null = null;
+    public cartBox: ICartBox | null = null;
     public invoice = null;
     public coupon = null;
 
@@ -92,13 +92,13 @@ export default class Index extends Vue {
             this.$router.push('/cart');
             return;
         }
-        this.cart_box = this.getGoodsIds();
+        this.cartBox = this.getGoodsIds();
         dispatchAddress().then(res => {
             this.address = res;
         });
         getPaymentList().then(res => {
             if (res.data) {
-                this.payment_list = res.data;
+                this.paymentList = res.data;
             }
         });
     }
@@ -106,12 +106,12 @@ export default class Index extends Vue {
     @Watch('address')
     public onAddressChanged() {
         this.refreshPrice();
-        if (!this.address || !this.cart_box) {
+        if (!this.address || !this.cartBox) {
             return;
         }
-        getShippingList(this.cart_box.goods, this.address.id, this.cart_box.type).then(res => {
+        getShippingList(this.cartBox.goods, this.address.id, this.cartBox.type).then(res => {
             if (res.data) {
-                this.shipping_list = res.data;
+                this.shippingList = res.data;
             }
         })
     }
@@ -127,19 +127,23 @@ export default class Index extends Vue {
     }
 
     public refreshPrice() {
-        if (!this.address || !this.cart_box) {
+        if (!this.address || !this.cartBox) {
             return;
         }
-        previewOrder(this.cart_box.goods, this.address.id, this.shipping ? this.shipping.id : 0, this.payment ? this.payment.id : 0, this.cart_box.type).then(res => {
+        previewOrder(
+            this.cartBox.goods, this.address.id,
+            this.shipping ? this.shipping.id : 0, this.payment ? this.payment.id : 0, this.cartBox.type).then(res => {
             this.order = res;
         });
     }
 
     public tapCheckout() {
-        if (!this.address || !this.cart_box || !this.shipping || !this.payment) {
+        if (!this.address || !this.cartBox || !this.shipping || !this.payment) {
             return;
         }
-        checkoutOrder(this.cart_box.goods, this.address.id, this.shipping.id, this.payment.id, this.cart_box.type).then(res => {
+        checkoutOrder(
+            this.cartBox.goods, this.address.id,
+            this.shipping.id, this.payment.id, this.cartBox.type).then(res => {
             dispatchSetCart([]);
             dispatchSetOrder(res);
             this.$router.replace('/pay/' + res.id);
@@ -147,11 +151,11 @@ export default class Index extends Vue {
     }
 
     public tapAddress() {
-        if (!this.address_list || this.address_list.length < 1) {
+        if (!this.addressList || this.addressList.length < 1) {
             this.$router.push({path: '/address/create', query: {back: '1'}});
             return;
         }
-        this.$router.push({name: 'address', query: {selected: (this.address ?this.address.id + '' : '0')}});
+        this.$router.push({name: 'address', query: {selected: (this.address ? this.address.id + '' : '0')}});
     }
 
 
@@ -160,13 +164,13 @@ export default class Index extends Vue {
         if (!this.cart) {
             return {type: 0, goods: []};
         }
-        let goods: ICartItem[] = [],
-            cart: number[]  = [],
-            type: number = -1;
+        const goods: ICartItem[] = [];
+        const cart: number[]  = [];
+        let type: number = -1;
         for (const group of this.cart) {
             for (const item of group.goods_list) {
-                if (type == -1) {
-                    type = item.id && item.id > 0 ? 0 : 1; 
+                if (type === -1) {
+                    type = item.id && item.id > 0 ? 0 : 1;
                 }
                 if (type > 0) {
                     goods.push({

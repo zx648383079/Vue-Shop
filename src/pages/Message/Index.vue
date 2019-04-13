@@ -33,7 +33,7 @@ export default class Index extends Vue {
     public items = ['1231231', 1002];
 
     public tapRemove(item: any) {
-        console.log(item)
+        // console.log(item)
     }
 }
 </script>

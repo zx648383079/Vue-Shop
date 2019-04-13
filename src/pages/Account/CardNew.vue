@@ -28,7 +28,7 @@ import { ICard } from '@/api/model';
     },
 })
 export default class CardNew extends Vue {
-    
+
 }
 </script>
 <style lang="scss" scoped>

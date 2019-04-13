@@ -6,7 +6,7 @@
             </a>
         </BackHeader>
         <div class="has-header collect-page">
-            <PullToRefresh :loading="isLoading" :more="has_more" @refresh="tapRefresh" @more="tapMore">
+            <PullToRefresh :loading="isLoading" :more="hasMore" @refresh="tapRefresh" @more="tapMore">
                 <div class="swipe-box goods-list">
                     <SwipeRow name="goods-item" v-for="(item, index) in items" :key="index" @remove="tapRemove(item)" :index="index" ref="swiperow">
                         <div class="goods-img">
@@ -46,7 +46,7 @@ import { getList } from '@/api/product';
 export default class Index extends Vue {
     public items: IProduct[] = [];
 
-    public has_more = true;
+    public hasMore = true;
     public page = 1;
     public isLoading = false;
     public goodsId: number[] = [];
@@ -72,7 +72,7 @@ export default class Index extends Vue {
             }
             this.goodsId = [];
             this.items = [];
-            this.has_more = false;
+            this.hasMore = false;
             this.isLoading = false;
             removeLocalStorage(SET_GOODS_HISTORY);
         });
@@ -88,10 +88,10 @@ export default class Index extends Vue {
     public tapRefresh() {
         this.items = [];
         this.isLoading = false;
-        this.has_more = true;
+        this.hasMore = true;
         this.goodsId = getLocalStorage<number[]>(SET_GOODS_HISTORY, true);
         if (!this.goodsId || this.goodsId.length < 1) {
-            this.has_more = false;
+            this.hasMore = false;
             this.isLoading = true;
             setTimeout(() => {
                 this.isLoading = false;
@@ -102,7 +102,7 @@ export default class Index extends Vue {
     }
 
     public goPage(page: number) {
-        if (this.isLoading || !this.has_more) {
+        if (this.isLoading || !this.hasMore) {
             return;
         }
         this.isLoading = true;
@@ -110,7 +110,7 @@ export default class Index extends Vue {
             id: this.goodsId,
             page,
         }).then(res => {
-            this.has_more = res.paging.more;
+            this.hasMore = res.paging.more;
             this.isLoading = false;
             if (!res.data) {
                 return;

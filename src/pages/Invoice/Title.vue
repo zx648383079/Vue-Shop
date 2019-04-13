@@ -30,14 +30,14 @@ import BackHeader from '@/components/BackHeader.vue';
 
 @Component({
     components: {
-        BackHeader
-    }
+        BackHeader,
+    },
 })
 export default class Title extends Vue {
-    items = [1, 2];
+    public items = [1, 2];
 
-    tapEdit(item?: any) {
-
+    public tapEdit(item?: any) {
+        // TODO
     }
 }
 </script>

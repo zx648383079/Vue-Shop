@@ -15,7 +15,7 @@
                 </div>
             </header>
             <div class="has-header">
-                <PullToRefresh :loading="isLoading" :more="has_more"   @refresh="tapRefresh" @more="tapMore">
+                <PullToRefresh :loading="isLoading" :more="hasMore"   @refresh="tapRefresh" @more="tapMore">
                     <div class="goods-list">
                         <GoodsItem v-for="(item, index) in items" :key="index" @enter="tapProduct" :item="item" @addCart="tapAddCart"></GoodsItem>
                     </div>
@@ -54,7 +54,7 @@ export default class Index extends Vue {
     public items: IProduct[] = [];
     public isSearch = true;
     public keywords = '';
-    public has_more = true;
+    public hasMore = true;
     public isLoading = false;
     public searchParams: ISearch = {
         keywords: '',
@@ -78,9 +78,9 @@ export default class Index extends Vue {
     }
 
     public tapMore() {
-        if (!this.has_more) {
+        if (!this.hasMore) {
             return;
-        }  
+        }
         this.goPage(this.searchParams.page + 1);
     }
 
@@ -90,13 +90,13 @@ export default class Index extends Vue {
         }
         this.isLoading = true;
         getList({
-            page: page,
+            page,
             keywords: this.searchParams.keywords,
             category: this.searchParams.category,
             brand: this.searchParams.brand,
         }).then(res => {
             this.searchParams.page = page;
-            this.has_more = res.paging.more;
+            this.hasMore = res.paging.more;
             this.isLoading = false;
             if (page < 2) {
                 this.items = res.data;
@@ -109,14 +109,14 @@ export default class Index extends Vue {
         this.$router.push({name: 'product', params: {id: item.id + ''}});
     }
     public tapAddCart(item: IProduct) {
-        if (this.goods && this.goods.id == item.id) {
+        if (this.goods && this.goods.id === item.id) {
             this.mode = 1;
             return;
         }
         getInfo(item.id).then(res => {
             this.goods = res;
             this.mode = 1;
-        }); 
+        });
     }
     public tapSearch(keywords: string) {
         this.searchParams.keywords = keywords;

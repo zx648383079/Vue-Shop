@@ -42,7 +42,7 @@ import { receiveOrder } from '@/api/order';
 @Component
 export default class Logistics extends Vue {
     public ORDER_STATUS = ORDER_STATUS;
-    @Prop(Object) readonly item?: IOrder;
+    @Prop(Object) public readonly item?: IOrder;
 
     public tapPay() {
         if (!this.item) {
@@ -62,7 +62,7 @@ export default class Logistics extends Vue {
         if (!this.item) {
             return;
         }
-        this.$router.push({name: 'refund-create', params: {order: this.item.id + ''}});
+        this.$router.push({name: 'refund-create', params: {order: this.item.id + '' }});
     }
 
     public tapComment() {
@@ -71,10 +71,12 @@ export default class Logistics extends Vue {
 
     @Emit('receive')
     public tapReceive() {
+        // TODO
     }
 
     @Emit('cancel')
     public tapCancel() {
+        // TODO
     }
 }
 </script>

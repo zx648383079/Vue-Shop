@@ -17,12 +17,12 @@ import CommentItem from './Child/CommentItem.vue';
     components: {
         BackHeader,
         CommentItem,
-    }
+    },
 })
 export default class Index extends Vue {
-    items: IOrderGoods[] = [];
+    public items: IOrderGoods[] = [];
 
-    created() {
+    public created() {
         getUnCommentGoods(this.$route.query).then(res => {
             if (!res.data || res.data.length < 1) {
                 this.tapBack();

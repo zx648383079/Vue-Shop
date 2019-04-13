@@ -70,14 +70,14 @@ export default class Edit extends Vue {
 
     public created() {
         if (this.$route.query.back) {
-            this.back = parseInt(this.$route.query.back + '');
+            this.back = parseInt(this.$route.query.back + '', 10);
         }
         getRegionTree().then(res => {
             if (res.data) {
                 this.regions = res.data;
             }
         });
-        const id = parseInt(this.$route.params.id);
+        const id = parseInt(this.$route.params.id, 10);
         if (!id) {
             return;
         }
@@ -97,7 +97,7 @@ export default class Edit extends Vue {
             tel: this.address.tel,
             region_id: this.address.region.id,
             address: this.address.address,
-            is_default: this.address.is_default
+            is_default: this.address.is_default,
         };
         if (!data.name) {
             Toast('请输入收货人');
@@ -121,7 +121,7 @@ export default class Edit extends Vue {
         if (this.address.id < 1) {
             return;
         }
-        
+
         deleteAddress(this.address.id).then(res => {
             dispatchSetAddressList([]);
             this.$router.back();

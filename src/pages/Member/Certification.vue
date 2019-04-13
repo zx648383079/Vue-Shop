@@ -42,7 +42,7 @@ export default class Certification extends Vue {
 
     public created() {
         dispatchUser().then(res => {
-            //this.user = res;
+            // this.user = res;
         });
     }
 }

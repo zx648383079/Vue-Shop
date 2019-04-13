@@ -10,9 +10,9 @@ import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 
 @Component
 export default class MenuItem extends Vue {
-    @Prop(String) readonly title!: string;
-    @Prop(String) readonly icon!: string;
-    @Prop(String) readonly uri!: string;
+    @Prop(String) public readonly title!: string;
+    @Prop(String) public readonly icon!: string;
+    @Prop(String) public readonly uri!: string;
 
     public tapGo() {
         if (this.uri) {

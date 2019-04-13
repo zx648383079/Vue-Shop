@@ -69,22 +69,22 @@ import { dispatchAddress } from '@/store/dispatches';
 
 @Component
 export default class AfterSaleGrid extends Vue {
-    @Prop(Number) readonly mode!: number;
-    @Getter('addressList') address_list?: IAddress[];
+    @Prop(Number) public readonly mode!: number;
+    @Getter('addressList') public addressList?: IAddress[];
     public address: IAddress | null = null;
 
-    created() {
+    public created() {
         dispatchAddress().then(res => {
             this.address = res;
-        });   
+        });
     }
 
     public tapAddress() {
-        if (!this.address_list || this.address_list.length < 1) {
+        if (!this.addressList || this.addressList.length < 1) {
             this.$router.push({path: '/address/create', query: {back: '2'}});
             return;
         }
-        this.$router.push({name: 'address', query: {back: '2', selected: (this.address ?this.address.id + '' : '0')}});
+        this.$router.push({name: 'address', query: {back: '2', selected: (this.address ? this.address.id + '' : '0')}});
     }
 }
 </script>

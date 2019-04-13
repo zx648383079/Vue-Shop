@@ -29,15 +29,15 @@ import { getArticle } from '@/api/article';
 export default class Detail extends Vue {
     public article: IArticle|null = null;
 
-    created() {
-        const id = parseInt(this.$route.params.id);
+    public created() {
+        const id = parseInt(this.$route.params.id, 10);
         if (!id) {
             this.$router.push('/');
             return;
         }
         getArticle(id).then(res => {
             this.article = res;
-        });   
+        });
     }
 }
 </script>

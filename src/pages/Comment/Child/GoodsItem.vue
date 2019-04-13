@@ -15,12 +15,10 @@ import { IOrderGoods } from '@/api/model';
 
 @Component
 export default class GoodsItem extends Vue {
-    @Prop(Object) readonly item!: IOrderGoods;
+    @Prop(Object) public readonly item!: IOrderGoods;
 
     @Emit('comment')
-    tapComment() {
-        
-    }
+    public tapComment() {}
 }
 </script>
 <style lang="scss" scoped>

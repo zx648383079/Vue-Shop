@@ -23,7 +23,7 @@ import { IArticle } from '@/api/model';
 
 @Component
 export default class ArticleItem extends Vue {
-    @Prop(Array) readonly items!: any;
+    @Prop(Array) public readonly items!: any;
 
     public tapItem(item: IArticle) {
         this.$router.push({name: 'article-detail', params: {id: item.id + ''}});

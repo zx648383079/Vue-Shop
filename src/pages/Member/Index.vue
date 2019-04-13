@@ -40,10 +40,10 @@
                 </a>
             </div>
             <div class="menu-large">
-                <MenuLargeItem title="待付款" icon="fa-money-bill" :uri="'/order?status=' + ORDER_STATUS.UN_PAY" :count="order_subtotal.un_pay"/>
-                <MenuLargeItem title="待收货" icon="fa-truck" :uri="'/order?status=' + ORDER_STATUS.SHIPPED" :count="order_subtotal.shipped"/>
-                <MenuLargeItem title="待评价" icon="fa-comment" uri="/comment" :count="order_subtotal.uncomment"/>
-                <MenuLargeItem title="退换货" icon="fa-exchange-alt" uri="/refund" :count="order_subtotal.refunding"/>
+                <MenuLargeItem title="待付款" icon="fa-money-bill" :uri="'/order?status=' + ORDER_STATUS.UN_PAY" :count="orderSubtotal.un_pay"/>
+                <MenuLargeItem title="待收货" icon="fa-truck" :uri="'/order?status=' + ORDER_STATUS.SHIPPED" :count="orderSubtotal.shipped"/>
+                <MenuLargeItem title="待评价" icon="fa-comment" uri="/comment" :count="orderSubtotal.uncomment"/>
+                <MenuLargeItem title="退换货" icon="fa-exchange-alt" uri="/refund" :count="orderSubtotal.refunding"/>
             </div>
 
             <div class="menu-panel">
@@ -107,7 +107,7 @@ export default class Index extends Vue {
 
     public user: IUser | null = null;
     public ORDER_STATUS = ORDER_STATUS;
-    public order_subtotal: IOrderCount = {};
+    public orderSubtotal: IOrderCount = {};
     public isFixed = false;
 
     public created() {
@@ -115,11 +115,11 @@ export default class Index extends Vue {
             this.user = res;
         });
         getOrderSubtotal().then(res => {
-            this.order_subtotal = res;
+            this.orderSubtotal = res;
         });
     }
 
-        /**
+    /**
      * name
      */
     public mounted(){

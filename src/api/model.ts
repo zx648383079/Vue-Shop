@@ -281,3 +281,23 @@ export enum ORDER_STATUS {
     RECEIVED = 60,
     FINISH = 80,
 }
+
+export interface ICoupon {
+    id: number;
+    name: string;
+    thumb: string;
+    type: number;
+    rule: number;
+    rule_value: number;
+    min_money: number;
+    money: number;
+    send_type: number;
+    send_value: number;
+    received?: number;
+    can_receive?: boolean;
+    every_amount: number;
+    start_at: number;
+    end_at: number;
+    created_at: string;
+    updated_at: string;
+}

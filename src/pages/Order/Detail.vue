@@ -78,7 +78,7 @@ export default class Detail extends Vue {
     public ORDER_STATUS = ORDER_STATUS;
 
     public created() {
-        const id = parseInt(this.$route.params.id);
+        const id = parseInt(this.$route.params.id, 10);
         if (!id) {
             Toast('订单错误');
             this.$router.push('/');

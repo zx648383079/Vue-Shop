@@ -21,11 +21,11 @@ import BackHeader from '@/components/BackHeader.vue';
 
 @Component({
     components: {
-        BackHeader
-    }
+        BackHeader,
+    },
 })
 export default class Logistics extends Vue {
-    items = [1];
+    public items = [1];
 }
 </script>
 <style lang="scss" scoped>

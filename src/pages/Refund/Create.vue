@@ -54,11 +54,11 @@ import MenuItem from '@/pages/Member/Child/MenuItem.vue';
 })
 export default class Create extends Vue {
     public ORDER_STATUS = ORDER_STATUS;
-    items: IOrderGoods[] = [];
-    mode: number = 0;
-    status: ORDER_STATUS = ORDER_STATUS.PAID_UN_SHIP;
+    public items: IOrderGoods[] = [];
+    public mode: number = 0;
+    public status: ORDER_STATUS = ORDER_STATUS.PAID_UN_SHIP;
 
-    created() {
+    public created() {
         getRefundGoods(this.$route.query).then(res => {
             if (!res.data || res.data.length < 1) {
                 this.$router.push('/');
@@ -66,7 +66,7 @@ export default class Create extends Vue {
             }
             this.items = res.data;
             this.status = res.data[0].status as ORDER_STATUS;
-            if (this.status == ORDER_STATUS.RECEIVED || this.status == ORDER_STATUS.FINISH) {
+            if (this.status === ORDER_STATUS.RECEIVED || this.status === ORDER_STATUS.FINISH) {
                 this.mode = 2;
             }
         });

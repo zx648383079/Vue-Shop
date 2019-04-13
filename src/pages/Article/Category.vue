@@ -16,15 +16,15 @@ import { getCategories } from '@/api/article';
 @Component({
     components: {
         BackHeader,
-        CatItem
+        CatItem,
     },
 })
 export default class Category extends Vue {
     public items: IArticleCategory[] = [];
     public id: number = 0;
 
-    created() {
-        const id = parseInt(this.$route.query.id + '');
+    public created() {
+        const id = parseInt(this.$route.query.id + '', 10);
         if (id) {
             this.id = id;
         }

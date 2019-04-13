@@ -90,7 +90,8 @@ export default class Login extends Vue {
      * tapAuth
      */
     public tapAuth(type: string) {
-        window.location.href = getAuthUri(type, this.$route.query.redirect_uri ? this.$route.query.redirect_uri + '' : '');
+        window.location.href = getAuthUri(type,
+        this.$route.query.redirect_uri ? this.$route.query.redirect_uri + '' : '');
     }
 }
 </script>

@@ -1822,6 +1822,19 @@ footer,
             border-radius: 50%;
             width: 50px;
             height: 50px;
+            &.status-received,
+            &.status-close {
+                font-size: 30px;
+                font-weight: 900;
+                border: none;
+                color: rgba(255,255,255,.6);
+                width: 100%;
+                border-radius: 0;
+                margin: 20px 0 0;
+            }
+            &.status-close {
+                margin: 10px 0 0;
+            }
         }
     }
 }

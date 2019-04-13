@@ -21,49 +21,49 @@ import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 
 @Component
 export default class SwipeRow extends Vue {
-    @Prop([String, Array]) readonly name!: string| string[];
-    @Prop([Number, String]) readonly index!: number|string;
-    oldLeft: number = 0;
-    left = 0;
-    startX = 0;
-    isTouch = false;
-    leftBox: HTMLDivElement | null = null;
-    rightBox: HTMLDivElement | null = null;
+    @Prop([String, Array]) public readonly name!: string| string[];
+    @Prop([Number, String]) public readonly index!: number|string;
+    public oldLeft: number = 0;
+    public left = 0;
+    public startX = 0;
+    public isTouch = false;
+    public leftBox: HTMLDivElement | null = null;
+    public rightBox: HTMLDivElement | null = null;
 
-    mounted() {
+    public mounted() {
         this.leftBox = this.$refs.left as HTMLDivElement;
         this.rightBox = this.$refs.right as HTMLDivElement;
     }
 
-    getLeftWidth(): number {
+    public getLeftWidth(): number {
         if (!this.leftBox) {
             return 0;
         }
         return this.leftBox.clientWidth || this.leftBox.offsetWidth;
     }
 
-    getRightWidth(): number {
+    public getRightWidth(): number {
         if (!this.rightBox) {
             return 0;
         }
         return this.rightBox.clientWidth || this.rightBox.offsetWidth;
     }
 
-    tapRemove(item: any) {
+    public tapRemove(item: any) {
         this.$emit('remove', item);
     }
 
-    touchStart(e: TouchEvent) {
+    public touchStart(e: TouchEvent) {
         this.resetOther();
         this.oldLeft = this.left;
         this.isTouch = false;
         this.startX = e.targetTouches[0].clientX;
     }
 
-    touchMove(e: TouchEvent) {
+    public touchMove(e: TouchEvent) {
         this.isTouch = true;
         const diff = e.targetTouches[0].clientX - this.startX;
-        if (this.oldLeft == 0) {
+        if (this.oldLeft === 0) {
             if (diff < 0) {
                 this.left = Math.max(diff, -this.getRightWidth());
                 return;
@@ -84,14 +84,14 @@ export default class SwipeRow extends Vue {
         this.left = Math.min(this.oldLeft + diff, 0);
     }
 
-    touchEnd(e: TouchEvent) {
+    public touchEnd(e: TouchEvent) {
         if (!this.isTouch) {
             this.animation(this.left, 0);
             this.$emit('click');
             return;
         }
-        //const diff = e.changedTouches[0].clientX - this.startX;
-        if (this.left == 0) {
+        // const diff = e.changedTouches[0].clientX - this.startX;
+        if (this.left === 0) {
             return;
         }
         if (this.left > 0) {
@@ -99,20 +99,22 @@ export default class SwipeRow extends Vue {
             this.animation(this.left, this.left * 3 > width ? width : 0);
             return;
         }
-        const width = - this.getRightWidth();
-        this.animation(this.left, this.left * 3 < width ? width : 0);
+        const w = - this.getRightWidth();
+        this.animation(this.left, this.left * 3 < w ? w : 0);
     }
 
-    animation(
-        start: number, end: number, endHandle?: Function) {
+    public animation(
+        start: number, end: number, endHandle?: () => void) {
         const diff = start > end ? -1 : 1;
         let step = 1;
-        let handle = setInterval(() => {
+        const handle = setInterval(() => {
             start += (step ++) * diff;
             if ((diff > 0 && start >= end) || (diff < 0 && start <= end)) {
                 clearInterval(handle);
                 this.left = end;
-                endHandle && endHandle();
+                if (typeof endHandle === 'function') {
+                    endHandle();
+                }
                 return;
             }
             this.left = start;
@@ -126,19 +128,19 @@ export default class SwipeRow extends Vue {
         this.animation(this.left, 0);
     }
 
-    resetOther() {
-        if (typeof this.index == 'undefined') {
+    public resetOther() {
+        if (typeof this.index === 'undefined') {
             return;
         }
         const items: SwipeRow[] = this.$parent.$refs.swiperow as SwipeRow[];
         if (!items || items.length < 1) {
             return;
         }
-        for (let i = 0; i < items.length; i++) {
-            if (items[i].index == this.index) {
+        for (const item of items) {
+            if (item.index === this.index) {
                 continue;
             }
-            items[i].reset();
+            item.reset();
         }
     }
 }

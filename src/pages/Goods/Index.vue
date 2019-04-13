@@ -173,29 +173,29 @@ export default class Index extends Vue {
     public tab: number = 0;
     public comment: ICommentSubtotal | null = null;
     public items: IProduct[] = [];
-    @Getter('isGuest') isGuest?: boolean;
+    @Getter('isGuest') public isGuest?: boolean;
     public tabMenus = [
         {
             id: 'info',
-            name: '商品'
+            name: '商品',
         },
         {
             id: 'detail',
-            name: '详情'
+            name: '详情',
         },
         {
             id: 'comments',
-            name: '评价'
+            name: '评价',
         },
         {
             id: 'recommend',
-            name: '推荐'
+            name: '推荐',
         },
     ];
     public tabIndex = 'info';
 
     public created() {
-        const id = parseInt(this.$route.params.id);
+        const id = parseInt(this.$route.params.id, 10);
         if (!id) {
             Toast('商品错误');
             this.$router.push('/');
@@ -209,7 +209,7 @@ export default class Index extends Vue {
             if (this.$route.hash) {
                 this.tapScroll(this.$route.hash.replace('#', ''));
             }
-        });  
+        });
     }
 
     /**

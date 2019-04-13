@@ -20,10 +20,10 @@
                     <i class="fa"></i>
                 </div>
             </div>
-            <div v-if="payment_list && payment_list.length > 0">
+            <div v-if="paymentList && paymentList.length > 0">
                 <div class="payment-hr">选择其他支付方式</div>
                 <div class="payment-list">
-                    <div class="payment-item" v-for="(item, index) in payment_list" :key="index"  :class="{active: item.id == order.payment_id}"  @click="tapSelected(item)">
+                    <div class="payment-item" v-for="(item, index) in paymentList" :key="index"  :class="{active: item.id == order.payment_id}"  @click="tapSelected(item)">
                         <div class="icon">
                             <i class="fab fa-weixin"></i>
                         </div>
@@ -59,17 +59,17 @@ import { payOrder } from '@/api/order';
 export default class Pay extends Vue {
     public order: IOrder | null = null;
     public payment: IPayment | null = null;
-    public payment_list: IPayment[] = [];
+    public paymentList: IPayment[] = [];
 
     public created() {
-        const id = parseInt(this.$route.params.id);
+        const id = parseInt(this.$route.params.id, 10);
         if (!id) {
             Toast('订单错误');
             this.$router.push('/');
             return;
         }
         dispatchOrder(id).then(res => {
-            if (res.status != ORDER_STATUS.UN_PAY) {
+            if (res.status !== ORDER_STATUS.UN_PAY) {
                 Toast('订单无法支付');
                 this.$router.push('/');
                 return;
@@ -91,18 +91,18 @@ export default class Pay extends Vue {
             if (!res.data) {
                 return;
             }
-            this.payment_list = [];
+            this.paymentList = [];
             for (const item of res.data) {
-                if (this.order && item.id == this.order.payment_id) {
+                if (this.order && item.id === this.order.payment_id) {
                     this.payment = item;
                     continue;
                 }
-                this.payment_list.push(item);
+                this.paymentList.push(item);
             }
         });
     }
 
-    tapPay() {
+    public tapPay() {
         if (!this.payment || !this.order) {
             Toast('请选择支付方式');
             return;
@@ -114,7 +114,7 @@ export default class Pay extends Vue {
         });
     }
 
-    doPay(data: IPrePay) {
+    public doPay(data: IPrePay) {
         if (!this.order) {
             return;
         }
@@ -132,9 +132,7 @@ export default class Pay extends Vue {
             document.body.appendChild(div);
             return;
         }
-        if (data.params) {
-            
-        }
+        if (data.params) {}
     }
 }
 </script>

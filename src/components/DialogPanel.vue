@@ -25,19 +25,19 @@ import { Vue, Component, Prop, Emit, Watch } from 'vue-property-decorator';
 
 @Component
 export default class DialogPanel extends Vue {
-    @Prop(String) readonly title!: string;
-    @Prop(Boolean) readonly hide!: boolean;
+    @Prop(String) public readonly title!: string;
+    @Prop(Boolean) public readonly hide!: boolean;
 
-    calendarVisible: boolean = false;
+    public calendarVisible: boolean = false;
 
     @Watch('calendarVisible')
-    onVisibleChanged(val: boolean, oldVal: boolean) {
+    public onVisibleChanged(val: boolean, oldVal: boolean) {
         this.$emit('hide', !val);
     }
 
     @Watch('hide')
-    onHideChanged(val: boolean, oldVal: boolean) {
-        if (this.calendarVisible == val) {
+    public onHideChanged(val: boolean, oldVal: boolean) {
+        if (this.calendarVisible === val) {
             return;
         }
         this.calendarVisible = val;
@@ -48,7 +48,7 @@ export default class DialogPanel extends Vue {
     }
 
     public hideCalerdar() {
-       this.calendarVisible = false; 
+       this.calendarVisible = false;
     }
 }
 </script>
