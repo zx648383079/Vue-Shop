@@ -1751,14 +1751,15 @@ footer,
 .coupon-item {
     display: grid;
     grid-template-columns: 75px 1fr 75px;
-    height: 114px;
+    height: 100px;
     background-color: $white;
     margin-bottom: 10px;
     .thumb {
         padding-top: 20px;
+        text-align: center;
         img {
-            width: 75px;
-            height: 75px;
+            width: 60px;
+            height: 60px;
         }
     }
     .info {

@@ -32,15 +32,15 @@ export default class DialogPanel extends Vue {
 
     @Watch('calendarVisible')
     public onVisibleChanged(val: boolean, oldVal: boolean) {
-        this.$emit('hide', !val);
+        this.$emit('toggle', val);
     }
 
     @Watch('hide')
     public onHideChanged(val: boolean, oldVal: boolean) {
-        if (this.calendarVisible === val) {
+        if (this.calendarVisible === !val) {
             return;
         }
-        this.calendarVisible = val;
+        this.calendarVisible = !val;
     }
 
     public showCalendar() {

@@ -3,27 +3,27 @@
         <BackHeader title="申请开票"/>
         <div class="has-header has-double-footer">
             <div class="order-mini-item" v-for="(item, index) in items" :key="index">
-                <i class="fa check-box"></i>
+                <i class="fa check-box" :class="{active: item.checked}" @click="toggleCheck(item)"></i>
                 <div class="info">
-                    <div class="name">{{ item }}</div>
-                    <p>2018-123</p>
+                    <div class="name">{{ item.series_number }}</div>
+                    <p>{{ item.created_at }}</p>
                 </div>
                 <div class="amount">
-                    ￥200
+                    {{ item.goods_amount | price }}
                 </div>
             </div>
         </div>
         <div class="invoice-footer">
-            <div>
-                <i class="fa check-box"></i>
+            <div @click="toggleCheckAll">
+                <i class="fa check-box" :class="{active: checkedAll}"></i>
                 全选
             </div>
             <div>
-                已选择0笔订单
+                已选择 {{ selectedCount }} 笔订单
             </div>
             <div>
-                <p>可开票金额￥0</p>
-                <p>已选金额￥0</p>
+                <p>可开票金额{{ total | price }}</p>
+                <p>已选金额{{ selectedMoney | price }}</p>
             </div>
             <div>
                 <a href="">立即开票</a>
@@ -34,6 +34,8 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
+import { getOrderList } from '../../api/invoice';
+import { IOrder } from '../../api/model';
 
 @Component({
     components: {
@@ -41,7 +43,50 @@ import BackHeader from '@/components/BackHeader.vue';
     },
 })
 export default class Apply extends Vue {
-    public items = [1, 1, 2, 3];
+    public items: IOrder[] = [];
+    public checkedAll: boolean = false;
+    public selectedCount: number = 0;
+    public selectedMoney: number = 0;
+    public total: number = 0;
+
+    public created() {
+        getOrderList().then(res => {
+            if (!res.data) {
+                return;
+            }
+            this.items = res.data;
+        })
+    }
+
+    public toggleCheckAll() {
+        this.checkedAll = !this.checkedAll;
+        for (const item of this.items) {
+            item.checked = this.checkedAll;
+        }
+        this.refresh();
+    }
+
+    public toggleCheck(item: IOrder) {
+        item.checked = !item.checked;
+        if (!item.checked) {
+            this.checkedAll = false;
+        }
+        this.refresh();
+    }
+
+    private refresh() {
+        this.total = 0;
+        this.selectedCount = 0;
+        this.selectedMoney = 0;
+        for (const item of this.items) {
+            this.total += item.goods_amount;
+            if (!item.checked) {
+                continue;
+            }
+            this.selectedCount ++;
+            this.selectedMoney += item.goods_amount;
+        }
+    }
 }
 </script>
 <style lang="scss" scoped>

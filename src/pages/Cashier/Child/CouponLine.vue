@@ -1,5 +1,5 @@
 <template>
-    <DialogPanel title="优惠券">
+    <DialogPanel title="优惠券" ref="dialog">
         <div class="line-item inovice-box">
             <span>优惠券</span>
             <span>
@@ -7,19 +7,28 @@
             </span>
             <i class="fa fa-chevron-right"></i>
         </div>
-        <div slot="panel">
-            
-
-
+        <div slot="panel" class="coupon-body">
+            <div class="my-coupon-item" v-for="(item, index) in items" :key="index" @click="tapSelected(item)">
+                <div class="price">
+                    <em>{{ item.money | price }}</em>
+                </div>
+                <div class="info">
+                    <p>{{ item.name }}</p>
+                    <div class="time">
+                        <span>{{ item.start_at | time }}-{{ item.end_at | time}}</span>
+                    </div>
+                    <i :class="['fa', 'check-box', value && item.id == value.id ? 'active' : '']"></i>
+                </div>
+            </div>
         </div>
         <div slot="footer">
-            <button>确定</button>
+            <button @click="tapHide">确定</button>
         </div>
     </DialogPanel>
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
-import { IPayment } from '@/api/model';
+import { ICoupon } from '@/api/model';
 import DialogPanel from '@/components/DialogPanel.vue';
 
 @Component({
@@ -27,9 +36,18 @@ import DialogPanel from '@/components/DialogPanel.vue';
         DialogPanel,
     },
 })
-export default class PaymentLine extends Vue {
-    @Prop(Object) public readonly value!: IPayment;
-    @Prop(Array) public readonly items!: IPayment[];
+export default class CouponLine extends Vue {
+    @Prop(Object) public readonly value!: ICoupon;
+    @Prop(Array) public readonly items!: ICoupon[];
+    public hide: boolean = true;
+
+    public tapSelected(item: ICoupon) {
+        this.$emit('input', item);
+    }
+
+    public tapHide() {
+        (this.$refs.dialog as DialogPanel).hideCalerdar();
+    }
 }
 </script>
 <style lang="scss" scoped>
@@ -37,16 +55,13 @@ export default class PaymentLine extends Vue {
     background-color: #fff;
 }
 
-.item-list {
-    a {
-        display: inline-block;
-        padding: 5px 10px;
-        border: 1px solid #ccc;
-        &.active {
-            background-color: rgb(248, 209, 209);
-            color: red;
-            border-color: red;
-        }
+.my-coupon-item {
+    .check-box {
+        position: absolute;
+        right: 10px;
     }
+}
+.coupon-body {
+    max-height: 45vh;
 }
 </style>

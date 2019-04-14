@@ -1,5 +1,5 @@
 import {fetch, post} from '../utils/http';
-import { IData, ICart, IPayment, IShipping, ICartItem, IOrder } from './model';
+import { IData, ICart, IPayment, IShipping, ICartItem, IOrder, ICoupon } from './model';
 
 export const getCart = (params?: any) => fetch<IData<ICart>>('shop/cart', params)
 
@@ -17,6 +17,9 @@ export const updateItem = (id: number, amount: number = 1) => post<IData<ICart>>
 export const deleteItem = (id: number) => post<IData<ICart>>('shop/cart/delete', {
     id,
 });
+
+export const getCouponList = (goods?: number[] | ICartItem[], type: number = 0) =>
+    post<IData<ICoupon>>('shop/cashier/coupon', {goods, type});
 
 export const getPaymentList = (goods?: number[], shipping?: number) =>
     post<IData<IPayment>>('shop/cashier/payment', {goods, shipping});

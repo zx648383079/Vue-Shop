@@ -229,7 +229,8 @@ export interface IOrder {
     shipping_id: number,
     shipping_name: string,
     goods?: IOrderGoods[];
-    address?: IAddress
+    address?: IAddress;
+    checked?: boolean;
 }
 
 export interface ISubtotal {
@@ -301,3 +302,36 @@ export interface ICoupon {
     created_at: string;
     updated_at: string;
 }
+
+export interface IInvoiceTitle {
+    id?: number;
+    title_type: number;
+    type: number;
+    title: string;
+    tax_no: string;
+    tel: string;
+    bank: string;
+    account: string;
+    address: string;
+    user_id?: number;
+    created_at?: string;
+    updated_at?: string;
+}
+
+export interface IInvoiceLog {
+    id?: string;
+    title_type?: number;
+    type?: number;
+    title: string;
+    tax_no?: string;
+    tel?: string;
+    bank?: string;
+    account?: string;
+    address?: string;
+    user_id?: number;
+    money?: number;
+    status?: number;
+    created_at?: string;
+    updated_at?: string;
+}
+

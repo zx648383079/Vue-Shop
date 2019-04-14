@@ -4,7 +4,7 @@
         <div class="has-header">
             <div class="account-header">
                 <p>可开发票总金额(元)</p>
-                <div class="money">0.00</div>
+                <div class="money">{{ subtotal.remain || 0 }}</div>
             </div>
 
             <div class="menu-list">
@@ -31,6 +31,8 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
+import { ISubtotal } from '../../api/model';
+import { getSubtotal } from '../../api/invoice';
 
 @Component({
     components: {
@@ -38,7 +40,13 @@ import BackHeader from '@/components/BackHeader.vue';
     },
 })
 export default class Index extends Vue {
+    public subtotal: ISubtotal = {};
 
+    public created() {
+        getSubtotal().then(res => {
+            this.subtotal = res;
+        });
+    }
 }
 </script>
 <style lang="scss" scoped>

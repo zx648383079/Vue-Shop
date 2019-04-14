@@ -25,7 +25,7 @@
             </div>
 
             <InvoiceLine v-model="invoice"/>
-            <CouponLine v-model="coupon"/>
+            <CouponLine v-model="coupon" :items="couponList"/>
             
 
             <div class="checkout-amount" v-if="order">
@@ -49,7 +49,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit, Watch } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
-import { IAddress, ICart, IOrder, IPayment, IShipping, ICartItem } from '@/api/model';
+import { IAddress, ICart, IOrder, IPayment, IShipping, ICartItem, ICoupon } from '@/api/model';
 import { dispatchAddress, dispatchSetCart, dispatchSetOrder } from '@/store/dispatches';
 import { Getter } from 'vuex-class';
 import AddressLine from './Child/AddressLine.vue';
@@ -57,7 +57,7 @@ import PaymentLine from './Child/PaymentLine.vue';
 import ShippingLine from './Child/ShippingLine.vue';
 import InvoiceLine from './Child/InvoiceLine.vue';
 import CouponLine from './Child/CouponLine.vue';
-import { getPaymentList, previewOrder, getShippingList, checkoutOrder } from '@/api/cart';
+import { getPaymentList, previewOrder, getShippingList, checkoutOrder, getCouponList } from '@/api/cart';
 
 interface ICartBox {
     type: number,
@@ -82,6 +82,7 @@ export default class Index extends Vue {
     public paymentList: IPayment[] = [];
     public payment: IPayment| null = null;
     public shippingList: IShipping[] = [];
+    public couponList: ICoupon[] = [];
     public shipping: IShipping| null = null;
     public cartBox: ICartBox | null = null;
     public invoice = null;
@@ -99,6 +100,14 @@ export default class Index extends Vue {
         getPaymentList().then(res => {
             if (res.data) {
                 this.paymentList = res.data;
+            }
+        });
+        if (!this.cartBox) {
+            return;
+        }
+        getCouponList(this.cartBox.goods, this.cartBox.type).then(res => {
+            if (res.data) {
+                this.couponList = res.data;
             }
         });
     }

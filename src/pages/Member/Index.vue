@@ -54,19 +54,19 @@
                 </a>
                 <div class="panel-body">
                     <a @click="$router.push('/account')" class="item">
-                        <span class="menu-item-icon">0
+                        <span class="menu-item-icon">{{accountSubtotal.money || 0}}
                         </span>
                         余额
                     </a><a href="" class="item">
-                        <span class="menu-item-icon">0
+                        <span class="menu-item-icon">{{accountSubtotal.integral || 0}}
                         </span>
                         积分
                     </a><a href="" class="item">
-                        <span class="menu-item-icon">0
+                        <span class="menu-item-icon">{{accountSubtotal.bonus || 0}}
                         </span>
                         红包
                     </a><a @click="$router.push('/coupon/my')" class="item">
-                        <span class="menu-item-icon">0
+                        <span class="menu-item-icon">{{accountSubtotal.coupon || 0}}
                         </span>
                         优惠券
                     </a>
@@ -89,11 +89,12 @@
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import TabBar from '@/components/TabBar.vue';
 import BackHeader from '@/components/BackHeader.vue';
-import { IUser, ORDER_STATUS, IOrderCount } from '@/api/model';
+import { IUser, ORDER_STATUS, IOrderCount, ISubtotal } from '@/api/model';
 import { dispatchUser, dispatchLogout } from '@/store/dispatches';
 import MenuItem from './Child/MenuItem.vue';
 import MenuLargeItem from './Child/MenuLargeItem.vue';
 import { getOrderSubtotal } from '@/api/order';
+import { getAccountSubtotal } from '../../api/user';
 
 @Component({
     components: {
@@ -108,14 +109,13 @@ export default class Index extends Vue {
     public user: IUser | null = null;
     public ORDER_STATUS = ORDER_STATUS;
     public orderSubtotal: IOrderCount = {};
+    public accountSubtotal: ISubtotal = {};
     public isFixed = false;
 
     public created() {
         dispatchUser().then(res => {
             this.user = res;
-        });
-        getOrderSubtotal().then(res => {
-            this.orderSubtotal = res;
+            this.getSubtotal();
         });
     }
 
@@ -128,6 +128,21 @@ export default class Index extends Vue {
 
     public destroyed() {
         window.removeEventListener('scroll', this.handleScroll);   //  离开页面清除（移除）滚轮滚动事件
+    }
+
+    /**
+     * getSubtotal
+     */
+    public getSubtotal() {
+        if (!this.user) {
+            return;
+        }
+        getOrderSubtotal().then(res => {
+            this.orderSubtotal = res;
+        });
+        getAccountSubtotal().then(res => {
+            this.accountSubtotal = res;
+        });
     }
 
     /**

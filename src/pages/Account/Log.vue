@@ -2,41 +2,38 @@
     <div>
         <BackHeader title="记录"/>
         <div class="has-header">
-            <div class="box"
-                v-infinite-scroll="loadMore"
-                infinite-scroll-disabled="isLoading"
-                infinite-scroll-distance="10">
-                
-                <div v-for="(item, index) in itemGroups" :key="index" :class="item.id ? 'log-item' : ''">
-                    <div class="log-hr" v-if="!item.id">
-                        {{ item.remark }}
-                    </div>
-                    <div v-else>
-                        <div class="info">
-                            <div class="name">{{ item.remark }}</div>
-                            <p>{{ item.created_at }}</p>
+            <PullToRefresh :loading="isLoading" :more="hasMore" @refresh="tapRefresh" @more="tapMore">
+                <div class="box">
+                    <div v-for="(item, index) in itemGroups" :key="index" :class="{'log-item': item.id}">
+                        <div class="log-hr" v-if="!item.id">
+                            {{ item.remark }}
                         </div>
-                        <div class="amount">
-                            {{ item.money > 0 ? '+' + item.money : item.money }}
+                        <div v-else>
+                            <div class="info">
+                                <div class="name">{{ item.remark }}</div>
+                                <p>{{ item.created_at }}</p>
+                            </div>
+                            <div class="amount">
+                                {{ item.money > 0 ? '+' + item.money : item.money }}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </PullToRefresh>
         </div>
     </div>
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
-import { InfiniteScroll } from 'mint-ui';
+import PullToRefresh from '@/components/PullToRefresh.vue';
 import { getAccountLog } from '@/api/user';
 import { IAccountLog } from '@/api/model';
-
-Vue.use(InfiniteScroll);
 
 @Component({
     components: {
         BackHeader,
+        PullToRefresh,
     },
 })
 export default class Log extends Vue {
@@ -66,17 +63,17 @@ export default class Log extends Vue {
     }
 
     public created() {
-        this.refresh();
+        this.tapRefresh();
     }
 
-    public loadMore() {
+    public tapMore() {
         this.goPage( ++ this.page);
     }
 
     /**
      * refresh
      */
-    public refresh() {
+    public tapRefresh() {
         this.items = [];
         this.isLoading = false;
         this.hasMore = true;

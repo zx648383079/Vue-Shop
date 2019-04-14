@@ -7,12 +7,13 @@
             </span>
             <i class="fa fa-chevron-right"></i>
         </div>
-        <div slot="panel">
+        <div slot="panel" class="invoice-body">
             <div class="input-group">
                 <label>发票类型</label>
                 <div class="radio-box">
-                    <span class="active">普通发票</span>
-                    <span>电子普通发票</span>
+                    <span v-for="(item, index) in typeList" :key="index" :class="{active: invoice.type == index}" @click="invoice.type = index">
+                        {{ item }}
+                    </span>
                     <span class="disable">增值税专用发票</span>
                 </div>
                 <div class="tip">电子普通发票与纸质普通发票具备同等法律效力，可支持报销入账</div>
@@ -20,13 +21,14 @@
             <div class="input-group">
                 <label>发票抬头</label>
                 <div class="radio-box">
-                    <span class="active">个人</span>
-                    <span>单位</span>
+                    <span v-for="(item, index) in titleTypeList" :key="index" :class="{active: invoice.title_type == index}" @click="invoice.title_type = index">
+                        {{ item }}
+                    </span>
                 </div>
             </div>
             <div class="input-group">
-                <input type="text" placeholder="抬头">
-                <input type="text" placeholder="税号">
+                <input type="text" placeholder="抬头" v-model="invoice.title">
+                <input type="text" placeholder="税号" v-model="invoice.tax_no">
             </div>
             <div class="input-line">
                 <p><span>收票人手机</span><span></span></p>
@@ -35,8 +37,9 @@
             <div class="input-group">
                 <label>发票内容</label>
                 <div class="radio-box">
-                    <span class="active">商品明细</span>
-                    <span>商品类别</span>
+                    <span v-for="(item, index) in contentList" :key="index" :class="{active: invoice.content == item}" @click="invoice.content = item">
+                        {{ item }}
+                    </span>
                 </div>
             </div>
         </div>
@@ -47,7 +50,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
-import { IPayment } from '@/api/model';
+import { IPayment, IInvoiceTitle } from '@/api/model';
 import DialogPanel from '@/components/DialogPanel.vue';
 
 @Component({
@@ -56,7 +59,18 @@ import DialogPanel from '@/components/DialogPanel.vue';
     },
 })
 export default class PaymentLine extends Vue {
-    @Prop(Object) public readonly value!: IPayment;
+    public titleTypeList = ['个人', '企业'];
+    public typeList = ['普通发票', '电子普通发票'];
+    public contentList = ['商品明细', '商品类别'];
+    @Prop(Object) public readonly value!: IInvoiceTitle;
+
+    public invoice: any = {
+        title_type: 0,
+        type: 0,
+        title: '',
+        tax_no: '',
+        content: '',
+    };
 }
 </script>
 <style lang="scss" scoped>
@@ -96,10 +110,16 @@ export default class PaymentLine extends Vue {
             background-color: #d22222;
             color: #fff;
         }
+        &.disable {
+            background-color: #ccc;
+        }
     }
 }
 .tip {
     font-size: 12px;
     color: #767676;
+}
+.invoice-body {
+    max-height: 45vh;
 }
 </style>
