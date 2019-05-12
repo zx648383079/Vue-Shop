@@ -9,24 +9,24 @@
     </div>
 </template>
 <script lang="ts">
-import Vue from 'vue';
+import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import GoodsItem from './GoodsItem.vue';
 import { IProduct } from '@/api/model';
-export default Vue.extend({
+
+@Component({
     components: {
         GoodsItem,
     },
-    props: {
-        title: String,
-        items: Array,
-    },
-    methods: {
-        tapProduct(item: IProduct) {
-            this.$emit('enter', item);
-        },
-        tapAddCart(item: IProduct) {
-            this.$emit('addCart', item);
-        },
-    },
-});
+})
+export default class GoodsPanel extends Vue {
+    @Prop(String) public readonly title!: string;
+    @Prop(Array) public readonly items!: IProduct[];
+
+    public tapProduct(item: IProduct) {
+        this.$emit('enter', item);
+    }
+    public tapAddCart(item: IProduct) {
+        this.$emit('addCart', item);
+    }
+}
 </script>
