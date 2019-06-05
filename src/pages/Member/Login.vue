@@ -35,8 +35,8 @@
                 </div>
             </div>
             <div class="login-box" v-if="mode > 0 && mode < 4">
-                <MobileLogin v-if="mode == 1" @click="tapChange" @back="tapLoginBack"/>
-                <MobileCodeLogin v-if="mode == 2" @click="tapChange" @back="tapLoginBack"/>
+                <MobileLogin v-if="mode == 2" @click="tapChange" @back="tapLoginBack"/>
+                <MobileCodeLogin v-if="mode == 1" @click="tapChange" @back="tapLoginBack"/>
                 <EmailLogin v-if="mode == 3" @click="tapChange" @back="tapLoginBack"/>
             </div>
             <div class="register-box" v-if="mode >= 4">
