@@ -26,6 +26,8 @@ import CountDown from '@/components/CountDown.vue';
 import { Toast } from 'mint-ui';
 import { IUser } from '../../../api/model';
 import { dispatchLogin } from '../../../store/dispatches';
+import { sendCode } from '../../../api/user';
+import { isEmpty, isMobile } from '../../../utils/validate';
 
 @Component({
     components: {
@@ -46,7 +48,12 @@ export default class MobileCodeLogin extends Vue {
             Toast('请输入手机号');
             return;
         }
-        btn.start();
+        sendCode({
+            mobile: this.mobile,
+            scene: 'login',
+        }).then(res => {
+            btn.start();
+        });
     }
 
     public tapLogin() {
@@ -68,7 +75,7 @@ export default class MobileCodeLogin extends Vue {
      * verifyMobile
      */
     public verifyMobile() {
-        return this.mobile && /^1\d{10}$/.test(this.mobile);
+        return !isEmpty(this.mobile) && isMobile(this.mobile);
     }
 }
 </script>

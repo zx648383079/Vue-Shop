@@ -26,6 +26,8 @@ export const register = (email: string, password: string) => post<IUser>('auth/r
     password,
 });
 
+export const sendCode = (params: any) => post<IDataOne<boolean>>('auth/send_code', params);
+
 export const updatePassword = (oldPassword: string, password: string) => post<IUser>('auth/password/update', {
     old_password: oldPassword,
     password,

@@ -24,6 +24,7 @@ import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import { Toast } from 'mint-ui';
 import { IUser } from '../../../api/model';
 import { dispatchLogin } from '../../../store/dispatches';
+import { isEmpty, isMobile } from '../../../utils/validate';
 
 @Component
 export default class MobileLogin extends Vue {
@@ -38,7 +39,7 @@ export default class MobileLogin extends Vue {
     public tapLogin() {
         const mobile = this.mobile;
         const password = this.password;
-        if (!mobile && /^1\d{10}$/.test(mobile)) {
+        if (isEmpty(mobile) || !isMobile(mobile)) {
             Toast('请输入手机号');
             return;
         }

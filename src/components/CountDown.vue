@@ -30,7 +30,7 @@ export default class CountDown extends Vue {
             time = this.time;
         }
         this.text = time.toString();
-        this.handle = setInterval(() => {
+        this.handle = window.setInterval(() => {
             time --;
             if (time <= 0) {
                 clearInterval(this.handle);
