@@ -30,6 +30,7 @@
                 <MenuItem title="维修" icon="fa-hammer" @click="mode = 3"/>
                 <MenuItem title="退货" icon="fa-undo" @click="mode = 4"/>
                 <MenuItem title="换货" icon="fa-exchange-alt" @click="mode = 5"/>
+                <MenuItem title="价格保护" icon="fa-exchange-alt" @click="mode = 6"/>
             </div>
             <AfterSalegGrid v-if="mode > 2" :mode="mode"/>
         </div>
