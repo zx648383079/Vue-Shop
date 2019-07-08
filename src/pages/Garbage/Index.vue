@@ -2,7 +2,7 @@
     <div>
         <BackHeader :title="this.$route.meta.title"></BackHeader>
         <div class="has-header">
-            <div class="trash-header">
+            <div class="garbage-header">
                 <p>垃圾分类</p>
                 <p class="right">从我做起</p>
             </div>
@@ -19,7 +19,7 @@
                     </div>
                 </div>
             </div>
-            <Classification v-if="selected" :item="selected"/>
+            <Classification v-if="selected" :item="selected" @back="selected = null"/>
         </div>
     </div>
 </template>
@@ -28,14 +28,7 @@ import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import Classification from './Child/Classification.vue';
 import SearchBar from './Child/SearchBar.vue';
-
-interface TrashClassification {
-    name: string,
-    en_name: string,
-    image: string,
-    standard: string|string[],
-    content: string,
-}
+import { IClassification, getClassification } from '@/api/garbage';
 
 @Component({
     components: {
@@ -46,38 +39,32 @@ interface TrashClassification {
 })
 export default class Index extends Vue {
 
-    public items: TrashClassification[] = [
-        {
-            name: '可回收',
-            en_name: 'RECYCLABLE',
-            image: 'https://img03.sogoucdn.com/app/a/100520091/20190615142346',
-            standard: [
-                '轻投轻放',
-                '清洁干燥，避免污染',
-                '废纸尽量平整',
-            ],
-            content: '1231231',
-        },
-    ];
+    public items: IClassification[] = [];
 
     public keywords: string = '';
 
-    public selected: TrashClassification | null = null;
+    public selected: IClassification | null = null;
 
     public created() {
+        getClassification().then(res => {
+            if (!res.data) {
+                return;
+            }
+            this.items = res.data;
+        });
     }
 
-    public tapItem(item: TrashClassification) {
+    public tapItem(item: IClassification) {
         this.selected = item;
     }
 
     public tapSearch(keywords: string) {
-        this.$router.push({name: 'trash-result', query: {keywords}});
+        this.$router.push({name: 'garbage-result', query: {keywords}});
     }
 }
 </script>
 <style lang="scss" scoped>
-.trash-header {
+.garbage-header {
     background-color: #05a6b1;
     color: #fff;
     height: 100px;

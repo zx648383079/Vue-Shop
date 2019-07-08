@@ -64,8 +64,8 @@ import AffiliateRule from '@/pages/Affiliate/Rule.vue';
 import AffiliateShare from '@/pages/Affiliate/Share.vue';
 import AffiliateUser from '@/pages/Affiliate/User.vue';
 
-import Trash from '@/pages/Trash/Index.vue';
-import TrashResult from '@/pages/Trash/Result.vue';
+import Garbage from '@/pages/Garbage/Index.vue';
+import GarbageResult from '@/pages/Garbage/Result.vue';
 
 
 Vue.use(Router);
@@ -537,17 +537,17 @@ export default new Router({
             },
         },
         {
-            path: '/trash',
-            name: 'trash',
-            component: Trash,
+            path: '/garbage',
+            name: 'garbage',
+            component: Garbage,
             meta: {
                 title: '垃圾分类查询',
             },
         },
         {
-            path: '/trash/result',
-            name: 'trash-result',
-            component: TrashResult,
+            path: '/garbage/result',
+            name: 'garbage-result',
+            component: GarbageResult,
             meta: {
                 title: '垃圾分类查询结果',
             },

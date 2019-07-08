@@ -1,6 +1,8 @@
 <template>
     <div class="box">
-        <div class="header">{{ item.name }}</div>
+        <div class="header">
+            <i class="fa fa-arrow-left" @click="tapBack"></i>
+            {{ item.name }}</div>
         <div class="thumb">
             <img :src="item.image" alt="">
         </div>
@@ -16,19 +18,15 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
-
-interface TrashClassification {
-    name: string,
-    image: string,
-    introduce: string,
-    contain: string,
-    standard: string|string[],
-    content: string,
-}
+import { IClassification } from '@/api/garbage';
 
 @Component
 export default class Classification extends Vue {
-    @Prop(Object) public readonly item!: TrashClassification;
+    @Prop(Object) public readonly item!: IClassification;
+
+    @Emit('back')
+    public tapBack() {
+    }
 }
 </script>
 <style lang="scss" scoped>
@@ -40,6 +38,12 @@ export default class Classification extends Vue {
         font-size: 20px;
         font-weight: 700;
         line-height: 2.75rem;
+        position: relative;
+        .fa {
+            position: absolute;
+            top: 13px;
+            left: 0;
+        }
     }
     .thumb {
        text-align: center;

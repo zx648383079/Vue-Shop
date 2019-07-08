@@ -16,6 +16,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { getTips } from '@/api/garbage';
 
 @Component
 export default class SearchBar extends Vue {
@@ -34,7 +35,9 @@ export default class SearchBar extends Vue {
             this.$emit('search', this.value);
             return;
         }
-        this.tipList = ['123123123', '213123'];
+        getTips(this.value).then(res => {
+            this.tipList = res.data || [];
+        });
     }
 
     public tapTip(val: string) {
