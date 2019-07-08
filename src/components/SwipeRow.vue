@@ -17,7 +17,7 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Component, Prop, Emit, Ref } from 'vue-property-decorator';
 
 @Component
 export default class SwipeRow extends Vue {
@@ -27,13 +27,8 @@ export default class SwipeRow extends Vue {
     public left = 0;
     public startX = 0;
     public isTouch = false;
-    public leftBox: HTMLDivElement | null = null;
-    public rightBox: HTMLDivElement | null = null;
-
-    public mounted() {
-        this.leftBox = this.$refs.left as HTMLDivElement;
-        this.rightBox = this.$refs.right as HTMLDivElement;
-    }
+    @Ref('left') public readonly leftBox!: HTMLDivElement;
+    @Ref('right') public readonly rightBox!: HTMLDivElement;
 
     public getLeftWidth(): number {
         if (!this.leftBox) {

@@ -64,6 +64,9 @@ import AffiliateRule from '@/pages/Affiliate/Rule.vue';
 import AffiliateShare from '@/pages/Affiliate/Share.vue';
 import AffiliateUser from '@/pages/Affiliate/User.vue';
 
+import Trash from '@/pages/Trash/Index.vue';
+import TrashResult from '@/pages/Trash/Result.vue';
+
 
 Vue.use(Router);
 
@@ -531,6 +534,22 @@ export default new Router({
             meta: {
                 title: '推荐的会员',
                 requireAuth: true,
+            },
+        },
+        {
+            path: '/trash',
+            name: 'trash',
+            component: Trash,
+            meta: {
+                title: '垃圾分类查询',
+            },
+        },
+        {
+            path: '/trash/result',
+            name: 'trash-result',
+            component: TrashResult,
+            meta: {
+                title: '垃圾分类查询结果',
             },
         },
     ],

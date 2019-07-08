@@ -96,7 +96,7 @@ export default class SearchBar extends Vue {
         if (!this.value || this.value.trim().length === 0) {
             return;
         }
-        if (event.which === 13) {
+        if (event.code === 'Enter') {
             this.addHistory(this.value);
             this.tapSearch(this.value);
             return;

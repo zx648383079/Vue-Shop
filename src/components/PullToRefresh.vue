@@ -50,7 +50,7 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit, Watch } from 'vue-property-decorator';
+import { Vue, Component, Prop, Emit, Watch, Ref } from 'vue-property-decorator';
 
 export enum ESTATE {
     NONE = 0,
@@ -82,12 +82,11 @@ export default class PullToRefresh extends Vue {
     public state: ESTATE = ESTATE.NONE;
     public startY: number = 0;
     public startUp: EDIRECTION = EDIRECTION.NONE; // 一开始滑动的方向
-    public box: HTMLDivElement | null = null;
+    @Ref('pullScroll') public readonly box!: HTMLDivElement;
     public scrollTop: number = 0;
     public topHeight = 0;
 
     public mounted() {
-        this.box = this.$refs.pullScroll as HTMLDivElement;
         window.addEventListener('scroll', this.onScroll)
     }
 

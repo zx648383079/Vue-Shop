@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div :class="computedStyle">
         <BackHeader :title="this.$route.meta.title"></BackHeader>
         <div class="has-header">
             <div class="name">{{trash.name}}属于{{trash.classification.name}}</div>
@@ -30,6 +30,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import BackHeader from '@/components/BackHeader.vue';
 
 interface Trash {
     name: string,
@@ -41,10 +42,14 @@ interface TrashClassification {
     image: string,
     introduce: string,
     contain: string,
-    standard: string|string[]
+    standard: string|string[],
 }
 
-@Component
+@Component({
+    components: {
+        BackHeader,
+    },
+})
 export default class Detail extends Vue {
     public trash: Trash| null = null;
 
@@ -60,13 +65,90 @@ export default class Detail extends Vue {
                 standard: [
                     '轻投轻放',
                     '清洁干燥，避免污染',
-                    '废纸尽量平整'
-                ]
-            }
+                    '废纸尽量平整',
+                ],
+            },
+        };
+    }
+
+    get computedStyle() {
+        if (!this.trash || !this.trash.classification) {
+            return 'gray';
         }
+        const name = this.trash.classification.name;
+        if (name === '可回收物') {
+            return 'blue';
+        }
+        if (name === '厨余垃圾' || name === '湿垃圾') {
+            return 'green';
+        }
+        if (name === '有害垃圾') {
+            return 'red';
+        }
+        return 'gray';
     }
 }
 </script>
 <style lang="scss" scoped>
+$gray: gray;
+$red: red;
+$green: green;
+$blue: blue;
+
+.name {
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+    line-height: 50px;
+}
+.classify-box {
+    border: 2px dotted;
+    margin: 20px;
+    padding: 20px 0;
+    .introduce-box {
+        display: grid;
+        grid-template-columns: 80px 1fr;
+        grid-gap: 10px;
+        margin: 10px;
+        .thumb {
+            img {
+                width: 100%;
+            }
+        }
+        .header {
+            font-size: 20px;
+            font-weight: 700;
+            border: none;
+            height: auto;
+        }
+    }
+    .box-body {
+        padding: 10px;
+    }
+    .box-header {
+        line-height: 40px;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+    }
+}
+@mixin theme($name, $color) {
+   #{$name} {
+       .name {
+            color: $color;
+        }
+        .classify-box {
+            color: $color;
+            border-color: $color;
+            .box-header {
+                background-color: $color;
+            }
+        }
+   }
+}
+@include theme('.gray', $gray);
+@include theme('.blue', $blue);
+@include theme('.green', $green);
+@include theme('.red', $red);
 
 </style>
