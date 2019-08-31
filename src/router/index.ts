@@ -67,6 +67,8 @@ import AffiliateUser from '@/pages/Affiliate/User.vue';
 import Garbage from '@/pages/Garbage/Index.vue';
 import GarbageResult from '@/pages/Garbage/Result.vue';
 
+import Seckill from '@/pages/Activity/Seckill.vue';
+
 
 Vue.use(Router);
 
@@ -221,6 +223,14 @@ export default new Router({
             component: Search,
             meta: {
                 title: '搜索',
+            },
+        },
+        {
+            path: '/activity/seckill',
+            name: 'activity-seckill',
+            component: Seckill,
+            meta: {
+                title: '秒杀',
             },
         },
         {

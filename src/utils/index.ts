@@ -100,6 +100,26 @@ export function twoPad(i: number): string {
     return i < 10 ? '0' + i : i + '';
 }
 
+export function parseDate(date: any): Date {
+    if (!date) {
+        return new Date();
+    }
+    if (typeof date === 'object') {
+        return date;
+    }
+    if (typeof date === 'string' && date.indexOf('-') > 0) {
+        date.replace('-', '/');
+    }
+    if (typeof date === 'number' && ('' + date).length  === 10) {
+        date *= 1000;
+    }
+    date = new Date(date);
+    if (isNaN(date.getTime())) {
+        return new Date();
+    }
+    return date;
+}
+
 export function formatTime(time: Date) {
     return time.getFullYear() +
         '-' + twoPad(time.getMonth() + 1) +

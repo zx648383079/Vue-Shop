@@ -335,3 +335,21 @@ export interface IInvoiceLog {
     updated_at?: string;
 }
 
+export interface IActivityTime {
+    id?: number,
+    title: string,
+    start_at: string,
+    end_at: string,
+}
+
+export interface ISeckillGoods {
+    id: number,
+    act_id: number,
+    goods_id: number,
+    goods: IProduct,
+    price: number,
+    amount: number,
+    status: number,
+    every_amount: number
+}
+
