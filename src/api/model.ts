@@ -18,6 +18,14 @@ export interface IBaseResponse {
     encrypt?: string;
     encrypt_type?: string;
 }
+
+export interface IErrorResponse {
+    code: number;
+    message?: string;
+    errors?: any;
+    description?: string;
+}
+
 export interface IData<T> extends IBaseResponse {
     data?: T[];
 }
