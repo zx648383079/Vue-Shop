@@ -441,30 +441,30 @@ export default class DatePicker extends Vue {
         this.refresh();
     }
 
-        private toDate(year: number|Date|string, month?: number): Date {
-         if (!year) {
-             return new Date();
-         }
-         if (typeof year === 'object') {
-             return year;
-         }
-         if (typeof year === 'number'
-         && typeof month === 'number') {
-             return new Date(year, month - 1, 1);
-         }
-         // 解决safari 无法识别 -
-         if (typeof year === 'string' && year.indexOf('-') > 0) {
-             year.replace('-', '/');
-         }
-         if (typeof year === 'number' && ('' + year).length  === 10) {
-             year *= 1000;
-         }
-         const date = new Date(year);
-         if (isNaN(date.getTime())) {
-             return new Date();
-         }
-         return date;
-     }
+    private toDate(year: number|Date|string, month?: number): Date {
+        if (!year) {
+            return new Date();
+        }
+        if (typeof year === 'object') {
+            return year;
+        }
+        if (typeof year === 'number'
+        && typeof month === 'number') {
+            return new Date(year, month - 1, 1);
+        }
+        // 解决safari 无法识别 -
+        if (typeof year === 'string' && year.indexOf('-') > 0) {
+            year.replace('-', '/');
+        }
+        if (typeof year === 'number' && ('' + year).length  === 10) {
+            year *= 1000;
+        }
+        const date = new Date(year);
+        if (isNaN(date.getTime())) {
+            return new Date();
+        }
+        return date;
+    }
 
     /**
      * 格式化日期
