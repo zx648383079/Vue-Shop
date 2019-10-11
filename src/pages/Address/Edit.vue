@@ -111,6 +111,7 @@ export default class Edit extends Vue {
             updateAddress(data).then(res => {
                 this.saveBack(res);
             });
+            return;
         }
         createAddress(data).then(res => {
             this.saveBack(res);
