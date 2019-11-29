@@ -30,7 +30,7 @@
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import { IOrderGoods, IComment } from '@/api/model';
 import Star from './Star.vue';
-import { Toast } from 'mint-ui';
+import Toast from '@/components/toast.ts';
 import { commentGoods } from '@/api/order';
 
 @Component({

@@ -49,7 +49,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
-import { Toast } from 'mint-ui';
+import Toast from '@/components/toast.ts';
 import MobileLogin from './Child/MobileLogin.vue';
 import MobileCodeLogin from './Child/MobileCodeLogin.vue';
 import MobileRegister from './Child/MobileRegister.vue';

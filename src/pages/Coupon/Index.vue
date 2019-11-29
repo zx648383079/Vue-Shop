@@ -56,7 +56,7 @@ import PullToRefresh from '@/components/PullToRefresh.vue';
 import { ICategory, ICoupon } from '@/api/model';
 import { dispatchCategories } from '@/store/dispatches';
 import {getCouponList, receiveCoupon} from '@/api/coupon';
-import { Toast } from 'mint-ui';
+import Toast from '@/components/toast.ts';
 
 @Component({
     components: {

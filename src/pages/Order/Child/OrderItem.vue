@@ -36,7 +36,6 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import { IOrder, ORDER_STATUS } from '@/api/model';
-import { MessageBox } from 'mint-ui';
 import { receiveOrder } from '@/api/order';
 
 @Component

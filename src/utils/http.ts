@@ -1,6 +1,6 @@
 import axios from 'axios';
 import router from '@/router'
-import { Toast } from 'mint-ui'
+import Toast from '@/components/toast.ts';
 import * as util from './'
 import { TOKEN_KEY } from '@/store/types'
 

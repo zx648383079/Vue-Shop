@@ -63,7 +63,7 @@ import BackHeader from '@/components/BackHeader.vue';
 import SwipeRow from '@/components/SwipeRow.vue';
 import PullToRefresh from '@/components/PullToRefresh.vue';
 import { dispatchSetCart } from '@/store/dispatches';
-import { Toast } from 'mint-ui';
+import Toast from '@/components/toast.ts';
 
 @Component({
     components: {

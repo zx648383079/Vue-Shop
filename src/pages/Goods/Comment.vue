@@ -35,7 +35,7 @@
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import { IComment, ICommentSubtotal } from '@/api/model';
 import CommentPage from './Child/Page.vue';
-import { Toast } from 'mint-ui';
+import Toast from '@/components/toast.ts';
 import { getCommentSubtotal, getCommentList } from '@/api/comment';
 import PullToRefresh from '@/components/PullToRefresh.vue';
 import Star from './Child/Star.vue';

@@ -27,7 +27,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import { isEmpty, isEmail } from '../../../utils/validate';
-import { Toast } from 'mint-ui';
+import Toast from '@/components/toast.ts';
 
 @Component
 export default class MobileRegister extends Vue {

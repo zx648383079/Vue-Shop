@@ -21,7 +21,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
-import { Toast } from 'mint-ui';
+import Toast from '@/components/toast.ts';
 import { updatePassword } from '../../api/user';
 import { dispatchLogout } from '../../store/dispatches';
 

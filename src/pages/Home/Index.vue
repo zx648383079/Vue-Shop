@@ -17,11 +17,11 @@
         <div class="has-header has-footer">
 
             <div class="banner">
-                <mt-swipe :auto="4000">
-                    <mt-swipe-item v-for="(item, index) in banners" :key="index">
+                <Swiper :auto="4000">
+                    <SwiperItem v-for="(item, index) in banners" :key="index">
                         <img :src="item.content" width="100%" alt="">
-                    </mt-swipe-item>
-                </mt-swipe>
+                    </SwiperItem>
+                </Swiper>
             </div>
 
             <div class="menu-box">
@@ -54,12 +54,16 @@ import { IProduct, IAd, ICategory, IHomeProduct, ISubtotal } from '@/api/model';
 import { dispatchSubtotal } from '@/store/dispatches';
 import { Getter } from 'vuex-class';
 import CartDialog from '@/pages/Goods/Child/CartDialog.vue';
+import Swiper from '@/components/Swiper.vue';
+import SwiperItem from '@/components/SwiperItem.vue';
 
 @Component({
     components: {
         TabBar,
         GoodsPanel,
         CartDialog,
+        Swiper,
+        SwiperItem,
     },
 })
 export default class Index extends Vue {

@@ -40,7 +40,7 @@
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import { IAddress, IRegionObject } from '@/api/model';
 import { getRegionTree } from '@/api/region';
-import { Toast } from 'mint-ui';
+import Toast from '@/components/toast.ts';
 import { getAddressList, deleteAddress, getAddress, updateAddress, createAddress } from '@/api/address';
 import BackHeader from '@/components/BackHeader.vue';
 import SelectPicker from '@/components/SelectPicker.vue';

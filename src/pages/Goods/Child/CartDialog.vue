@@ -35,7 +35,7 @@
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import { IProduct, ICart } from '@/api/model';
 import { addGoods } from '@/api/cart';
-import { Toast } from 'mint-ui';
+import Toast from '@/components/toast.ts';
 import { dispatchSetCart } from '@/store/dispatches';
 
 @Component

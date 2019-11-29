@@ -36,7 +36,7 @@
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import CountDown from '@/components/CountDown.vue';
 import { sendCode } from '../../../api/user';
-import { Toast } from 'mint-ui';
+import Toast from '@/components/toast.ts';
 import { isMobile, isEmpty } from '../../../utils/validate';
 
 @Component({

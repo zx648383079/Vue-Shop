@@ -46,7 +46,8 @@
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import { IOrder, ORDER_STATUS, IPayment, IPrePay } from '@/api/model';
-import { Toast, MessageBox } from 'mint-ui';
+import Toast from '@/components/toast.ts';
+import ConfirmBox from '@/components/confirm.ts';
 import { dispatchOrder } from '@/store/dispatches';
 import { getPaymentList } from '@/api/cart';
 import { payOrder } from '@/api/order';

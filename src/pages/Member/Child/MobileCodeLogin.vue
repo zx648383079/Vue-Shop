@@ -23,7 +23,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import CountDown from '@/components/CountDown.vue';
-import { Toast } from 'mint-ui';
+import Toast from '@/components/toast.ts';
 import { IUser } from '../../../api/model';
 import { dispatchLogin } from '../../../store/dispatches';
 import { sendCode } from '../../../api/user';

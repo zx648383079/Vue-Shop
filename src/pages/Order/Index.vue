@@ -25,7 +25,7 @@ import PullToRefresh from '@/components/PullToRefresh.vue';
 import { ORDER_STATUS, IOrder } from '@/api/model';
 import { getOrder, receiveOrder, cancelOrder } from '@/api/order';
 import OrderItem from './Child/OrderItem.vue';
-import { MessageBox } from 'mint-ui';
+import ConfirmBox from '@/components/confirm.ts';
 
 @Component({
     components: {
@@ -109,7 +109,7 @@ export default class Index extends Vue {
     }
 
     public tapReceive(item: IOrder) {
-        MessageBox.confirm('确认取消此订单？').then(action => {
+        ConfirmBox('确认取消此订单？').then(action => {
             if (action !== 'confirm') {
                 return;
             }
@@ -135,7 +135,7 @@ export default class Index extends Vue {
     }
 
     public tapCancel(item: IOrder) {
-        MessageBox.confirm('确认取消此订单？').then(action => {
+        ConfirmBox('确认取消此订单？').then(action => {
             if (action !== 'cancel') {
                 return;
             }

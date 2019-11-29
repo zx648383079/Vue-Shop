@@ -9,8 +9,6 @@ import { assetsFilter, statusFilter, sizeFilter, agoFilter, priceFilter, timeFil
 import { getSessionStorage, checkTokenFromCookie } from './utils';
 import { TOKEN_KEY } from './store/types';
 
-import MintUI from 'mint-ui'
-import 'mint-ui/lib/style.css'
 import '@fortawesome/fontawesome-free/css/all.css';
 
 Vue.filter('assets', assetsFilter);
@@ -22,7 +20,6 @@ Vue.filter('time', timeFilter);
 Vue.filter('twoPad', twoPadFilter);
 Vue.use(Http);
 Vue.use(Title);
-Vue.use(MintUI);
 
 router.beforeEach((to, from, next) => {
     checkTokenFromCookie();

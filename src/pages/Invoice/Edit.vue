@@ -78,7 +78,7 @@
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import { IInvoiceTitle } from '../../api/model';
-import { Toast } from 'mint-ui';
+import Toast from '@/components/toast.ts';
 import { getTitle, saveTitle } from '../../api/invoice';
 
 @Component({

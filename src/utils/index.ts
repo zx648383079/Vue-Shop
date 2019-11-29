@@ -1,6 +1,6 @@
 import { Md5 } from 'ts-md5';
 import Cookies from 'js-cookie';
-import { Toast } from 'mint-ui';
+import Toast from '@/components/toast.ts';
 import { dispatchSetToken } from '@/store/dispatches';
 
 export const apiEndpoint = 'http://zodream.localhost/open/';

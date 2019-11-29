@@ -18,7 +18,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
-import { MessageBox } from 'mint-ui';
+import ConfirmBox from '@/components/confirm.ts';
 
 @Component({
     components: {
@@ -36,7 +36,7 @@ export default class Cancel extends Vue {
     public selected: number = 0;
 
     public mounted() {
-        MessageBox.confirm('账户注销后，您已完成的交易将无法售后。', '账户注销确认', {
+        ConfirmBox('账户注销后，您已完成的交易将无法售后。', '账户注销确认', {
             confirmButtonText: '确定继续注销',
             cancelButtonText: '暂不注销',
         }).catch(() => {

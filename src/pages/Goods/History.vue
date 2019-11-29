@@ -33,7 +33,7 @@ import BackHeader from '@/components/BackHeader.vue';
 import SwipeRow from '@/components/SwipeRow.vue';
 import { getLocalStorage, setLocalStorage, removeLocalStorage } from '@/utils';
 import { SET_GOODS_HISTORY } from '@/store/types';
-import { MessageBox } from 'mint-ui';
+import ConfirmBox from '@/components/confirm.ts';
 import { getList } from '@/api/product';
 
 @Component({
@@ -66,7 +66,7 @@ export default class Index extends Vue {
     }
 
     public tapClear() {
-        MessageBox.confirm('确认清空浏览记录？').then(action => {
+        ConfirmBox('确认清空浏览记录？').then(action => {
             if (action !== 'confirm') {
                 return;
             }

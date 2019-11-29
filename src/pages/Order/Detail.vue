@@ -64,7 +64,8 @@
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import { IOrder, ORDER_STATUS } from '@/api/model';
-import { Toast, MessageBox } from 'mint-ui';
+import Toast from '@/components/toast.ts';
+import ConfirmBox from '@/components/confirm.ts';
 import { dispatchOrder } from '@/store/dispatches';
 import { receiveOrder, cancelOrder } from '@/api/order';
 
@@ -108,7 +109,7 @@ export default class Detail extends Vue {
     }
 
     public tapReceive() {
-        MessageBox.confirm('确认取消此订单？').then(action => {
+        ConfirmBox('确认取消此订单？').then(action => {
             if (action !== 'confirm' || !this.order) {
                 return;
             }
@@ -119,7 +120,7 @@ export default class Detail extends Vue {
     }
 
     public tapCancel() {
-        MessageBox.confirm('确认取消此订单？').then(action => {
+        ConfirmBox('确认取消此订单？').then(action => {
             if (action !== 'confirm' || !this.order) {
                 return;
             }

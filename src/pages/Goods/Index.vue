@@ -147,7 +147,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
-import { Toast } from 'mint-ui';
+import Toast from '@/components/toast.ts';
 import { IProduct, ICommentSubtotal, ICart } from '@/api/model';
 import { getInfo, getRecommend } from '@/api/product';
 import { getCommentSubtotal } from '@/api/comment';
