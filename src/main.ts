@@ -5,6 +5,7 @@ import store from './store';
 import Http from './utils/http';
 import Title from './utils/title';
 
+import {ConfirmRouterNotice} from './components/confirm';
 import { assetsFilter, statusFilter, sizeFilter, agoFilter, priceFilter, timeFilter, twoPadFilter } from './pipes';
 import { getSessionStorage, checkTokenFromCookie } from './utils';
 import { TOKEN_KEY } from './store/types';
@@ -23,6 +24,7 @@ Vue.use(Title);
 
 router.beforeEach((to, from, next) => {
     checkTokenFromCookie();
+    ConfirmRouterNotice();
     const token = getSessionStorage<string>(TOKEN_KEY); // 获取本地存储的token
     if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
         if (token && token.length > 0) { // 通过vuex state获取当前的token是否存

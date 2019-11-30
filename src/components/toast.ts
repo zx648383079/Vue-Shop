@@ -33,7 +33,7 @@ const removeDom = (event: any) => {
     }
 };
 
-ToastBox.prototype.close = function() {
+(ToastBox as any).prototype.close = function() {
     this.visible = false;
     this.$el.addEventListener('transitionend', removeDom);
     this.closed = true;

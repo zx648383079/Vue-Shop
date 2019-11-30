@@ -49,7 +49,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit, Watch } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
-import { IAddress, ICart, IOrder, IPayment, IShipping, ICartItem, ICoupon } from '@/api/model';
+import { IAddress, ICartGroup, IOrder, IPayment, IShipping, ICartItem, ICoupon } from '@/api/model';
 import { dispatchAddress, dispatchSetCart, dispatchSetOrder } from '@/store/dispatches';
 import { Getter } from 'vuex-class';
 import AddressLine from './Child/AddressLine.vue';
@@ -77,7 +77,7 @@ interface ICartBox {
 export default class Index extends Vue {
     public address: IAddress | null = null;
     @Getter('addressList') public addressList?: IAddress[];
-    @Getter('cart') public cart?: ICart[];
+    @Getter('cart') public cart?: ICartGroup[];
     public order: IOrder| null = null;
     public paymentList: IPayment[] = [];
     public payment: IPayment| null = null;

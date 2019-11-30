@@ -35,7 +35,7 @@ const defaults = {
 };
 
 let currentMsg: any;
-let instance: ConfirmBox;
+let instance: any;
 let msgQueue: any[] = [];
 
 const defaultCallback = (action: string) => {
@@ -93,7 +93,7 @@ const showNextMsg = () => {
     }
 };
 
-ConfirmBox.close = () => {
+(ConfirmBox as any).close = () => {
     if (!instance) {
         return;
     }
@@ -101,6 +101,17 @@ ConfirmBox.close = () => {
     msgQueue = [];
     currentMsg = null;
 }
+/**
+ * 接受路由变化通知，镜像关闭未关闭的弹窗
+ */
+export const ConfirmRouterNotice = () => {
+    if (!instance) {
+        return;
+    }
+    if (instance.isVisible) {
+        instance.isVisible = false;
+    }
+};
 
 export default (message: string, title: string = '提示', options ?: IConfirmOption): Promise < string > => {
     if (!options) {

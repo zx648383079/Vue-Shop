@@ -21,7 +21,7 @@ export default class ToastBox extends Vue {
     public closed = false;
 
     public get customClass() {
-        let classes = [];
+        const classes = [];
         switch (this.position) {
           case 'top':
             classes.push('is-placetop');
@@ -37,7 +37,6 @@ export default class ToastBox extends Vue {
         return classes.join(' ');
     }
 
-    //public close() {}
 }
 </script>
 

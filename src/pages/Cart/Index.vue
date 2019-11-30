@@ -55,7 +55,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
-import { ICart, ICartItem } from '@/api/model';
+import { ICart, ICartGroup, ICartItem } from '@/api/model';
 import { getCart } from '@/api/cart';
 import { Getter, Action } from 'vuex-class';
 import TabBar from '@/components/TabBar.vue';
@@ -74,7 +74,7 @@ import Toast from '@/components/toast.ts';
     },
 })
 export default class Index extends Vue {
-    public items: ICart[] = [];
+    public items: ICartGroup[] = [];
     public checkedAll: boolean = false;
     @Getter('isGuest') public isGuest?: boolean;
     public isLoading = false;
@@ -122,7 +122,7 @@ export default class Index extends Vue {
         }
     }
 
-    public toggleCheckGroup(item: ICart) {
+    public toggleCheckGroup(item: ICartGroup) {
         item.checked = !item.checked;
         for (const cart of item.goods_list) {
             cart.checked = item.checked;
@@ -133,7 +133,7 @@ export default class Index extends Vue {
         this.$forceUpdate();
     }
 
-    public toggleCheck(item: ICart, cart: ICartItem) {
+    public toggleCheck(item: ICartGroup, cart: ICartItem) {
         cart.checked = !cart.checked;
         if (!cart.checked) {
             this.checkedAll = false;
@@ -143,7 +143,7 @@ export default class Index extends Vue {
     }
 
     public tapCashier() {
-        const data: ICart[] = [];
+        const data: ICartGroup[] = [];
         for (const item of this.items) {
             const items: ICartItem[] = [];
             for (const cart of item.goods_list) {

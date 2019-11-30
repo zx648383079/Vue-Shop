@@ -68,6 +68,8 @@ import Garbage from '@/pages/Garbage/Index.vue';
 import GarbageResult from '@/pages/Garbage/Result.vue';
 
 import Seckill from '@/pages/Activity/Seckill.vue';
+import Store from '@/pages/Store/Index.vue';
+import StoreQuick from '@/pages/Store/Quick.vue';
 
 
 Vue.use(Router);
@@ -207,6 +209,22 @@ export default new Router({
             component: Product,
             meta: {
                 title: '商品',
+            },
+        },
+        {
+            path: '/store/quick/:id',
+            name: 'store-quick',
+            component: StoreQuick,
+            meta: {
+                title: '店铺',
+            },
+        },
+        {
+            path: '/store/:id',
+            name: 'store',
+            component: Store,
+            meta: {
+                title: '店铺',
             },
         },
         {

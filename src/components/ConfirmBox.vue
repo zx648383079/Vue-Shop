@@ -19,6 +19,8 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit, Watch } from 'vue-property-decorator';
 
+type ConfirmEvent = (action: string) => void;
+
 @Component
 export default class ConfirmBox extends Vue {
     @Prop({default: true}) public readonly modal!: boolean;
@@ -38,7 +40,7 @@ export default class ConfirmBox extends Vue {
     public confirmButtonClass = '';
     public confirmButtonDisabled = false;
     public cancelButtonClass = '';
-    public callback: null| Function = null;
+    public callback: ConfirmEvent| null  = null;
     public cancelButtonHighlight = false;
     public confirmButtonHighlight = false;
 
@@ -53,7 +55,7 @@ export default class ConfirmBox extends Vue {
     public get confirmButtonClasses() {
         let classes = 'msgbox-btn msgbox-confirm ' + this.confirmButtonClass;
         if (this.confirmButtonHighlight) {
-          classes += ' msgbox-confirm-highlight';
+            classes += ' msgbox-confirm-highlight';
         }
         return classes;
     }
@@ -61,13 +63,12 @@ export default class ConfirmBox extends Vue {
     public handleAction(action: string) {
         const callback = this.callback;
         this.isVisible = false;
-        callback && callback(action);
+        if (callback) {
+            callback(action);
+        }
     }
 
-    
 }
-
-
 </script>
 
 

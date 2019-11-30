@@ -33,7 +33,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
-import { IProduct, ICart } from '@/api/model';
+import { IProduct, ICartGroup } from '@/api/model';
 import { addGoods } from '@/api/cart';
 import Toast from '@/components/toast.ts';
 import { dispatchSetCart } from '@/store/dispatches';
@@ -84,7 +84,7 @@ export default class Star extends Vue {
             });
             return;
         }
-        const data: ICart[] = [
+        const data: ICartGroup[] = [
             {
                 name: this.product.shop + '',
                 goods_list: [

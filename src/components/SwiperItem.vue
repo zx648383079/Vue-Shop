@@ -11,11 +11,17 @@ import Swiper from './Swiper.vue';
 @Component
 export default class SwiperItem extends Vue {
     public mounted() {
-        this.$parent && (this.$parent as Swiper).swiperItemCreated();
+        if (!this.$parent) {
+            return;
+        }
+        (this.$parent as Swiper).swiperItemCreated(this);
     }
 
     public destroyed() {
-      this.$parent && (this.$parent as Swiper).swiperItemDestroyed();
+        if (!this.$parent) {
+            return;
+        }
+        (this.$parent as Swiper).swiperItemDestroyed(this);
     }
 }
 </script>

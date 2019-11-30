@@ -14,48 +14,48 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit, Watch } from 'vue-property-decorator';
 
-export const on = (function() {
-  if (!Vue.prototype.$isServer && document.addEventListener) {
-    return function(element: HTMLElement, event: string, handler: any) {
-      if (element && event && handler) {
-        element.addEventListener(event, handler, false);
-      }
-    };
-  } else {
-    return function(element: any, event: string, handler: any) {
-      if (element && event && handler) {
-        element.attachEvent('on' + event, handler);
-      }
-    };
-  }
-})();
-
-/* istanbul ignore next */
-export const off = (function() {
-  if (!Vue.prototype.$isServer && document.removeEventListener) {
-    return function(element: HTMLElement, event: string, handler: any) {
-      if (element && event) {
-        element.removeEventListener(event, handler, false);
-      }
-    };
-  } else {
-    return function(element: any, event: string, handler: any) {
-      if (element && event) {
-        element.detachEvent('on' + event, handler);
-      }
-    };
-  }
-})();
-
-/* istanbul ignore next */
-export const once = function(el: HTMLElement, event: string, fn: any) {
-  var listener = function(this: any) {
-    if (fn) {
-      fn.apply(this, arguments);
+export const on = (() => {
+    if (!Vue.prototype.$isServer && document.addEventListener) {
+        return (element: HTMLElement, event: string, handler: any) => {
+            if (element && event && handler) {
+                element.addEventListener(event, handler, false);
+            }
+        };
+    } else {
+        return (element: any, event: string, handler: any) => {
+            if (element && event && handler) {
+                element.attachEvent('on' + event, handler);
+            }
+        };
     }
-    off(el, event, listener);
-  };
-  on(el, event, listener);
+})();
+
+/* istanbul ignore next */
+export const off = (() => {
+    if (!Vue.prototype.$isServer && document.removeEventListener) {
+        return (element: HTMLElement, event: string, handler: any) => {
+            if (element && event) {
+                element.removeEventListener(event, handler, false);
+            }
+        };
+    } else {
+        return (element: any, event: string, handler: any) => {
+            if (element && event) {
+                element.detachEvent('on' + event, handler);
+            }
+        };
+    }
+})();
+
+/* istanbul ignore next */
+export const once = (el: HTMLElement, event: string, fn: any) => {
+    const listener = function(this: any) {
+        if (fn) {
+            fn.apply(this, arguments);
+        }
+        off(el, event, listener);
+    };
+    on(el, event, listener);
 };
 
 @Component
@@ -80,268 +80,285 @@ export default class Swiper extends Vue {
     public reInitTimer: number = 0;
     public noDrag = false;
     public isDone = false;
+    public dragState: any = {};
 
     public created() {
-      this.dragState = {};
+        this.dragState = {};
     }
+
     @Watch('index')
     public onIndex(newIndex: number) {
         this.$emit('change', newIndex);
     }
 
-    public swiperItemCreated() {
-        if (!this.ready) return;
-
+    public swiperItemCreated(item: any) {
+        if (!this.ready) {
+            return;
+        }
         clearTimeout(this.reInitTimer);
         this.reInitTimer = window.setTimeout(() => {
-          this.reInitPages();
+            this.reInitPages();
         }, 100);
       }
 
-    public swiperItemDestroyed() {
-        if (!this.ready) return;
-
+    public swiperItemDestroyed(item: any) {
+        if (!this.ready) {
+            return;
+        }
         clearTimeout(this.reInitTimer);
         this.reInitTimer = window.setTimeout(() => {
-          this.reInitPages();
+            this.reInitPages();
         }, 100);
-      }
+    }
 
-    public rafTranslate(element: HTMLElement, initOffset: number, offset: number, callback: () => void, nextElement?: HTMLElement) {
-        let ALPHA = 0.88;
+    public rafTranslate(
+        element: HTMLElement, initOffset: number, offset: number, callback: () => void, nextElement?: HTMLElement) {
+        const alpha = 0.88;
         this.animating = true;
-        var _offset = initOffset;
-        var raf = 0;
+        let offset1 = initOffset;
+        let raf = 0;
 
         function animationLoop(this: Swiper) {
-          if (Math.abs(_offset - offset) < 0.5) {
-            this.animating = false;
-            _offset = offset;
-            element.style.webkitTransform = '';
+            if (Math.abs(offset1 - offset) < 0.5) {
+                this.animating = false;
+                offset1 = offset;
+                element.style.transform = '';
+                if (nextElement) {
+                    nextElement.style.transform = '';
+                }
+                cancelAnimationFrame(raf);
+
+                if (callback) {
+                    callback();
+                }
+
+                return;
+            }
+
+            offset1 = alpha * offset1 + (1.0 - alpha) * offset;
+            element.style.transform = `translate3d(${offset1}px, 0, 0)`;
+
             if (nextElement) {
-              nextElement.style.webkitTransform = '';
-            }
-            cancelAnimationFrame(raf);
-
-            if (callback) {
-              callback();
+                nextElement.style.transform = `translate3d(${offset1 - offset}px, 0, 0)`;
             }
 
-            return;
-          }
-
-          _offset = ALPHA * _offset + (1.0 - ALPHA) * offset;
-          element.style.webkitTransform = `translate3d(${_offset}px, 0, 0)`;
-
-          if (nextElement) {
-            nextElement.style.webkitTransform = `translate3d(${_offset - offset}px, 0, 0)`;
-          }
-
-          raf = requestAnimationFrame(animationLoop.bind(this));
+            raf = requestAnimationFrame(animationLoop.bind(this));
         }
 
         animationLoop.call(this);
-      }
+    }
 
     public translate(element: HTMLElement, offset: number, speed?: number, callback?: (...args: any[]) => void) {
         if (speed) {
-          this.animating = true;
-          element.style.webkitTransition = '-webkit-transform ' + speed + 'ms ease-in-out';
-          setTimeout(() => {
-            element.style.webkitTransform = `translate3d(${offset}px, 0, 0)`;
-          }, 50);
+            this.animating = true;
+            element.style.transition = 'transform ' + speed + 'ms ease-in-out';
+            setTimeout(() => {
+                element.style.transform = `translate3d(${offset}px, 0, 0)`;
+            }, 50);
 
-          var called = false;
+            let called = false;
 
-          var transitionEndCallback = () => {
-            if (called) return;
-            called = true;
-            this.animating = false;
-            element.style.webkitTransition = '';
-            element.style.webkitTransform = '';
-            if (callback) {
-              callback.apply(this, arguments);
-            }
-          };
+            const transitionEndCallback = (...args: any[]) => {
+                if (called) {
+                    return;
+                }
+                called = true;
+                this.animating = false;
+                element.style.transition = '';
+                element.style.transform = '';
+                if (callback) {
+                    callback.apply(this, args);
+                }
+            };
 
-          once(element, 'webkitTransitionEnd', transitionEndCallback);
-          setTimeout(transitionEndCallback, speed + 100); // webkitTransitionEnd maybe not fire on lower version android.
+            once(element, 'transitionEnd', transitionEndCallback);
+            setTimeout(transitionEndCallback, speed + 100);
+            // webkitTransitionEnd maybe not fire on lower version android.
         } else {
-          element.style.webkitTransition = '';
-          element.style.webkitTransform = `translate3d(${offset}px, 0, 0)`;
+            element.style.transition = '';
+            element.style.transform = `translate3d(${offset}px, 0, 0)`;
         }
-      }
+    }
 
     public reInitPages() {
-        var children = this.$children;
+        const children = this.$children;
         this.noDrag = children.length === 1 && this.noDragWhenSingle;
 
-        var pages: HTMLElement[] = [];
-        var intDefaultIndex = Math.floor(this.defaultIndex);
-        var defaultIndex = (intDefaultIndex >= 0 && intDefaultIndex < children.length) ? intDefaultIndex : 0;
+        const pages: HTMLElement[] = [];
+        const intDefaultIndex = Math.floor(this.defaultIndex);
+        const defaultIndex = (intDefaultIndex >= 0 && intDefaultIndex < children.length) ? intDefaultIndex : 0;
         this.index = defaultIndex;
 
-        children.forEach(function(child, index) {
-          pages.push(child.$el as HTMLElement);
+        children.forEach((child, index) => {
+            pages.push(child.$el as HTMLElement);
 
-          child.$el.classList.remove('is-active');
+            child.$el.classList.remove('is-active');
 
-          if (index === defaultIndex) {
-            child.$el.classList.add('is-active');
-          }
+            if (index === defaultIndex) {
+                child.$el.classList.add('is-active');
+            }
         });
 
         this.pages = pages;
       }
 
-    public doAnimate(towards: string| null, options: any) {
-        if (this.$children.length === 0) return;
-        if (!options && this.$children.length < 2) return;
-
-        var prevPage: HTMLElement, nextPage: HTMLElement, currentPage: HTMLElement, pageWidth: number, offsetLeft: number, speedX: number;
-        var speed = this.speed || 300;
-        var index = this.index;
-        var pages = this.pages;
-        var pageCount = pages.length;
+    public doAnimate(towards: string| null, options?: any) {
+        if (this.$children.length === 0) {
+            return;
+        }
+        if (!options && this.$children.length < 2) {
+            return;
+        }
+        let prevPage: HTMLElement;
+        let nextPage: HTMLElement;
+        let currentPage: HTMLElement;
+        let pageWidth: number;
+        let offsetLeft: number;
+        let speedX: number;
+        const speed = this.speed || 300;
+        const index = this.index;
+        const pages = this.pages;
+        const pageCount = pages.length;
 
         if (!options) {
-          pageWidth = this.$el.clientWidth;
-          currentPage = pages[index];
-          prevPage = pages[index - 1];
-          nextPage = pages[index + 1];
-          if (this.continuous && pages.length > 1) {
-            if (!prevPage) {
-              prevPage = pages[pages.length - 1];
+            pageWidth = this.$el.clientWidth;
+            currentPage = pages[index];
+            prevPage = pages[index - 1];
+            nextPage = pages[index + 1];
+            if (this.continuous && pages.length > 1) {
+                if (!prevPage) {
+                    prevPage = pages[pages.length - 1];
+                }
+                if (!nextPage) {
+                    nextPage = pages[0];
+                }
             }
-            if (!nextPage) {
-              nextPage = pages[0];
+            if (prevPage) {
+                prevPage.style.display = 'block';
+                this.translate(prevPage, -pageWidth);
             }
-          }
-          if (prevPage) {
-            prevPage.style.display = 'block';
-            this.translate(prevPage, -pageWidth);
-          }
-          if (nextPage) {
-            nextPage.style.display = 'block';
-            this.translate(nextPage, pageWidth);
-          }
+            if (nextPage) {
+                nextPage.style.display = 'block';
+                this.translate(nextPage, pageWidth);
+            }
         } else {
-          prevPage = options.prevPage;
-          currentPage = options.currentPage;
-          nextPage = options.nextPage;
-          pageWidth = options.pageWidth;
-          offsetLeft = options.offsetLeft;
-          speedX = options.speedX;
+            prevPage = options.prevPage;
+            currentPage = options.currentPage;
+            nextPage = options.nextPage;
+            pageWidth = options.pageWidth;
+            offsetLeft = options.offsetLeft;
+            speedX = options.speedX;
         }
 
         let newIndex: number;
 
-        var oldPage = this.$children[index].$el;
+        const oldPage = this.$children[index].$el;
 
         if (towards === 'prev') {
-          if (index > 0) {
-            newIndex = index - 1;
-          }
-          if (this.continuous && index === 0) {
-            newIndex = pageCount - 1;
-          }
+            if (index > 0) {
+                newIndex = index - 1;
+            }
+            if (this.continuous && index === 0) {
+                newIndex = pageCount - 1;
+            }
         } else if (towards === 'next') {
-          if (index < pageCount - 1) {
-            newIndex = index + 1;
-          }
-          if (this.continuous && index === pageCount - 1) {
-            newIndex = 0;
-          }
+            if (index < pageCount - 1) {
+                newIndex = index + 1;
+            }
+            if (this.continuous && index === pageCount - 1) {
+                newIndex = 0;
+            }
         }
 
-        var callback = () => {
-          if (newIndex !== undefined) {
-            var newPage = this.$children[newIndex].$el;
-            oldPage.classList.remove('is-active');
-            newPage.classList.add('is-active');
+        const callback = () => {
+            if (newIndex !== undefined) {
+                const newPage = this.$children[newIndex].$el;
+                oldPage.classList.remove('is-active');
+                newPage.classList.add('is-active');
 
-            this.index = newIndex;
-          }
-          if (this.isDone) {
-            this.end();
-          }
+                this.index = newIndex;
+            }
+            if (this.isDone) {
+                this.end();
+            }
 
-          if (prevPage) {
-            prevPage.style.display = '';
-          }
+            if (prevPage) {
+                prevPage.style.display = '';
+            }
 
-          if (nextPage) {
-            nextPage.style.display = '';
-          }
+            if (nextPage) {
+                nextPage.style.display = '';
+            }
         };
 
         setTimeout(() => {
-          if (towards === 'next') {
-            this.isDone = true;
-            this.before(currentPage);
-            if (speedX) {
-              this.rafTranslate(currentPage, offsetLeft, -pageWidth, callback, nextPage);
+            if (towards === 'next') {
+                this.isDone = true;
+                this.before(currentPage);
+                if (speedX) {
+                    this.rafTranslate(currentPage, offsetLeft, -pageWidth, callback, nextPage);
+                } else {
+                    this.translate(currentPage, -pageWidth, speed, callback);
+                    if (nextPage) {
+                        this.translate(nextPage, 0, speed);
+                    }
+                }
+            } else if (towards === 'prev') {
+                this.isDone = true;
+                this.before(currentPage);
+                if (speedX) {
+                    this.rafTranslate(currentPage, offsetLeft, pageWidth, callback, prevPage);
+                } else {
+                    this.translate(currentPage, pageWidth, speed, callback);
+                    if (prevPage) {
+                        this.translate(prevPage, 0, speed);
+                    }
+                }
             } else {
-              this.translate(currentPage, -pageWidth, speed, callback);
-              if (nextPage) {
-                this.translate(nextPage, 0, speed);
-              }
+                this.isDone = false;
+                this.translate(currentPage, 0, speed, callback);
+                if (typeof offsetLeft !== 'undefined') {
+                    if (prevPage && offsetLeft > 0) {
+                        this.translate(prevPage, pageWidth * -1, speed);
+                    }
+                    if (nextPage && offsetLeft < 0) {
+                        this.translate(nextPage, pageWidth, speed);
+                    }
+                } else {
+                    if (prevPage) {
+                        this.translate(prevPage, pageWidth * -1, speed);
+                    }
+                    if (nextPage) {
+                        this.translate(nextPage, pageWidth, speed);
+                    }
+                }
             }
-          } else if (towards === 'prev') {
-            this.isDone = true;
-            this.before(currentPage);
-            if (speedX) {
-              this.rafTranslate(currentPage, offsetLeft, pageWidth, callback, prevPage);
-            } else {
-              this.translate(currentPage, pageWidth, speed, callback);
-              if (prevPage) {
-                this.translate(prevPage, 0, speed);
-              }
-            }
-          } else {
-            this.isDone = false;
-            this.translate(currentPage, 0, speed, callback);
-            if (typeof offsetLeft !== 'undefined') {
-              if (prevPage && offsetLeft > 0) {
-                this.translate(prevPage, pageWidth * -1, speed);
-              }
-              if (nextPage && offsetLeft < 0) {
-                this.translate(nextPage, pageWidth, speed);
-              }
-            } else {
-              if (prevPage) {
-                this.translate(prevPage, pageWidth * -1, speed);
-              }
-              if (nextPage) {
-                this.translate(nextPage, pageWidth, speed);
-              }
-            }
-          }
         }, 10);
-      }
+    }
 
     public next() {
         this.doAnimate('next');
-      }
+    }
 
     public prev() {
         this.doAnimate('prev');
-      }
+    }
 
-    public before() {
+    public before(ele: HTMLElement) {
         this.$emit('before', this.index);
-      }
+    }
 
     public end() {
         this.$emit('end', this.index);
-      }
+    }
 
     public doOnTouchStart(event: TouchEvent) {
-        if (this.noDrag) return;
-
-        var element: HTMLElement = this.$el as HTMLElement;
-        var dragState = this.dragState;
-        var touch = event.touches[0];
+        if (this.noDrag) {
+            return;
+        }
+        const element: HTMLElement = this.$el as HTMLElement;
+        const dragState = this.dragState;
+        const touch = event.touches[0];
 
         dragState.startTime = new Date();
         dragState.startLeft = touch.pageX;
@@ -351,17 +368,17 @@ export default class Swiper extends Vue {
         dragState.pageWidth = element.offsetWidth;
         dragState.pageHeight = element.offsetHeight;
 
-        var prevPage = this.$children[this.index - 1];
-        var dragPage = this.$children[this.index];
-        var nextPage = this.$children[this.index + 1];
+        let prevPage = this.$children[this.index - 1];
+        const dragPage = this.$children[this.index];
+        let nextPage = this.$children[this.index + 1];
 
         if (this.continuous && this.pages.length > 1) {
-          if (!prevPage) {
-            prevPage = this.$children[this.$children.length - 1];
-          }
-          if (!nextPage) {
-            nextPage = this.$children[0];
-          }
+            if (!prevPage) {
+                prevPage = this.$children[this.$children.length - 1];
+            }
+            if (!nextPage) {
+                nextPage = this.$children[0];
+            }
         }
 
         dragState.prevPage = prevPage ? prevPage.$el : null;
@@ -369,114 +386,117 @@ export default class Swiper extends Vue {
         dragState.nextPage = nextPage ? nextPage.$el : null;
 
         if (dragState.prevPage) {
-          dragState.prevPage.style.display = 'block';
+            dragState.prevPage.style.display = 'block';
         }
 
         if (dragState.nextPage) {
-          dragState.nextPage.style.display = 'block';
+            dragState.nextPage.style.display = 'block';
         }
-      }
+    }
 
     public doOnTouchMove(event: TouchEvent) {
-        if (this.noDrag) return;
-
-        var dragState = this.dragState;
-        var touch = event.touches[0];
+        if (this.noDrag) {
+            return;
+        }
+        const dragState = this.dragState;
+        const touch = event.touches[0];
 
         dragState.speedX = touch.pageX - dragState.currentLeft;
         dragState.currentLeft = touch.pageX;
         dragState.currentTop = touch.pageY;
         dragState.currentTopAbsolute = touch.clientY;
 
-        var offsetLeft = dragState.currentLeft - dragState.startLeft;
-        var offsetTop = dragState.currentTopAbsolute - dragState.startTopAbsolute;
+        let offsetLeft = dragState.currentLeft - dragState.startLeft;
+        const offsetTop = dragState.currentTopAbsolute - dragState.startTopAbsolute;
 
-        var distanceX = Math.abs(offsetLeft);
-        var distanceY = Math.abs(offsetTop);
+        const distanceX = Math.abs(offsetLeft);
+        const distanceY = Math.abs(offsetTop);
         if (distanceX < 5 || (distanceX >= 5 && distanceY >= 1.73 * distanceX)) {
-          this.userScrolling = true;
-          return;
+            this.userScrolling = true;
+            return;
         } else {
-          this.userScrolling = false;
-          event.preventDefault();
+            this.userScrolling = false;
+            event.preventDefault();
         }
         offsetLeft = Math.min(Math.max(-dragState.pageWidth + 1, offsetLeft), dragState.pageWidth - 1);
 
-        var towards = offsetLeft < 0 ? 'next' : 'prev';
+        const towards = offsetLeft < 0 ? 'next' : 'prev';
 
         if (dragState.prevPage && towards === 'prev') {
-          this.translate(dragState.prevPage, offsetLeft - dragState.pageWidth);
+            this.translate(dragState.prevPage, offsetLeft - dragState.pageWidth);
         }
         this.translate(dragState.dragPage, offsetLeft);
         if (dragState.nextPage && towards === 'next') {
-          this.translate(dragState.nextPage, offsetLeft + dragState.pageWidth);
+            this.translate(dragState.nextPage, offsetLeft + dragState.pageWidth);
         }
-      }
+    }
 
-    public doOnTouchEnd() {
-        if (this.noDrag) return;
+    public doOnTouchEnd(event: TouchEvent) {
+        if (this.noDrag) {
+            return;
+        }
+        const dragState = this.dragState;
 
-        var dragState = this.dragState;
+        const dragDuration = new Date().getTime() - dragState.startTime;
+        let towards = null;
 
-        var dragDuration = new Date().getTime() - dragState.startTime;
-        var towards = null;
-
-        var offsetLeft = dragState.currentLeft - dragState.startLeft;
-        var offsetTop = dragState.currentTop - dragState.startTop;
-        var pageWidth = dragState.pageWidth;
-        var index = this.index;
-        var pageCount = this.pages.length;
+        const offsetLeft = dragState.currentLeft - dragState.startLeft;
+        const offsetTop = dragState.currentTop - dragState.startTop;
+        const pageWidth = dragState.pageWidth;
+        const index = this.index;
+        const pageCount = this.pages.length;
 
         if (dragDuration < 300) {
-          let fireTap = Math.abs(offsetLeft) < 5 && Math.abs(offsetTop) < 5;
-          if (isNaN(offsetLeft) || isNaN(offsetTop)) {
-            fireTap = true;
-          }
-          if (fireTap) {
-            this.$children[this.index].$emit('tap');
-          }
+            let fireTap = Math.abs(offsetLeft) < 5 && Math.abs(offsetTop) < 5;
+            if (isNaN(offsetLeft) || isNaN(offsetTop)) {
+                fireTap = true;
+            }
+            if (fireTap) {
+                this.$children[this.index].$emit('tap');
+            }
         }
 
-        if (dragDuration < 300 && dragState.currentLeft === undefined) return;
-
+        if (dragDuration < 300 && dragState.currentLeft === undefined) {
+            return;
+        }
         if (dragDuration < 300 || Math.abs(offsetLeft) > pageWidth / 2) {
-          towards = offsetLeft < 0 ? 'next' : 'prev';
+            towards = offsetLeft < 0 ? 'next' : 'prev';
         }
 
         if (!this.continuous) {
-          if ((index === 0 && towards === 'prev') || (index === pageCount - 1 && towards === 'next')) {
-            towards = null;
-          }
+            if ((index === 0 && towards === 'prev') || (index === pageCount - 1 && towards === 'next')) {
+                towards = null;
+            }
         }
 
         if (this.$children.length < 2) {
-          towards = null;
+            towards = null;
         }
 
         this.doAnimate(towards, {
-          offsetLeft: offsetLeft,
-          pageWidth: dragState.pageWidth,
-          prevPage: dragState.prevPage,
-          currentPage: dragState.dragPage,
-          nextPage: dragState.nextPage,
-          speedX: dragState.speedX
+            offsetLeft,
+            pageWidth: dragState.pageWidth,
+            prevPage: dragState.prevPage,
+            currentPage: dragState.dragPage,
+            nextPage: dragState.nextPage,
+            speedX: dragState.speedX,
         });
 
         this.dragState = {};
-      }
+    }
 
-     public initTimer() {
+    public initTimer() {
         if (this.auto > 0 && !this.timer) {
-          this.timer = setInterval(() => {
-            if (!this.continuous && (this.index >= this.pages.length - 1)) {
-              return this.clearTimer();
-            }
-            if (!this.dragging && !this.animating) {
-              this.next();
-            }
-          }, this.auto);
+            this.timer = window.setInterval(() => {
+                if (!this.continuous && (this.index >= this.pages.length - 1)) {
+                    return this.clearTimer();
+                }
+                if (!this.dragging && !this.animating) {
+                    this.next();
+                }
+            }, this.auto);
         }
-      }
+    }
 
     public clearTimer() {
         clearInterval(this.timer);
@@ -484,50 +504,62 @@ export default class Swiper extends Vue {
     }
 
     public destroyed() {
-      if (this.timer > 0) {
-        this.clearTimer();
-      }
-      if (this.reInitTimer > 0) {
-        clearTimeout(this.reInitTimer);
-        this.reInitTimer = 0;
-      }
+        if (this.timer > 0) {
+            this.clearTimer();
+        }
+        if (this.reInitTimer > 0) {
+            clearTimeout(this.reInitTimer);
+            this.reInitTimer = 0;
+        }
     }
 
     public mounted() {
-      this.ready = true;
+        this.ready = true;
 
-      this.initTimer();
-
-      this.reInitPages();
-
-      var element = this.$el;
-
-      element.addEventListener('touchstart', (event: any) => {
-        if (this.prevent) event.preventDefault();
-        if (this.stopPropagation) event.stopPropagation();
-        if (this.animating) return;
-        this.dragging = true;
-        this.userScrolling = false;
-        this.doOnTouchStart(event);
-      });
-
-      element.addEventListener('touchmove', (event: any) => {
-        if (!this.dragging) return;
-        if (this.timer) this.clearTimer();
-        this.doOnTouchMove(event);
-      });
-
-      element.addEventListener('touchend', (event: any) => {
-        if (this.userScrolling) {
-          this.dragging = false;
-          this.dragState = {};
-          return;
-        }
-        if (!this.dragging) return;
         this.initTimer();
-        this.doOnTouchEnd(event);
-        this.dragging = false;
-      });
+
+        this.reInitPages();
+
+        const element = this.$el;
+
+        element.addEventListener('touchstart', (event: any) => {
+            if (this.prevent) {
+                event.preventDefault();
+            }
+            if (this.stopPropagation) {
+                event.stopPropagation();
+            }
+            if (this.animating) {
+                return;
+            }
+            this.dragging = true;
+            this.userScrolling = false;
+            this.doOnTouchStart(event);
+        });
+
+        element.addEventListener('touchmove', (event: any) => {
+            if (!this.dragging) {
+                return;
+            }
+            if (this.timer) {
+                this.clearTimer();
+            }
+            this.doOnTouchMove(event);
+        });
+
+        element.addEventListener('touchend', (event: any) => {
+            if (this.userScrolling) {
+                this.dragging = false;
+                this.dragState = {};
+                return;
+            }
+            if (!this.dragging) {
+                return;
+            }
+            this.initTimer();
+            this.doOnTouchEnd(event);
+            this.dragging = false;
+        });
     }
 }
 </script>
@@ -545,10 +577,11 @@ export default class Swiper extends Vue {
         > div {
             position: absolute;
             transform: translateX(-100%);
-            size: 100% 100%;
+            width: 100%;
+            height: 100%;
             display: none;
 
-            .is-active {
+            &.is-active {
                 display: block;
                 transform: none;
             }
@@ -561,14 +594,15 @@ export default class Swiper extends Vue {
         transform: translateX(-50%);
     }
     .swiper-indicator {
-        size: 8px 8px;
+        width: 8px;
+        height: 8px;
         display: inline-block;
         border-radius: 100%;
         background: #000;
         opacity: 0.2;
         margin: 0 3px;
 
-        .is-active {
+        &.is-active {
             background: #fff;
         }
     }

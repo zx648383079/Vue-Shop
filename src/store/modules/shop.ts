@@ -4,7 +4,7 @@ import {
 import {
     Commit,
 } from 'vuex';
-import { ICategory, ISubtotal, ICart, IAddress, IOrder } from '@/api/model';
+import { ICategory, ISubtotal, IAddress, IOrder, ICartGroup } from '@/api/model';
 import { getCategories } from '@/api/category';
 import { getSubtotal } from '@/api/product';
 import { getAddressList } from '@/api/address';
@@ -15,7 +15,7 @@ import { getOrderInfo } from '@/api/order';
 export interface State {
     categories: ICategory[],
     subtotal: ISubtotal | null,
-    cart: ICart[];
+    cart: ICartGroup[];
     addressList: IAddress[];
     address: IAddress | null;
     order: IOrder | null;
@@ -49,7 +49,7 @@ const getters = {
 
 // actions
 const actions = {
-    setCart(context: IActionContext, cart: ICart[]) {
+    setCart(context: IActionContext, cart: ICartGroup[]) {
         context.commit(SET_CART, cart);
     },
     getCategories(context: IActionContext) {
@@ -144,7 +144,7 @@ const mutations = {
     [SET_SUBTOTAL](state: State, subtotal: ISubtotal) {
         state.subtotal = subtotal;
     },
-    [SET_CART](state: State, cart: ICart[]) {
+    [SET_CART](state: State, cart: ICartGroup[]) {
         state.cart = cart;
     },
     [SET_ADDRESS_LIST](state: State, items: IAddress[]) {
