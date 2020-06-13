@@ -5,9 +5,9 @@
                 <form onsubmit="return false;">
                     <i class="fa fa-search" aria-hidden="true"></i>
                     <input type="text" name="keywords" :value="value" @input="tapUpdateVal($event.target.value)" @keyup="onKeyUp" placeholder="搜索" autocomplete="off">
-                    <i class="fa fa-times-circle" v-if="value && value.length > 0" @click="tapClearSearch"></i>
+                    <i class="fa fa-times-circle" v-if="value && value.length > 0" @click="tapClearSearch()"></i>
                 </form>
-                <a class="cancel-btn" @click="tapBack">取消</a>
+                <a class="cancel-btn" @click="tapBack()">取消</a>
             </div>
         </header>
         <div class="has-header">

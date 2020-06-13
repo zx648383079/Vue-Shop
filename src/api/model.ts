@@ -123,6 +123,9 @@ export interface ICommentSubtotal {
 export interface IStore {
     id: number;
     name: string;
+    logo: string;
+    collect_count?: number;
+    is_collected?: boolean
 }
 
 export interface ICartItem {
@@ -162,6 +165,7 @@ export interface ICartSubtotal {
     total_weight: number;
     original_total: number;
     discount_amount: number;
+    count: number;
 }
 
 export interface ICart {
