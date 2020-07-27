@@ -2,11 +2,8 @@ import { Md5 } from 'ts-md5';
 import Cookies from 'js-cookie';
 import Toast from '@/components/toast.ts';
 import { dispatchSetToken } from '@/store/dispatches';
-
-export const apiEndpoint = 'http://zodream.localhost/open/';
-export const assetUri = 'http://zodream.localhost';
-export const appId = '11543906547';
-export const secret = '012e936d3d3653b40c6fc5a32e4ea685';
+import { appId, secret, apiEndpoint } from '../config/config';
+export * from '../config/config';
 
 interface IAppParam {
     appid: string,

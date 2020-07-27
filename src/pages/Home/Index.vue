@@ -51,7 +51,7 @@ import {getHome, getInfo} from '../../api/product'
 import {getCategories} from '../../api/category'
 import {getBanners} from '../../api/ad'
 import { IProduct, IAd, ICategory, IHomeProduct, ISubtotal } from '@/api/model';
-import { dispatchSubtotal } from '@/store/dispatches';
+import { dispatchSite } from '@/store/dispatches';
 import { Getter } from 'vuex-class';
 import CartDialog from '@/pages/Goods/Child/CartDialog.vue';
 import Swiper from '@/components/Swiper.vue';
@@ -92,7 +92,7 @@ export default class Index extends Vue {
             }
             this.banners = res.data;
         });
-        dispatchSubtotal().then(res => {
+        dispatchSite().then(res => {
             this.subtotal = res;
         });
     }

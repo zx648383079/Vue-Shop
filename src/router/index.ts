@@ -70,6 +70,7 @@ import GarbageResult from '@/pages/Garbage/Result.vue';
 import Seckill from '@/pages/Activity/Seckill.vue';
 import Store from '@/pages/Store/Index.vue';
 import StoreQuick from '@/pages/Store/Quick.vue';
+import EditProfile from '@/pages/Member/Edit.vue';
 
 
 Vue.use(Router);
@@ -265,6 +266,15 @@ export default new Router({
             component: Profile,
             meta: {
                 title: '我的资料',
+                requireAuth: true,
+            },
+        },
+        {
+            path: '/member/edit/:name',
+            name: 'edit-profile',
+            component: EditProfile,
+            meta: {
+                title: '编辑信息',
                 requireAuth: true,
             },
         },

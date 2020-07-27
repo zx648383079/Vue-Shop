@@ -3,7 +3,7 @@ import { ICategory, IUser, ILogin, ISubtotal, IAddress, IOrder, ICartGroup } fro
 
 export const dispatchCategories = (): Promise<ICategory[]> => store.dispatch('getCategories');
 
-export const dispatchSubtotal = (): Promise<ISubtotal> => store.dispatch('getSubtotal');
+export const dispatchSite = (): Promise<ISubtotal> => store.dispatch('getSite');
 
 export const dispatchAddressList = (): Promise<IAddress[]> => store.dispatch('getAddressList');
 
@@ -12,6 +12,8 @@ export const dispatchSetAddressList = (address: IAddress[]) => store.dispatch('s
 export const dispatchAddress = (): Promise<IAddress> => store.dispatch('getAddress');
 
 export const dispatchUser = (): Promise<IUser> => store.dispatch('getUser');
+
+export const dispatchSetUser = (user: IUser): Promise<void> => store.dispatch('setUser', user);
 
 export const dispatchSetToken = (token: string) => store.dispatch('setToken', token);
 

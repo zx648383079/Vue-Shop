@@ -4,14 +4,14 @@
         <div class="has-header">
 
             <div class="profile-box" v-if="user">
-                <div class="line-item avatar-item">
+                <div class="line-item avatar-item" @click="tapAvatar">
                     <span>头像</span>
                     <span class="avatar">
                         <img :src="user.avatar" alt="">
                     </span>
                     <i class="fa fa-chevron-right"></i>
                 </div>
-                <div class="line-item">
+                <div class="line-item" @click="tapName">
                     <span>昵称</span>
                     <span>{{user.name}}</span>
                     <i class="fa fa-chevron-right"></i>
@@ -67,7 +67,8 @@ import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import DatePicker from '@/components/DatePicker.vue';
 import { IUser } from '@/api/model';
-import { dispatchUser, dispatchLogout } from '@/store/dispatches';
+import { dispatchUser, dispatchLogout, dispatchSetUser } from '@/store/dispatches';
+import { updateProfile } from '../../api/user';
 
 @Component({
     components: {
@@ -81,6 +82,27 @@ export default class Profile extends Vue {
     public created() {
         dispatchUser().then(res => {
             this.user = res;
+        });
+    }
+
+    public tapName() {
+        this.$router.push({
+            name: 'edit-profile',
+            params: {
+                name: 'name',
+            },
+        });
+    }
+
+    public tapAvatar() {
+        // TODO
+    }
+
+    public updateProfile(name: string, value: any) {
+        updateProfile({
+            [name]: value,
+        }).then(res => {
+            dispatchSetUser(res).then(() => {});
         });
     }
 

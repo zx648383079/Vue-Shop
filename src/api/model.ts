@@ -396,3 +396,33 @@ export interface ISeckillGoods {
     every_amount: number
 }
 
+export interface ISite {
+    name: string;
+    version: string;
+    logo: string;
+    goods: number;
+    category: number;
+    brand: number;
+    currency: string;
+}
+
+export interface IDriver {
+    id?: number;
+    name: string;
+    created_at: string;
+}
+
+export interface ICertification {
+    name: string;
+    sex: string;
+    country: string;
+    type: number;
+    card_no: string;
+    expiry_date: string;
+    profession: string;
+    address: string;
+    front_side: string;
+    back_side: string;
+    status: number;
+}
+

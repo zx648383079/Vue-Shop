@@ -35,7 +35,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import CountDown from '@/components/CountDown.vue';
-import { sendCode } from '../../../api/user';
+import { sendMobileCode } from '../../../api/user';
 import Toast from '@/components/toast.ts';
 import { isMobile, isEmpty } from '../../../utils/validate';
 
@@ -61,10 +61,7 @@ export default class MobileRegister extends Vue {
             Toast('请输入手机号');
             return;
         }
-        sendCode({
-            mobile: this.mobile,
-            scene: 'register',
-        }).then(res => {
+        sendMobileCode(this.mobile, 'register').then(res => {
             btn.start();
         });
     }

@@ -18,5 +18,3 @@ export const getHotKeywords = () => fetch<IData<string>>('shop/search/keywords')
 export const getTips = (keywords: string) => fetch<IData<string>>('shop/search/tips', {
     keywords,
 });
-
-export const getSubtotal = () => fetch<ISubtotal>('shop/goods/count');

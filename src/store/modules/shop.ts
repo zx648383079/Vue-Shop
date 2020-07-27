@@ -1,12 +1,12 @@
 import {
-    SET_CATEGORIES, SET_SUBTOTAL, SET_CART, SET_ADDRESS_LIST, SET_ADDRESS, SET_ORDER,
+    SET_CATEGORIES, SET_SITE, SET_CART, SET_ADDRESS_LIST, SET_ADDRESS, SET_ORDER,
 } from '../types';
 import {
     Commit,
 } from 'vuex';
-import { ICategory, ISubtotal, IAddress, IOrder, ICartGroup } from '@/api/model';
+import { ICategory, IAddress, IOrder, ICartGroup, ISite } from '@/api/model';
 import { getCategories } from '@/api/category';
-import { getSubtotal } from '@/api/product';
+import { getSiteInfo } from '@/api/site';
 import { getAddressList } from '@/api/address';
 import { dispatchAddressList } from '../dispatches';
 import { getOrderInfo } from '@/api/order';
@@ -14,7 +14,7 @@ import { getOrderInfo } from '@/api/order';
 
 export interface State {
     categories: ICategory[],
-    subtotal: ISubtotal | null,
+    site: ISite | null,
     cart: ICartGroup[];
     addressList: IAddress[];
     address: IAddress | null;
@@ -30,7 +30,7 @@ interface IActionContext {
 // shape: [{ id, quantity }]
 const initState: State = {
     categories: [],
-    subtotal: null,
+    site: null,
     cart: [],
     addressList: [],
     address: null,
@@ -64,14 +64,14 @@ const actions = {
             }).catch(reject);
         });
     },
-    getSubtotal(context: IActionContext) {
+    getSite(context: IActionContext) {
         return new Promise((resolve, reject) => {
-            if (context.state.subtotal) {
-                resolve(context.state.subtotal);
+            if (context.state.site) {
+                resolve(context.state.site);
                 return;
             }
-            getSubtotal().then(res => {
-                context.commit(SET_SUBTOTAL, res);
+            getSiteInfo().then(res => {
+                context.commit(SET_SITE, res);
                 resolve(res);
             }).catch(reject);
         });
@@ -141,8 +141,8 @@ const mutations = {
     [SET_CATEGORIES](state: State, categories: ICategory[]) {
         state.categories = categories;
     },
-    [SET_SUBTOTAL](state: State, subtotal: ISubtotal) {
-        state.subtotal = subtotal;
+    [SET_SITE](state: State, subtotal: ISite) {
+        state.site = subtotal;
     },
     [SET_CART](state: State, cart: ICartGroup[]) {
         state.cart = cart;

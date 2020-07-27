@@ -43,7 +43,7 @@ export default class Password extends Vue {
             Toast('确认密码不一致！');
             return;
         }
-        updatePassword(this.oldpassword, this.password).then(res => {
+        updatePassword(this.oldpassword, this.password, this.repassword).then(res => {
             dispatchLogout().then(() => {
                 this.$router.push('/login');
             });

@@ -75,6 +75,12 @@ const actions = {
             }).catch(reject);
         });
     },
+    setUser(context: IActionContext, user: IUser) {
+        return new Promise((resolve, reject) => {
+            context.commit(SET_USER, user);
+            resolve();
+        });
+    },
     loginUser(context: IActionContext, params: ILogin) {
         return login(params).then((res: IUser) => {
             context.commit(SET_TOKEN, res.token);

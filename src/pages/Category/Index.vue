@@ -55,7 +55,7 @@ import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import { ICategory, IProduct, ISubtotal } from '@/api/model';
 import { getCategories, getCategory } from '@/api/category';
 import TabBar from '@/components/TabBar.vue';
-import { dispatchSubtotal, dispatchCategories } from '@/store/dispatches';
+import { dispatchSite, dispatchCategories } from '@/store/dispatches';
 
 @Component({
     components: {
@@ -77,7 +77,7 @@ export default class Index extends Vue {
             this.categories = res;
             this.tapSelected(res[0], 0);
         });
-        dispatchSubtotal().then(res => {
+        dispatchSite().then(res => {
             this.subtotal = res;
         });
     }

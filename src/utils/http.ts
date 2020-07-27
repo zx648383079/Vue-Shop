@@ -10,11 +10,12 @@ axios.defaults.baseURL = util.apiEndpoint
 // http request 拦截器
 axios.interceptors.request.use(
     (config) => {
-        // const token = getCookie('名称');注意使用的时候需要引入cookie方法，推荐js-cookie
-        config.data = JSON.stringify(config.data)
-        config.headers = {
-            'Content-Type': 'application/vnd.api+json',
-            'Accept': 'application/json',
+        if (config.data && !(config.data instanceof FormData)) {
+            config.data = JSON.stringify(config.data)
+            config.headers = {
+                'Content-Type': 'application/vnd.api+json',
+                'Accept': 'application/json',
+            }
         }
         const params = util.getAppParams();
         if (!config.params) {
@@ -135,7 +136,25 @@ export function put<T>(url: string, data = {}): Promise<T> {
             }, (err) => {
                 reject(err)
             })
-    })
+    });
+}
+
+export function uploadFile<T>(url: string, file: File, name: string = 'file'): Promise<T> {
+    const data = new FormData();
+    data.append(name, file);
+    return new Promise<T>((resolve, reject) => {
+        axios.post(url, data, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              'Accept': 'application/json',
+            },
+          })
+            .then((response) => {
+                resolve(response.data)
+            }, (err) => {
+                reject(err)
+            })
+    });
 }
 
 export default {

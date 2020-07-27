@@ -26,7 +26,7 @@ import CountDown from '@/components/CountDown.vue';
 import Toast from '@/components/toast.ts';
 import { IUser } from '../../../api/model';
 import { dispatchLogin } from '../../../store/dispatches';
-import { sendCode } from '../../../api/user';
+import { sendMobileCode } from '../../../api/user';
 import { isEmpty, isMobile } from '../../../utils/validate';
 
 @Component({
@@ -48,10 +48,7 @@ export default class MobileCodeLogin extends Vue {
             Toast('请输入手机号');
             return;
         }
-        sendCode({
-            mobile: this.mobile,
-            scene: 'login',
-        }).then(res => {
+        sendMobileCode(this.mobile, 'login').then(res => {
             btn.start();
         });
     }
