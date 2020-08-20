@@ -71,6 +71,7 @@ import Seckill from '@/pages/Activity/Seckill.vue';
 import Store from '@/pages/Store/Index.vue';
 import StoreQuick from '@/pages/Store/Quick.vue';
 import EditProfile from '@/pages/Member/Edit.vue';
+import Browser from '@/pages/Browser/Index.vue';
 
 
 Vue.use(Router);
@@ -588,6 +589,14 @@ export default new Router({
             component: GarbageResult,
             meta: {
                 title: '垃圾分类查询结果',
+            },
+        },
+        {
+            path: '/browser',
+            name: 'browser',
+            component: Browser,
+            meta: {
+                title: '浏览器',
             },
         },
     ],
