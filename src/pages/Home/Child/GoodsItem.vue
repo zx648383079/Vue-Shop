@@ -27,3 +27,8 @@ export default class GoodsItem extends Vue {
     }
 }
 </script>
+<style lang="scss">
+.item-actions {
+    cursor: pointer;
+}
+</style>

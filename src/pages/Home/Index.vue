@@ -2,7 +2,7 @@
     <div>
         <header class="top top-search-box">
             <a href="" class="logo">
-                <img :src="'/assets/images/wap_logo.png' | assets" alt="">
+                <img :src="logo | assets" alt="">
             </a>
             <a class="search-entry" @click="tapSearch">
                 <i class="fa fa-search"></i>
@@ -50,12 +50,14 @@ import GoodsPanel from './Child/GoodsPanel.vue'
 import {getHome, getInfo} from '../../api/product'
 import {getCategories} from '../../api/category'
 import {getBanners} from '../../api/ad'
-import { IProduct, IAd, ICategory, IHomeProduct, ISubtotal } from '@/api/model';
+import { IProduct, IAd, ICategory, IHomeProduct, ISubtotal, ISite } from '@/api/model';
 import { dispatchSite } from '@/store/dispatches';
 import { Getter } from 'vuex-class';
 import CartDialog from '@/pages/Goods/Child/CartDialog.vue';
 import Swiper from '@/components/Swiper.vue';
 import SwiperItem from '@/components/SwiperItem.vue';
+import { addGoods } from '@/api/cart';
+import Toast from '@/components/toast';
 
 @Component({
     components: {
@@ -70,11 +72,15 @@ export default class Index extends Vue {
     public banners: IAd[] = [];
     public categories: ICategory[] = [];
     public data: IHomeProduct = {};
-    public subtotal: ISubtotal| null = null;
+    public subtotal: ISite| null = null;
     public mode: number = 0;
     public goods: IProduct | null = null;
 
     @Getter('isGuest') public isGuest?: boolean;
+
+    public get logo(): string {
+        return this.subtotal ? this.subtotal.logo : '/assets/images/wap_logo.png';
+    }
 
     public created() {
         getHome().then(res => {
@@ -102,12 +108,20 @@ export default class Index extends Vue {
     }
 
     public tapAddCart(item: IProduct) {
+        if (this.isGuest) {
+            this.$router.push('/login');
+            return;
+        }
         if (this.goods && this.goods.id === item.id) {
             this.mode = 1;
             return;
         }
-        getInfo(item.id).then(res => {
-            this.goods = res;
+        addGoods(item.id, 1).then(res => {
+            if (!res.dialog) {
+                Toast('已成功加入购物车');
+                return;
+            }
+            this.goods = res.data;
             this.mode = 1;
         });
     }

@@ -5,7 +5,7 @@
                 <i class="fa fa-home"></i>
             </a>
             <a @click="tapHome" class="logo">
-                <img :src="'/assets/images/wap_logo.png' | assets" alt="">
+                <img :src="logo | assets" alt="">
             </a>
             <a class="search-btn" @click="$router.push('/search')">
                 <i class="fa fa-search"></i>
@@ -18,7 +18,7 @@
         <div class="has-header">
             <div class="login-type-box" v-if="mode < 1">
                 <div class="logo">
-                    <img :src="'/assets/images/wap_logo.png' | assets" alt="">
+                    <img :src="logo | assets" alt="">
                 </div>
                 <a @click="mode = 1" class="btn">手机号登录</a>
                 <a @click="mode = 3" class="btn btn-none">邮箱登录</a>
@@ -35,9 +35,9 @@
                 </div>
             </div>
             <div class="login-box" v-if="mode > 0 && mode < 4">
-                <MobileLogin v-if="mode == 2" @click="tapChange" @back="tapLoginBack"/>
-                <MobileCodeLogin v-if="mode == 1" @click="tapChange" @back="tapLoginBack"/>
-                <EmailLogin v-if="mode == 3" @click="tapChange" @back="tapLoginBack"/>
+                <MobileLogin v-if="mode == 2" :logo="logo" @click="tapChange" @back="tapLoginBack"/>
+                <MobileCodeLogin v-if="mode == 1" :logo="logo" @click="tapChange" @back="tapLoginBack"/>
+                <EmailLogin v-if="mode == 3" :logo="logo" @click="tapChange" @back="tapLoginBack"/>
             </div>
             <div class="register-box" v-if="mode >= 4">
                 <MobileRegister v-if="mode == 4" @click="tapChange" @back="tapLoginBack"/>
@@ -56,6 +56,8 @@ import MobileRegister from './Child/MobileRegister.vue';
 import EmailLogin from './Child/EmailLogin.vue';
 import EmailRegister from './Child/EmailRegister.vue';
 import { getAuthUri } from '@/utils';
+import { dispatchSite } from '@/store/dispatches';
+import { ISite } from '@/api/model';
 
 @Component({
     components: {
@@ -69,6 +71,17 @@ import { getAuthUri } from '@/utils';
 export default class Login extends Vue {
 
     public mode: number = 0;
+    public site: ISite | null = null;
+
+    public created() {
+        dispatchSite().then(res => {
+            this.site = res;
+        });
+    }
+
+    public get logo(): string {
+        return this.site ? this.site.logo : '/assets/images/wap_logo.png';
+    }
 
     public tapHome() {
         this.$router.push('/');

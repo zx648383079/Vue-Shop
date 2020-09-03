@@ -18,22 +18,20 @@ export default class Index extends Vue {
     public title = '';
     public height = 0;
 
-    
-    public get getUrl() : string {
+    public get getUrl(): string {
         return this.$route.query.url as string;
     }
 
-    
     public get getFrameStyle() {
         return {
             height: this.height + 'px',
         };
     }
-    
+
     public mounted() {
         this.height = document.body.scrollHeight - 44;
-        let iframe = document.getElementById("iframe") as HTMLIFrameElement;
-        let title = this.$route.query.title;
+        const iframe = document.getElementById('iframe') as HTMLIFrameElement;
+        const title = this.$route.query.title;
         if (title && title.length) {
             this.title = title.toString();
             return;

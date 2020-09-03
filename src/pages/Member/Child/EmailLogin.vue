@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="logo">
-            <img :src="'/assets/images/wap_logo.png' | assets" alt="">
+            <img :src="logo | assets" alt="">
         </div>
         <div class="email-password">
             <div class="input-box">
@@ -22,8 +22,8 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import Toast from '@/components/toast.ts';
-import { dispatchLogin } from '@/store/dispatches';
-import { IUser } from '@/api/model';
+import { dispatchLogin, dispatchSite } from '@/store/dispatches';
+import { IUser, ISite } from '@/api/model';
 import { isEmpty, isEmail } from '../../../utils/validate';
 
 @Component
@@ -32,6 +32,7 @@ export default class EmailLogin extends Vue {
     public email: string = '';
 
     public password: string = '';
+    @Prop(String) public readonly logo!: string;
 
     public tapKey(e: KeyboardEvent) {
         if (e.code !== 'Enter') {

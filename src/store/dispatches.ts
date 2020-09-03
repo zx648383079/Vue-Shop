@@ -1,9 +1,9 @@
 import store from './';
-import { ICategory, IUser, ILogin, ISubtotal, IAddress, IOrder, ICartGroup } from '@/api/model';
+import { ICategory, IUser, ILogin, IAddress, IOrder, ICartGroup, ISite } from '@/api/model';
 
 export const dispatchCategories = (): Promise<ICategory[]> => store.dispatch('getCategories');
 
-export const dispatchSite = (): Promise<ISubtotal> => store.dispatch('getSite');
+export const dispatchSite = (): Promise<ISite> => store.dispatch('getSite');
 
 export const dispatchAddressList = (): Promise<IAddress[]> => store.dispatch('getAddressList');
 

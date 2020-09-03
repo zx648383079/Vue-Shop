@@ -1,9 +1,10 @@
 import {fetch, post} from '../utils/http';
-import { IData, ICart, IPayment, IShipping, ICartItem, IOrder, ICoupon } from './model';
+import { IData, ICart, IPayment, IShipping, ICartItem, IOrder, ICoupon, ICartDialog } from './model';
 
 export const getCart = (params?: any) => fetch<ICart>('shop/cart', params)
 
-export const addGoods = (goods: number, amount: number = 1, properties = []) => post<ICart>('shop/cart/add', {
+export const addGoods = (goods: number, amount: number = 1, properties = []) =>
+    post<ICart| ICartDialog>('shop/cart/add', {
     goods,
     amount,
     properties,

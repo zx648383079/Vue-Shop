@@ -33,6 +33,9 @@ import GoodsItem from '../Home/Child/GoodsItem.vue';
 import SearchBar from './Child/SearchBar.vue'
 import { IProduct } from '@/api/model';
 import CartDialog from '@/pages/Goods/Child/CartDialog.vue';
+import { addGoods } from '@/api/cart';
+import Toast from '@/components/toast';
+import { Getter } from 'vuex-class';
 
 interface ISearch {
     keywords: string,
@@ -64,6 +67,7 @@ export default class Index extends Vue {
     };
     public mode: number = 0;
     public goods: IProduct | null = null;
+    @Getter('isGuest') public isGuest?: boolean;
 
     public created() {
         this.isSearch = Object.keys(this.$route.query).length === 0;
@@ -109,12 +113,20 @@ export default class Index extends Vue {
         this.$router.push({name: 'product', params: {id: item.id + ''}});
     }
     public tapAddCart(item: IProduct) {
+        if (this.isGuest) {
+            this.$router.push('/login');
+            return;
+        }
         if (this.goods && this.goods.id === item.id) {
             this.mode = 1;
             return;
         }
-        getInfo(item.id).then(res => {
-            this.goods = res;
+        addGoods(item.id, 1).then(res => {
+            if (!res.dialog) {
+                Toast('已成功加入购物车');
+                return;
+            }
+            this.goods = res.data;
             this.mode = 1;
         });
     }

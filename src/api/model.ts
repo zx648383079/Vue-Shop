@@ -169,10 +169,16 @@ export interface ICartSubtotal {
 }
 
 export interface ICart {
+    dialog: undefined;
     checkout_button?: IButton;
     data: ICartGroup[];
     promotion_cell?: ICartCell[];
     subtotal: ICartSubtotal;
+}
+
+export interface ICartDialog {
+    dialog: boolean; // 需要弹窗选择属性
+    data: IProduct;
 }
 
 export interface IPayment {

@@ -1,20 +1,16 @@
 <template>
     <div>
-        <BackHeader :title="$route.meta.title"/>
-        <div class="has-header">
-            <form class="form-inline" method="post" @submit="tapSubmit">
-                <div class="input-box">
-                    <input type="text" :placeholder="title" required  v-model="value">
-                </div>
-
-                <button class="btn btn-primary">确定</button>
-            </form>
+        <LargeHeader :title="$route.meta.title" @submited="tapSubmit()"/>
+        <div>
+            <div class="input-box">
+                <input type="text" :placeholder="title" required  v-model="value">
+            </div>
         </div>
     </div>
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
-import BackHeader from '@/components/BackHeader.vue';
+import LargeHeader from '@/components/LargeHeader.vue';
 import Toast from '@/components/toast.ts';
 import { updatePassword, updateProfile } from '../../api/user';
 import { dispatchUser, dispatchSetUser } from '@/store/dispatches';
@@ -26,7 +22,7 @@ const PROFILE_NAMES: any = {
 
 @Component({
     components: {
-        BackHeader,
+        LargeHeader,
     },
 })
 export default class Edit extends Vue {

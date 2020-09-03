@@ -1,33 +1,29 @@
 <template>
     <div>
-        <BackHeader :title="$route.meta.title"/>
-        <div class="has-header">
-            <form class="form-inline" method="post" @submit="tapSubmit">
-                <div class="input-group">
-                    <input type="password" placeholder="旧密码" required  v-model="oldpassword">
-                </div>
-                <div class="input-group">
-                    <input type="password" placeholder="新密码" required v-model="password">
-                </div>
-                <div class="input-group">
-                    <input type="password" placeholder="确认新密码" required v-model="repassword">
-                </div>
-
-                <button class="btn btn-primary">确定</button>
-            </form>
+        <LargeHeader :title="$route.meta.title" @submited="tapSubmit()"/>
+        <div >
+            <div class="input-box">
+                <input type="password" placeholder="旧密码" required  v-model="oldpassword">
+            </div>
+            <div class="input-box">
+                <input type="password" placeholder="新密码" required v-model="password">
+            </div>
+            <div class="input-box">
+                <input type="password" placeholder="确认新密码" required v-model="repassword">
+            </div>
         </div>
     </div>
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
-import BackHeader from '@/components/BackHeader.vue';
+import LargeHeader from '@/components/LargeHeader.vue';
 import Toast from '@/components/toast.ts';
 import { updatePassword } from '../../api/user';
 import { dispatchLogout } from '../../store/dispatches';
 
 @Component({
     components: {
-        BackHeader,
+        LargeHeader,
     },
 })
 export default class Password extends Vue {

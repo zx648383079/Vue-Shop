@@ -79,6 +79,7 @@
                 <MenuItem title="浏览历史" icon="fa-history" uri="/product/history"/>
                 <MenuItem title="我的推荐" icon="fa-share" uri="/affiliate"/>
                 <MenuItem title="帮助" icon="fa-gift" uri="/article"/>
+                <MenuItem title="反馈" icon="fa-comment" uri="/feedback"/>
             </div>
             
         </div>

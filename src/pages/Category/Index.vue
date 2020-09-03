@@ -52,7 +52,7 @@
 </template>
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
-import { ICategory, IProduct, ISubtotal } from '@/api/model';
+import { ICategory, IProduct, ISubtotal, ISite } from '@/api/model';
 import { getCategories, getCategory } from '@/api/category';
 import TabBar from '@/components/TabBar.vue';
 import { dispatchSite, dispatchCategories } from '@/store/dispatches';
@@ -67,7 +67,7 @@ export default class Index extends Vue {
 
     public category: ICategory | null = null;
 
-    public subtotal: ISubtotal | null = null;
+    public subtotal: ISite | null = null;
 
     public created() {
         dispatchCategories().then(res => {

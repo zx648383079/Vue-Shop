@@ -72,6 +72,7 @@ import Store from '@/pages/Store/Index.vue';
 import StoreQuick from '@/pages/Store/Quick.vue';
 import EditProfile from '@/pages/Member/Edit.vue';
 import Browser from '@/pages/Browser/Index.vue';
+import Feedback from '@/pages/Feedback/Index.vue';
 
 
 Vue.use(Router);
@@ -429,6 +430,14 @@ export default new Router({
             meta: {
                 title: '我的消息',
                 requireAuth: true,
+            },
+        },
+        {
+            path: '/feedback',
+            name: 'feedback',
+            component: Feedback,
+            meta: {
+                title: '留言反馈',
             },
         },
         {

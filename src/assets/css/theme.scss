@@ -2319,3 +2319,25 @@ footer,
         }
     }
 }
+
+
+.input-box,
+.code-input {
+    border-bottom: $hr;
+    input {
+        height: 40px;
+        border: 0;
+        background: transparent;
+        width: 100%;
+        outline: none;
+        text-align: left;
+    }
+    textarea {
+        background: transparent;
+        width: 100%;
+        outline: none;
+        border: 0;
+        resize: vertical;
+        min-height: 80px;
+    }
+}
