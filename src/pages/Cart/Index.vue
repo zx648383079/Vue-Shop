@@ -13,15 +13,15 @@
                             <SwipeRow name="cart-item goods-item" v-for="(cart, i) in item.goods_list" :key="i" :index="cart.id" ref="swiperow">
                                 <i :class="['fa', 'check-box', cart.checked ? 'active' : '']" @click="toggleCheck(item, cart)"></i>
                                 <div class="goods-img">
-                                    <img :src="cart.goods.thumb" alt="">
+                                    <img :src="cart.goods?.thumb" alt="">
                                 </div>
                                 <div class="goods-info">
-                                    <h4>{{ cart.goods.name }}</h4>
-                                    <span>{{ cart.price | price }}</span>
+                                    <h4>{{ cart.goods?.name }}</h4>
+                                    <span>{{ cart.price }}</span>
                                     <div class="number-box">
-                                        <i class="fa fa-minus"></i>
+                                        <i class="iconfont fa-minus"></i>
                                         <input type="text" name="" v-model="cart.amount">
-                                        <i class="fa fa-plus"></i>
+                                        <i class="iconfont fa-plus"></i>
                                     </div>
                                 </div>
                             </SwipeRow>
@@ -33,7 +33,7 @@
                     <span @click="toggleCheckAll">全选</span>
 
                     <div class="cart-amount">
-                        <span>{{ total() | price }}</span>
+                        <span>{{ total() }}</span>
                         <a @click="tapCashier" class="btn">结算</a>
                     </div>
                 </div>
@@ -54,18 +54,20 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Options } from 'vue-property-decorator';
 import { ICart, ICartGroup, ICartItem } from '@/api/model';
 import { getCart } from '@/api/cart';
-import { Getter, Action } from 'vuex-class';
+import { namespace } from 'vuex-class';
 import TabBar from '@/components/TabBar.vue';
 import BackHeader from '@/components/BackHeader.vue';
 import SwipeRow from '@/components/SwipeRow.vue';
 import PullToRefresh from '@/components/PullToRefresh.vue';
 import { dispatchSetCart } from '@/store/dispatches';
-import Toast from '@/components/toast.ts';
+import Toast from '@/components/toast';
 
-@Component({
+const authModule = namespace('auth');
+
+@Options({
     components: {
         TabBar,
         BackHeader,
@@ -75,8 +77,8 @@ import Toast from '@/components/toast.ts';
 })
 export default class Index extends Vue {
     public items: ICartGroup[] = [];
-    public checkedAll: boolean = false;
-    @Getter('isGuest') public isGuest?: boolean;
+    public checkedAll = false;
+    @authModule.Getter('isGuest') public isGuest?: boolean;
     public isLoading = false;
 
     public created() {

@@ -1,7 +1,7 @@
 import { assetUri } from '../utils'
-export function assetsFilter(value: string) {
+export function assetsFilter(value: string): string {
     if (!value) {
-        return null;
+        return '';
     }
     if (value.indexOf('//') >= 0) {
         return value;

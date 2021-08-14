@@ -2,7 +2,7 @@
     <div>
         <BackHeader :title="$route.meta.title">
             <a class="right" @click="tapSubmit">
-                <i class="fa fa-check"></i>
+                <i class="iconfont fa-check"></i>
             </a>
         </BackHeader>
         <div class="has-header">
@@ -37,16 +37,16 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Options } from 'vue-property-decorator';
 import { IAddress, IRegionObject } from '@/api/model';
 import { getRegionTree } from '@/api/region';
-import Toast from '@/components/toast.ts';
+import Toast from '@/components/toast';
 import { getAddressList, deleteAddress, getAddress, updateAddress, createAddress } from '@/api/address';
 import BackHeader from '@/components/BackHeader.vue';
 import SelectPicker from '@/components/SelectPicker.vue';
 import { dispatchSetAddress, dispatchSetAddressList } from '@/store/dispatches';
 
-@Component({
+@Options({
     components: {
         BackHeader,
         SelectPicker,
@@ -64,8 +64,7 @@ export default class Edit extends Vue {
         is_default: false,
     };
 
-    public back: number = 0;
-
+    public back = 0;
     public regions: IRegionObject = {};
 
     public created() {
@@ -77,7 +76,7 @@ export default class Edit extends Vue {
                 this.regions = res.data;
             }
         });
-        const id = parseInt(this.$route.params.id, 10);
+        const id = parseInt(this.$route.params.id as string, 10);
         if (!id) {
             return;
         }
@@ -123,7 +122,7 @@ export default class Edit extends Vue {
             return;
         }
 
-        deleteAddress(this.address.id).then(res => {
+        deleteAddress(this.address.id).then(() => {
             dispatchSetAddressList([]);
             this.$router.back();
         });

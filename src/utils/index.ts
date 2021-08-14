@@ -1,6 +1,6 @@
 import { Md5 } from 'ts-md5';
 import Cookies from 'js-cookie';
-import Toast from '@/components/toast.ts';
+import Toast from '@/components/toast';
 import { dispatchSetToken } from '@/store/dispatches';
 import { appId, secret, apiEndpoint } from '../config/config';
 export * from '../config/config';
@@ -34,10 +34,11 @@ export function getAppParams(): IAppParam {
 
 export function checkTokenFromCookie() {
     const key = appId + 'token';
-    const data = Cookies.getJSON(key);
-    if (!data) {
+    const str = Cookies.get(key);
+    if (!str) {
         return;
     }
+    const data = JSON.parse(str);
     Cookies.remove(key);
     if (data.code !== 200) {
         Toast(data.error);
@@ -139,7 +140,7 @@ export function each(data: any, cb: (val: any, key: string | number) => boolean|
         return;
     }
     for (const key in data) {
-        if (data.hasOwnProperty(key)) {
+        if (Object.prototype.hasOwnProperty.call(data, key)) {
             if (cb(data[key], key) === false) {
                 return;
             }

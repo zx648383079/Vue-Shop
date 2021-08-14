@@ -6,11 +6,11 @@
             <dd>
                 <p>{{ item.description ? item.description.substr(0, 100) : '' }}</p>
                 <div class="tags">
-                    <span class="author"><i class="fa fa-edit"></i><b>admin</b></span>
-                    <span class="category"><i class="fa fa-bookmark"></i><b>其他</b></span>
-                    <span class="comment"><i class="fa fa-comments"></i><b>0</b></span>
-                    <span class="agree"><i class="fa fa-thumbs-o-up"></i><b>0</b></span>
-                    <span class="click"><i class="fa fa-eye"></i><b>31</b></span>
+                    <span class="author"><i class="iconfont fa-edit"></i><b>admin</b></span>
+                    <span class="category"><i class="iconfont fa-bookmark"></i><b>其他</b></span>
+                    <span class="comment"><i class="iconfont fa-comments"></i><b>0</b></span>
+                    <span class="agree"><i class="iconfont fa-thumbs-o-up"></i><b>0</b></span>
+                    <span class="click"><i class="iconfont fa-eye"></i><b>31</b></span>
                 </div>
             </dd>
         </dl>
@@ -18,10 +18,9 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Prop } from 'vue-property-decorator';
 import { IArticle } from '@/api/model';
 
-@Component
 export default class ArticleItem extends Vue {
     @Prop(Array) public readonly items!: any;
 

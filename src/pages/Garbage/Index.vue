@@ -1,6 +1,6 @@
 <template>
     <div>
-        <BackHeader :title="this.$route.meta.title"></BackHeader>
+        <BackHeader :title="$route.meta.title"></BackHeader>
         <div class="has-header">
             <div class="garbage-header">
                 <p>垃圾分类</p>
@@ -24,13 +24,13 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Options } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import Classification from './Child/Classification.vue';
 import SearchBar from './Child/SearchBar.vue';
 import { IClassification, getClassification } from '@/api/garbage';
 
-@Component({
+@Options({
     components: {
         BackHeader,
         Classification,
@@ -41,7 +41,7 @@ export default class Index extends Vue {
 
     public items: IClassification[] = [];
 
-    public keywords: string = '';
+    public keywords = '';
 
     public selected: IClassification | null = null;
 

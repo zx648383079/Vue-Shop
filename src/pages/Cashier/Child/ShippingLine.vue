@@ -5,7 +5,7 @@
             <span>
                 {{ value ? value.name : '请选择' }}
             </span>
-            <i class="fa fa-chevron-right"></i>
+            <i class="iconfont fa-chevron-right"></i>
         </div>
         <div class="item-list" slot="panel">
             <a v-for="(item, index) in items" :key="index" :class="{active: value && item.id == value.id}" @click="tapSelected(item)">{{ item.name }}</a>
@@ -13,11 +13,11 @@
     </DialogPanel>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Prop, Options } from 'vue-property-decorator';
 import { IShipping } from '@/api/model';
 import DialogPanel from '@/components/DialogPanel.vue';
 
-@Component({
+@Options({
     components: {
         DialogPanel,
     },

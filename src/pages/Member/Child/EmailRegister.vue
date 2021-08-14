@@ -18,29 +18,29 @@
         <button @click="tapRegister">注册</button>
         <div class="input-group">
             <div class="checkbox" @click="agree = !agree">
-                <i :class="['far', agree ? 'fa-check-square' : 'fa-square']"></i>
+                <i :class="['iconfont', agree ? 'fa-check-circle' : 'fa-circle']"></i>
             </div>
             同意本站协议
         </div>
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue } from 'vue-property-decorator';
 import { isEmpty, isEmail } from '../../../utils/validate';
-import Toast from '@/components/toast.ts';
+import Toast from '@/components/toast';
 
-@Component
+
 export default class MobileRegister extends Vue {
     public agree = true;
-    public name: string = '';
-    public email: string = '';
-    public password: string = '';
-    public confirmPassword: string = '';
+    public name = '';
+    public email = '';
+    public password = '';
+    public confirmPassword = '';
 
     public tapKey(e: KeyboardEvent) {
-        // if (e.keyCode !== 13) {
-        //     return;
-        // }
+        if (e.key !== 'Enter') {
+            return;
+        }
     }
 
     /**

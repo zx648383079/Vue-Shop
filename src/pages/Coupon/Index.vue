@@ -39,26 +39,26 @@
 
         <footer class="tab-bar">
             <a class="active">
-                <i class="fa fa-gift" aria-hidden="true"></i>
+                <i class="iconfont fa-gift" aria-hidden="true"></i>
                 领券
             </a>
             <a @click="$router.replace('/coupon/my')">
-                <i class="fa fa-user" aria-hidden="true"></i>
+                <i class="iconfont fa-user" aria-hidden="true"></i>
                 我的优惠券
             </a>
         </footer>
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Options } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import PullToRefresh from '@/components/PullToRefresh.vue';
 import { ICategory, ICoupon } from '@/api/model';
 import { dispatchCategories } from '@/store/dispatches';
 import {getCouponList, receiveCoupon} from '@/api/coupon';
-import Toast from '@/components/toast.ts';
+import Toast from '@/components/toast';
 
-@Component({
+@Options({
     components: {
         BackHeader,
         PullToRefresh,
@@ -66,9 +66,9 @@ import Toast from '@/components/toast.ts';
 })
 export default class Index extends Vue {
     public categories: ICategory[] = [];
-    public category: number = 0;
+    public category = 0;
     public items: ICoupon[] = [];
-    public isExpand: boolean = false;
+    public isExpand = false;
     public hasMore = true;
     public page = 1;
     public isLoading = false;

@@ -7,7 +7,7 @@
             <div class="dialog-header">
                 <slot name="header">
                     <div class="dialog-title">{{ title }}</div>
-                    <i class="fa fa-close dialog-close" @click="hideCalerdar"></i>
+                    <i class="iconfont fa-close dialog-close" @click="hideCalerdar"></i>
                 </slot>
             </div>
             <div class="dialog-body">
@@ -21,22 +21,21 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit, Watch } from 'vue-property-decorator';
+import { Vue, Prop, Watch } from 'vue-property-decorator';
 
-@Component
 export default class DialogPanel extends Vue {
     @Prop(String) public readonly title!: string;
     @Prop(Boolean) public readonly hide!: boolean;
 
-    public calendarVisible: boolean = false;
+    public calendarVisible = false;
 
     @Watch('calendarVisible')
-    public onVisibleChanged(val: boolean, oldVal: boolean) {
+    public onVisibleChanged(val: boolean) {
         this.$emit('toggle', val);
     }
 
     @Watch('hide')
-    public onHideChanged(val: boolean, oldVal: boolean) {
+    public onHideChanged(val: boolean) {
         if (this.calendarVisible === !val) {
             return;
         }

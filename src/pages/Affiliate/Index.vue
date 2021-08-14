@@ -19,19 +19,19 @@
 
             <div class="menu-list">
                 <a @click="$router.push('/affiliate/order')">
-                    <i class="fa fa-coins" aria-hidden="true"></i>
+                    <i class="iconfont fa-coins" aria-hidden="true"></i>
                     推荐的订单
-                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    <i class="iconfont fa-chevron-right" aria-hidden="true"></i>
                 </a>
                 <a @click="$router.push('/affiliate/user')">
-                    <i class="fa fa-users" aria-hidden="true"></i>
+                    <i class="iconfont fa-users" aria-hidden="true"></i>
                     推荐的会员
-                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    <i class="iconfont fa-chevron-right" aria-hidden="true"></i>
                 </a>
                 <a @click="$router.push('/affiliate/share')">
-                    <i class="fa fa-share" aria-hidden="true"></i>
+                    <i class="iconfont fa-share" aria-hidden="true"></i>
                     我的分享
-                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    <i class="iconfont fa-chevron-right" aria-hidden="true"></i>
                 </a>
             </div>
         </div>
@@ -39,10 +39,10 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Options } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 
-@Component({
+@Options({
     components: {
         BackHeader,
     },

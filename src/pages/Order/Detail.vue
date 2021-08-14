@@ -3,14 +3,14 @@
         <BackHeader title="订单详情"/>
         <div class="has-header order-box" v-if="order">
             <div class="status-header">
-                <i class="fa fa-money-bill"></i>
+                <i class="iconfont fa-money-bill"></i>
                 {{ order.status_label }}
             </div>
             <div class="shipping-box">
                 {{ order.shipping_status }}
             </div>
             <div class="address-box" v-if="order.address">
-                <i class="fa fa-map-marker"></i>
+                <i class="iconfont fa-map-marker"></i>
                 <p>
                     <span class="name">{{ order.address.name }}</span>
                     <span class="tel">{{ order.address.tel }}</span>
@@ -25,19 +25,19 @@
                         </div>
                         <div class="goods-info">
                             <h4>{{ goods.name }}</h4>
-                            <span class="price">{{ goods.price | price }}</span>
+                            <span class="price">{{ goods.price }}</span>
                             <span class="amount"> x {{ goods.amount }}</span>
                         </div>
                     </div>
                 </div>
                 <div class="order-amount">
-                    <p class="text-right">共 {{ order.goods.length }} 件 合计：{{ order.goods_amount }}</p>
+                    <p class="text-right">共 {{ order.goods?.length }} 件 合计：{{ order.goods_amount }}</p>
                     <p class="line-item"><span>订单号</span> <span>{{ order.series_number }}</span> </p>
                     <p class="line-item"><span>下单时间</span> <span>{{ order.created_at }}</span> </p>
-                    <p class="line-item" v-if="order.pay_at > 0"><span>支付时间</span> <span>{{ order.pay_at | time }}</span> </p>
-                    <p class="line-item" v-if="order.shipping_at > 0"><span>发货时间</span> <span>{{ order.shipping_at | time }}</span> </p>
-                    <p class="line-item" v-if="order.receive_at > 0"><span>签收时间</span> <span>{{ order.receive_at | time }}</span> </p>
-                    <p class="line-item" v-if="order.finish_at > 0"><span>完成时间</span> <span>{{ order.finish_at | time }}</span> </p>
+                    <p class="line-item" v-if="order.pay_at"><span>支付时间</span> <span>{{ order.pay_at }}</span> </p>
+                    <p class="line-item" v-if="order.shipping_at"><span>发货时间</span> <span>{{ order.shipping_at }}</span> </p>
+                    <p class="line-item" v-if="order.receive_at"><span>签收时间</span> <span>{{ order.receive_at }}</span> </p>
+                    <p class="line-item" v-if="order.finish_at"><span>完成时间</span> <span>{{ order.finish_at }}</span> </p>
                     <hr>
                     <p class="line-item"><span>商品总价</span> <span>{{ order.goods_amount }}</span> </p>
                     <p class="line-item"><span>+运费</span> <span>{{ order.shipping_fee }}</span> </p>
@@ -61,15 +61,15 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Options, Vue } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import { IOrder, ORDER_STATUS } from '@/api/model';
-import Toast from '@/components/toast.ts';
-import ConfirmBox from '@/components/confirm.ts';
+import Toast from '@/components/toast';
+import ConfirmBox from '@/components/confirm';
 import { dispatchOrder } from '@/store/dispatches';
 import { receiveOrder, cancelOrder } from '@/api/order';
 
-@Component({
+@Options({
     components: {
         BackHeader,
     },
@@ -79,7 +79,7 @@ export default class Detail extends Vue {
     public ORDER_STATUS = ORDER_STATUS;
 
     public created() {
-        const id = parseInt(this.$route.params.id, 10);
+        const id = parseInt(this.$route.params.id as string, 10);
         if (!id) {
             Toast('订单错误');
             this.$router.push('/');

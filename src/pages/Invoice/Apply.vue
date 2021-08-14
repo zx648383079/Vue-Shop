@@ -9,7 +9,7 @@
                     <p>{{ item.created_at }}</p>
                 </div>
                 <div class="amount">
-                    {{ item.goods_amount | price }}
+                    {{ item.goods_amount }}
                 </div>
             </div>
         </div>
@@ -22,8 +22,8 @@
                 已选择 {{ selectedCount }} 笔订单
             </div>
             <div>
-                <p>可开票金额{{ total | price }}</p>
-                <p>已选金额{{ selectedMoney | price }}</p>
+                <p>可开票金额{{ total }}</p>
+                <p>已选金额{{ selectedMoney }}</p>
             </div>
             <div>
                 <a href="">立即开票</a>
@@ -32,22 +32,22 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Options } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import { getOrderList } from '../../api/invoice';
 import { IOrder } from '../../api/model';
 
-@Component({
+@Options({
     components: {
         BackHeader,
     },
 })
 export default class Apply extends Vue {
     public items: IOrder[] = [];
-    public checkedAll: boolean = false;
-    public selectedCount: number = 0;
-    public selectedMoney: number = 0;
-    public total: number = 0;
+    public checkedAll = false;
+    public selectedCount = 0;
+    public selectedMoney = 0;
+    public total = 0;
 
     public created() {
         getOrderList().then(res => {

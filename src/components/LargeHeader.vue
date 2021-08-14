@@ -1,17 +1,16 @@
 <template>
     <div class="large-header">
         <a class="back" @click="tapBack">
-            <i class="fa fa-chevron-left" aria-hidden="true"></i>
+            <i class="iconfont fa-chevron-left" aria-hidden="true"></i>
         </a>
         <div class="title">{{ title }}</div>
         <slot></slot>
-        <i class="fa fa-check" @click="tapSubmit"></i>
+        <i class="iconfont fa-check" @click="tapSubmit"></i>
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Prop } from 'vue-property-decorator';
 
-@Component
 export default class BackHeader extends Vue {
     @Prop(String) public readonly title!: string;
 

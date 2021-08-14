@@ -107,20 +107,12 @@ a {
         line-height: 45px;
         text-align: center;
         background: $white;
-        &::before {
-            content: "\f107";
-        }
     }
     &.unfold {
         ul {
             padding-right: 0;
             white-space: normal;
             padding-right: 30px;
-        }
-        .nav-arrow {
-            &::before {
-                content: "\f106";
-            }
         }
     }
 }
@@ -144,7 +136,7 @@ header,
         form {
             position: relative;
         }
-        .fa {
+        .iconfont {
             position: absolute;
             top: 10px;
             z-index: 99;
@@ -170,7 +162,7 @@ header,
         }
         .home-btn {
             font-size: 28px;
-            .fa {
+            .iconfont {
                 position: static;
                 color: $white;
             }
@@ -348,7 +340,7 @@ footer,
         &.active {
             color: #4693d0;
         }
-        .fa {
+        .iconfont {
             font-size: 1.5rem;
             display: block;
         }
@@ -400,7 +392,7 @@ footer,
             color: #666;
             line-height: 1;
         }
-        .fa {
+        .iconfont {
             font-size: 1.5rem;
             display: block;
         }
@@ -420,7 +412,7 @@ footer,
         }
         &.active {
             span,
-            .fa {
+            .iconfont {
                 color: #b4282d;
             }
         }
@@ -562,7 +554,7 @@ footer,
         .panel-header {
             height: 30px;
             line-height: 30px;
-            .fa {
+            .iconfont {
                 float: right;
                 margin-top: 8px;
             }
@@ -818,7 +810,7 @@ footer,
     .address-box {
         padding: 0 2rem 0 3.75rem;
         position: relative;
-        .fa {
+        .iconfont {
             position: absolute;
             font-size: 2.5rem;
             top: 0.75rem;
@@ -997,7 +989,7 @@ footer,
         border-bottom: $hr;
         padding: 10px;
         font-size: 20px;
-        .fa {
+        .iconfont {
             position: absolute;
             right: 0;
             font-size: 28px;
@@ -1372,7 +1364,7 @@ footer,
         height: 4.375rem;
         text-align: center;
         position: relative;
-        .fa {
+        .iconfont {
             font-size: 3.125rem;
             margin-top: 0.625rem;
         }
@@ -1450,7 +1442,7 @@ footer,
     @include lineItem();
     .avatar-item {
         line-height: 5rem;
-        .fa {
+        .iconfont {
             top: 2rem;
         }
         .avatar {
@@ -1471,7 +1463,7 @@ footer,
 .account-box {
     .line-item {
         line-height: 2rem;
-        .fab {
+        .iconfont {
             margin-right: 10px;
         }
         &:first-child {
@@ -1519,7 +1511,7 @@ footer,
     .input-radio {
         line-height: 1.875rem;
         position: relative;
-        .fa {
+        .iconfont {
             position: absolute;
             right: 0.625rem;
             font-size: 1.5625rem;
@@ -2164,7 +2156,7 @@ footer,
     .comment-star {
         margin-left: 100px;
         padding: 40px 0;
-        .fa {
+        .iconfont {
             font-size: 20px;
             &.active {
                 color: $red;
@@ -2181,7 +2173,7 @@ footer,
     .input-radio {
         line-height: 1.875rem;
         position: relative;
-        .fa {
+        .iconfont {
             position: absolute;
             right: 0.625rem;
             font-size: 1.5625rem;
@@ -2204,7 +2196,7 @@ footer,
 		display: inline-block;
 		position: relative;
 		background-color: #fff;
-		.fa {
+		.iconfont {
 			position: absolute;
 			top: 0;
 			right: 0;

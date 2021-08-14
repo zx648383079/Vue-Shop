@@ -2,35 +2,35 @@
     <div>
         <header class="top main-header-box">
             <a class="home-btn" @click="tapHome">
-                <i class="fa fa-home"></i>
+                <i class="iconfont fa-home"></i>
             </a>
             <a @click="tapHome" class="logo">
-                <img :src="logo | assets" alt="">
+                <img :src="logo" alt="">
             </a>
             <a class="search-btn" @click="$router.push('/search')">
-                <i class="fa fa-search"></i>
+                <i class="iconfont fa-search"></i>
             </a>
             <a @click="$router.push('/cart')" class="top-cart">
-                <i class="fa fa-shopping-cart"></i>
+                <i class="iconfont fa-shopping-cart"></i>
                 <!-- <i class="tip">1</i> -->
             </a>
         </header>
         <div class="has-header">
             <div class="login-type-box" v-if="mode < 1">
                 <div class="logo">
-                    <img :src="logo | assets" alt="">
+                    <img :src="logo" alt="">
                 </div>
                 <a @click="mode = 1" class="btn">手机号登录</a>
                 <a @click="mode = 3" class="btn btn-none">邮箱登录</a>
                 <a @click="mode = 4">手机号快捷注册</a>
 
                 <div class="login-oauth-box">
-                    <a @click="tapAuth('qq')"><i class="fab fa-qq"></i></a>
-                    <a @click="tapAuth('wx')"><i class="fab fa-weixin"></i></a>
-                    <a @click="tapAuth('weibo')"><i class="fab fa-weibo"></i></a>
-                    <a @click="tapAuth('github')"><i class="fab fa-github"></i></a>
+                    <a @click="tapAuth('qq')"><i class="iconfont fa-qq"></i></a>
+                    <a @click="tapAuth('wx')"><i class="iconfont fa-weixin"></i></a>
+                    <a @click="tapAuth('weibo')"><i class="iconfont fa-weibo"></i></a>
+                    <a @click="tapAuth('github')"><i class="iconfont fa-github"></i></a>
                     <a @click="tapAuth('zd')">
-                        <i class="fa fa-handshake"></i>
+                        <i class="iconfont fa-handshake"></i>
                     </a>
                 </div>
             </div>
@@ -48,8 +48,7 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
-import Toast from '@/components/toast.ts';
+import { Options, Vue } from 'vue-property-decorator';
 import MobileLogin from './Child/MobileLogin.vue';
 import MobileCodeLogin from './Child/MobileCodeLogin.vue';
 import MobileRegister from './Child/MobileRegister.vue';
@@ -58,8 +57,9 @@ import EmailRegister from './Child/EmailRegister.vue';
 import { getAuthUri } from '@/utils';
 import { dispatchSite } from '@/store/dispatches';
 import { ISite } from '@/api/model';
+import { assetsFilter } from '../../pipes';
 
-@Component({
+@Options({
     components: {
         MobileLogin,
         MobileCodeLogin,
@@ -70,7 +70,7 @@ import { ISite } from '@/api/model';
 })
 export default class Login extends Vue {
 
-    public mode: number = 0;
+    public mode = 0;
     public site: ISite | null = null;
 
     public created() {
@@ -80,7 +80,7 @@ export default class Login extends Vue {
     }
 
     public get logo(): string {
-        return this.site ? this.site.logo : '/assets/images/wap_logo.png';
+        return assetsFilter(this.site ? this.site.logo : '/assets/images/wap_logo.png');
     }
 
     public tapHome() {

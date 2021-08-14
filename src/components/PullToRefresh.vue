@@ -7,23 +7,23 @@
         <div class="scroll-top" :style="{height: topHeight + 'px'}">
             <slot name="top">
                 <div v-if="state == ESTATE.PULL">
-                    <i class="fa fa-arrow-down"></i>
+                    <i class="iconfont fa-arrow-down"></i>
                     下拉刷新
                 </div>
                  <div v-if="state == ESTATE.PULLED">
-                    <i class="fa fa-arrow-up"></i>
+                    <i class="iconfont fa-arrow-up"></i>
                     松开刷新
                 </div>
                 <div v-if="state == ESTATE.REFRESHING">
-                    <i class="fa fa-retweet"></i>
+                    <i class="iconfont fa-retweet"></i>
                     刷新中
                 </div>
                  <div v-if="state == ESTATE.REFRESHED">
-                    <i class="fa fa-check"></i>
+                    <i class="iconfont fa-check"></i>
                     刷新完成
                 </div>
                 <div v-if="state == ESTATE.CANCEL">
-                    <i class="fa fa-arrow-up"></i>
+                    <i class="iconfont fa-arrow-up"></i>
                     停止刷新
                 </div>
             </slot>
@@ -34,15 +34,15 @@
         <div class="scroll-bottom">
             <slot name="bottom">
                 <div v-if="state == ESTATE.MORE">
-                    <i class="fa fa-retweet"></i>
+                    <i class="iconfont fa-retweet"></i>
                     加载更多
                 </div>
                  <div v-if="state == ESTATE.LOADING">
-                    <i class="fa fa-check"></i>
+                    <i class="iconfont fa-check"></i>
                     加载中
                 </div>
                 <div v-if="state == ESTATE.LOADED">
-                    <i class="fa fa-arrow-up"></i>
+                    <i class="iconfont fa-arrow-up"></i>
                     加载完成
                 </div>
             </slot>
@@ -50,7 +50,7 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit, Watch, Ref } from 'vue-property-decorator';
+import { Vue, Prop, Watch, Ref } from 'vue-property-decorator';
 
 export enum ESTATE {
     NONE = 0,
@@ -70,7 +70,6 @@ enum EDIRECTION {
     UP = 2,
 }
 
-@Component
 export default class PullToRefresh extends Vue {
     @Prop({type: Boolean, default: true}) public readonly refresh!: boolean;
     @Prop({type: Boolean, default: true}) public readonly more!: boolean;
@@ -80,10 +79,10 @@ export default class PullToRefresh extends Vue {
 
     public ESTATE = ESTATE;
     public state: ESTATE = ESTATE.NONE;
-    public startY: number = 0;
+    public startY = 0;
     public startUp: EDIRECTION = EDIRECTION.NONE; // 一开始滑动的方向
     @Ref('pullScroll') public readonly box!: HTMLDivElement;
-    public scrollTop: number = 0;
+    public scrollTop = 0;
     public topHeight = 0;
 
     public mounted() {
@@ -100,7 +99,7 @@ export default class PullToRefresh extends Vue {
     }
 
     @Watch('more')
-    public onMoreChanged(val: boolean, oldVal: boolean) {
+    public onMoreChanged(val: boolean) {
         if (!val && this.state === ESTATE.MORE) {
             this.state = ESTATE.NONE;
         }
@@ -142,7 +141,7 @@ export default class PullToRefresh extends Vue {
         }
     }
 
-    public onScroll(event: any) {
+    public onScroll() {
         if (!this.more) {
             return;
         }
@@ -190,11 +189,11 @@ export default class PullToRefresh extends Vue {
         }
     }
 
-    public touchEnd(event: TouchEvent) {
+    public touchEnd() {
         if (this.scrollTop > 0) {
             return;
         }
-        const diff = event.changedTouches[0].pageY - this.startY;
+        // const diff = event.changedTouches[0].pageY - this.startY;
         if (this.state === ESTATE.PULL || this.state === ESTATE.CANCEL) {
             this.state = ESTATE.NONE;
             return;

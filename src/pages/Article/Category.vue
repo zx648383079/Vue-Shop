@@ -7,13 +7,13 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Options } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import CatItem from './Child/CatItem.vue';
 import { IArticleCategory } from '@/api/model';
 import { getCategories } from '@/api/article';
 
-@Component({
+@Options({
     components: {
         BackHeader,
         CatItem,
@@ -21,7 +21,7 @@ import { getCategories } from '@/api/article';
 })
 export default class Category extends Vue {
     public items: IArticleCategory[] = [];
-    public id: number = 0;
+    public id = 0;
 
     public created() {
         const id = parseInt(this.$route.query.id + '', 10);

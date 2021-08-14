@@ -2,7 +2,7 @@
     <div>
         <header class="top">
             <a @click="tapBack" class="back">
-                <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                <i class="iconfont fa-chevron-left" aria-hidden="true"></i>
             </a>
             <div class="top-tab">
                 <a v-for="(item, index) in tabMenus" :key="index" @click="tapScroll(item.id)" :class="{active: item.id == tabIndex}">{{ item.name }}</a>
@@ -16,13 +16,13 @@
                     <img :src="goods.thumb" alt="">
                 </div>
 
-                <div class="activity-box" v-if="goods.activty">
+                <div class="activity-box" v-if="goods.activity">
                     <div class="price">
                         <em>￥</em>{{ goods.price }}
                     </div>
                     <div class="info">
-                        <p class="old-price">{{ goods.market_price | price }}</p>
-                        <span class="time-block"><i class="fa fa-clock"></i>秒杀</span>
+                        <p class="old-price">{{ goods.market_price }}</p>
+                        <span class="time-block"><i class="iconfont fa-clock"></i>秒杀</span>
                     </div>
                     <div class="countdown">
                         <p class="text">距秒杀结束还剩</p>
@@ -44,7 +44,7 @@
                             收藏
                         </div>
                     </div>
-                    <div class="goods-price">{{ goods.price | price }}</div>
+                    <div class="goods-price">{{ goods.price }}</div>
 
                     <div class="promote-line">
                         <div>支付</div>
@@ -73,7 +73,7 @@
             <div id="comments" class="comment-box" v-if="comment">
                 <div class="comment-header">
                     评价
-                    <i @click="tapGoComment" class="fa fa-angle-right"></i>
+                    <i @click="tapGoComment" class="iconfont fa-angle-right"></i>
                 </div>
                 <a class="comment-more" v-if="comment.total < 1">暂无评价</a>
                 <div v-else>
@@ -96,7 +96,7 @@
                             {{ item.name }}
                         </div>
                         <div class="item-actions">
-                            <span class="item-price">{{ item.price | price }}</span>
+                            <span class="item-price">{{ item.price }}</span>
                         </div>
                     </div>
                 </div>
@@ -123,15 +123,15 @@
 
         <footer class="goods-navbar">
             <a @click="$router.push('/')">
-                <i class="fa fa-home" aria-hidden="true"></i>
+                <i class="iconfont fa-home" aria-hidden="true"></i>
                 首页
             </a>
             <a  @click="$router.push('/category')">
-                <i class="fa fa-th-large" aria-hidden="true"></i>
+                <i class="iconfont fa-th-large" aria-hidden="true"></i>
                 分类
             </a>
             <a  @click="$router.push('/cart')">
-                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                <i class="iconfont fa-shopping-cart" aria-hidden="true"></i>
                 购物车
             </a>
             <a class="btn btn-orange" @click="tapAddCart">
@@ -146,21 +146,19 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
-import Toast from '@/components/toast.ts';
+import { Vue, Options } from 'vue-property-decorator';
+import Toast from '@/components/toast';
 import { IProduct, ICommentSubtotal, ICart } from '@/api/model';
 import { getInfo, getRecommend } from '@/api/product';
 import { getCommentSubtotal } from '@/api/comment';
 import { toggleCollect } from '@/api/user';
 import { Getter, Action } from 'vuex-class';
-import { addGoods } from '@/api/cart';
 import CommentPage from './Child/Page.vue';
-import { dispatchSetCart } from '@/store/dispatches';
 import { getLocalStorage, setLocalStorage } from '@/utils';
 import { SET_GOODS_HISTORY } from '@/store/types';
 import CartDialog from './Child/CartDialog.vue';
 
-@Component({
+@Options({
     components: {
         CommentPage,
         CartDialog,
@@ -168,9 +166,9 @@ import CartDialog from './Child/CartDialog.vue';
 })
 export default class Index extends Vue {
     public goods: IProduct | null = null;
-    public amount: number = 1;
-    public mode: number = 0;
-    public tab: number = 0;
+    public amount = 1;
+    public mode = 0;
+    public tab = 0;
     public comment: ICommentSubtotal | null = null;
     public items: IProduct[] = [];
     @Getter('isGuest') public isGuest?: boolean;
@@ -195,7 +193,7 @@ export default class Index extends Vue {
     public tabIndex = 'info';
 
     public created() {
-        const id = parseInt(this.$route.params.id, 10);
+        const id = parseInt(this.$route.params.id as string, 10);
         if (!id) {
             Toast('商品错误');
             this.$router.push('/');

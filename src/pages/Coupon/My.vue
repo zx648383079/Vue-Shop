@@ -9,13 +9,13 @@
             <PullToRefresh :loading="isLoading" :more="hasMore" @refresh="tapRefresh" @more="tapMore">
                 <div class="my-coupon-item" v-for="(item, index) in items" :key="index" :calss="{expired: item.expired}">
                     <div class="price">
-                        <em>{{ item.money | price }}</em>
+                        <em>{{ item.money }}</em>
                         <p>满{{ item.min_money }}可用</p>
                     </div>
                     <div class="info">
                         <p>{{ item.name }}</p>
                         <div class="time">
-                            <span>{{ item.start_at | time }}-{{ item.end_at | time}}</span>
+                            <span>{{ item.start_at }}-{{ item.end_at}}</span>
                             <a href="" v-if="!item.expired">立即使用</a>
                         </div>
                     </div>
@@ -25,24 +25,24 @@
 
         <footer class="tab-bar">
             <a @click="$router.replace('/coupon')">
-                <i class="fa fa-gift" aria-hidden="true"></i>
+                <i class="iconfont fa-gift" aria-hidden="true"></i>
                 领券
             </a>
             <a class="active">
-                <i class="fa fa-user" aria-hidden="true"></i>
+                <i class="iconfont fa-user" aria-hidden="true"></i>
                 我的优惠券
             </a>
         </footer>
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Options } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import PullToRefresh from '@/components/PullToRefresh.vue';
 import { getMyCoupon } from '../../api/coupon';
 import { ICoupon } from '../../api/model';
 
-@Component({
+@Options({
     components: {
         BackHeader,
         PullToRefresh,
@@ -56,7 +56,7 @@ export default class My extends Vue {
         '已过期',
     ];
 
-    public status: number = 0;
+    public status = 0;
     public items: ICoupon[] = [];
     public hasMore = true;
     public page = 1;

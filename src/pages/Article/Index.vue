@@ -8,7 +8,7 @@
                             <a>{{ item.name }}</a>
                     </li>
                 </ul>
-                <a @click="isExpand = !isExpand" class="fa nav-arrow"></a>
+                <a @click="isExpand = !isExpand" :class="['iconfont', 'nav-arrow', isExpand ? 'fa-chevron-up' : 'fa-chevron-down']"></a>
             </div>
             <PullToRefresh :loading="isLoading" :more="hasMore" @refresh="tapRefresh" @more="tapMore">
                 <ArticleItem :items="items"/>
@@ -17,14 +17,14 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Options } from 'vue-property-decorator';
 import PullToRefresh from '@/components/PullToRefresh.vue';
 import BackHeader from '@/components/BackHeader.vue';
 import {getArticleList, getCategories} from '@/api/article';
 import { IArticleCategory, IArticle } from '@/api/model';
 import ArticleItem from './Child/ArticleItem.vue';
 
-@Component({
+@Options({
     components: {
         BackHeader,
         PullToRefresh,
@@ -33,10 +33,10 @@ import ArticleItem from './Child/ArticleItem.vue';
 })
 export default class Index extends Vue {
     public categories: IArticleCategory[] = [];
-    public category: number = 0;
-    public status: number = 0;
+    public category = 0;
+    public status = 0;
     public items: IArticle[] = [];
-    public isExpand: boolean = false;
+    public isExpand = false;
     public hasMore = true;
     public page = 1;
     public isLoading = false;

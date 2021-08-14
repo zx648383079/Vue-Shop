@@ -3,9 +3,9 @@
         <div class="line-item inovice-box">
             <span>发票</span>
             <span>
-                {{ value ? value.name : '请选择' }}
+                {{ value ? value.title : '请选择' }}
             </span>
-            <i class="fa fa-chevron-right"></i>
+            <i class="iconfont fa-chevron-right"></i>
         </div>
         <div slot="panel" class="invoice-body">
             <div class="input-group">
@@ -49,11 +49,11 @@
     </DialogPanel>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Prop, Options } from 'vue-property-decorator';
 import { IPayment, IInvoiceTitle } from '@/api/model';
 import DialogPanel from '@/components/DialogPanel.vue';
 
-@Component({
+@Options({
     components: {
         DialogPanel,
     },

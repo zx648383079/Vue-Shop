@@ -1,6 +1,6 @@
 <template>
     <div>
-        <BackHeader :title="this.$route.meta.title"/>
+        <BackHeader :title="$route.meta.title"/>
         <div class="has-header">
             <form class="form-inline">
                 <div class="tip">
@@ -17,12 +17,12 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Options } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import { getBankCardList } from '@/api/user';
 import { ICard } from '@/api/model';
 
-@Component({
+@Options({
     components: {
         BackHeader,
     },

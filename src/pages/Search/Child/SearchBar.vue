@@ -3,9 +3,9 @@
         <header class="top">
             <div class="search-box">
                 <form onsubmit="return false;">
-                    <i class="fa fa-search" aria-hidden="true"></i>
+                    <i class="iconfont fa-search" aria-hidden="true"></i>
                     <input type="text" name="keywords" :value="value" @input="tapUpdateVal($event.target.value)" @keyup="onKeyUp" placeholder="搜索" autocomplete="off">
-                    <i class="fa fa-times-circle" v-if="value && value.length > 0" @click="tapClearSearch()"></i>
+                    <i class="iconfont fa-times-circle" v-if="value && value.length > 0" @click="tapClearSearch()"></i>
                 </form>
                 <a class="cancel-btn" @click="tapBack()">取消</a>
             </div>
@@ -15,7 +15,7 @@
                 <div class="panel" v-if="historyList && historyList.length > 0">
                     <div class="panel-header">
                         <span>历史记录</span>
-                        <i class="fa fa-trash" @click="tapClearHistory"></i>
+                        <i class="iconfont fa-trash" @click="tapClearHistory"></i>
                     </div>
                     <div class="panel-body">
                         <a v-for="(item, index) in historyList" :key="index" @click="tapSearch(item)">{{ item }}</a>
@@ -40,7 +40,7 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Prop, Vue } from 'vue-property-decorator';
 import { removeLocalStorage, getLocalStorage, setLocalStorage } from '@/utils';
 import { getHotKeywords, getTips } from '@/api/product';
 const KEYWORDS_HISTORY = 'KEYWORDS_HISTORY';

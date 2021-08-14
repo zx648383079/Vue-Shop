@@ -9,7 +9,7 @@
                     </div>
                     <div v-else>
                         <div class="info">
-                            <div class="name">{{ item.title }}[{{ item.type < 1 ? (item.title_type < 1 ? '普通发票': '增值税普通发票') : '增值税专用发票' }}]</div>
+                            <div class="name">{{ item.title }}[{{ !item.type || item.type < 1 ? (!item.title_type || item.title_type < 1 ? '普通发票': '增值税普通发票') : '增值税专用发票' }}]</div>
                             <p>{{ item.created_at }}</p>
                         </div>
                         <div class="amount">
@@ -22,13 +22,13 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Options, Vue } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import PullToRefresh from '@/components/PullToRefresh.vue';
 import { getLogList } from '../../api/invoice';
 import { IInvoiceLog } from '../../api/model';
 
-@Component({
+@Options({
     components: {
         BackHeader,
         PullToRefresh,
@@ -42,7 +42,7 @@ export default class Log extends Vue {
 
     get itemGroups(): IInvoiceLog[] {
         const data = [];
-        let last: string = '';
+        let last = '';
         for (const item of this.items) {
             const match = (item.created_at + '').match(/(\d{4})-(\d{2})(-\d{2} \d{2}:\d{2})/);
             if (!match) {

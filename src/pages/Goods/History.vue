@@ -2,7 +2,7 @@
     <div>
         <BackHeader :title="$route.meta.title">
             <a v-if="items && items.length > 0" class="right" @click="tapClear">
-                <i class="fa fa-trash-alt"></i>
+                <i class="iconfont fa-trash-alt"></i>
             </a>
         </BackHeader>
         <div class="has-header collect-page">
@@ -26,17 +26,17 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Options } from 'vue-property-decorator';
 import { IProduct, ICollect } from '@/api/model';
 import PullToRefresh from '@/components/PullToRefresh.vue';
 import BackHeader from '@/components/BackHeader.vue';
 import SwipeRow from '@/components/SwipeRow.vue';
 import { getLocalStorage, setLocalStorage, removeLocalStorage } from '@/utils';
 import { SET_GOODS_HISTORY } from '@/store/types';
-import ConfirmBox from '@/components/confirm.ts';
+import ConfirmBox from '@/components/confirm';
 import { getList } from '@/api/product';
 
-@Component({
+@Options({
     components: {
         BackHeader,
         SwipeRow,

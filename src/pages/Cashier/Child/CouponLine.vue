@@ -5,17 +5,17 @@
             <span>
                 {{ value ? value.name : (!items || items.length < 1 ? '无可用' : '请选择') }}
             </span>
-            <i class="fa fa-chevron-right"></i>
+            <i class="iconfont fa-chevron-right"></i>
         </div>
         <div slot="panel" class="coupon-body">
             <div class="my-coupon-item" v-for="(item, index) in items" :key="index" @click="tapSelected(item)">
                 <div class="price">
-                    <em>{{ item.money | price }}</em>
+                    <em>{{ item.money }}</em>
                 </div>
                 <div class="info">
                     <p>{{ item.name }}</p>
                     <div class="time">
-                        <span>{{ item.start_at | time }}-{{ item.end_at | time}}</span>
+                        <span>{{ item.start_at }}-{{ item.end_at}}</span>
                     </div>
                     <i :class="['fa', 'check-box', value && item.id == value.id ? 'active' : '']"></i>
                 </div>
@@ -27,11 +27,11 @@
     </DialogPanel>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Prop, Options } from 'vue-property-decorator';
 import { ICoupon } from '@/api/model';
 import DialogPanel from '@/components/DialogPanel.vue';
 
-@Component({
+@Options({
     components: {
         DialogPanel,
     },
@@ -39,7 +39,7 @@ import DialogPanel from '@/components/DialogPanel.vue';
 export default class CouponLine extends Vue {
     @Prop(Object) public readonly value!: ICoupon;
     @Prop(Array) public readonly items!: ICoupon[];
-    public hide: boolean = true;
+    public hide = true;
 
     public tapSelected(item: ICoupon) {
         this.$emit('input', item);

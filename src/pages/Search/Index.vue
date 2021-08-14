@@ -5,12 +5,12 @@
             <header class="top">
                 <div class="search-box under-search">
                     <a class="home-btn" @click="tapHome">
-                        <i class="fa fa-home"></i>
+                        <i class="iconfont fa-home"></i>
                     </a>
                     <form @click="tapEnterSearch">
-                        <i class="fa fa-search" aria-hidden="true"></i>
-                        <input type="text" readonly="" name="keywords" :value="searchParams.keywords">
-                        <i class="fa fa-times-circle" @click="tapNewSearch"></i>
+                        <i class="iconfont fa-search" aria-hidden="true"></i>
+                        <input type="text" readonly name="keywords" :value="searchParams.keywords">
+                        <i class="iconfont fa-times-circle" @click="tapNewSearch"></i>
                     </form>
                 </div>
             </header>
@@ -26,8 +26,8 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
-import { getList, getInfo } from '../../api/product';
+import { Options, Vue } from 'vue-property-decorator';
+import { getList } from '../../api/product';
 import PullToRefresh from '@/components/PullToRefresh.vue';
 import GoodsItem from '../Home/Child/GoodsItem.vue';
 import SearchBar from './Child/SearchBar.vue'
@@ -35,7 +35,7 @@ import { IProduct } from '@/api/model';
 import CartDialog from '@/pages/Goods/Child/CartDialog.vue';
 import { addGoods } from '@/api/cart';
 import Toast from '@/components/toast';
-import { Getter } from 'vuex-class';
+import { namespace } from 'vuex-class';
 
 interface ISearch {
     keywords: string,
@@ -44,7 +44,9 @@ interface ISearch {
     page: number,
 }
 
-@Component({
+const authModule = namespace('auth');
+
+@Options({
     components: {
         PullToRefresh,
         GoodsItem,
@@ -65,9 +67,10 @@ export default class Index extends Vue {
         brand: 0,
         page: 1,
     };
-    public mode: number = 0;
+    public mode = 0;
     public goods: IProduct | null = null;
-    @Getter('isGuest') public isGuest?: boolean;
+    @authModule.Getter('isGuest')
+    public isGuest?: boolean;
 
     public created() {
         this.isSearch = Object.keys(this.$route.query).length === 0;

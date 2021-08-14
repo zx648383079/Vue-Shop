@@ -1,15 +1,15 @@
 <template>
     <div class="datepicker">
-        <div @click="showCalendar" class="datepicker__input-container">
+        <div @click="showCalendar()" class="datepicker__input-container">
             <slot></slot>
         </div>
         <div class="datepicker__calendar datepicker__calendar_animate_slide-in" v-if="calendarVisible">
             <div class="header">
-                <i class="fa fa-backward previousYear" @click="previousYear()"></i>
-                <i class="fa fa-chevron-left previousMonth" @click="previousMonth()"></i>
+                <i class="iconfont fa-backward previousYear" @click="previousYear()"></i>
+                <i class="iconfont fa-chevron-left previousMonth" @click="previousMonth()"></i>
                 <span @click="toggleYear()">{{ title }}</span>
-                <i class="fa fa-chevron-right nextMonth" @click="nextMonth()"></i>
-                <i class="fa fa-forward nextYear" @click="nextYear()"></i>
+                <i class="iconfont fa-chevron-right nextMonth" @click="nextMonth()"></i>
+                <i class="iconfont fa-forward nextYear" @click="nextYear()"></i>
             </div>
             <div class="body">
                 <div class="month-grid" v-if="gridMode == 0">
@@ -29,7 +29,7 @@
                         <li v-for="(item, index) in monthList" :key="index" :class="{active: item == currentMonth}" @click="changeMonth(item)">{{ item | twoPad }}</li>
                     </ul>
                     </div>
-                    <i class="fa fa-close" @click="toggleYear()"></i>
+                    <i class="iconfont fa-close" @click="toggleYear()"></i>
                 </div>
                 <div class="day-grid" v-if="hasTime && gridMode == 2">
                     <div class="list-group hour">
@@ -50,7 +50,7 @@
                         <li v-for="(item, index) in secondList" :key="index" :class="{active: item == currentSecond}" @click="changeSecond(item)">{{ item | twoPad }}</li>
                     </ul>
                     </div>
-                    <i class="fa fa-close"></i>
+                    <i class="iconfont fa-close"></i>
                 </div>
             </div>
             <div class="footer" v-if="hasTime">
@@ -67,21 +67,20 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit, Watch } from 'vue-property-decorator';
+import { Vue, Prop, Watch } from 'vue-property-decorator';
 
 export interface IDay {
     disable?: boolean,
     selected?: boolean,
     val: number
-};
+}
 
 export enum DayMode {
     Day = 0,
     Year = 1,
     Hour = 2,
-};
+}
 
-@Component
 export default class DatePicker extends Vue {
     @Prop([Date, String]) public readonly min!: Date| string;
     @Prop([Date, String]) public readonly max!: Date| string;
@@ -93,54 +92,40 @@ export default class DatePicker extends Vue {
     public currentMin: Date = new Date('1900/01/01 00:00:00');
     public currentMax: Date = new Date('2099/12/31 23:59:59');
 
-    public title: string = '-';
-    public minYear: number = 1900;
-    public maxYear: number = 2099;
+    public title = '-';
+    public minYear = 1900;
+    public maxYear = 2099;
 
     public dayList: IDay[] = [];
-
     public yearList: number[] = [];
-
     public monthList: number[] = [];
-
     public hourList: number[] = [];
-
     public minuteList: number[] = [];
-
     public secondList: number[] = [];
-
-    public currentYear: number = 0;
-
-    public currentMonth: number = 0;
-
-    public currentDay: number = 0;
-
-    public currentHour: number = 0;
-
-    public currentMinute: number = 0;
-
-    public currentSecond: number = 0;
-
-    public hasTime: boolean = true;
-
-    public calendarVisible: boolean = false;
-
+    public currentYear = 0;
+    public currentMonth = 0;
+    public currentDay = 0;
+    public currentHour = 0;
+    public currentMinute = 0;
+    public currentSecond = 0;
+    public hasTime = true;
+    public calendarVisible = false;
     public gridMode: DayMode = DayMode.Day;
 
     @Watch('min')
-    public onMinChanged(val: Date| string, oldVal: Date| string) {
+    public onMinChanged(val: Date| string): void {
         this.currentMin = this.toDate(val);
         this.minYear = this.currentMin.getFullYear();
     }
 
     @Watch('max')
-    public onMaxChanged(val: Date| string, oldVal: Date| string) {
+    public onMaxChanged(val: Date| string): void {
         this.currentMax = this.toDate(val);
         this.maxYear = this.currentMax.getFullYear();
     }
 
     @Watch('value')
-    public onValueChanged(val: Date| string, oldVal: Date| string) {
+    public onValueChanged(val: Date| string): void {
         const date = this.toDate(val);
         if (this.isSameTime(date)) {
             return;
@@ -149,7 +134,7 @@ export default class DatePicker extends Vue {
         this.refresh();
     }
 
-    public hideCalerdar() {
+    public hideCalerdar(): void {
        this.calendarVisible = false;
     }
 
@@ -175,7 +160,7 @@ export default class DatePicker extends Vue {
         return date.getSeconds() === this.currentDate.getSeconds();
     }
 
-    public created() {
+    public created(): void {
         this.refresh();
         this.initMonths();
         this.initYears();
@@ -191,7 +176,7 @@ export default class DatePicker extends Vue {
      * 转化date
      * @param date
      */
-    public parseDate(date: any): Date {
+    public parseDate(date: null|string|number|Date): Date {
         if (!date) {
             return new Date();
         }
@@ -220,13 +205,13 @@ export default class DatePicker extends Vue {
     /**
      * 刷新变化部分
      */
-    public refresh() {
+    public refresh(): void {
         this.hasTime = this.format.indexOf('h') > 0;
         this.refreshCurrent();
         this.initDays();
     }
 
-    public refreshCurrent() {
+    public refreshCurrent(): void {
         this.currentYear = this.currentDate.getFullYear();
         this.currentMonth = this.currentDate.getMonth() + 1;
         this.currentDay = this.currentDate.getDate();
@@ -238,75 +223,75 @@ export default class DatePicker extends Vue {
         this.title = this.formatDate(this.currentDate, this.titleFormat);
     }
 
-    public initHours() {
+    public initHours(): void {
         this.hourList = [];
         for (let i = 0; i < 24; i++) {
             this.hourList.push(i);
         }
     }
 
-    public initMinutes() {
+    public initMinutes(): void {
         this.minuteList = [];
         for (let i = 0; i < 60; i++) {
             this.minuteList.push(i);
         }
     }
 
-    public initSeconds() {
+    public initSeconds(): void {
         this.secondList = [];
         for (let i = 0; i < 60; i++) {
             this.secondList.push(i);
         }
     }
 
-    public initMonths() {
+    public initMonths(): void {
         this.monthList = [];
         for (let i = 1; i < 13; i++) {
             this.monthList.push(i);
         }
     }
 
-    public initYears() {
+    public initYears(): void {
         this.yearList = [];
         for (let i = this.minYear; i <= this.maxYear; i++) {
             this.yearList.push(i);
         }
     }
 
-    public initDays() {
+    public initDays(): void {
         this.dayList = this.getDaysOfMonth(this.currentMonth, this.currentYear);
     }
 
-    public toggleYear() {
+    public toggleYear(): void {
         this.gridMode = this.gridMode === DayMode.Year ? DayMode.Day : DayMode.Year;
     }
 
-    public toggleTime() {
+    public toggleTime(): void {
         this.gridMode = this.gridMode === DayMode.Hour ? DayMode.Day : DayMode.Hour;
     }
 
     /**
      * 上一年
      */
-    public previousYear() {
+    public previousYear(): void {
         this.changeYear(this.currentYear - 1);
     }
     /**
      * 下一年
      */
-    public nextYear() {
+    public nextYear(): void {
         this.changeYear(this.currentYear + 1);
     }
     /**
      * 上月
      */
-    public previousMonth() {
+    public previousMonth(): void {
         this.changeMonth(this.currentMonth - 1);
     }
     /**
      * 下月
      */
-    public nextMonth() {
+    public nextMonth(): void {
         this.changeMonth(this.currentMonth + 1);
     }
 
@@ -469,7 +454,7 @@ export default class DatePicker extends Vue {
     /**
      * 格式化日期
      */
-    private formatDate(date: Date, fmt: string = 'y年mm月dd日'): string {
+    private formatDate(date: Date, fmt= 'y年mm月dd日'): string {
         const o: any = {
             'y+': date.getFullYear(),
             'm+': date.getMonth() + 1, // 月份

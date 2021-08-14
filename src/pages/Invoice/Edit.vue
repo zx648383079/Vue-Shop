@@ -75,13 +75,13 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Options, Vue } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import { IInvoiceTitle } from '../../api/model';
-import Toast from '@/components/toast.ts';
+import Toast from '@/components/toast';
 import { getTitle, saveTitle } from '../../api/invoice';
 
-@Component({
+@Options({
     components: {
         BackHeader,
     },

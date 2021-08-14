@@ -1,7 +1,7 @@
-import VueRouter from 'vue-router';
+import { Router } from 'vue-router';
 import { ORDER_STATUS } from '../api/model';
 
-export const openLink = (router: VueRouter, link: string) => {
+export const openLink = (router: Router, link: string) => {
     if (!link || link.length < 1 || link.charAt(0) === '#' || link.indexOf('javascript:') === 0) {
         return;
     }

@@ -3,24 +3,23 @@
         <div class="time-bar" v-if="status < 2">
             <span v-if="status < 1">距结束</span>
             <span v-if="status == 1">距开始</span>
-            <em>{{ hour | twoPad }}</em>:
-            <em>{{ minute | twoPad }}</em>:
-            <em>{{ second | twoPad }}</em>
+            <em>{{ hour }}</em>:
+            <em>{{ minute }}</em>:
+            <em>{{ second }}</em>
         </div>
         <span v-if="status > 1">已结束</span>
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit, Watch } from 'vue-property-decorator';
+import { Vue, Prop, Watch } from 'vue-property-decorator';
 import { parseDate } from '@/utils';
 
-@Component
 export default class TimeTip extends Vue {
 
     @Prop([Date, String]) public readonly start!: string|Date;
     @Prop([Date, String]) public readonly end!: string|Date;
 
-    public status: number = 0;
+    public status = 0;
     public hour = 0;
     public minute = 0;
     public second = 0;

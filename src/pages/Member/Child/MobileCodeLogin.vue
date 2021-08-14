@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="logo">
-            <img :src="logo | assets" alt="">
+            <img :src="logo" alt="">
         </div>
         <div class="phone-code">
             <div class="input-box">
@@ -21,23 +21,23 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Prop, Options } from 'vue-property-decorator';
 import CountDown from '@/components/CountDown.vue';
-import Toast from '@/components/toast.ts';
-import { IUser, ISite } from '../../../api/model';
-import { dispatchLogin, dispatchSite } from '../../../store/dispatches';
+import Toast from '@/components/toast';
+import { IUser } from '../../../api/model';
+import { dispatchLogin } from '../../../store/dispatches';
 import { sendMobileCode } from '../../../api/user';
 import { isEmpty, isMobile } from '../../../utils/validate';
 
-@Component({
+@Options({
     components: {
         CountDown,
     },
 })
 export default class MobileCodeLogin extends Vue {
 
-    public mobile: string = '';
-    public code: string = '';
+    public mobile = '';
+    public code = '';
 
     @Prop(String) public readonly logo!: string;
 
@@ -65,7 +65,7 @@ export default class MobileCodeLogin extends Vue {
             return;
         }
         dispatchLogin({mobile: this.mobile, code: this.code})
-            .then((res: IUser) => {
+            .then(() => {
             this.$emit('back');
         });
     }

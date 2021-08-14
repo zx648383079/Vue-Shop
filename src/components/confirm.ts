@@ -72,7 +72,7 @@ const showNextMsg = () => {
 
             const options = currentMsg.options;
             for (const prop in options) {
-                if (options.hasOwnProperty(prop)) {
+                if (Object.prototype.hasOwnProperty.call(options, prop)) {
                     instance[prop] = options[prop];
                 }
             }
@@ -113,7 +113,7 @@ export const ConfirmRouterNotice = () => {
     }
 };
 
-export default (message: string, title: string = '提示', options ?: IConfirmOption): Promise < string > => {
+export default (message: string, title = '提示', options ?: IConfirmOption): Promise<string> => {
     if (!options) {
         options = {};
     }

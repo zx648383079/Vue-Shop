@@ -7,7 +7,7 @@
     </footer>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue } from 'vue-property-decorator';
 
 interface IMenu {
     name: string,
@@ -15,27 +15,26 @@ interface IMenu {
     url: string
 }
 
-@Component
 export default class TabBar extends Vue {
     public menus: IMenu[]  = [
         {
             name: '首页',
-            icon: 'fa fa-home',
+            icon: 'iconfont fa-home',
             url: 'home',
         },
         {
             name: '分类',
-            icon: 'fa fa-th-large',
+            icon: 'iconfont fa-table',
             url: 'category',
         },
         {
             name: '购物车',
-            icon: 'fa fa-shopping-cart',
+            icon: 'iconfont fa-cart',
             url: 'cart',
         },
         {
             name: '我的',
-            icon: 'fa fa-user',
+            icon: 'iconfont fa-user',
             url: 'member',
         },
     ];

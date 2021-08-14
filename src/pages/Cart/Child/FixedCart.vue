@@ -1,15 +1,14 @@
 <template>
     <div class="cart-fixed">
-        <i class="fa fa-shopping-cart"></i>
+        <i class="iconfont fa-shopping-cart"></i>
         <span class="amount-tip" v-if="amount > 0">{{ cartAmount }}</span>
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue } from 'vue-property-decorator';
 
-@Component
 export default class FixedCart extends Vue {
-    public amount: number = 100;
+    public amount = 100;
 
     public get cartAmount(): string {
         if (this.amount > 99) {

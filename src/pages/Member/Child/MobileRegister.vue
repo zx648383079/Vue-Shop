@@ -22,35 +22,35 @@
         <button  @click="tapRegister">注册</button>
         <div class="input-group">
             <div class="checkbox" @click="agree = !agree">
-                <i :class="['far', agree ? 'fa-check-square' : 'fa-square']"></i>
+                <i :class="['iconfont', agree ? 'fa-check-circle' : 'fa-circle']"></i>
             </div>
             同意本站协议
         </div>
 
         <a class="footer-btn" @click="tapChange(5)">邮箱帐号注册
-            <i class="fa fa-angle-right"></i>
+            <i class="iconfont fa-angle-right"></i>
         </a>
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Options, Vue } from 'vue-property-decorator';
 import CountDown from '@/components/CountDown.vue';
 import { sendMobileCode } from '../../../api/user';
-import Toast from '@/components/toast.ts';
+import Toast from '@/components/toast';
 import { isMobile, isEmpty } from '../../../utils/validate';
 
-@Component({
+@Options({
     components: {
         CountDown,
     },
 })
 export default class MobileRegister extends Vue {
     public agree = true;
-    public name: string = '';
-    public mobile: string = '';
-    public code: string = '';
-    public password: string = '';
-    public confirmPassword: string = '';
+    public name = '';
+    public mobile = '';
+    public code = '';
+    public password = '';
+    public confirmPassword = '';
 
     public tapChange(mode: number) {
         this.$emit('click', mode);
@@ -68,7 +68,7 @@ export default class MobileRegister extends Vue {
 
     public tapRegister() {
         const name = this.name;
-        const mobile = this.mobile;
+        // const mobile = this.mobile;
         const password = this.password;
         if (isEmpty(name)) {
             Toast('请输入昵称');

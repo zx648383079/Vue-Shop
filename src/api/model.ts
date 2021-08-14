@@ -65,7 +65,7 @@ export interface ICategory {
     parent_id?: number,
     expanded?: boolean,
     level?: number,
-    children?: ICategoryObject | ICategory[],
+    children?: ICategory[],
     goods_list: IProduct[]
 }
 
@@ -75,14 +75,65 @@ export interface ICategoryObject {
 
 export interface IProduct {
     id: number;
+    cat_id: number;
+    brand_id: number;
     name: string;
+    series_number: string;
+    keywords: string;
     thumb: string;
+    picture: string;
+    description: string;
+    brief: string;
+    content: string;
     price: number;
     market_price: number;
-    stock?: number;
-    shop?: string;
-    amount?: number;
+    stock: number;
+    attribute_group_id: number;
+    weight: number;
+    shipping_id: number;
+    sales: string;
+    is_best: number;
+    is_hot: number;
+    is_new: number;
+    status: number;
+    admin_note: string;
+    type: number;
+    position: number;
+    seo_title?: string;
+    seo_description?: string;
+    seo_link?: string;
+    dynamic_position: string;
+    deleted_at: number;
+    created_at: string;
+    updated_at: string;
+    shop: string;
+    category?: ICategory;
+    brand?: IBrand;
+    gallery?: IGoodsGallery[];
+    properties?: any[];
+    coupons?: ICoupon[];
+    promotes?: IActivity<any>[];
     is_collect?: boolean;
+    static_properties?: any[];
+    activity?: IActivity<any>;
+    amount: number;
+}
+
+export interface IBrand {
+    id: number;
+    name: string;
+    keywords?: string;
+    description?: string;
+    logo?: string;
+    app_logo?: string;
+    url: string;
+    image?: string;
+    price?: number;
+}
+
+export interface IGoodsGallery {
+    thumb: string;
+    image: string;
 }
 
 export interface IHomeProduct {
@@ -101,7 +152,8 @@ export interface IComment {
     content: string;
     rank: number;
     user?: IUser;
-    images?: IImage[]
+    images?: IImage[];
+    created_at?: string;
 }
 
 export interface ITag {
@@ -208,6 +260,8 @@ export interface IUser {
     name: string;
     avatar: string;
     token?: string;
+    sex?: number;
+    birthday?: string;
 }
 
 export interface IAccountLog {
@@ -280,6 +334,16 @@ export interface IOrder {
     goods?: IOrderGoods[];
     address?: IAddress;
     checked?: boolean;
+    created_at?: string;
+    pay_at?: string;
+    shipping_at?: string;
+    receive_at?: string;
+    finish_at?: string;
+    shipping_fee?: number;
+    pay_fee?: number;
+    discount?: number;
+    order_amount?: number;
+    shipping_status?: string;
 }
 
 export interface ISubtotal {
@@ -305,7 +369,9 @@ export interface IOrderGoods {
     amount: number;
     price: number;
     goods_id: number;
+    thumb: string;
     goods: IProduct;
+    comment_id?: number;
 }
 
 export interface ICheckIn {
@@ -343,13 +409,14 @@ export interface ICoupon {
     money: number;
     send_type: number;
     send_value: number;
-    received?: number;
+    received: number;
     can_receive?: boolean;
     every_amount: number;
     start_at: number;
     end_at: number;
     created_at: string;
     updated_at: string;
+    expired?: boolean;
 }
 
 export interface IInvoiceTitle {
@@ -430,5 +497,125 @@ export interface ICertification {
     front_side: string;
     back_side: string;
     status: number;
+}
+
+
+
+export interface IActivity<T = any> {
+    id: number;
+    name: string;
+    thumb: string;
+    description: string;
+    type: number;
+    scope_type: number;
+    scope: string;
+    configure: T;
+    status: number;
+    start_at: number|string;
+    end_at: number|string;
+    created_at: string;
+    updated_at: string;
+    goods?: IProduct;
+    price?: number;
+    log_count?: number;
+    is_joined?: boolean;
+    join_log?: any;
+    log?: any;
+    goods_items?: {
+        price: number;
+        amount: number;
+        goods: IProduct;
+    }[];
+}
+
+export interface IAuctionConfigure {
+    mode: number;
+    begin_price: number;
+    fixed_price: number;
+    step_price: number;
+    deposit: number;
+}
+
+export interface IBargainConfigure {
+    min: number;
+    max: number;
+    times: number;
+    amount: number;
+    shipping_fee: number;
+}
+
+export interface ICashBackConfigure {
+    order_amount: number;
+    star: number;
+    money: number;
+}
+
+export interface IDiscountConfigure {
+    type: number;
+    amount: number;
+    check_discount: number;
+    check_money: number;
+    check_gift: number;
+    check_shipping: number;
+    discount_value: number;
+    discount_money: number;
+    discount_goods: number;
+}
+
+export interface IFreeTrialConfigure {
+    amount: number;
+}
+
+export interface IGroupBuyConfigure {
+    deposit: number;
+    amount: number;
+    send_point: number;
+    step: IGroupBuyStep[];
+}
+
+export interface IGroupBuyStep {
+    amount: number;
+    price: number;
+}
+
+export interface ILotteryConfigure {
+    time_price: number;
+    buy_times: number;
+    start_times: number;
+    btn_text: string;
+    over_text: string;
+    items: ILotteryGift[];
+}
+
+export interface ILotteryGift {
+    name: string;
+    goods?: IProduct;
+    goods_id: number;
+    chance: number;
+    color: string;
+}
+
+export interface IMixConfigure {
+    price: number;
+    goods: IMixGoods[];
+}
+
+export interface IMixGoods {
+    goods?: IProduct;
+    goods_id: number;
+    amount: number;
+    price: number;
+}
+
+export interface IPreSaleConfigure {
+    final_start_at: string;
+    final_end_at: string;
+    ship_at: string;
+    price_type: number;
+    price: number;
+    step: IGroupBuyStep[];
+    deposit: number;
+    deposit_scale: number;
+    deposit_scale_other: number;
 }
 

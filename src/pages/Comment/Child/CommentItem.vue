@@ -12,10 +12,10 @@
             <div class="multi-image-box">
                 <div class="image-item" v-for="(img, i) in comment.images" :key="i">
                     <img :src="img.image" alt="">
-                    <i class="fa fa-times" @click="tapRemove(i)"></i>
+                    <i class="iconfont fa-times" @click="tapRemove(i)"></i>
                 </div>
                 <div class="add-item" >
-                    <i class="fa fa-plus"></i>
+                    <i class="iconfont fa-plus"></i>
                 </div>
             </div>
         </div>
@@ -27,13 +27,13 @@
     </form>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Prop, Options } from 'vue-property-decorator';
 import { IOrderGoods, IComment } from '@/api/model';
 import Star from './Star.vue';
-import Toast from '@/components/toast.ts';
+import Toast from '@/components/toast';
 import { commentGoods } from '@/api/order';
 
-@Component({
+@Options({
     components: {
         Star,
     },

@@ -6,7 +6,7 @@
                 <div class="swipe-row" v-for="(item, index) in items" :key="index">
                     <div class="swipe-content address-item">
                         <div class="address-first">
-                            <img :src="'/assets/images/avatar/14.png' | assets" alt="">
+                            <img :src="'/assets/images/avatar/14.png'" alt="">
                         </div>
                         <div class="address-info">
                             <h3>213213213123</h3>
@@ -16,7 +16,7 @@
                         </div>
                     </div>
                     <div class="actions-right">
-                        <i class="fa fa-trash"></i>
+                        <i class="iconfont fa-trash"></i>
                     </div>
                 </div>
             </div>
@@ -24,10 +24,10 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Options } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 
-@Component({
+@Options({
     components: {
         BackHeader,
     },

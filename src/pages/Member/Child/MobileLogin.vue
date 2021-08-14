@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="logo">
-            <img :src="logo | assets" alt="">
+            <img :src="logo" alt="">
         </div>
         <div class="phone-password">
             <div class="input-box">
@@ -20,17 +20,16 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
-import Toast from '@/components/toast.ts';
-import { IUser, ISite } from '../../../api/model';
-import { dispatchLogin, dispatchSite } from '../../../store/dispatches';
+import { Vue, Prop } from 'vue-property-decorator';
+import Toast from '@/components/toast';
+import { dispatchLogin } from '../../../store/dispatches';
 import { isEmpty, isMobile } from '../../../utils/validate';
 
-@Component
+
 export default class MobileLogin extends Vue {
 
-    public mobile: string = '';
-    public password: string = '';
+    public mobile = '';
+    public password = '';
     @Prop(String) public readonly logo!: string;
 
     public tapChange(mode: number) {
@@ -48,7 +47,7 @@ export default class MobileLogin extends Vue {
             Toast('请输入密码');
             return;
         }
-        dispatchLogin({mobile, password}).then((res: IUser) => {
+        dispatchLogin({mobile, password}).then(() => {
             this.$emit('back');
         });
     }

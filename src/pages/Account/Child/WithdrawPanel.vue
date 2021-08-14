@@ -1,9 +1,9 @@
 <template>
     <DialogPanel title="提现">
         <a>
-            <i class="fa fa-wallet" aria-hidden="true"></i>
+            <i class="iconfont fa-wallet" aria-hidden="true"></i>
             提现
-            <i class="fa fa-chevron-right" aria-hidden="true"></i>
+            <i class="iconfont fa-chevron-right" aria-hidden="true"></i>
         </a>
         <div slot="panel">
             <p>充值金额</p>
@@ -32,10 +32,10 @@
     </DialogPanel>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Options } from 'vue-property-decorator';
 import DialogPanel from '@/components/DialogPanel.vue';
 
-@Component({
+@Options({
     components: {
         DialogPanel,
     },

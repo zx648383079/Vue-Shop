@@ -2,19 +2,18 @@
     <header>
         <div class="search-box">
             <div class="search-input">
-                <i class="fa fa-search" aria-hidden="true" @click="tapSearch"></i>
+                <i class="iconfont fa-search" aria-hidden="true" @click="tapSearch"></i>
                 <input type="text" :value="value"
                 @input="updateVal($event.target.value)" @keyup="onKeyUp" placeholder="搜索" @click="tapFocus" autocomplete="off">
-                <i class="fa fa-times-circle" v-if="currrent && currrent.length > 0" @click="tapClear"></i>
+                <i class="iconfont fa-times-circle" v-if="currrent && currrent.length > 0" @click="tapClear"></i>
             </div>
             <a class="cancel-btn" @click="tapBack">取消</a>
         </div>
     </header>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Prop } from 'vue-property-decorator';
 
-@Component
 export default class SearchHeader extends Vue {
     @Prop(String) public readonly value!: string;
     public currrent = '';

@@ -26,13 +26,13 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Options } from 'vue-property-decorator';
 import PullToRefresh from '@/components/PullToRefresh.vue';
 import BackHeader from '@/components/BackHeader.vue';
 import { IOrderGoods } from '@/api/model';
 import { getRefundGoodsList } from '@/api/order';
 
-@Component({
+@Options({
     components: {
         BackHeader,
         PullToRefresh,

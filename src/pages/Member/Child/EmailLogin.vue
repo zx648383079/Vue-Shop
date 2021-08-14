@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="logo">
-            <img :src="logo | assets" alt="">
+            <img :src="logo" alt="">
         </div>
         <div class="email-password">
             <div class="input-box">
@@ -20,18 +20,16 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
-import Toast from '@/components/toast.ts';
-import { dispatchLogin, dispatchSite } from '@/store/dispatches';
-import { IUser, ISite } from '@/api/model';
+import { Vue, Prop } from 'vue-property-decorator';
+import Toast from '@/components/toast';
+import { dispatchLogin } from '@/store/dispatches';
+import { IUser } from '@/api/model';
 import { isEmpty, isEmail } from '../../../utils/validate';
 
-@Component
 export default class EmailLogin extends Vue {
 
-    public email: string = '';
-
-    public password: string = '';
+    public email = '';
+    public password = '';
     @Prop(String) public readonly logo!: string;
 
     public tapKey(e: KeyboardEvent) {
@@ -56,7 +54,7 @@ export default class EmailLogin extends Vue {
             Toast('请输入密码');
             return;
         }
-        dispatchLogin({email, password}).then((res: IUser) => {
+        dispatchLogin({email, password}).then(() => {
             this.$emit('back');
         });
     }

@@ -18,11 +18,11 @@
                 请上传手持身份证照片
             </div>
             <div class="photo-box">
-                <i class="fa fa-plus"></i>
+                <i class="iconfont fa-plus"></i>
                 <div class="tip">人像页</div>
             </div>
             <div class="photo-box">
-                <i class="fa fa-plus"></i>
+                <i class="iconfont fa-plus"></i>
                 <div class="tip">国徽页</div>
             </div>
 
@@ -31,9 +31,8 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue } from 'vue-property-decorator';
 
-@Component
 export default class ApplyCertification extends Vue {
     public step = 1;
 }

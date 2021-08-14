@@ -15,14 +15,14 @@
                 <RechargePanel/>
                 <WithdrawPanel/>
                 <a @click="$router.push('/account/card')">
-                    <i class="fa fa-credit-card" aria-hidden="true"></i>
+                    <i class="iconfont fa-credit-card" aria-hidden="true"></i>
                     银行卡
-                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    <i class="iconfont fa-chevron-right" aria-hidden="true"></i>
                 </a>
                 <a @click="$router.push('/invoice')">
-                    <i class="fa fa-bookmark" aria-hidden="true"></i>
+                    <i class="iconfont fa-bookmark" aria-hidden="true"></i>
                     发票管理
-                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    <i class="iconfont fa-chevron-right" aria-hidden="true"></i>
                 </a>
             </div>
         </div>
@@ -30,12 +30,12 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Options } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import WithdrawPanel from './Child/WithdrawPanel.vue';
 import RechargePanel from './Child/RechargePanel.vue'
 
-@Component({
+@Options({
     components: {
         BackHeader,
         WithdrawPanel,
@@ -43,7 +43,7 @@ import RechargePanel from './Child/RechargePanel.vue'
     },
 })
 export default class Index extends Vue {
-    public mode: number = 0;
+    public mode = 0;
 }
 </script>
 <style lang="scss" scoped>

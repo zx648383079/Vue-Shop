@@ -15,21 +15,21 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Options, Vue } from 'vue-property-decorator';
 import LargeHeader from '@/components/LargeHeader.vue';
-import Toast from '@/components/toast.ts';
+import Toast from '@/components/toast';
 import { updatePassword } from '../../api/user';
 import { dispatchLogout } from '../../store/dispatches';
 
-@Component({
+@Options({
     components: {
         LargeHeader,
     },
 })
 export default class Password extends Vue {
-    public oldpassword: string = '';
-    public password: string = '';
-    public repassword: string = '';
+    public oldpassword = '';
+    public password = '';
+    public repassword = '';
 
     /**
      * tapSubmit
@@ -39,7 +39,7 @@ export default class Password extends Vue {
             Toast('确认密码不一致！');
             return;
         }
-        updatePassword(this.oldpassword, this.password, this.repassword).then(res => {
+        updatePassword(this.oldpassword, this.password, this.repassword).then(() => {
             dispatchLogout().then(() => {
                 this.$router.push('/login');
             });

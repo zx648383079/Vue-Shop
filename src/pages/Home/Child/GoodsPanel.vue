@@ -9,11 +9,11 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue,Prop, Options } from 'vue-property-decorator';
 import GoodsItem from './GoodsItem.vue';
 import { IProduct } from '@/api/model';
 
-@Component({
+@Options({
     components: {
         GoodsItem,
     },

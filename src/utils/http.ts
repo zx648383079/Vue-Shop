@@ -1,6 +1,6 @@
 import axios from 'axios';
 import router from '@/router'
-import Toast from '@/components/toast.ts';
+import Toast from '@/components/toast';
 import * as util from './'
 import { TOKEN_KEY } from '@/store/types'
 
@@ -50,7 +50,7 @@ axios.interceptors.response.use(
             router.push({
                 path: '/login',
                 query: {
-                    redirect: router.currentRoute.fullPath,
+                    redirect: router.currentRoute.value.fullPath,
                 }, // 从哪个页面跳转
             })
             return Promise.reject(error);
@@ -139,7 +139,7 @@ export function put<T>(url: string, data = {}): Promise<T> {
     });
 }
 
-export function uploadFile<T>(url: string, file: File, name: string = 'file'): Promise<T> {
+export function uploadFile<T>(url: string, file: File, name = 'file'): Promise<T> {
     const data = new FormData();
     data.append(name, file);
     return new Promise<T>((resolve, reject) => {
@@ -158,10 +158,10 @@ export function uploadFile<T>(url: string, file: File, name: string = 'file'): P
 }
 
 export default {
-    install(Vue: any) {
-        Vue.prototype.$post = post
-        Vue.prototype.$fetch = fetch
-        Vue.prototype.$patch = patch
-        Vue.prototype.$put = put
+    install(app: any) {
+        app.config.globalProperties.$post = post
+        app.config.globalProperties.$fetch = fetch
+        app.config.globalProperties.$patch = patch
+        app.config.globalProperties.$put = put
     },
 }

@@ -1,166 +1,158 @@
 import {
     SET_CATEGORIES, SET_SITE, SET_CART, SET_ADDRESS_LIST, SET_ADDRESS, SET_ORDER,
 } from '../types';
-import {
-    Commit,
-} from 'vuex';
 import { ICategory, IAddress, IOrder, ICartGroup, ISite } from '@/api/model';
 import { getCategories } from '@/api/category';
 import { getSiteInfo } from '@/api/site';
 import { getAddressList } from '@/api/address';
 import { dispatchAddressList } from '../dispatches';
 import { getOrderInfo } from '@/api/order';
+import { Action, Module, Mutation, VuexModule } from 'vuex-class-modules';
 
+@Module({ generateMutationSetters: true })
+export class ShopModule extends VuexModule {
+    categories: ICategory[] = [];
+    site: ISite | null = null;
+    cart: ICartGroup[] = [];
+    addressList: IAddress[] = [];
+    address: IAddress | null = null;
+    order: IOrder | null = null;
 
-export interface State {
-    categories: ICategory[],
-    site: ISite | null,
-    cart: ICartGroup[];
-    addressList: IAddress[];
-    address: IAddress | null;
-    order: IOrder | null;
-};
+    @Mutation
+    [SET_CATEGORIES](categories: ICategory[]) {
+        this.categories = categories;
+    }
 
-interface IActionContext {
-    commit: Commit;
-    state: State;
-}
+    @Mutation
+    [SET_SITE](subtotal: ISite) {
+        this.site = subtotal;
+    }
 
-// initial state
-// shape: [{ id, quantity }]
-const initState: State = {
-    categories: [],
-    site: null,
-    cart: [],
-    addressList: [],
-    address: null,
-    order: null,
-};
+    @Mutation
+    [SET_CART](cart: ICartGroup[]) {
+        this.cart = cart;
+    }
 
-// getters
-const getters = {
-    cart(state: State) {
-        return state.cart;
-    },
-    addressList(state: State) {
-        return state.addressList;
-    },
-};
+    @Mutation
+    [SET_ADDRESS_LIST](items: IAddress[]) {
+        this.addressList = items;
+    }
 
-// actions
-const actions = {
-    setCart(context: IActionContext, cart: ICartGroup[]) {
-        context.commit(SET_CART, cart);
-    },
-    getCategories(context: IActionContext) {
-        return new Promise((resolve, reject) => {
-            if (context.state.categories && context.state.categories.length > 0) {
-                resolve(context.state.categories);
+    @Mutation
+    [SET_ADDRESS](item: IAddress) {
+        this.address = item;
+    }
+
+    @Mutation
+    [SET_ORDER](order: IOrder) {
+        this.order = order;
+    }
+
+    @Action
+    setCart(cart: ICartGroup[]) {
+        this[SET_CART](cart);
+        return new Promise<ICartGroup[]>((resolve, reject) => {
+            resolve(cart);
+        });
+    }
+
+    @Action
+    getCategories() {
+        return new Promise<ICategory[]>((resolve, reject) => {
+            if (this.categories && this.categories.length > 0) {
+                resolve(this.categories);
                 return;
             }
             getCategories().then(res => {
-                context.commit(SET_CATEGORIES, res.data);
-                resolve(res.data);
+                this[SET_CATEGORIES](res.data as any);
+                resolve(res.data as any);
             }).catch(reject);
         });
-    },
-    getSite(context: IActionContext) {
-        return new Promise((resolve, reject) => {
-            if (context.state.site) {
-                resolve(context.state.site);
+    }
+    
+    @Action
+    getSite() {
+        return new Promise<ISite>((resolve, reject) => {
+            if (this.site) {
+                resolve(this.site);
                 return;
             }
             getSiteInfo().then(res => {
-                context.commit(SET_SITE, res);
+                this[SET_SITE](res);
                 resolve(res);
             }).catch(reject);
         });
-    },
-    getAddressList(context: IActionContext) {
-        return new Promise((resolve, reject) => {
-            if (context.state.addressList && context.state.addressList.length > 0) {
-                resolve(context.state.addressList);
+    }
+
+    @Action
+    getAddressList() {
+        return new Promise<IAddress[]>((resolve, reject) => {
+            if (this.addressList && this.addressList.length > 0) {
+                resolve(this.addressList);
                 return;
             }
             getAddressList().then(res => {
-                context.commit(SET_ADDRESS_LIST, res.data);
-                resolve(res.data);
+                this[SET_ADDRESS_LIST](res.data as any);
+                resolve(res.data as any);
             }).catch(reject);
         });
-    },
-    setAddressList(context: IActionContext, data: IAddress[]) {
-        context.commit(SET_ADDRESS_LIST, data);
-    },
-    getAddress(context: IActionContext) {
-        return new Promise((resolve, reject) => {
-            if (context.state.address) {
-                resolve(context.state.address);
+    }
+
+    @Action
+    setAddressList(data: IAddress[]) {
+        this[SET_ADDRESS_LIST](data);
+    }
+
+    @Action
+    getAddress() {
+        return new Promise<IAddress|null>((resolve, reject) => {
+            if (this.address) {
+                resolve(this.address);
                 return;
             }
             dispatchAddressList().then(res => {
                 for (const item of res) {
                     if (item.is_default) {
-                        context.commit(SET_ADDRESS, item);
+                        this[SET_ADDRESS](item);
                         resolve(item);
                         return;
                     }
                 }
-                resolve();
+                resolve(null);
             }).catch(reject);
         });
-    },
-    setAddress(context: IActionContext, address: IAddress) {
-        context.commit(SET_ADDRESS, address);
-    },
-    setAddressIfEmpty(context: IActionContext, address: IAddress) {
-        if (context.state.address) {
+    }
+
+    @Action
+    setAddress(address: IAddress) {
+        this[SET_ADDRESS](address);
+    }
+
+    @Action
+    setAddressIfEmpty(address: IAddress) {
+        if (this.address) {
             return;
         }
-        context.commit(SET_ADDRESS, address);
-    },
-    setOrder(context: IActionContext, order: IOrder) {
-        context.commit(SET_ORDER, order);
-    },
-    getOrder(context: IActionContext, id: number) {
-        return new Promise((resolve, reject) => {
-            if (context.state.order && context.state.order.id === id) {
-                resolve(context.state.order);
+        this[SET_ADDRESS](address);
+    }
+
+    @Action
+    setOrder(order: IOrder) {
+        this[SET_ORDER](order);
+    }
+
+    @Action
+    getOrder(id: number) {
+        return new Promise<IOrder>((resolve, reject) => {
+            if (this.order && this.order.id === id) {
+                resolve(this.order);
                 return;
             }
             getOrderInfo(id).then(res => {
-                context.commit(SET_ORDER, res);
+                this[SET_ORDER](res);
                 resolve(res);
                 return;
             }).catch(reject);
         });
-    },
-};
-
-// mutations
-const mutations = {
-    [SET_CATEGORIES](state: State, categories: ICategory[]) {
-        state.categories = categories;
-    },
-    [SET_SITE](state: State, subtotal: ISite) {
-        state.site = subtotal;
-    },
-    [SET_CART](state: State, cart: ICartGroup[]) {
-        state.cart = cart;
-    },
-    [SET_ADDRESS_LIST](state: State, items: IAddress[]) {
-        state.addressList = items;
-    },
-    [SET_ADDRESS](state: State, item: IAddress) {
-        state.address = item;
-    },
-    [SET_ORDER](state: State, order: IOrder) {
-        state.order = order;
-    },
-};
-
-export default {
-    state: initState,
-    getters,
-    actions,
-    mutations,
-};
+    }
+}

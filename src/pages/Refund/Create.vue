@@ -37,7 +37,7 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Options, Vue } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import { IOrderGoods, ORDER_STATUS } from '@/api/model';
 import { getRefundGoods } from '@/api/order';
@@ -45,7 +45,7 @@ import RefundGrid from './Child/RefundGrid.vue';
 import AfterSalegGrid from './Child/AfterSalegGrid.vue';
 import MenuItem from '@/pages/Member/Child/MenuItem.vue';
 
-@Component({
+@Options({
     components: {
         BackHeader,
         RefundGrid,
@@ -56,7 +56,7 @@ import MenuItem from '@/pages/Member/Child/MenuItem.vue';
 export default class Create extends Vue {
     public ORDER_STATUS = ORDER_STATUS;
     public items: IOrderGoods[] = [];
-    public mode: number = 0;
+    public mode = 0;
     public status: ORDER_STATUS = ORDER_STATUS.PAID_UN_SHIP;
 
     public created() {

@@ -22,14 +22,14 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Options } from 'vue-property-decorator';
 import { IProduct, ICollect } from '@/api/model';
 import { getCollect, removeCollect } from '@/api/user';
 import PullToRefresh from '@/components/PullToRefresh.vue';
 import BackHeader from '@/components/BackHeader.vue';
 import SwipeRow from '@/components/SwipeRow.vue';
 
-@Component({
+@Options({
     components: {
         BackHeader,
         SwipeRow,

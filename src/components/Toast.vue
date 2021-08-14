@@ -8,9 +8,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Prop } from 'vue-property-decorator';
 
-@Component
 export default class ToastBox extends Vue {
     @Prop(String) public readonly message!: string;
     @Prop({default: ''}) public readonly className!: string;

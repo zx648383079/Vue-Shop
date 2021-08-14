@@ -1,6 +1,6 @@
 <template>
     <div :class="computedStyle">
-        <BackHeader :title="this.$route.meta.title"></BackHeader>
+        <BackHeader :title="$route.meta.title"></BackHeader>
         <div class="has-header">
             <div class="name">{{garbage.name}}属于{{garbage.classification.name}}</div>
             <div class="classify-box">
@@ -28,12 +28,14 @@
         </div>
     </div>
 </template>
+
+
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Options } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import { IGarbage, getGarbage } from '@/api/garbage';
 
-@Component({
+@Options({
     components: {
         BackHeader,
     },
@@ -66,6 +68,7 @@ export default class Result extends Vue {
     }
 }
 </script>
+
 <style lang="scss" scoped>
 $gray: gray;
 $red: red;

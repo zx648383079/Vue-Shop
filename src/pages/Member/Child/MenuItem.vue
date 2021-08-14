@@ -1,14 +1,13 @@
 <template>
     <a @click="tapGo">
-        <i :class="['fa', icon]" aria-hidden="true"></i>
+        <i :class="['iconfont', icon]" aria-hidden="true"></i>
         {{ title }}
-        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+        <i class="iconfont fa-chevron-right" aria-hidden="true"></i>
     </a>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Prop } from 'vue-property-decorator';
 
-@Component
 export default class MenuItem extends Vue {
     @Prop(String) public readonly title!: string;
     @Prop(String) public readonly icon!: string;

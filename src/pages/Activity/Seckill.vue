@@ -23,8 +23,8 @@
                             </div>
                             <div class="goods-info">
                                 <h4>{{ goods.goods.name }}</h4>
-                                <span class="price">{{ goods.price | price }}</span>
-                                <span class="old-price">{{ goods.goods.price | price }}</span>
+                                <span class="price">{{ goods.price }}</span>
+                                <span class="old-price">{{ goods.goods.price }}</span>
                             </div>
                             <div class="goods-actions">
                                 <a class="btn btn-buy" v-if="goods.status == 1">立即抢购</a>
@@ -39,7 +39,7 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Options } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import PullToRefresh from '@/components/PullToRefresh.vue';
 import { IActivityTime, ISeckillGoods } from '../../api/model';
@@ -47,7 +47,7 @@ import { getTimes, getSeckill } from '../../api/activity';
 import TimeTip from './Child/TimeTip.vue';
 import { parseDate } from '@/utils';
 
-@Component({
+@Options({
     components: {
         BackHeader,
         PullToRefresh,

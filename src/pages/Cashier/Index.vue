@@ -12,11 +12,11 @@
                 </div>
                 <div class="goods-item" v-for="(goods, i) in item.goods_list" :key="i">
                     <div class="goods-img">
-                        <img :src="goods.goods.thumb" alt="">
+                        <img :src="goods.goods?.thumb" alt="">
                     </div>
                     <div class="goods-info">
-                        <h4>{{ goods.goods.name }}</h4>
-                        <span class="price">{{ goods.price | price }}</span>
+                        <h4>{{ goods.goods?.name }}</h4>
+                        <span class="price">{{ goods.price }}</span>
                         <span class="amount"> x {{ goods.amount }}</span>
                     </div>
                 </div>
@@ -29,25 +29,25 @@
             
 
             <div class="checkout-amount" v-if="order">
-                <p class="line-item"><span>商品总价</span> <span data-key="goods_amount">{{ order.goods_amount | price }}</span> </p>
-                <p class="line-item"><span>+运费</span> <span data-key="shipping_fee">{{ order.shipping_fee | price }}</span> </p>
-                <p class="line-item"><span>+支付手续费</span> <span data-key="pay_fee">{{ order.pay_fee | price }}</span> </p>
-                <p class="line-item"><span>-优惠</span> <span data-key="discount">{{ order.discount | price }}</span> </p>
-                <p class="line-item"><span>订单总价</span> <span data-key="order_amount">{{ order.order_amount | price }}</span> </p>
+                <p class="line-item"><span>商品总价</span> <span data-key="goods_amount">{{ order.goods_amount }}</span> </p>
+                <p class="line-item"><span>+运费</span> <span data-key="shipping_fee">{{ order.shipping_fee }}</span> </p>
+                <p class="line-item"><span>+支付手续费</span> <span data-key="pay_fee">{{ order.pay_fee }}</span> </p>
+                <p class="line-item"><span>-优惠</span> <span data-key="discount">{{ order.discount }}</span> </p>
+                <p class="line-item"><span>订单总价</span> <span data-key="order_amount">{{ order.order_amount }}</span> </p>
             </div>
 
             <div class="address-tip" v-if="address">
-                {{ address.region.full_name }} {{ address.address }}
+                {{ address.region?.full_name }} {{ address.address }}
             </div>
             <div class="checkout-footer" v-if="order">
-                <span data-key="order_amount">{{ order.order_amount | price }}</span>
+                <span data-key="order_amount">{{ order.order_amount }}</span>
                 <a @click="tapCheckout" class="btn">立即支付</a>
             </div>
         </div>
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit, Watch } from 'vue-property-decorator';
+import { Vue, Watch, Options } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import { IAddress, ICartGroup, IOrder, IPayment, IShipping, ICartItem, ICoupon } from '@/api/model';
 import { dispatchAddress, dispatchSetCart, dispatchSetOrder } from '@/store/dispatches';
@@ -64,7 +64,7 @@ interface ICartBox {
     goods: ICartItem[] | number[];
 }
 
-@Component({
+@Options({
     components: {
         BackHeader,
         AddressLine,
@@ -175,7 +175,7 @@ export default class Index extends Vue {
         }
         const goods: ICartItem[] = [];
         const cart: number[]  = [];
-        let type: number = -1;
+        let type = -1;
         for (const group of this.cart) {
             for (const item of group.goods_list) {
                 if (type === -1) {

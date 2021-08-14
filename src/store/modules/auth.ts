@@ -1,126 +1,108 @@
 import {
     SET_USER, TOKEN_KEY, SET_TOKEN,
 } from '../types';
-import {
-    Commit,
-} from 'vuex';
 import { IUser, ILogin } from '@/api/model';
 import { getSessionStorage, setSessionStorage, removeSessionStorage } from '@/utils';
 import { getProfile, login, logout } from '@/api/user';
+import { Action, Module, Mutation, VuexModule } from 'vuex-class-modules';
 
+@Module({ generateMutationSetters: true })
+export class AuthModule extends VuexModule {
+    token: string | null = null;
+    user: IUser | null = null;
 
-export interface State {
-    token: string | null,
-    user: IUser | null,
-};
-
-interface IActionContext {
-    commit: Commit;
-    state: State;
-}
-
-// initial state
-// shape: [{ id, quantity }]
-const initState: State = {
-    user: null,
-    token: null,
-};
-
-// getters
-const getters = {
-    /**
-     * 此方法不验证token的有效性
-     * @param state
-     */
-    isGuest(state: State) {
-        if (state.user) {
+    get isGuest() {
+        if (this.user) {
             return false;
         }
         const token = getSessionStorage<string>(TOKEN_KEY);
         return !token;
-    },
-};
+    }
 
-// actions
-const actions = {
-    getToken(context: IActionContext) {
-        if (context.state.token) {
-            return context.state.token;
+    @Mutation
+    [SET_USER](user: IUser|null) {
+        this.user = user;
+    }
+
+    @Mutation
+    [SET_TOKEN](token: string| null) {
+        this.token = token;
+        if (token) {
+            setSessionStorage(TOKEN_KEY, token);
+            return;
+        }
+        removeSessionStorage(TOKEN_KEY);
+    }
+
+    @Action
+    getToken() {
+        if (this.token) {
+            return this.token;
         }
         const token = getSessionStorage<string>(TOKEN_KEY);
         if (!token) {
             return token;
         }
-        context.commit(SET_TOKEN, token);
+        this[SET_TOKEN](token);
         return token;
-    },
-    setToken(context: IActionContext, token: string) {
-        context.commit(SET_TOKEN, token);
+    }
+
+    @Action
+    setToken(token: string) {
+        this[SET_TOKEN](token);
         return token;
-    },
-    getUser(context: IActionContext) {
-        return new Promise((resolve, reject) => {
-            if (context.state.user) {
-                resolve(context.state.user);
+    }
+
+    @Action
+    getUser() {
+        return new Promise<IUser|null>((resolve, reject) => {
+            if (this.user) {
+                resolve(this.user);
                 return;
             }
             const token = getSessionStorage<string>(TOKEN_KEY);
             if (!token) {
-                resolve();
+                resolve(null);
                 return;
             }
             getProfile().then((res: IUser) => {
-                context.commit(SET_USER, res);
+                this[SET_USER](res);
                 resolve(res);
             }).catch(reject);
         });
-    },
-    setUser(context: IActionContext, user: IUser) {
-        return new Promise((resolve, reject) => {
-            context.commit(SET_USER, user);
+    }
+
+    @Action
+    setUser(user: IUser) {
+        return new Promise<void>((resolve, reject) => {
+            this[SET_USER](user);
             resolve();
         });
-    },
-    loginUser(context: IActionContext, params: ILogin) {
+    }
+
+    @Action
+    loginUser(params: ILogin) {
         return login(params).then((res: IUser) => {
-            context.commit(SET_TOKEN, res.token);
-            context.commit(SET_USER, res);
+            this[SET_TOKEN](res.token || null);
+            this[SET_USER](res);
+            return res;
         });
-    },
-    logoutUser(context: IActionContext) {
-        return new Promise((resolve, reject) => {
+    }
+
+    @Action
+    logoutUser() {
+        return new Promise<void>((resolve, reject) => {
             const token = getSessionStorage<string>(TOKEN_KEY);
             if (!token) {
                 resolve();
                 return;
             }
             logout().then(() => {
-                context.commit(SET_USER, null);
-                context.commit(SET_TOKEN, null);
+                this[SET_TOKEN](null);
+                this[SET_USER](null);
                 resolve();
             }).catch(reject);
         });
-    },
-};
+    }
 
-// mutations
-const mutations = {
-    [SET_USER](state: State, user: IUser) {
-        state.user = user;
-    },
-    [SET_TOKEN](state: State, token: string) {
-        state.token = token;
-        if (token) {
-            setSessionStorage(TOKEN_KEY, token);
-            return;
-        }
-        removeSessionStorage(TOKEN_KEY);
-    },
-};
-
-export default {
-    state: initState,
-    getters,
-    actions,
-    mutations,
-};
+}

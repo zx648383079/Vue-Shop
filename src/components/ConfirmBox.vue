@@ -17,11 +17,10 @@
   </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit, Watch } from 'vue-property-decorator';
+import { Vue, Prop } from 'vue-property-decorator';
 
 type ConfirmEvent = (action: string) => void;
 
-@Component
 export default class ConfirmBox extends Vue {
     @Prop({default: true}) public readonly modal!: boolean;
     @Prop({default: true}) public readonly showClose!: boolean;
@@ -44,7 +43,7 @@ export default class ConfirmBox extends Vue {
     public cancelButtonHighlight = false;
     public confirmButtonHighlight = false;
 
-    public get cancelButtonClasses() {
+    public get cancelButtonClasses(): string {
         let classes = 'msgbox-btn msgbox-cancel ' + this.cancelButtonClass;
         if (this.cancelButtonHighlight) {
           classes += ' msgbox-cancel-highlight';
@@ -52,7 +51,7 @@ export default class ConfirmBox extends Vue {
         return classes;
     }
 
-    public get confirmButtonClasses() {
+    public get confirmButtonClasses(): string {
         let classes = 'msgbox-btn msgbox-confirm ' + this.confirmButtonClass;
         if (this.confirmButtonHighlight) {
             classes += ' msgbox-confirm-highlight';
@@ -60,7 +59,7 @@ export default class ConfirmBox extends Vue {
         return classes;
     }
 
-    public handleAction(action: string) {
+    public handleAction(action: string): void {
         const callback = this.callback;
         this.isVisible = false;
         if (callback) {
@@ -82,7 +81,7 @@ export default class ConfirmBox extends Vue {
     width: 85%;
     border-radius: 3px;
     font-size: 16px;
-    -webkit-user-select: none;
+    user-select: none;
     overflow: hidden;
     backface-visibility: hidden;
     transition: .2s;

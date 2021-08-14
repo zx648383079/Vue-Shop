@@ -2,15 +2,15 @@
     <div>
         <header class="top top-search-box">
             <a href="" class="logo">
-                <img :src="logo | assets" alt="">
+                <img :src="logo" alt="">
             </a>
             <a class="search-entry" @click="tapSearch">
-                <i class="fa fa-search"></i>
+                <i class="iconfont fa-search"></i>
                 <span>搜索商品, 共{{ subtotal ? subtotal.goods : 0 }}款好物</span>
             </a>
             <a v-if="isGuest" @click="tapLogin">登录</a>
             <a v-if="!isGuest" @click="tapMessage">
-                <i class="fa fa-comment-dots"></i>
+                <i class="iconfont fa-comment-dots"></i>
             </a>
         </header>
 
@@ -18,9 +18,9 @@
 
             <div class="banner">
                 <Swiper :auto="4000">
-                    <SwiperItem v-for="(item, index) in banners" :key="index">
-                        <img :src="item.content" width="100%" alt="">
-                    </SwiperItem>
+                    <SwiperSlide v-for="(item, index) in banners" :key="index">
+                        <img :src="item.content" style="width:100%">
+                    </SwiperSlide>
                 </Swiper>
             </div>
 
@@ -31,11 +31,11 @@
                 </a>
             </div>
 
-            <GoodsPanel :items="data.new_products" title="最新商品" @enter="tapProduct" @addCart="tapAddCart"></GoodsPanel>
+            <GoodsPanel :items="floorItems.new_products" title="最新商品" @enter="tapProduct" @addCart="tapAddCart"></GoodsPanel>
 
-            <GoodsPanel :items="data.hot_products" title="热门商品" @enter="tapProduct" @addCart="tapAddCart"></GoodsPanel>
+            <GoodsPanel :items="floorItems.hot_products" title="热门商品" @enter="tapProduct" @addCart="tapAddCart"></GoodsPanel>
 
-            <GoodsPanel :items="data.best_products" title="推荐商品" @enter="tapProduct" @addCart="tapAddCart"></GoodsPanel>
+            <GoodsPanel :items="floorItems.best_products" title="推荐商品" @enter="tapProduct" @addCart="tapAddCart"></GoodsPanel>
 
         </div>
 
@@ -44,7 +44,8 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Options, Vue } from 'vue-property-decorator';
+import { Swiper, SwiperSlide } from 'swiper/vue';
 import TabBar from '@/components/TabBar.vue'
 import GoodsPanel from './Child/GoodsPanel.vue'
 import {getHome, getInfo} from '../../api/product'
@@ -52,39 +53,41 @@ import {getCategories} from '../../api/category'
 import {getBanners} from '../../api/ad'
 import { IProduct, IAd, ICategory, IHomeProduct, ISubtotal, ISite } from '@/api/model';
 import { dispatchSite } from '@/store/dispatches';
-import { Getter } from 'vuex-class';
+import { namespace } from 'vuex-class';
 import CartDialog from '@/pages/Goods/Child/CartDialog.vue';
-import Swiper from '@/components/Swiper.vue';
-import SwiperItem from '@/components/SwiperItem.vue';
 import { addGoods } from '@/api/cart';
 import Toast from '@/components/toast';
+import { assetsFilter } from '../../pipes';
 
-@Component({
+
+const authModule = namespace('auth');
+
+@Options({
     components: {
         TabBar,
         GoodsPanel,
         CartDialog,
-        Swiper,
-        SwiperItem,
+        Swiper, 
+        SwiperSlide,
     },
 })
 export default class Index extends Vue {
     public banners: IAd[] = [];
     public categories: ICategory[] = [];
-    public data: IHomeProduct = {};
+    public floorItems: IHomeProduct = {};
     public subtotal: ISite| null = null;
-    public mode: number = 0;
+    public mode = 0;
     public goods: IProduct | null = null;
 
-    @Getter('isGuest') public isGuest?: boolean;
+    @authModule.Getter('isGuest') public isGuest?: boolean;
 
     public get logo(): string {
-        return this.subtotal ? this.subtotal.logo : '/assets/images/wap_logo.png';
+        return assetsFilter(this.subtotal ? this.subtotal.logo : '/assets/images/wap_logo.png');
     }
 
     public created() {
         getHome().then(res => {
-            this.data = res;
+            this.floorItems = res;
         });
         getCategories().then(res => {
             if (!res.data) {
@@ -142,6 +145,6 @@ export default class Index extends Vue {
 
 <style scoped>
 .banner {
-    height: 50vw;
+    /* height: 50vw; */
 }
 </style>

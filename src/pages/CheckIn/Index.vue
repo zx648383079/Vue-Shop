@@ -7,7 +7,7 @@
                     签到
                 </div>
                 <div v-else class="checked-btn">
-                    <i class="fa fa-calendar-check" aria-hidden="true"></i>
+                    <i class="iconfont fa-calendar-check" aria-hidden="true"></i>
                     已签到
                 </div>
                 <div v-if="checked" class="checked-tip">已连续签到{{ checked.running }}天，继续加油</div>
@@ -25,7 +25,7 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Options } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import { twoPad } from '@/utils';
 import { getCanCheckIn, checkIn, getMonth } from '@/api/check';
@@ -38,7 +38,7 @@ interface IDay {
     active?: boolean,
 }
 
-@Component({
+@Options({
     components: {
         BackHeader,
     },

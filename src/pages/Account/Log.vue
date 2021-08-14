@@ -14,7 +14,7 @@
                                 <p>{{ item.created_at }}</p>
                             </div>
                             <div class="amount">
-                                {{ item.money > 0 ? '+' + item.money : item.money }}
+                                {{ item.money && item.money > 0 ? '+' + item.money : item.money }}
                             </div>
                         </div>
                     </div>
@@ -24,13 +24,13 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Options } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import PullToRefresh from '@/components/PullToRefresh.vue';
 import { getAccountLog } from '@/api/user';
 import { IAccountLog } from '@/api/model';
 
-@Component({
+@Options({
     components: {
         BackHeader,
         PullToRefresh,
@@ -44,7 +44,7 @@ export default class Log extends Vue {
 
     get itemGroups(): IAccountLog[] {
         const data = [];
-        let last: string = '';
+        let last = '';
         for (const item of this.items) {
             const match = (item.created_at + '').match(/(\d{4})-(\d{2})(-\d{2} \d{2}:\d{2})/);
             if (!match) {

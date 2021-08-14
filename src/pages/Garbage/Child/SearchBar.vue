@@ -1,24 +1,23 @@
 <template>
     <div class="box">
         <div class="search-box">
-            <i class="fa fa-camera"></i>
+            <i class="iconfont fa-camera"></i>
             <input type="text" @keyup="tapKey" :value="value" @input="tapUpdateVal($event.target.value)">
-            <i class="fa fa-search"></i>
+            <i class="iconfont fa-search"></i>
         </div>
         <ul class="tip-box" v-if="tipList && tipList.length > 0">
             <li v-for="(item, index) in tipList" :key="index" @click="tapTip(item)">
-                <i class="fa fa-search"></i>
+                <i class="iconfont fa-search"></i>
                 {{ item }}
-                <i class="fa fa-arrow-right"></i>
+                <i class="iconfont fa-arrow-right"></i>
             </li>
         </ul>
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Prop } from 'vue-property-decorator';
 import { getTips } from '@/api/garbage';
 
-@Component
 export default class SearchBar extends Vue {
     @Prop(String) public readonly value!: string;
     public tipList: string[] = [];

@@ -2,7 +2,7 @@
     <div>
         <BackHeader :title="mode > 0 ? '选择地址' : '我的地址'">
             <a class="right" @click="$router.push('/address/create')">
-                <i class="fa fa-plus"></i>
+                <i class="iconfont fa-plus"></i>
             </a>
         </BackHeader>
       <div class="has-header">
@@ -23,14 +23,14 @@
                         </p>
                         <p>
                             <span class="default" v-if="item.is_default">默认</span>
-                            <span>{{ item.region.full_name }} {{ item.address }}</span>    
+                            <span>{{ item.region?.full_name }} {{ item.address }}</span>    
                         </p>
                     </div>
                     <div slot="right">
                         <a @click="tapEdit(item)">
-                            <i class="fa fa-edit"></i>
+                            <i class="iconfont fa-edit"></i>
                         </a>
-                        <i class="fa fa-trash" @click="tapRemove(item)"></i>
+                        <i class="iconfont fa-trash" @click="tapRemove(item)"></i>
                     </div>
                 </SwipeRow>
             </div>
@@ -38,14 +38,14 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Options } from 'vue-property-decorator';
 import { IAddress } from '@/api/model';
 import { getAddressList, deleteAddress, defaultAddress } from '@/api/address';
 import BackHeader from '@/components/BackHeader.vue';
 import SwipeRow from '@/components/SwipeRow.vue';
 import { dispatchSetAddress, dispatchAddressList, dispatchSetAddressIfEmpty } from '@/store/dispatches';
 
-@Component({
+@Options({
     components: {
         BackHeader,
         SwipeRow,
@@ -53,8 +53,8 @@ import { dispatchSetAddress, dispatchAddressList, dispatchSetAddressIfEmpty } fr
 })
 export default class Index extends Vue {
     public items: IAddress[] = [];
-    public selected: number = 0;
-    public mode: number = 0;
+    public selected = 0;
+    public mode = 0;
 
     public created() {
         if (this.$route.query.selected) {

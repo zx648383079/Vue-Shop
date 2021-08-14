@@ -6,19 +6,19 @@
                 <div class="line-item" v-for="(item, index) in items" :key="index">
                     <span><i :class="['fab', item.icon]"></i>{{ item.name }}</span>
                     <span>{{ item.id ? '已绑定' : '未绑定' }}</span>
-                    <i class="fa fa-chevron-right"></i>
+                    <i class="iconfont fa-chevron-right"></i>
                 </div>
             </div>
         </div>
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Options } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import { getConnect } from '@/api/user';
 import { IConnect } from '@/api/model';
 
-@Component({
+@Options({
     components: {
         BackHeader,
     },

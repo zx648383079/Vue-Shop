@@ -8,16 +8,16 @@
             <a class="item">
                 <div class="name">MI 8</div>
                 <div class="time">4秒前</div>
-                <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                <i class="iconfont fa-chevron-right" aria-hidden="true"></i>
             </a>
         </div>
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Options, Vue } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 
-@Component({
+@Options({
     components: {
         BackHeader,
     },

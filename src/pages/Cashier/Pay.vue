@@ -7,9 +7,9 @@
                 {{ order.order_amount }}
             </div>
             <div class="checkout-amount">
-                <p class="line-item"><span>商品总价</span> <span>{{ order.goods_amount | price }}</span> </p>
-                <p class="line-item"><span>运费</span> <span>{{ order.shipping_fee | price }}</span> </p>
-                <p class="line-item"><span>订单总价</span> <span>{{ order.order_amount | price }}</span> </p>
+                <p class="line-item"><span>商品总价</span> <span>{{ order.goods_amount }}</span> </p>
+                <p class="line-item"><span>运费</span> <span>{{ order.shipping_fee }}</span> </p>
+                <p class="line-item"><span>订单总价</span> <span>{{ order.order_amount }}</span> </p>
             </div>
             <div class="payment-item" v-if="payment" :class="{active: payment.id == order.payment_id}" @click="tapSelected(payment)">
                 <div class="icon">
@@ -43,16 +43,15 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Options } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import { IOrder, ORDER_STATUS, IPayment, IPrePay } from '@/api/model';
-import Toast from '@/components/toast.ts';
-import ConfirmBox from '@/components/confirm.ts';
+import Toast from '@/components/toast';
 import { dispatchOrder } from '@/store/dispatches';
 import { getPaymentList } from '@/api/cart';
 import { payOrder } from '@/api/order';
 
-@Component({
+@Options({
     components: {
         BackHeader,
     },
@@ -63,7 +62,7 @@ export default class Pay extends Vue {
     public paymentList: IPayment[] = [];
 
     public created() {
-        const id = parseInt(this.$route.params.id, 10);
+        const id = parseInt(this.$route.params.id as string, 10);
         if (!id) {
             Toast('订单错误');
             this.$router.push('/');
@@ -80,8 +79,8 @@ export default class Pay extends Vue {
         });
     }
 
-    public tapSelected(item: IPayment) {
-        if (!this.order) {
+    public tapSelected(item: IPayment|null) {
+        if (!this.order || !item) {
             return;
         }
         this.order.payment_id = item.id;
@@ -133,7 +132,9 @@ export default class Pay extends Vue {
             document.body.appendChild(div);
             return;
         }
-        if (data.params) {}
+        if (data.params) {
+            // TODO
+        }
     }
 }
 </script>

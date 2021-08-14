@@ -2,7 +2,7 @@
     <div>
         <header class="top">
             <a @click="tapBack" class="back">
-                <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                <i class="iconfont fa-chevron-left" aria-hidden="true"></i>
             </a>
             <div class="top-tab">
                 <a @click="tapProductScroll('info')">商品</a>
@@ -32,15 +32,15 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Options } from 'vue-property-decorator';
 import { IComment, ICommentSubtotal } from '@/api/model';
 import CommentPage from './Child/Page.vue';
-import Toast from '@/components/toast.ts';
+import Toast from '@/components/toast';
 import { getCommentSubtotal, getCommentList } from '@/api/comment';
 import PullToRefresh from '@/components/PullToRefresh.vue';
 import Star from './Child/Star.vue';
 
-@Component({
+@Options({
     components: {
         CommentPage,
         Star,
@@ -50,14 +50,14 @@ import Star from './Child/Star.vue';
 export default class Comment extends Vue {
     public comment: ICommentSubtotal | null = null;
     public items: IComment[] = [];
-    public itemId: number = 0;
-    public itemType: number = 0;
+    public itemId = 0;
+    public itemType = 0;
     public hasMore = true;
     public page = 1;
     public isLoading = false;
 
     public created() {
-        this.itemId = parseInt(this.$route.params.id, 10);
+        this.itemId = parseInt(this.$route.params.id as string, 10);
         if (!this.itemId) {
             Toast('商品错误');
             this.$router.push('/');

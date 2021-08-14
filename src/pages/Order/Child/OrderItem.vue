@@ -11,13 +11,13 @@
                 </div>
                 <div class="goods-info">
                     <h4>{{ goods.name }}</h4>
-                    <span class="price">{{ goods.price | price }}</span>
+                    <span class="price">{{ goods.price }}</span>
                     <span class="amount"> x {{ goods.amount }}</span>
                 </div>
             </div>
         </div>
         <div class="order-amount">
-            共 {{ item.goods.length }} 件 合计：{{ item.goods_amount }}
+            共 {{ item.goods?.length }} 件 合计：{{ item.goods_amount }}
         </div>
         <div class="order-footer">
             <div class="order-actions">
@@ -34,14 +34,13 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Emit, Prop, Vue } from 'vue-property-decorator';
 import { IOrder, ORDER_STATUS } from '@/api/model';
 import { receiveOrder } from '@/api/order';
 
-@Component
 export default class Logistics extends Vue {
     public ORDER_STATUS = ORDER_STATUS;
-    @Prop(Object) public readonly item?: IOrder;
+    @Prop(Object) public readonly item!: IOrder;
 
     public tapPay() {
         if (!this.item) {

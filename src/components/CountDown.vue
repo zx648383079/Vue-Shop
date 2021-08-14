@@ -4,27 +4,24 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Prop } from 'vue-property-decorator';
 
-@Component
 export default class CountDown extends Vue {
 
     @Prop({type: Number, default: 60}) public readonly time!: number;
 
-    public text: string = '获取验证码';
+    public text = '获取验证码';
+    public disable = false;
+    public handle = 0;
 
-    public disable: boolean = false;
-
-    public handle: number = 0;
-
-    public tapClick() {
+    public tapClick(): void {
         if (this.disable) {
             return;
         }
         this.$emit('click', this);
     }
 
-    public start(time: number = 0) {
+    public start(time = 0): void {
         this.disable = true;
         if (time < 1) {
             time = this.time;
@@ -43,7 +40,7 @@ export default class CountDown extends Vue {
         }, 1000);
     }
 
-    public reset() {
+    public reset(): void {
         if (this.disable) {
             this.disable = true;
         }

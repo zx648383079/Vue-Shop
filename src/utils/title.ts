@@ -25,8 +25,8 @@ function setTitle(title: string, img?: string) {
 }
 
 export default {
-    install(Vue: any) {
-        Vue.directive('zo-title', (el: any, binding: any) => {
+    install(app: any) {
+        app.directive('zo-title', (el: any, binding: any) => {
             setTitle(binding.value, el.getAttribute('img-set') || null);
         });
     },

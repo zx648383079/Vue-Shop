@@ -11,19 +11,18 @@
         </div>
         <div class="actions-right" ref="right">
             <slot name="right">
-                <i class="fa fa-trash" @click="tapRemove"></i>
+                <i class="iconfont fa-trash" @click="tapRemove"></i>
             </slot>
         </div>
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit, Ref } from 'vue-property-decorator';
+import { Vue, Prop, Ref } from 'vue-property-decorator';
 
-@Component
 export default class SwipeRow extends Vue {
     @Prop([String, Array]) public readonly name!: string| string[];
     @Prop([Number, String]) public readonly index!: number|string;
-    public oldLeft: number = 0;
+    public oldLeft = 0;
     public left = 0;
     public startX = 0;
     public isTouch = false;
@@ -79,7 +78,7 @@ export default class SwipeRow extends Vue {
         this.left = Math.min(this.oldLeft + diff, 0);
     }
 
-    public touchEnd(e: TouchEvent) {
+    public touchEnd() {
         if (!this.isTouch) {
             this.animation(this.left, 0);
             this.$emit('click');
@@ -124,7 +123,7 @@ export default class SwipeRow extends Vue {
     }
 
     public resetOther() {
-        if (typeof this.index === 'undefined') {
+        if (typeof this.index === 'undefined' || !this.$parent) {
             return;
         }
         const items: SwipeRow[] = this.$parent.$refs.swiperow as SwipeRow[];

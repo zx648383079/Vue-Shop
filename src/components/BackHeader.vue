@@ -1,7 +1,7 @@
 <template>
-    <header class="top" :class="{fixed: !this.fixed}">
+    <header class="top" :class="{fixed: !fixed}">
         <a class="back" @click="tapBack">
-            <i class="fa fa-chevron-left" aria-hidden="true"></i>
+            <i class="iconfont fa-chevron-left" aria-hidden="true"></i>
         </a>
         <span class="title">
             {{ title }}
@@ -10,14 +10,13 @@
     </header>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Prop } from 'vue-property-decorator';
 
-@Component
 export default class BackHeader extends Vue {
     @Prop(String) public readonly title!: string;
     @Prop({type: Boolean, default: true}) public readonly fixed!: boolean;
 
-    public tapBack() {
+    public tapBack(): void {
         if (window.history.length <= 1) {
             this.$router.push('/');
             return;

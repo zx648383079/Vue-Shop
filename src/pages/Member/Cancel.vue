@@ -16,11 +16,11 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Options, Vue } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
-import ConfirmBox from '@/components/confirm.ts';
+import ConfirmBox from '@/components/confirm';
 
-@Component({
+@Options({
     components: {
         BackHeader,
     },
@@ -33,7 +33,7 @@ export default class Cancel extends Vue {
         '这是多余的账户',
     ];
 
-    public selected: number = 0;
+    public selected = 0;
 
     public mounted() {
         ConfirmBox('账户注销后，您已完成的交易将无法售后。', '账户注销确认', {

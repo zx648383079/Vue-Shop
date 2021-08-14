@@ -8,25 +8,25 @@
             <div class="header">
                 已选商品
                 <span class="right">
-                    <i class="fa fa-trash"></i>
+                    <i class="iconfont fa-trash"></i>
                     清空
                 </span>
             </div>
             <div class="group-item" v-for="(group, j) in cart.data" :key="j">
                 <div class="item" v-for="(item, index) in group.goods_list" :key="index">
-                    <div class="name">{{ item.goods.name }}</div>
+                    <div class="name">{{ item.goods?.name }}</div>
                     <div class="price">{{ item.price }}</div>
                     <div class="item-actions">
-                        <i class="fa fa-minus-circle" v-if="item.amount && item.amount > 0"  @click="tapMinus(item)"></i>
+                        <i class="iconfont fa-minus-circle" v-if="item.amount && item.amount > 0"  @click="tapMinus(item)"></i>
                         <span v-if="item.amount && item.amount > 0">{{ item.amount }}</span>
-                        <i class="fa fa-plus-circle" @click="tapPlus(item)"></i>
+                        <i class="iconfont fa-plus-circle" @click="tapPlus(item)"></i>
                     </div>
                 </div>
             </div>
         </div>
         <div class="mini-footer">
             <div class="icon" @click="tapExpand">
-                <i class="fa fa-shopping-cart"></i>
+                <i class="iconfont fa-shopping-cart"></i>
                 <span class="amount-tip" v-if="amount > 0">{{ cartAmount }}</span>
             </div>
             <div class="subtotal">
@@ -34,20 +34,19 @@
                 <p>另需配送费</p>
             </div>
             <div class="checkout">
-                {{ cart.checkout_button.text }}
+                {{ cart.checkout_button?.text }}
             </div>
         </div>
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue,  } from 'vue-property-decorator';
 import { ICart, ICartItem } from '@/api/model';
 import { getCart } from '@/api/cart';
 
-@Component
 export default class FixedCart extends Vue {
     public cart: ICart| null = null;
-    public amount: number = 100;
+    public amount = 100;
     public expaned = false;
 
     public get cartAmount(): string {

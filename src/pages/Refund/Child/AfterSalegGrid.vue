@@ -3,7 +3,7 @@
         <div class="input-group">
             <label for="">申请原因</label>
             <div class="">
-                <select class="form-control " required="">
+                <select class="form-control " required>
                     <option>请选择申请原因</option>
                 </select>
             </div>
@@ -11,7 +11,7 @@
         <div class="input-group">
             <label for="退款金额">退款联系人</label>
             <div class="">
-                <input type="text" id="退款金额" class="form-control " name="退款金额" placeholder="请输入 退款金额" required="">
+                <input type="text" id="退款金额" class="form-control " name="退款金额" placeholder="请输入 退款金额" required>
             </div>
         </div>
         <div class="comment-input">
@@ -20,10 +20,10 @@
             <div class="multi-image-box">
                 <div class="image-item">
                     <img alt="">
-                    <i class="fa fa-times"></i>
+                    <i class="iconfont fa-times"></i>
                 </div>
                 <div class="add-item" >
-                    <i class="fa fa-plus"></i>
+                    <i class="iconfont fa-plus"></i>
                 </div>
             </div>
         </div>
@@ -38,22 +38,22 @@
             <label>收货地址</label>
             <span class="tip">(该地址是商城回寄给您的地址)</span>
             <div class="address-box" @click="tapAddress">
-                <i class="fa fa-map-marker"></i>
-                <p v-if="address">{{ address.region.full_name }} {{ address.address }}</p>
+                <i class="iconfont fa-map-marker"></i>
+                <p v-if="address">{{ address.region?.full_name }} {{ address.address }}</p>
                 <p v-else>请选择地址</p>
-                <i class="fa fa-chevron-right"></i>
+                <i class="iconfont fa-chevron-right"></i>
             </div>
         </div>
          <div class="input-group">
             <label for="退款金额">联系人</label>
             <div class="">
-                <input type="text" id="退款金额" class="form-control " name="退款金额" placeholder="请输入 退款金额" required="">
+                <input type="text" id="退款金额" class="form-control " name="退款金额" placeholder="请输入 退款金额" required>
             </div>
         </div>
         <div class="input-group">
             <label for="退款金额">联系方式</label>
             <div class="">
-                <input type="text" id="退款金额" class="form-control " name="退款金额" placeholder="请输入 退款金额" required="">
+                <input type="text" id="退款金额" class="form-control " name="退款金额" placeholder="请输入 退款金额" required>
             </div>
         </div>
         <div class="fixed-footer">
@@ -62,12 +62,11 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Prop } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
 import { IAddress } from '@/api/model';
 import { dispatchAddress } from '@/store/dispatches';
 
-@Component
 export default class AfterSaleGrid extends Vue {
     @Prop(Number) public readonly mode!: number;
     @Getter('addressList') public addressList?: IAddress[];

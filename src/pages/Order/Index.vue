@@ -19,15 +19,15 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Options, Vue } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import PullToRefresh from '@/components/PullToRefresh.vue';
 import { ORDER_STATUS, IOrder } from '@/api/model';
 import { getOrder, receiveOrder, cancelOrder } from '@/api/order';
 import OrderItem from './Child/OrderItem.vue';
-import ConfirmBox from '@/components/confirm.ts';
+import ConfirmBox from '@/components/confirm';
 
-@Component({
+@Options({
     components: {
         BackHeader,
         OrderItem,

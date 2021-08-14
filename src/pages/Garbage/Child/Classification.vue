@@ -1,7 +1,7 @@
 <template>
     <div class="box">
         <div class="header">
-            <i class="fa fa-arrow-left" @click="tapBack"></i>
+            <i class="iconfont fa-arrow-left" @click="tapBack"></i>
             {{ item.name }}</div>
         <div class="thumb">
             <img :src="item.image" alt="">
@@ -16,16 +16,17 @@
         </div>
     </div>
 </template>
+
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Prop, Emit } from 'vue-property-decorator';
 import { IClassification } from '@/api/garbage';
 
-@Component
 export default class Classification extends Vue {
     @Prop(Object) public readonly item!: IClassification;
 
     @Emit('back')
     public tapBack() {
+        // 
     }
 }
 </script>

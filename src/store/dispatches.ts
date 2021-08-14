@@ -1,33 +1,34 @@
-import store from './';
+import store, { authModule } from './';
 import { ICategory, IUser, ILogin, IAddress, IOrder, ICartGroup, ISite } from '@/api/model';
+import { shopModule } from './';
 
-export const dispatchCategories = (): Promise<ICategory[]> => store.dispatch('getCategories');
+export const dispatchCategories = (): Promise<ICategory[]> => shopModule.getCategories();
 
-export const dispatchSite = (): Promise<ISite> => store.dispatch('getSite');
+export const dispatchSite = (): Promise<ISite> => shopModule.getSite();
 
-export const dispatchAddressList = (): Promise<IAddress[]> => store.dispatch('getAddressList');
+export const dispatchAddressList = (): Promise<IAddress[]> => shopModule.getAddressList();
 
-export const dispatchSetAddressList = (address: IAddress[]) => store.dispatch('setAddressList', address);
+export const dispatchSetAddressList = (address: IAddress[]) => shopModule.setAddressList(address);
 
-export const dispatchAddress = (): Promise<IAddress> => store.dispatch('getAddress');
+export const dispatchAddress = (): Promise<IAddress|null> => shopModule.getAddress();
 
-export const dispatchUser = (): Promise<IUser> => store.dispatch('getUser');
+export const dispatchUser = (): Promise<IUser|null> => authModule.getUser();
 
-export const dispatchSetUser = (user: IUser): Promise<void> => store.dispatch('setUser', user);
+export const dispatchSetUser = (user: IUser): Promise<void> => authModule.setUser(user);
 
-export const dispatchSetToken = (token: string) => store.dispatch('setToken', token);
+export const dispatchSetToken = (token: string) => authModule.setToken(token);
 
 export const dispatchLogin =
-    (param: ILogin): Promise<IUser> => store.dispatch('loginUser', param);
+    (param: ILogin): Promise<IUser> => authModule.loginUser(param);
 
-export const dispatchLogout = (): Promise<any> => store.dispatch('logoutUser');
+export const dispatchLogout = (): Promise<any> => authModule.logoutUser();
 
-export const dispatchSetCart = (cart: ICartGroup[]) => store.dispatch('setCart', cart);
+export const dispatchSetCart = (cart: ICartGroup[]) => shopModule.setCart(cart);
 
-export const dispatchSetAddress = (address: IAddress) => store.dispatch('setAddress', address);
+export const dispatchSetAddress = (address: IAddress) => shopModule.setAddress(address);
 
-export const dispatchSetAddressIfEmpty = (address: IAddress) => store.dispatch('setAddressIfEmpty', address);
+export const dispatchSetAddressIfEmpty = (address: IAddress) => shopModule.setAddressIfEmpty(address);
 
-export const dispatchSetOrder = (order?: IOrder) => store.dispatch('setOrder', order);
+export const dispatchSetOrder = (order?: IOrder) => shopModule.setOrder(order as any);
 
-export const dispatchOrder = (id: number): Promise<IOrder> => store.dispatch('getOrder', id);
+export const dispatchOrder = (id: number): Promise<IOrder> => shopModule.getOrder(id);

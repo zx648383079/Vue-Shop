@@ -23,8 +23,7 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit, Watch } from 'vue-property-decorator';
-import { IRegionObject } from '@/api/model';
+import { Vue, Prop, Watch } from 'vue-property-decorator';
 import { each } from '@/utils';
 
 interface IColumn {
@@ -38,7 +37,6 @@ interface IPoint {
     y: number,
 }
 
-@Component
 export default class SelectPicker extends Vue {
     @Prop({type: Number, default: 1}) public readonly column!: number;
     @Prop({default: '请选择'}) public readonly title!: string;
@@ -46,12 +44,12 @@ export default class SelectPicker extends Vue {
     @Prop({default: 'id'}) public readonly valueTag!: string;
     @Prop({default: 'children'}) public readonly childrenTag!: string;
     @Prop({type: Number, default: 30}) public readonly lineHeight!: number;
-    @Prop([Array, Object]) public readonly value!: object|object[];
+    @Prop([Array, Object]) public readonly value!: any|any[];
 
     @Prop(Object) public readonly items!: any;
 
     public columnList: IColumn[] = [];
-    public calendarVisible: boolean = false;
+    public calendarVisible = false;
     public startPoint: IPoint = {x: 0, y: 0};
 
     @Watch('items')
@@ -120,9 +118,9 @@ export default class SelectPicker extends Vue {
      * @param isUp 是否是上滑
      * @param x 触发的位置，自动定位到第几级
      */
-    public doMove(distance: number, isUp: boolean = true, x: number = 0) {
+    public doMove(distance: number, isUp = true, x = 0) {
         const diff: number = isUp ? Math.floor(distance / this.lineHeight) : - Math.ceil(distance / this.lineHeight);
-        let column: number = 0;
+        let column = 0;
         if (diff === 0) {
             return this;
         }
@@ -155,7 +153,7 @@ export default class SelectPicker extends Vue {
             return;
         }
         const item: any = data[data.length - 1];
-        if (!item.hasOwnProperty('full_name')) {
+        if (!Object.prototype.hasOwnProperty.call(item, 'full_name')) {
             item.full_name = name.join(' ');
         }
         this.$emit('input', item);
@@ -164,7 +162,7 @@ export default class SelectPicker extends Vue {
     public cloneItem(obj: any): any {
         const item: any = new Object();
         for (const key in obj) {
-            if (obj.hasOwnProperty(key) && key !== this.childrenTag) {
+            if (Object.prototype.hasOwnProperty.call(obj, key) && key !== this.childrenTag) {
                 item[key] = obj[key];
             }
         }
@@ -181,7 +179,7 @@ export default class SelectPicker extends Vue {
         }
     }
 
-    public refreshColumn(index: number, selected: number = 0) {
+    public refreshColumn(index: number, selected = 0) {
         const data: any[] = [];
         each(this.getColumnData(index), (item) => {
             data.push(item);
@@ -212,7 +210,7 @@ export default class SelectPicker extends Vue {
             return [];
         }
         const item = column.items[current];
-        if (!item.hasOwnProperty(this.childrenTag)) {
+        if (!Object.prototype.hasOwnProperty.call(item, this.childrenTag)) {
             return [];
         }
         return item[this.childrenTag];
@@ -245,7 +243,6 @@ export default class SelectPicker extends Vue {
         }
         const path: number[] = [];
         let found = false;
-        const that = this;
         const findPath = (data: any) => {
             if (typeof data !== 'object') {
                 return;
@@ -253,15 +250,15 @@ export default class SelectPicker extends Vue {
             let iii = -1;
             each(data, (args, key) => {
                 iii ++;
-                if (key === id || args[that.valueTag] === id) {
+                if (key === id || args[this.valueTag] === id) {
                     path.push(iii);
                     found = true;
                     return false;
                 }
-                if (!args.hasOwnProperty(that.childrenTag)) {
+                if (!Object.prototype.hasOwnProperty.call(args, this.childrenTag)) {
                     return;
                 }
-                findPath(args[that.childrenTag]);
+                findPath(args[this.childrenTag]);
                 if (found) {
                     path.push(iii);
                     return false;
@@ -271,9 +268,9 @@ export default class SelectPicker extends Vue {
         };
         let ii = -1;
 
-        each(this.items, (data: any, key: any) => {
+        each(this.items, (data: any) => {
             ii ++;
-            findPath(data[that.childrenTag]);
+            findPath(data[this.childrenTag]);
             if (found) {
                 path.push(ii);
                 return false;

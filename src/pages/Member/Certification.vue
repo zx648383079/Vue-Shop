@@ -7,7 +7,7 @@
                 <div class="top-header"></div>
                 <div class="user-box">
                     <div class="avatar">
-                        <img :src="user ? user.avatar : '/assets/images/avatar/1.png' | assets">
+                        <img :src="avatar">
                     </div>
                     <h3>您已实名制</h3>
                     <div class="name">*zz</div>
@@ -22,14 +22,15 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Options, Vue } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import ApplyCertification from './Child/ApplyCertification.vue';
 import { dispatchUser } from '../../store/dispatches';
 import { IUser } from '../../api/model';
 import MenuItem from './Child/MenuItem.vue';
+import { assetsFilter } from '../../pipes';
 
-@Component({
+@Options({
     components: {
         BackHeader,
         ApplyCertification,
@@ -39,6 +40,10 @@ import MenuItem from './Child/MenuItem.vue';
 export default class Certification extends Vue {
 
     public user: IUser| null =  null;
+
+    public get avatar() {
+        return assetsFilter(this.user ? this.user.avatar : '/assets/images/avatar/1.png');
+    }
 
     public created() {
         dispatchUser().then(res => {

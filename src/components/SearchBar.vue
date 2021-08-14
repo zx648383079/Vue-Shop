@@ -6,7 +6,7 @@
                 <div class="panel" v-if="historyList && historyList.length > 0">
                     <div class="panel-header">
                         <span>历史记录</span>
-                        <i class="fa fa-trash" @click="tapClearHistory"></i>
+                        <i class="iconfont fa-trash" @click="tapClearHistory"></i>
                     </div>
                     <div class="panel-body">
                         <a v-for="(item, index) in historyList" :key="index" @click="tapSearch(item)">{{ item }}</a>
@@ -33,11 +33,11 @@
 <script lang="ts">
 import { removeLocalStorage, getLocalStorage, setLocalStorage } from '@/utils';
 const KEYWORDS_HISTORY = 'KEYWORDS_HISTORY';
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Prop, Emit, Options } from 'vue-property-decorator';
 import SearchHeader from './SearchHeader.vue';
 import { getHotKeywords, getTips } from '@/api/product';
 
-@Component({
+@Options({
     components: {
         SearchHeader,
     },

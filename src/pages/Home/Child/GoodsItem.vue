@@ -7,16 +7,15 @@
             {{ item.name }}
         </div>
         <div class="item-actions">
-            <span class="item-price">{{ item.price | price }}
+            <span class="item-price">{{ item.price }}
             </span>
             <span @click="tapAddCart">加入购物车</span>
         </div>
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Prop } from 'vue-property-decorator';
 
-@Component
 export default class GoodsItem extends Vue {
     @Prop(Object) public readonly item!: any;
     public tapProduct() {

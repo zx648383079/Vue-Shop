@@ -1,7 +1,7 @@
 import {fetch} from '../utils/http';
 import { IData, ICategory, ICategoryObject } from './model';
 
-export const getCategories = (parent: number = 0) => fetch<IData<ICategory>>('shop/category', {parent});
+export const getCategories = (parent = 0) => fetch<IData<ICategory>>('shop/category', {parent});
 
 export const getCategory = (id: number, extra?: string) => fetch<ICategory>('shop/category', {id, extra});
 

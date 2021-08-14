@@ -16,15 +16,12 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Options } from 'vue-property-decorator';
 import LargeHeader from '@/components/LargeHeader.vue';
-import Toast from '@/components/toast.ts';
-import { updatePassword, updateProfile } from '../../api/user';
-import { dispatchUser, dispatchSetUser } from '@/store/dispatches';
-import { IUser } from '../../api/model';
+import Toast from '@/components/toast';
 import { saveFeedback } from '@/api/account';
 
-@Component({
+@Options({
     components: {
         LargeHeader,
     },

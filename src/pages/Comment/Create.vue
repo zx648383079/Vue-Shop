@@ -7,13 +7,13 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Options } from 'vue-property-decorator';
 import BackHeader from '@/components/BackHeader.vue';
 import { IOrderGoods } from '@/api/model';
 import { getUnCommentGoods } from '@/api/order';
 import CommentItem from './Child/CommentItem.vue';
 
-@Component({
+@Options({
     components: {
         BackHeader,
         CommentItem,
