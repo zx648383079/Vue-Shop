@@ -16,6 +16,8 @@ axios.interceptors.request.use(
                 'Content-Type': 'application/vnd.api+json',
                 'Accept': 'application/json',
             }
+        } else if (!config.headers) {
+            config.headers = {};
         }
         const params = util.getAppParams();
         if (!config.params) {

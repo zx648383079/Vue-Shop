@@ -5,7 +5,7 @@ import router from './router';
 import store from './store';
 import emitter from './event';
 
-import 'swiper/swiper.scss';
+import 'swiper/scss';
 import './assets/iconfont/iconfont.css';
 
 import http from './utils/http';
