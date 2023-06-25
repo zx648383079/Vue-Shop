@@ -26,7 +26,7 @@ import { ref, watch } from 'vue';
 const emit = defineEmits(['toggle']);
 const props = defineProps<{
     title: string;
-    hide: boolean;
+    hide?: boolean;
 }>();
 const calendarVisible = ref(false);
 

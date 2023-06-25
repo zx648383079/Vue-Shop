@@ -15,7 +15,7 @@
       
     </div>
 </template>
-<script lang="ts">
+<script setup lang="ts">
 import BackHeader from '@/components/BackHeader.vue';
 import { ref } from 'vue';
 

@@ -17,11 +17,12 @@
 </template>
 <script setup lang="ts">
 import LargeHeader from '@/components/LargeHeader.vue';
-import Toast from '@/components/toast';
 import { saveFeedback } from '@/api/account';
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
+import { useDialog } from '../../components/Dialog/plugin';
 
+const toast = useDialog();
 const router = useRouter();
 const input = reactive({
     name: '',
@@ -31,15 +32,15 @@ const input = reactive({
 });
 function tapSubmit() {
     if (input.name.length < 1) {
-        Toast('请输入称呼！');
+        toast.warning('请输入称呼！');
         return;
     }
     if (input.content.length < 1) {
-        Toast('请输入留言内容！');
+        toast.warning('请输入留言内容！');
         return;
     }
     saveFeedback({...input}).then(_ => {
-        Toast('留言成功！');
+        toast.warning('留言成功！');
         router.back();
     });
 }

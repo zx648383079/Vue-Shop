@@ -27,8 +27,9 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { isEmpty, isEmail } from '../../../utils/validate';
-import Toast from '@/components/toast';
+import { useDialog } from '../../../components/Dialog/plugin';
 
+const toast = useDialog();
 const input = reactive({
     name: '',
     email: '',
@@ -48,23 +49,23 @@ function tapRegister() {
     const email = input.email;
     const password = input.password;
     if (isEmpty(name)) {
-        Toast('请输入昵称');
+        toast.warning('请输入昵称');
         return;
     }
     if (isEmpty(email) || !isEmail(email)) {
-        Toast('请输入邮箱');
+        toast.warning('请输入邮箱');
         return;
     }
     if (isEmpty(password)) {
-        Toast('请输入密码');
+        toast.warning('请输入密码');
         return;
     }
     if (password.length < 4) {
-        Toast('请密码长度必须大于4');
+        toast.warning('请密码长度必须大于4');
         return;
     }
     if (input.confirmPassword !== password) {
-        Toast('请两次密码不一致');
+        toast.warning('请两次密码不一致');
         return;
     }
 

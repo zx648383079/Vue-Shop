@@ -34,12 +34,13 @@
 <script setup lang="ts">
 import type { IProduct, ICartGroup } from '@/api/model';
 import { addGoods } from '@/api/cart';
-import Toast from '@/components/toast';
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 import { useShopStore } from '../../../stores/shop';
+import { useDialog } from '../../../components/Dialog/plugin';
 
 const router = useRouter();
+const toast = useDialog();
 const shopStore = useShopStore();
 const emit = defineEmits(['close']);
 const props = withDefaults(
@@ -89,7 +90,7 @@ function tapDoCart() {
     }
     if (props.mode === 1) {
         addGoods(props.product.id, amount.value).then(() => {
-            Toast('已成功加入购物车');
+            toast.warning('已成功加入购物车');
             tapClose();
         });
         return;

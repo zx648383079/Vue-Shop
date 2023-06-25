@@ -53,16 +53,17 @@ import {getBanners} from '../../api/ad'
 import type { IProduct, IAd, ICategory, IHomeProduct, ISite } from '@/api/model';
 import CartDialog from '../Goods/Child/CartDialog.vue';
 import { addGoods } from '@/api/cart';
-import Toast from '@/components/toast';
 import { assetsFilter } from '../../pipes';
 import { useAuthStore } from '../../stores/auth';
 import { useRouter } from 'vue-router';
 import { computed, ref } from 'vue';
 import { useShopStore } from '../../stores/shop';
+import { useDialog } from '../../components/Dialog/plugin';
 
 const authStore = useAuthStore();
 const shopStore = useShopStore();
 const router = useRouter();
+const toast = useDialog();
 const banners = ref<IAd[]>([]);
 const categories = ref<ICategory[]>([]);
 const floorItems = ref<IHomeProduct>({});
@@ -88,7 +89,7 @@ function tapAddCart(item: IProduct) {
     }
     addGoods(item.id, 1).then(res => {
         if (!res.dialog) {
-            Toast('已成功加入购物车');
+            toast.success('已成功加入购物车');
             return;
         }
         goods.value = res.data;
@@ -110,6 +111,8 @@ function tapMessage() {
 
 getHome().then(res => {
     floorItems.value = res;
+}).catch(err => {
+    toast.error(err);
 });
 getCategories().then(res => {
     if (!res.data) {

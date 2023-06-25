@@ -146,7 +146,6 @@
     </div>
 </template>
 <script setup lang="ts">
-import Toast from '@/components/toast';
 import type { IProduct, ICommentSubtotal } from '@/api/model';
 import { getInfo, getRecommend } from '@/api/product';
 import { getCommentSubtotal } from '@/api/comment';
@@ -158,10 +157,12 @@ import CartDialog from './Child/CartDialog.vue';
 import { computed, onMounted, onUnmounted, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '../../stores/auth';
+import { useDialog } from '../../components/Dialog/plugin';
 
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
+const toast = useDialog();
 const goods = ref<IProduct | null>(null);
 const input = reactive({
     amount: 1,
@@ -300,7 +301,7 @@ onUnmounted(() => {
 
 const id = parseInt(route.params.id as string, 10);
 if (!id) {
-    Toast('商品错误');
+    toast.warning('商品错误');
     router.push('/');
 } else {
     getInfo(id).then(res => {

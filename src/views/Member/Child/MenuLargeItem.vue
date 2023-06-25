@@ -13,8 +13,8 @@ const emit = defineEmits(['click']);
 const props = defineProps<{
     title: string;
     icon: string;
-    uri: string;
-    count: number;
+    uri?: string;
+    count?: number;
 }>();
 
 function tapGo() {

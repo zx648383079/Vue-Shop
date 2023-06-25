@@ -16,13 +16,14 @@
 </template>
 <script setup lang="ts">
 import LargeHeader from '@/components/LargeHeader.vue';
-import Toast from '@/components/toast';
 import { updatePassword } from '../../api/user';
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../../stores/auth';
+import { useDialog } from '../../components/Dialog/plugin';
 
 const router = useRouter();
+const toast = useDialog();
 const authStore = useAuthStore();
 const input = reactive({
     oldpassword: '',
@@ -32,7 +33,7 @@ const input = reactive({
 
 function tapSubmit() {
     if (input.password !== input.repassword) {
-        Toast('确认密码不一致！');
+        toast.warning('确认密码不一致！');
         return;
     }
     updatePassword(input.oldpassword, input.password, input.repassword).then(() => {

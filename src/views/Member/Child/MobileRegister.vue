@@ -35,10 +35,11 @@
 <script setup lang="ts">
 import CountDown from '@/components/CountDown.vue';
 import { sendMobileCode } from '../../../api/user';
-import Toast from '@/components/toast';
 import { isMobile, isEmpty } from '../../../utils/validate';
 import { reactive } from 'vue';
+import { useDialog } from '../../../components/Dialog/plugin';
 
+const toast = useDialog();
 const emit = defineEmits(['click', 'back']);
 const input = reactive({
     name: '',
@@ -54,7 +55,7 @@ function tapChange(mode: number) {
 
 function tapSend(btn: typeof CountDown) {
     if (!verifyMobile()) {
-        Toast('请输入手机号');
+        toast.warning('请输入手机号');
         return;
     }
     sendMobileCode(input.mobile, 'register').then(res => {
@@ -67,23 +68,23 @@ function tapRegister() {
     // const mobile = mobile;
     const password = input.password;
     if (isEmpty(name)) {
-        Toast('请输入昵称');
+        toast.warning('请输入昵称');
         return;
     }
     if (!verifyMobile()) {
-        Toast('请输入手机号');
+        toast.warning('请输入手机号');
         return;
     }
     if (isEmpty(password)) {
-        Toast('请输入密码');
+        toast.warning('请输入密码');
         return;
     }
     if (password.length < 4) {
-        Toast('请密码长度必须大于4');
+        toast.warning('请密码长度必须大于4');
         return;
     }
     if (input.confirmPassword !== password) {
-        Toast('请两次密码不一致');
+        toast.warning('请两次密码不一致');
         return;
     }
 

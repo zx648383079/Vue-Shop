@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory, type Router, type RouteRecordRaw } from 'vue-router'
 import { checkTokenFromCookie, getSessionStorage } from '../utils';
-import { ConfirmRouterNotice } from '../components/confirm';
 import emitter from '../event';
 import { TOKEN_KEY } from '../stores/types';
 
@@ -530,7 +529,6 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   checkTokenFromCookie();
-  ConfirmRouterNotice();
   const token = getSessionStorage<string>(TOKEN_KEY); // 获取本地存储的token
   if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
       if (token && token.length > 0) { // 通过vuex state获取当前的token是否存

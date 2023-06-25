@@ -1,8 +1,8 @@
 import { Md5 } from 'ts-md5';
-import Toast from '@/components/toast';
 import { appId, secret, apiEndpoint } from '../config/config';
 import { Cookie } from './cookie';
 import { useAuthStore } from '../stores/auth';
+import { useDialog } from '../components/Dialog/plugin';
 export * from '../config/config';
 
 interface IAppParam {
@@ -42,7 +42,7 @@ export function checkTokenFromCookie() {
     const data = JSON.parse(str);
     cookie.delete(key);
     if (data.code !== 200) {
-        Toast(data.error);
+        useDialog().error(data.error);
         return;
     }
     const authStore = useAuthStore();

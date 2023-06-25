@@ -29,10 +29,11 @@
 <script setup lang="ts">
 import type { IOrderGoods, IComment } from '@/api/model';
 import Star from './StarInput.vue';
-import Toast from '@/components/toast';
 import { commentGoods } from '@/api/order';
 import { reactive } from 'vue';
+import { useDialog } from '../../../components/Dialog/plugin';
 
+const toast = useDialog();
 const emit = defineEmits(['commented']);
 const props = defineProps<{
     item: IOrderGoods
@@ -61,7 +62,7 @@ function tapSave() {
         goods: props.item.id,
     };
     if (!data.content || data.content.length < 10) {
-        Toast('评论内容必须大于10个字符');
+        toast.warning('评论内容必须大于10个字符');
         return;
     }
     commentGoods(data).then(() => {

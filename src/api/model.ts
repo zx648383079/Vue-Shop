@@ -20,10 +20,9 @@ export interface IBaseResponse {
 }
 
 export interface IErrorResponse {
+    [key: string]: any;
     code: number;
-    message?: string;
-    errors?: any;
-    description?: string;
+    message: string;
 }
 
 export interface IData<T> extends IBaseResponse {

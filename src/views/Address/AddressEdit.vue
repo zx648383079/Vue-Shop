@@ -39,16 +39,17 @@
 <script setup lang="ts">
 import type { IAddress, IRegionObject } from '@/api/model';
 import { getRegionTree } from '@/api/region';
-import Toast from '@/components/toast';
 import { deleteAddress, getAddress, updateAddress, createAddress } from '@/api/address';
 import BackHeader from '@/components/BackHeader.vue';
 import SelectPicker from '@/components/SelectPicker.vue';
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useShopStore } from '../../stores/shop';
+import { useDialog } from '../../components/Dialog/plugin';
 
 const route = useRoute();
 const router = useRouter();
+const toast = useDialog();
 const shopStore = useShopStore();
 const address = ref<IAddress>({
     id: 0,
@@ -64,7 +65,7 @@ const regions = ref<IRegionObject>({});
 
 function tapSubmit() {
     if (!address.value.region) {
-        Toast('请选择收货地址');
+        toast.warning('请选择收货地址');
         return;
     }
     const data: IAddress = {
@@ -76,11 +77,11 @@ function tapSubmit() {
         is_default: address.value.is_default,
     };
     if (!data.name) {
-        Toast('请输入收货人');
+        toast.warning('请输入收货人');
         return;
     }
     if (!data.tel) {
-        Toast('请输入手机号');
+        toast.warning('请输入手机号');
         return;
     }
     if (address.value.id > 0) {

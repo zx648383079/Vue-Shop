@@ -54,11 +54,12 @@ import BackHeader from '@/components/BackHeader.vue';
 import PullToRefresh from '@/components/PullToRefresh.vue';
 import type { ICategory, ICoupon } from '@/api/model';
 import {getCouponList, receiveCoupon} from '@/api/coupon';
-import Toast from '@/components/toast';
 import { reactive, ref } from 'vue';
 import { useShopStore } from '../../stores/shop';
+import { useDialog } from '../../components/Dialog/plugin';
 
 const shopStore = useShopStore();
+const toast = useDialog();
 const queries = reactive({
     hasMore: true,
     page: 1,
@@ -75,7 +76,7 @@ function tapRecieve(item: ICoupon) {
     }
     receiveCoupon(item.id).then(res => {
         if (res.data) {
-            Toast('领取成功');
+            toast.warning('领取成功');
             item.can_receive = false;
         }
     });

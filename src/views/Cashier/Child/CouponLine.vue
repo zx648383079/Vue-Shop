@@ -45,7 +45,7 @@ function tapSelected(item: ICoupon) {
 }
 
 function tapHide() {
-    dialog.hideCalerdar();
+    // dialog.hideCalerdar();
 }
 </script>
 <style lang="scss" scoped>

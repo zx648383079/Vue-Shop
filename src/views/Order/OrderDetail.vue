@@ -63,15 +63,15 @@
 <script setup lang="ts">
 import BackHeader from '@/components/BackHeader.vue';
 import { type IOrder, ORDER_STATUS } from '@/api/model';
-import Toast from '@/components/toast';
-import ConfirmBox from '@/components/confirm';
 import { receiveOrder, cancelOrder } from '@/api/order';
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useShopStore } from '../../stores/shop';
+import { useDialog } from '../../components/Dialog/plugin';
 
 const router = useRouter();
 const route = useRoute();
+const toast = useDialog();
 const shopStore = useShopStore();
 const order = ref<IOrder | null>(null);
 
@@ -94,7 +94,7 @@ function tapComment() {
 }
 
 function tapReceive() {
-    ConfirmBox('确认取消此订单？').then(action => {
+    toast.confirm('确认取消此订单？').then(action => {
         if (action !== 'confirm' || !order.value) {
             return;
         }
@@ -105,7 +105,7 @@ function tapReceive() {
 }
 
 function tapCancel() {
-    ConfirmBox('确认取消此订单？').then(action => {
+    toast.confirm('确认取消此订单？').then(action => {
         if (action !== 'confirm' || !order.value) {
             return;
         }
@@ -118,7 +118,7 @@ function tapCancel() {
 
 const id = parseInt(route.params.id as string, 10);
 if (!id) {
-    Toast('订单错误');
+    toast.error('订单错误');
     router.push('/');
     
 } else {

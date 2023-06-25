@@ -77,12 +77,13 @@
 <script setup lang="ts">
 import BackHeader from '@/components/BackHeader.vue';
 import type { IInvoiceTitle } from '../../api/model';
-import Toast from '@/components/toast';
 import { getTitle, saveTitle } from '../../api/invoice';
 import { useRoute, useRouter } from 'vue-router';
 import { ref } from 'vue';
+import { useDialog } from '../../components/Dialog/plugin';
 
 const route = useRoute();
+const toast = useDialog();
 const router = useRouter();
 const titleTypeList = ['个人', '企业'];
 const typeList = ['增值税普通发票', '增值税专用发票'];
@@ -100,7 +101,7 @@ const invoice = ref<IInvoiceTitle>({
 function tapSubmit() {
     const data = Object.assign({}, invoice.value);
     if (!data.title) {
-        Toast('请输入发票抬头');
+        toast.warning('请输入发票抬头');
         return;
     }
     saveTitle(data).then(res => {

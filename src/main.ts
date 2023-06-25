@@ -1,13 +1,13 @@
 import './assets/css/theme.scss'
+import './assets/iconfont/iconfont.css';
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
-const pinia = createPinia();
-
 import App from './App.vue'
 import router from './router'
 import emitter from './event';
+import { createDialog } from './components/Dialog/plugin'
 
 
 const app = createApp(App, {
@@ -16,7 +16,8 @@ const app = createApp(App, {
     }
 })
 
-app.use(pinia)
+app.use(createPinia())
+app.use(createDialog())
 app.use(router)
 
 app.mount('#app')

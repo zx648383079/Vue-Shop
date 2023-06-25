@@ -46,15 +46,16 @@
 import BackHeader from '@/components/BackHeader.vue';
 import type { IOrder, IPayment, IPrePay } from '@/api/model';
 import { ORDER_STATUS } from '@/api/model';
-import Toast from '@/components/toast';
 import { getPaymentList } from '@/api/cart';
 import { payOrder } from '@/api/order';
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useShopStore } from '../../stores/shop';
+import { useDialog } from '../../components/Dialog/plugin';
 
 const route = useRoute();
 const router = useRouter();
+const toast = useDialog();
 const shopStore = useShopStore();
 const order = ref<IOrder|null>(null);
 const payment = ref<IPayment|null>(null);
@@ -85,7 +86,7 @@ function refreshPayment() {
 
 function tapPay() {
     if (!payment.value || !order.value) {
-        Toast('请选择支付方式');
+        toast.warning('请选择支付方式');
         return;
     }
     payOrder(order.value.id, payment.value.id).then(res => {
@@ -120,12 +121,12 @@ function tapPay() {
 
 const id = parseInt(route.params.id as string, 10);
 if (!id) {
-    Toast('订单错误');
+    toast.warning('订单错误');
     router.push('/');
 } else {
     shopStore.getOrder(id).then(res => {
         if (res.status !== ORDER_STATUS.UN_PAY) {
-            Toast('订单无法支付');
+            toast.warning('订单无法支付');
             router.push('/');
             return;
         }

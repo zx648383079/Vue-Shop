@@ -24,11 +24,13 @@ import PullToRefresh from '@/components/PullToRefresh.vue';
 import { ORDER_STATUS, type IOrder } from '@/api/model';
 import { getOrder, receiveOrder, cancelOrder } from '@/api/order';
 import OrderItem from './Child/OrderItem.vue';
-import ConfirmBox from '@/components/confirm';
 import { useRoute } from 'vue-router';
 import { ref } from 'vue';
+import { useDialog } from '../../components/Dialog/plugin';
 
 const route = useRoute();
+const toast = useDialog();
+
 const statusList = [
     {
         name: '全部',
@@ -97,7 +99,7 @@ function tapStatus(item: any) {
 }
 
 function tapReceive(item: IOrder) {
-    ConfirmBox('确认取消此订单？').then(action => {
+    toast.confirm('确认取消此订单？').then(action => {
         if (action !== 'confirm') {
             return;
         }
@@ -122,7 +124,7 @@ function refreshItem(item: IOrder) {
 }
 
 function tapCancel(item: IOrder) {
-    ConfirmBox('确认取消此订单？').then(action => {
+    toast.confirm('确认取消此订单？').then(action => {
         if (action !== 'cancel') {
             return;
         }

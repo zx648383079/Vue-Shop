@@ -10,7 +10,7 @@
                             <span>{{ item.name }}</span>
                         </div>
                         <div class="swipe-box goods-list">
-                            <SwipeRow name="cart-item goods-item" v-for="(cart, i) in item.goods_list" :key="i" :index="cart.id" ref="swiperow">
+                            <SwipeRow name="cart-item goods-item" v-for="(cart, i) in item.goods_list" :key="i" :index="(cart.id as any)" ref="swiperow">
                                 <i :class="['fa', 'check-box', cart.checked ? 'active' : '']" @click="toggleCheck(item, cart)"></i>
                                 <div class="goods-img">
                                     <img :src="cart.goods?.thumb" alt="">
@@ -54,21 +54,22 @@
     </div>
 </template>
 <script setup lang="ts">
-import type { ICart, ICartGroup, ICartItem } from '@/api/model';
+import type { ICartGroup, ICartItem } from '@/api/model';
 import { getCart } from '@/api/cart';
 import TabBar from '@/components/TabBar.vue';
 import BackHeader from '@/components/BackHeader.vue';
 import SwipeRow from '@/components/SwipeRow.vue';
 import PullToRefresh from '@/components/PullToRefresh.vue';
-import Toast from '@/components/toast';
 import { useAuthStore } from '../../stores/auth';
 import { computed, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useShopStore } from '../../stores/shop';
+import { useDialog } from '../../components/Dialog/plugin';
 
 const authStore = useAuthStore();
 const shopStore = useShopStore();
 const router = useRouter();
+const toast = useDialog();
 const items = ref<ICartGroup[]>([]);
 const queries = reactive({
     checkedAll: false,
@@ -148,7 +149,7 @@ function tapCashier() {
         }
     }
     if (data.length < 1) {
-        Toast('请选择结算的商品');
+        toast.warning('请选择结算的商品');
         return;
     }
     shopStore.setCart(data).then(() => {

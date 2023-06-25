@@ -22,13 +22,14 @@
 </template>
 <script setup lang="ts">
 import CountDown from '@/components/CountDown.vue';
-import Toast from '@/components/toast';
 import { sendMobileCode } from '../../../api/user';
 import { isEmpty, isMobile } from '../../../utils/validate';
 import { reactive } from 'vue';
 import { useAuthStore } from '../../../stores/auth';
+import { useDialog } from '../../../components/Dialog/plugin';
 
 const authStore = useAuthStore();
+const toast = useDialog();
 const emit = defineEmits(['click', 'back']);
 const props = defineProps<{
     logo: string
@@ -44,7 +45,7 @@ function tapChange(mode: number) {
 
 function tapSend(btn: typeof CountDown) {
     if (!verifyMobile()) {
-        Toast('请输入手机号');
+        toast.warning('请输入手机号');
         return;
     }
     sendMobileCode(input.mobile, 'login').then(res => {
@@ -54,11 +55,11 @@ function tapSend(btn: typeof CountDown) {
 
 function tapLogin() {
     if (!verifyMobile()) {
-        Toast('请输入手机号');
+        toast.warning('请输入手机号');
         return;
     }
     if (!input.code && input.code.length < 4) {
-        Toast('请输入验证码');
+        toast.warning('请输入验证码');
         return;
     }
     authStore.loginUser({mobile: input.mobile, code: input.code})

@@ -32,11 +32,12 @@ import BackHeader from '@/components/BackHeader.vue';
 import SwipeRow from '@/components/SwipeRow.vue';
 import { getLocalStorage, setLocalStorage, removeLocalStorage } from '@/utils';
 import { SET_GOODS_HISTORY } from '@/stores/types';
-import ConfirmBox from '@/components/confirm';
 import { getList } from '@/api/product';
 import { reactive, ref } from 'vue';
+import { useDialog } from '../../components/Dialog/plugin';
 
 
+const toast = useDialog();
 const items = ref<IProduct[]>([]);
 const queries = reactive({
     hasMore: true,
@@ -56,7 +57,7 @@ function tapRemove(item: IProduct) {
 }
 
 function tapClear() {
-    ConfirmBox('确认清空浏览记录？').then(action => {
+    toast.confirm('确认清空浏览记录？').then(action => {
         if (action !== 'confirm') {
             return;
         }

@@ -1,9 +1,9 @@
 import axios from 'axios';
 import router from '@/router'
-import Toast from '@/components/toast';
 import { apiEndpoint } from '../config/config';
 import * as util from './'
 import { TOKEN_KEY } from '@/stores/types'
+import { useDialog } from '../components/Dialog/plugin';
 
 axios.defaults.timeout = 60000
 axios.defaults.baseURL = apiEndpoint
@@ -39,10 +39,7 @@ axios.interceptors.response.use(
         return response
     },
     (error) => {
-        Toast({
-            message: error && error.response ? error.response.data.message : error,
-            position: 'bottom',
-        });
+        useDialog().error(error && error.response ? error.response.data.message : error);
         if (error && error.response && error.response.status === 401) {
             util.removeSessionStorage(TOKEN_KEY);
             router.push({

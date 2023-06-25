@@ -20,12 +20,13 @@
     </div>
 </template>
 <script setup lang="ts">
-import Toast from '@/components/toast';
 import { isEmpty, isMobile } from '../../../utils/validate';
 import { reactive } from 'vue';
 import { useAuthStore } from '../../../stores/auth';
+import { useDialog } from '../../../components/Dialog/plugin';
 
 const authStore = useAuthStore();
+const toast = useDialog();
 const emit = defineEmits(['click', 'back']);
 const props = defineProps<{
     logo: string
@@ -43,11 +44,11 @@ function tapLogin() {
     const mobile = input.mobile;
     const password = input.password;
     if (isEmpty(mobile) || !isMobile(mobile)) {
-        Toast('请输入手机号');
+        toast.warning('请输入手机号');
         return;
     }
     if (!password || password.length < 4) {
-        Toast('请输入密码');
+        toast.warning('请输入密码');
         return;
     }
     authStore.loginUser({mobile, password}).then(() => {

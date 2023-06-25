@@ -17,11 +17,12 @@
 </template>
 <script setup lang="ts">
 import BackHeader from '@/components/BackHeader.vue';
-import ConfirmBox from '@/components/confirm';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useDialog } from '../../components/Dialog/plugin';
 
 const router = useRouter();
+const toast = useDialog();
 const items: string[] = [
     '需要解绑手机',
     '需要解绑邮箱',
@@ -32,9 +33,11 @@ const items: string[] = [
 const selected = ref(0);
 
 onMounted(() => {
-    ConfirmBox('账户注销后，您已完成的交易将无法售后。', '账户注销确认', {
-        confirmButtonText: '确定继续注销',
-        cancelButtonText: '暂不注销',
+    toast.confirm({
+        content: '账户注销后，您已完成的交易将无法售后。', 
+        title: '账户注销确认', 
+        confirmText: '确定继续注销',
+        cancelText: '暂不注销',
     }).catch(() => {
         router.back();
     });

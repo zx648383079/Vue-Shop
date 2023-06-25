@@ -14,7 +14,7 @@ interface ShopState {
     order: IOrder | null;
 }
 
-export const useShopStore = defineStore('auth', {
+export const useShopStore = defineStore('shop', {
     state(): ShopState {
         return {
             categories: [],

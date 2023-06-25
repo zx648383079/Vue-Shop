@@ -10,16 +10,17 @@
 </template>
 <script setup lang="ts">
 import LargeHeader from '@/components/LargeHeader.vue';
-import Toast from '@/components/toast';
 import { updateProfile } from '../../api/user';
 import type { IUser } from '../../api/model';
 import { useRoute, useRouter } from 'vue-router';
 import { reactive, ref } from 'vue';
 import { useAuthStore } from '../../stores/auth';
+import { useDialog } from '../../components/Dialog/plugin';
 
 const authStore = useAuthStore();
 const router = useRouter();
 const route = useRoute();
+const toast = useDialog();
 const PROFILE_NAMES: any = {
     name: '昵称',
 };
@@ -34,7 +35,7 @@ const input = reactive({
 
 function tapSubmit() {
     if (input.value.length < 2) {
-        Toast('请输入' + input.title + '！');
+        toast.warning('请输入' + input.title + '！');
         return;
     }
     updateProfile({
@@ -48,7 +49,7 @@ function tapSubmit() {
 
 input.field = route.params.field as string || 'name';
 input.title = Object.prototype.hasOwnProperty.call(PROFILE_NAMES, input.field) ? PROFILE_NAMES[input.field]  : '信息';
-dispatchUser().then(res => {
+authStore.getUser().then(res => {
     if (!res) {
         router.back();
         return;

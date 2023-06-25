@@ -33,10 +33,10 @@ import SearchBar from './Child/SearchBar.vue'
 import type { IProduct } from '@/api/model';
 import CartDialog from '../Goods/Child/CartDialog.vue';
 import { addGoods } from '@/api/cart';
-import Toast from '@/components/toast';
 import { useAuthStore } from '../../stores/auth';
 import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useDialog } from '../../components/Dialog/plugin';
 
 interface ISearch {
     keywords: string,
@@ -48,6 +48,7 @@ interface ISearch {
 const authStore = useAuthStore();
 const route = useRoute();
 const router = useRouter();
+const toast = useDialog();
 
 const isGuest = computed(() => authStore.isGuest);
 const items = ref<IProduct[]>([]);
@@ -110,7 +111,7 @@ function tapAddCart(item: IProduct) {
     }
     addGoods(item.id, 1).then(res => {
         if (!res.dialog) {
-            Toast('已成功加入购物车');
+            toast.success('已成功加入购物车');
             return;
         }
         goods.value = res.data;
