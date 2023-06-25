@@ -1,4 +1,4 @@
-import { IRegionObject, IDataOne } from './model';
+import type { IRegionObject, IDataOne } from './model';
 import { fetch } from '@/utils/http';
 
 

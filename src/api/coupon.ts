@@ -1,5 +1,5 @@
 import {fetch, post} from '../utils/http';
-import { IPage, ICoupon, IDataOne } from './model';
+import type { IPage, ICoupon, IDataOne } from './model';
 
 export const getCouponList = (param: any = {}) => fetch<IPage<ICoupon>>('shop/coupon', param);
 

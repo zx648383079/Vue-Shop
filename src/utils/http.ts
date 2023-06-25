@@ -1,23 +1,19 @@
 import axios from 'axios';
 import router from '@/router'
 import Toast from '@/components/toast';
+import { apiEndpoint } from '../config/config';
 import * as util from './'
-import { TOKEN_KEY } from '@/store/types'
+import { TOKEN_KEY } from '@/stores/types'
 
 axios.defaults.timeout = 60000
-axios.defaults.baseURL = util.apiEndpoint
+axios.defaults.baseURL = apiEndpoint
 
 // http request 拦截器
 axios.interceptors.request.use(
     (config) => {
         if (config.data && !(config.data instanceof FormData)) {
             config.data = JSON.stringify(config.data)
-            config.headers = {
-                'Content-Type': 'application/vnd.api+json',
-                'Accept': 'application/json',
-            }
-        } else if (!config.headers) {
-            config.headers = {};
+            config.headers.setContentType('application/vnd.api+json').setAccept('application/json');
         }
         const params = util.getAppParams();
         if (!config.params) {

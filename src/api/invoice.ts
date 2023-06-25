@@ -1,5 +1,5 @@
 import {fetch, post} from '../utils/http';
-import { ISubtotal, IPage, IInvoiceTitle, IInvoiceLog, IData, IOrder } from './model';
+import type { ISubtotal, IPage, IInvoiceTitle, IInvoiceLog, IData, IOrder } from './model';
 
 export const getSubtotal = () => fetch<ISubtotal>('shop/invoice/subtotal');
 

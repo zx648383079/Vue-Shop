@@ -1,5 +1,5 @@
 import {fetch} from '../utils/http';
-import { IData, IActivityTime, IPage, ISeckillGoods } from './model';
+import type { IData, IActivityTime, IPage, ISeckillGoods } from './model';
 
 export const getTimes = () => fetch<IData<IActivityTime>>('shop/activity/seckill/time');
 

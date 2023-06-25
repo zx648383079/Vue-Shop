@@ -1,8 +1,8 @@
 import { Md5 } from 'ts-md5';
-import Cookies from 'js-cookie';
 import Toast from '@/components/toast';
-import { dispatchSetToken } from '@/store/dispatches';
 import { appId, secret, apiEndpoint } from '../config/config';
+import { Cookie } from './cookie';
+import { useAuthStore } from '../stores/auth';
 export * from '../config/config';
 
 interface IAppParam {
@@ -34,17 +34,19 @@ export function getAppParams(): IAppParam {
 
 export function checkTokenFromCookie() {
     const key = appId + 'token';
-    const str = Cookies.get(key);
+    const cookie = new Cookie();
+    const str = cookie.get(key);
     if (!str) {
         return;
     }
     const data = JSON.parse(str);
-    Cookies.remove(key);
+    cookie.delete(key);
     if (data.code !== 200) {
         Toast(data.error);
         return;
     }
-    dispatchSetToken(data.token);
+    const authStore = useAuthStore();
+    authStore.setToken(data.token);
 }
 
 export function setLocalStorage(key: string, value: any) {
@@ -86,8 +88,8 @@ export function search(key: string) {
     const url = window.location.hash === '' ?
         window.location.search :
         window.location.hash.substring(window.location.hash.indexOf('?'));
-    const r = url.substr(1).match(reg);
-    return r === null ? null : unescape(r[2]);
+    const r = url.substring(1, 1).match(reg);
+    return r === null ? null : decodeURIComponent(r[2]);
 }
 
 export function getCurrentTime() {

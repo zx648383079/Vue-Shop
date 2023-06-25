@@ -1,4 +1,4 @@
-import { IOrder, IPage, IOrderCount, IOrderGoods, IData, IDataOne, IPrePay } from './model';
+import type { IOrder, IPage, IOrderCount, IOrderGoods, IData, IDataOne, IPrePay } from './model';
 import { fetch, post } from '@/utils/http';
 
 

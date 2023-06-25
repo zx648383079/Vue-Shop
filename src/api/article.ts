@@ -1,5 +1,5 @@
 import {fetch} from '../utils/http';
-import { IData, IAd, IArticle, IArticleCategory } from './model';
+import type { IData, IAd, IArticle, IArticleCategory } from './model';
 
 export const getArticleList = (params: any) => fetch<IData<IArticle>>('shop/article', params);
 

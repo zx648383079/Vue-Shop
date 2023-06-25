@@ -1,56 +1,60 @@
 <template>
-    <div class="count-down" :class="{disable: disable}" @click="tapClick">
-        <span>{{ text }}</span>
+    <div class="count-down" :class="{disable: input.disable}" @click="tapClick">
+        <span>{{ input.text }}</span>
     </div>
 </template>
-<script lang="ts">
-import { Vue, Prop } from 'vue-property-decorator';
+<script setup lang="ts">
+import { reactive } from 'vue';
 
-export default class CountDown extends Vue {
+const emit = defineEmits(['click']);
+const props = withDefaults(defineProps<{
+    time: number;
+}>(), {
+    time: 0,
+});
 
-    @Prop({type: Number, default: 60}) public readonly time!: number;
+const input = reactive({
+    text: '获取验证码',
+    disable: false,
+    handle: 0
+});
 
-    public text = '获取验证码';
-    public disable = false;
-    public handle = 0;
-
-    public tapClick(): void {
-        if (this.disable) {
+function tapClick(): void {
+    if (input.disable) {
+        return;
+    }
+    emit('click', {
+        start,
+        reset
+    });
+}
+function start(time = 0): void {
+    input.disable = true;
+    if (time < 1) {
+        time = props.time;
+    }
+    input.text = time.toString();
+    input.handle = window.setInterval(() => {
+        time --;
+        if (time <= 0) {
+            clearInterval(input.handle);
+            input.disable = false;
+            input.handle = 0;
+            input.text = '重新获取';
             return;
         }
-        this.$emit('click', this);
+        input.text = time.toString();
+    }, 1000);
+}
+function reset(): void {
+    if (input.disable) {
+        input.disable = true;
     }
-
-    public start(time = 0): void {
-        this.disable = true;
-        if (time < 1) {
-            time = this.time;
-        }
-        this.text = time.toString();
-        this.handle = window.setInterval(() => {
-            time --;
-            if (time <= 0) {
-                clearInterval(this.handle);
-                this.disable = false;
-                this.handle = 0;
-                this.text = '重新获取';
-                return;
-            }
-            this.text = time.toString();
-        }, 1000);
+    if (input.handle > 0) {
+        clearInterval(input.handle);
     }
-
-    public reset(): void {
-        if (this.disable) {
-            this.disable = true;
-        }
-        if (this.handle > 0) {
-            clearInterval(this.handle);
-        }
-        this.handle = 0;
-        this.text = '获取验证码';
-    }
-
+    input.handle = 0;
+    input.text = '获取验证码';
 }
 </script>
 <style lang="scss" scoped>

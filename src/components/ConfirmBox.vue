@@ -1,72 +1,81 @@
 <template>
   <div class="msgbox-wrapper">
     <transition name="msgbox-bounce">
-      <div class="msgbox" v-show="isVisible">
-        <div class="msgbox-header" v-if="title !== ''">
-          <div class="msgbox-title">{{ title }}</div>
+      <div class="msgbox" v-show="input.isVisible">
+        <div class="msgbox-header" v-if="input.title !== ''">
+          <div class="msgbox-title">{{ input.title }}</div>
         </div>
-        <div class="msgbox-content" v-if="message !== ''">
-          <div class="msgbox-message" v-html="message"></div>
+        <div class="msgbox-content" v-if="input.message !== ''">
+          <div class="msgbox-message" v-html="input.message"></div>
         </div>
         <div class="msgbox-btns">
-          <button :class="[ cancelButtonClasses ]" v-show="showCancelButton" @click="handleAction('cancel')">{{ cancelButtonText }}</button>
-          <button :class="[ confirmButtonClasses ]" v-show="showConfirmButton" @click="handleAction('confirm')">{{ confirmButtonText }}</button>
+          <button :class="[ cancelButtonClasses ]" v-show="input.showCancelButton" @click="handleAction('cancel')">{{ input.cancelButtonText }}</button>
+          <button :class="[ confirmButtonClasses ]" v-show="input.showConfirmButton" @click="handleAction('confirm')">{{ input.confirmButtonText }}</button>
         </div>
       </div>
     </transition>
   </div>
 </template>
-<script lang="ts">
-import { Vue, Prop } from 'vue-property-decorator';
+<script setup lang="ts">
+import { computed, reactive, ref } from 'vue';
 
 type ConfirmEvent = (action: string) => void;
 
-export default class ConfirmBox extends Vue {
-    @Prop({default: true}) public readonly modal!: boolean;
-    @Prop({default: true}) public readonly showClose!: boolean;
-    @Prop({default: false}) public readonly lockScroll!: boolean;
-    @Prop({default: true}) public readonly closeOnClickModal!: boolean;
-    @Prop({default: true}) public readonly closeOnPressEscape!: boolean;
-    @Prop({default: 'text'}) public readonly inputType!: boolean;
 
-    public title = '提示';
-    public isVisible = false;
-    public message = '';
-    public showConfirmButton = true;
-    public showCancelButton = true;
-    public confirmButtonText = '确认';
-    public cancelButtonText = '删除';
-    public confirmButtonClass = '';
-    public confirmButtonDisabled = false;
-    public cancelButtonClass = '';
-    public callback: ConfirmEvent| null  = null;
-    public cancelButtonHighlight = false;
-    public confirmButtonHighlight = false;
+const props = withDefaults(defineProps<{
+    modal: boolean,
+    showClose: boolean,
+    lockScroll: boolean,
+    closeOnClickModal: boolean,
+    closeOnPressEscape: boolean,
+    inputType: string,
+}>(), {
+    modal: true,
+    showClose: true,
+    lockScroll: false,
+    closeOnClickModal: true,
+    closeOnPressEscape: true,
+    inputType: 'text',
+});
 
-    public get cancelButtonClasses(): string {
-        let classes = 'msgbox-btn msgbox-cancel ' + this.cancelButtonClass;
-        if (this.cancelButtonHighlight) {
-          classes += ' msgbox-cancel-highlight';
-        }
-        return classes;
+const callback = ref<ConfirmEvent| null>(null);
+
+const input = reactive({
+    title: '提示',
+    isVisible: false,
+    message: '',
+    showConfirmButton: true,
+    showCancelButton: true,
+    confirmButtonText: '确认',
+    cancelButtonText: '删除',
+    confirmButtonClass: '',
+    confirmButtonDisabled: false,
+    cancelButtonClass: '',
+    cancelButtonHighlight: false,
+    confirmButtonHighlight: false,
+});
+
+const cancelButtonClasses = computed(() => {
+    let classes = 'msgbox-btn msgbox-cancel ' + input.cancelButtonClass;
+    if (input.cancelButtonHighlight) {
+        classes += ' msgbox-cancel-highlight';
     }
+    return classes;
+});
 
-    public get confirmButtonClasses(): string {
-        let classes = 'msgbox-btn msgbox-confirm ' + this.confirmButtonClass;
-        if (this.confirmButtonHighlight) {
-            classes += ' msgbox-confirm-highlight';
-        }
-        return classes;
+const confirmButtonClasses = computed(() => {
+    let classes = 'msgbox-btn msgbox-confirm ' + input.confirmButtonClass;
+    if (input.confirmButtonHighlight) {
+        classes += ' msgbox-confirm-highlight';
     }
+    return classes;
+});
 
-    public handleAction(action: string): void {
-        const callback = this.callback;
-        this.isVisible = false;
-        if (callback) {
-            callback(action);
-        }
+function handleAction(action: string): void {
+    input.isVisible = false;
+    if (callback.value) {
+        callback.value(action);
     }
-
 }
 </script>
 

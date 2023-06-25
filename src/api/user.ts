@@ -1,5 +1,5 @@
 import {fetch, post, deleteRequest, put, uploadFile} from '../utils/http';
-import {IUser, ILogin, IPage, IAccountLog, ICollect, IData, IConnect, IDataOne, ICard, ISubtotal} from './model';
+import type {IUser, ILogin, IPage, IAccountLog, ICollect, IData, IConnect, IDataOne, ICard, ISubtotal} from './model';
 
 export const getProfile = () => fetch<IUser>('auth/user');
 

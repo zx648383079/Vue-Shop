@@ -2,7 +2,7 @@
 
 服务端：[PHP-ZoDream](https://github.com/zx648383079/PHP-ZoDream/tree/master/Module/Shop) 未上线
 
-使用 typescript 重构此项目，基于vue3
+使用 typescript 重构此项目，基于 vue3 + pinia 使用组合式API
 
 ## 页面
 
@@ -197,7 +197,7 @@ setTimeout(() => {
 npm install
 
 # serve with hot reload at localhost:8080
-npm run serve
+npm run dev
 
 # build for production with minification
 npm run build

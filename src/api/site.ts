@@ -1,4 +1,4 @@
-import { ISite } from './model';
+import type { ISite } from './model';
 import { fetch } from '../utils/http';
 
 

@@ -1,4 +1,5 @@
-import { Router } from 'vue-router';
+
+import type { Router } from 'vue-router';
 import { ORDER_STATUS } from '../api/model';
 
 export const openLink = (router: Router, link: string) => {

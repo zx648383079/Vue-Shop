@@ -1,5 +1,5 @@
 import {fetch, post, uploadFile } from '../utils/http';
-import {IData, IDataOne, IDriver, IConnect, IUser, ICertification, ISubtotal, IPage, IAccountLog, ICard} from './model';
+import type {IData, IDataOne, IDriver, IConnect, IUser, ICertification, ISubtotal, IPage, IAccountLog, ICard} from './model';
 
 export const getAccountLog = (params: any) => fetch<IPage<IAccountLog>>('shop/account/log', params);
 

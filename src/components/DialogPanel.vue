@@ -6,7 +6,7 @@
         <div class="dialog dialog-content" v-if="calendarVisible">
             <div class="dialog-header">
                 <slot name="header">
-                    <div class="dialog-title">{{ title }}</div>
+                    <div class="dialog-title">{{ props.title }}</div>
                     <i class="iconfont fa-close dialog-close" @click="hideCalerdar"></i>
                 </slot>
             </div>
@@ -20,36 +20,38 @@
         <div class="dialog-bg" v-if="calendarVisible" @click="hideCalerdar"/>
     </div>
 </template>
-<script lang="ts">
-import { Vue, Prop, Watch } from 'vue-property-decorator';
+<script setup lang="ts">
+import { ref, watch } from 'vue';
 
-export default class DialogPanel extends Vue {
-    @Prop(String) public readonly title!: string;
-    @Prop(Boolean) public readonly hide!: boolean;
+const emit = defineEmits(['toggle']);
+const props = defineProps<{
+    title: string;
+    hide: boolean;
+}>();
+const calendarVisible = ref(false);
 
-    public calendarVisible = false;
-
-    @Watch('calendarVisible')
-    public onVisibleChanged(val: boolean) {
-        this.$emit('toggle', val);
-    }
-
-    @Watch('hide')
-    public onHideChanged(val: boolean) {
-        if (this.calendarVisible === !val) {
-            return;
-        }
-        this.calendarVisible = !val;
-    }
-
-    public showCalendar() {
-        this.calendarVisible = true;
-    }
-
-    public hideCalerdar() {
-       this.calendarVisible = false;
-    }
+function showCalendar() {
+    calendarVisible.value = true;
 }
+function hideCalerdar() {
+    calendarVisible.value = false;
+}
+
+watch(calendarVisible, val => {
+    emit('toggle', val);
+});
+watch(() => props.hide, val => {
+    if (calendarVisible.value === !val) {
+        return;
+    }
+    calendarVisible.value = !val;
+});
+
+defineExpose({
+    showCalendar,
+    hideCalerdar
+});
+
 </script>
 <style lang="scss" scoped>
 .dialog.dialog-content {

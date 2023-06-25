@@ -1,5 +1,5 @@
 import {fetch} from '../utils/http';
-import { IData } from './model';
+import type{ IData } from './model';
 
 export interface IGarbage {
     name: string,

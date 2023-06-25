@@ -1,4 +1,4 @@
-import { IDataOne, IData, ICheckIn } from './model';
+import type { IDataOne, IData, ICheckIn } from './model';
 import { fetch, post } from '@/utils/http';
 
 export const getCanCheckIn = () => fetch<IDataOne<ICheckIn>>('check_in');

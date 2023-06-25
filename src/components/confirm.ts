@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import { nextTick } from 'vue';
 import ConfirmBox from './ConfirmBox.vue';
 
 const CONFIRM_TEXT = '确定';
@@ -86,7 +86,7 @@ const showNextMsg = () => {
             });
             document.body.appendChild(instance.$el);
 
-            Vue.nextTick(() => {
+            nextTick(() => {
                 instance.isVisible = true;
             });
         }

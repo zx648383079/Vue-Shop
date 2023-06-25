@@ -3,28 +3,30 @@
         <a class="back" @click="tapBack">
             <i class="iconfont fa-chevron-left" aria-hidden="true"></i>
         </a>
-        <div class="title">{{ title }}</div>
+        <div class="title">{{ props.title }}</div>
         <slot></slot>
         <i class="iconfont fa-check" @click="tapSubmit"></i>
     </div>
 </template>
-<script lang="ts">
-import { Vue, Prop } from 'vue-property-decorator';
+<script setup lang="ts">
+import { useRouter } from 'vue-router';
 
-export default class BackHeader extends Vue {
-    @Prop(String) public readonly title!: string;
 
-    public tapBack() {
-        if (window.history.length <= 1) {
-            this.$router.push('/');
-            return;
-        }
-        this.$router.go(-1);
+const router = useRouter();
+const emit = defineEmits(['submited']);
+const props = defineProps<{
+    title: string;
+}>();
+
+function tapBack() {
+    if (window.history.length <= 1) {
+        router.push('/');
+        return;
     }
-
-    public tapSubmit() {
-        this.$emit('submited');
-    }
+    router.go(-1);
+}
+function tapSubmit() {
+    emit('submited');
 }
 </script>
 <style lang="scss" scoped>

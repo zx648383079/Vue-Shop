@@ -45,10 +45,12 @@ export interface IAd {
 export interface IArticle {
     id: number,
     title: string,
+    description: string;
     thumb: string,
     category?: IArticleCategory,
     url?: string,
-    content: string
+    content: string;
+    created_at: string;
 }
 
 export interface IArticleCategory {

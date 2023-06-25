@@ -1,5 +1,5 @@
 import {fetch, post} from '../utils/http';
-import { IData, ICart, IPayment, IShipping, ICartItem, IOrder, ICoupon, ICartDialog } from './model';
+import type { IData, ICart, IPayment, IShipping, ICartItem, IOrder, ICoupon, ICartDialog } from './model';
 
 export const getCart = (params?: any) => fetch<ICart>('shop/cart', params)
 

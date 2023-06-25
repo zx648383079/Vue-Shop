@@ -1,28 +1,31 @@
 <template>
-    <header class="top" :class="{fixed: !fixed}">
+    <header class="top" :class="{fixed: !props.fixed}">
         <a class="back" @click="tapBack">
             <i class="iconfont fa-chevron-left" aria-hidden="true"></i>
         </a>
         <span class="title">
-            {{ title }}
+            {{ props.title }}
         </span>
         <slot></slot>
     </header>
 </template>
-<script lang="ts">
-import { Vue, Prop } from 'vue-property-decorator';
+<script setup lang="ts">
+import { useRouter } from "vue-router";
+const props = withDefaults(defineProps<{
+    title: string,
+    fixed: boolean
+}>(), {
+    fixed: true
+});
 
-export default class BackHeader extends Vue {
-    @Prop(String) public readonly title!: string;
-    @Prop({type: Boolean, default: true}) public readonly fixed!: boolean;
+const router = useRouter();
 
-    public tapBack(): void {
-        if (window.history.length <= 1) {
-            this.$router.push('/');
-            return;
-        }
-        this.$router.go(-1);
+function tapBack(): void {
+    if (window.history.length <= 1) {
+        router.push('/');
+        return;
     }
+    router.go(-1);
 }
 </script>
 <style lang="scss" scoped>

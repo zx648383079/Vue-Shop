@@ -1,5 +1,5 @@
 import {fetch} from '../utils/http';
-import { IData, ICategory, ICategoryObject } from './model';
+import type { IData, ICategory, ICategoryObject } from './model';
 
 export const getCategories = (parent = 0) => fetch<IData<ICategory>>('shop/category', {parent});
 

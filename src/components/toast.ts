@@ -1,5 +1,5 @@
-import ToastBox from './Toast.vue';
-import Vue from 'vue';
+import { nextTick } from 'vue';
+import DialogToast from './DialogToast.vue';
 export interface IToastOption {
     message?: string,
     position?: string,
@@ -8,7 +8,7 @@ export interface IToastOption {
     iconClass?: string
 }
 
-const toastPool: ToastBox[]  = [];
+const toastPool: any[]  = [];
 
 const getAnInstance = () => {
     if (toastPool.length > 0) {
@@ -16,12 +16,14 @@ const getAnInstance = () => {
         toastPool.splice(0, 1);
         return instance;
     }
-    return new ToastBox({
+    console.log(DialogToast);
+    
+    return new DialogToast({
         el: document.createElement('div'),
     });
 };
 
-const returnAnInstance = (instance: ToastBox) => {
+const returnAnInstance = (instance: any) => {
     if (instance) {
         toastPool.push(instance);
     }
@@ -33,12 +35,12 @@ const removeDom = (event: any) => {
     }
 };
 
-(ToastBox as any).prototype.close = function() {
-    this.visible = false;
-    this.$el.addEventListener('transitionend', removeDom);
-    this.closed = true;
-    returnAnInstance(this);
-};
+// (DialogToast as any).prototype.close = function() {
+//     this.visible = false;
+//     this.$el.addEventListener('transitionend', removeDom);
+//     this.closed = true;
+//     returnAnInstance(this);
+// };
 
 const Toast = (options: IToastOption | string = {}) => {
     if (typeof options !== 'object') {
@@ -46,7 +48,7 @@ const Toast = (options: IToastOption | string = {}) => {
     }
     const duration = options.duration || 3000;
 
-    const instance = getAnInstance() as any;
+    const instance = getAnInstance() as typeof DialogToast;
     instance.closed = false;
     clearTimeout(instance.timer);
     instance.message = options.message;
@@ -54,7 +56,7 @@ const Toast = (options: IToastOption | string = {}) => {
     instance.className = options.className || '';
     instance.iconClass = options.iconClass || '';
     document.body.appendChild(instance.$el);
-    Vue.nextTick(() => {
+    nextTick(() => {
         instance.visible = true;
         instance.$el.removeEventListener('transitionend', removeDom);
         if (duration > 0) {

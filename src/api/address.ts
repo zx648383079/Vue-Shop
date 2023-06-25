@@ -1,4 +1,4 @@
-import { IAddress, IData, IDataOne } from './model';
+import type { IAddress, IData, IDataOne } from './model';
 import { fetch, post, put, deleteRequest } from '@/utils/http';
 
 

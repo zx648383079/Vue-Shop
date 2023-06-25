@@ -3,59 +3,56 @@
         <div class="search-box">
             <div class="search-input">
                 <i class="iconfont fa-search" aria-hidden="true" @click="tapSearch"></i>
-                <input type="text" :value="value"
-                @input="updateVal($event.target.value)" @keyup="onKeyUp" placeholder="搜索" @click="tapFocus" autocomplete="off">
-                <i class="iconfont fa-times-circle" v-if="currrent && currrent.length > 0" @click="tapClear"></i>
+                <input type="text" :value="props.modalValue" @input="updateVal(($event as any).target?.value)" @keyup="onKeyUp" placeholder="搜索" @click="tapFocus" autocomplete="off">
+                <i class="iconfont fa-times-circle" v-if="current && current.length > 0" @click="tapClear"></i>
             </div>
             <a class="cancel-btn" @click="tapBack">取消</a>
         </div>
     </header>
 </template>
-<script lang="ts">
-import { Vue, Prop } from 'vue-property-decorator';
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-export default class SearchHeader extends Vue {
-    @Prop(String) public readonly value!: string;
-    public currrent = '';
+const router = useRouter();
+const emit = defineEmits(['update:modalValue', 'focus', 'enter', 'keyup']);
+const props = defineProps<{
+    modalValue: string;
+}>()
 
-    public tapBack() {
-        if (this.value && this.value.length > 0) {
-            this.tapClear();
-            return;
-        }
-        if (window.history.length <= 1) {
-            this.$router.push('/');
-            return;
-        }
-        this.$router.go(-1);
+const current = ref('');
+function tapBack() {
+    if (props.modalValue && props.modalValue.length > 0) {
+        tapClear();
+        return;
     }
-
-    public updateVal(val: string) {
-        this.$emit('input', val);
-        this.currrent = val;
+    if (window.history.length <= 1) {
+        router.push('/');
+        return;
     }
-
-    public tapClear() {
-        this.updateVal('');
+    router.go(-1);
+}
+function updateVal(val: string|any) {
+    emit('update:modalValue', val);
+    current.value = val;
+}
+function tapClear() {
+    updateVal('');
+}
+function onKeyUp(event: KeyboardEvent) {
+    if (!props.modalValue || props.modalValue.trim().length === 0) {
+        return;
     }
-
-    public onKeyUp(event: any) {
-        if (!this.value || this.value.trim().length === 0) {
-            return;
-        }
-        if (event.which === 13) {
-            this.$emit('enter', this.value);
-            return;
-        }
-        this.$emit('keyup', event);
+    if (event.key === 'Enter') {
+        emit('enter', props.modalValue);
+        return;
     }
-
-    public tapSearch() {
-        this.$emit('enter', this.value);
-    }
-
-    public tapFocus() {
-        this.$emit('focus');
-    }
+    emit('keyup', event);
+}
+function tapSearch() {
+    emit('enter', props.modalValue);
+}
+function tapFocus() {
+    emit('focus');
 }
 </script>

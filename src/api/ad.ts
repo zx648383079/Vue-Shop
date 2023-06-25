@@ -1,5 +1,5 @@
 import {fetch} from '../utils/http';
-import { IData, IAd } from './model';
+import  type { IData, IAd } from './model';
 
 export const getAds = (position: number) => fetch<IData<IAd>>('shop/ad', {
     position,

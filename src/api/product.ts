@@ -1,5 +1,5 @@
 import {fetch} from '../utils/http'
-import { IPage, IProduct, IHomeProduct, IData, ISubtotal } from './model';
+import type { IPage, IProduct, IHomeProduct, IData, ISubtotal } from './model';
 
 export const getList = (params: any) => fetch<IPage<IProduct>>('shop/goods', params);
 

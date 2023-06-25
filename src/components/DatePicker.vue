@@ -14,7 +14,7 @@
             <div class="body">
                 <div class="month-grid" v-if="gridMode == 0">
                     <ol><li>日</li><li>一</li><li>二</li><li>三</li><li>四</li><li>五</li><li>六</li></ol>
-                    <ul><li v-for="(item, index) in dayList" :key="index" :class="{disable: item.disable, active: item.val == currentDay && !item.disable}" @click="changeDay(item)">{{ item.val | twoPad }}</li></ul>
+                    <ul><li v-for="(item, index) in dayList" :key="index" :class="{disable: item.disable, active: item.val == currentDay && !item.disable}" @click="changeDay(item)">{{ twoPad(item.val) }}</li></ul>
                 </div>
                 <div class="year-grid" v-if="gridMode == 1">
                     <div class="list-group year">
@@ -26,7 +26,7 @@
                     <div class="list-group month">
                     <div class="title">月</div>
                     <ul>
-                        <li v-for="(item, index) in monthList" :key="index" :class="{active: item == currentMonth}" @click="changeMonth(item)">{{ item | twoPad }}</li>
+                        <li v-for="(item, index) in monthList" :key="index" :class="{active: item == currentMonth}" @click="changeMonth(item)">{{ twoPad(item) }}</li>
                     </ul>
                     </div>
                     <i class="iconfont fa-close" @click="toggleYear()"></i>
@@ -35,19 +35,19 @@
                     <div class="list-group hour">
                     <div class="title">小时</div>
                     <ul>
-                        <li v-for="(item, index) in hourList" :key="index" :class="{active: item == currentHour}" @click="changeHour(item)">{{ item | twoPad }}</li>
+                        <li v-for="(item, index) in hourList" :key="index" :class="{active: item == currentHour}" @click="changeHour(item)">{{ twoPad(item) }}</li>
                     </ul>
                     </div>
                     <div class="list-group minute">
                     <div class="title">分钟</div>
                     <ul>
-                        <li v-for="(item, index) in minuteList" :key="index" :class="{active: item == currentMinute}" @click="changeMinute(item)">{{ item | twoPad }}</li>
+                        <li v-for="(item, index) in minuteList" :key="index" :class="{active: item == currentMinute}" @click="changeMinute(item)">{{ twoPad(item) }}</li>
                     </ul>
                     </div>
                     <div class="list-group second">
                     <div class="title">秒钟</div>
                     <ul>
-                        <li v-for="(item, index) in secondList" :key="index" :class="{active: item == currentSecond}" @click="changeSecond(item)">{{ item | twoPad }}</li>
+                        <li v-for="(item, index) in secondList" :key="index" :class="{active: item == currentSecond}" @click="changeSecond(item)">{{ twoPad(item) }}</li>
                     </ul>
                     </div>
                     <i class="iconfont fa-close"></i>
@@ -55,9 +55,9 @@
             </div>
             <div class="footer" v-if="hasTime">
                 <div class="time-box" @click="toggleTime()">
-                    <span>{{ currentHour | twoPad }}</span>:
-                    <span>{{ currentMinute | twoPad }}</span>:
-                    <span>{{ currentSecond | twoPad }}</span>
+                    <span>{{ twoPad(currentHour) }}</span>:
+                    <span>{{ twoPad(currentMinute) }}</span>:
+                    <span>{{ twoPad(currentSecond) }}</span>
                 </div>
                 <button type="button" @click="enterChange()">确定</button>
             </div>
@@ -67,7 +67,8 @@
     </div>
 </template>
 <script lang="ts">
-import { Vue, Prop, Watch } from 'vue-property-decorator';
+import { defineComponent } from 'vue'
+import { twoPadFilter } from '../pipes';
 
 export interface IDay {
     disable?: boolean,
@@ -81,86 +82,72 @@ export enum DayMode {
     Hour = 2,
 }
 
-export default class DatePicker extends Vue {
-    @Prop([Date, String]) public readonly min!: Date| string;
-    @Prop([Date, String]) public readonly max!: Date| string;
-    @Prop({default: 'y年mm月'}) public readonly titleFormat!: string;
-    @Prop({default: 'y-mm-dd hh:ii:ss'}) public readonly format!: string;
-    @Prop([Date, String]) public readonly value?: Date| string;
+export default defineComponent({
+    props: {
+        min: {type: [Date, String]},
+        max: {type: [Date, String]},
+        value: {type: [Date, String]},
+        titleFormat: {type: String, default: 'y年mm月'},
+        format: {type: String, default: 'y-mm-dd hh:ii:ss'},
+    },
+    data() {
+        const currentDate: Date = new Date();
+        const currentMin: Date = new Date('1900/01/01 00:00:00');
+        const currentMax: Date = new Date('2099/12/31 23:59:59');
 
-    public currentDate: Date = new Date();
-    public currentMin: Date = new Date('1900/01/01 00:00:00');
-    public currentMax: Date = new Date('2099/12/31 23:59:59');
 
-    public title = '-';
-    public minYear = 1900;
-    public maxYear = 2099;
 
-    public dayList: IDay[] = [];
-    public yearList: number[] = [];
-    public monthList: number[] = [];
-    public hourList: number[] = [];
-    public minuteList: number[] = [];
-    public secondList: number[] = [];
-    public currentYear = 0;
-    public currentMonth = 0;
-    public currentDay = 0;
-    public currentHour = 0;
-    public currentMinute = 0;
-    public currentSecond = 0;
-    public hasTime = true;
-    public calendarVisible = false;
-    public gridMode: DayMode = DayMode.Day;
+        const dayList: IDay[] = [];
+        const yearList: number[] = [];
+        const monthList: number[] = [];
+        const hourList: number[] = [];
+        const minuteList: number[] = [];
+        const secondList: number[] = [];
 
-    @Watch('min')
-    public onMinChanged(val: Date| string): void {
-        this.currentMin = this.toDate(val);
-        this.minYear = this.currentMin.getFullYear();
-    }
-
-    @Watch('max')
-    public onMaxChanged(val: Date| string): void {
-        this.currentMax = this.toDate(val);
-        this.maxYear = this.currentMax.getFullYear();
-    }
-
-    @Watch('value')
-    public onValueChanged(val: Date| string): void {
-        const date = this.toDate(val);
-        if (this.isSameTime(date)) {
-            return;
+        const gridMode: DayMode = DayMode.Day as any;
+        return {
+            currentDate,
+            currentMax,
+            currentMin,
+            dayList,
+            yearList,
+            monthList,
+            hourList,
+            minuteList,
+            secondList,
+            gridMode,
+            title: '-',
+            minYear: 1900,
+            maxYear: 2099,
+            currentYear: 0,
+            currentMonth: 0,
+            currentDay: 0,
+            currentHour: 0,
+            currentMinute: 0,
+            currentSecond: 0,
+            hasTime: true,
+            calendarVisible: false,
+        };
+    },
+    watch: {
+        min(val: Date| string): void {
+            this.currentMin = this.toDate(val);
+            this.minYear = this.currentMin.getFullYear();
+        },
+        max(val: Date| string): void {
+            this.currentMax = this.toDate(val);
+            this.maxYear = this.currentMax.getFullYear();
+        },
+        value(val: Date| string): void {
+            const date = this.toDate(val);
+            if (this.isSameTime(date)) {
+                return;
+            }
+            this.currentDate = date;
+            this.refresh();
         }
-        this.currentDate = date;
-        this.refresh();
-    }
-
-    public hideCalerdar(): void {
-       this.calendarVisible = false;
-    }
-
-    public isSameTime(date: Date): boolean {
-        if (date.getFullYear() !== this.currentDate.getFullYear()) {
-            return false;
-        }
-        if (date.getMonth() !== this.currentDate.getMonth()) {
-            return false;
-        }
-        if (date.getDate() !== this.currentDate.getDate()) {
-            return false;
-        }
-        if (!this.hasTime) {
-            return true;
-        }
-        if (date.getHours() !== this.currentDate.getHours()) {
-            return false;
-        }
-        if (date.getMinutes() !== this.currentDate.getMinutes()) {
-            return false;
-        }
-        return date.getSeconds() === this.currentDate.getSeconds();
-    }
-
-    public created(): void {
+    },
+    created() {
         this.refresh();
         this.initMonths();
         this.initYears();
@@ -170,328 +157,328 @@ export default class DatePicker extends Vue {
             this.initSeconds();
         }
         this.output();
-    }
-
-    /**
-     * 转化date
-     * @param date
-     */
-    public parseDate(date: null|string|number|Date): Date {
-        if (!date) {
-            return new Date();
-        }
-        if (typeof date === 'number') {
-            return new Date(date * 1000);
-        }
-        if (typeof date === 'string') {
-            return new Date(date);
-        }
-        return date;
-    }
-
-    /**
-     * 验证Date
-     * @param date
-     */
-    public checkDate(date: Date): boolean {
-        const min = this.currentMin;
-        if (min && date <= min) {
-            return false;
-        }
-        const max = this.currentMax;
-        return !max || date < max;
-    }
-
-    /**
-     * 刷新变化部分
-     */
-    public refresh(): void {
-        this.hasTime = this.format.indexOf('h') > 0;
-        this.refreshCurrent();
-        this.initDays();
-    }
-
-    public refreshCurrent(): void {
-        this.currentYear = this.currentDate.getFullYear();
-        this.currentMonth = this.currentDate.getMonth() + 1;
-        this.currentDay = this.currentDate.getDate();
-        if (this.hasTime) {
-            this.currentHour = this.currentDate.getHours();
-            this.currentMinute = this.currentDate.getMinutes();
-            this.currentSecond = this.currentDate.getSeconds();
-        }
-        this.title = this.formatDate(this.currentDate, this.titleFormat);
-    }
-
-    public initHours(): void {
-        this.hourList = [];
-        for (let i = 0; i < 24; i++) {
-            this.hourList.push(i);
-        }
-    }
-
-    public initMinutes(): void {
-        this.minuteList = [];
-        for (let i = 0; i < 60; i++) {
-            this.minuteList.push(i);
-        }
-    }
-
-    public initSeconds(): void {
-        this.secondList = [];
-        for (let i = 0; i < 60; i++) {
-            this.secondList.push(i);
-        }
-    }
-
-    public initMonths(): void {
-        this.monthList = [];
-        for (let i = 1; i < 13; i++) {
-            this.monthList.push(i);
-        }
-    }
-
-    public initYears(): void {
-        this.yearList = [];
-        for (let i = this.minYear; i <= this.maxYear; i++) {
-            this.yearList.push(i);
-        }
-    }
-
-    public initDays(): void {
-        this.dayList = this.getDaysOfMonth(this.currentMonth, this.currentYear);
-    }
-
-    public toggleYear(): void {
-        this.gridMode = this.gridMode === DayMode.Year ? DayMode.Day : DayMode.Year;
-    }
-
-    public toggleTime(): void {
-        this.gridMode = this.gridMode === DayMode.Hour ? DayMode.Day : DayMode.Hour;
-    }
-
-    /**
-     * 上一年
-     */
-    public previousYear(): void {
-        this.changeYear(this.currentYear - 1);
-    }
-    /**
-     * 下一年
-     */
-    public nextYear(): void {
-        this.changeYear(this.currentYear + 1);
-    }
-    /**
-     * 上月
-     */
-    public previousMonth(): void {
-        this.changeMonth(this.currentMonth - 1);
-    }
-    /**
-     * 下月
-     */
-    public nextMonth(): void {
-        this.changeMonth(this.currentMonth + 1);
-    }
-
-
-    private getDaysOfMonth(m: number, y: number): IDay[] {
-        const days = [];
-        const [f, c] = this.getFirtAndLastOfMonth(y, m);
-        let i: number;
-        if (f > 0) {
-            const yc = this.getLastOfMonth(y, m - 1);
-            for (i = yc - f + 1; i <= yc; i ++) {
-                days.push({
-                    disable: true,
-                    val: i,
-                });
+    },
+    methods: {
+        twoPad(val: any) {
+            return twoPadFilter(val);
+        },
+        hideCalerdar(): void {
+            this.calendarVisible = false;
+        },
+        isSameTime(date: Date): boolean {
+            if (date.getFullYear() !== this.currentDate.getFullYear()) {
+                return false;
             }
-        }
-        for (i = 1; i <= c; i ++) {
-            days.push({
-                disable: false,
-                val: i,
-            });
-        }
-        if (f + c < 43) {
-            const l = 42 - f - c;
-            for (i = 1; i <= l; i ++) {
-                days.push({
-                    disable: true,
-                    val: i,
-                });
+            if (date.getMonth() !== this.currentDate.getMonth()) {
+                return false;
             }
-        }
-        return days;
-    }
-
-    /**
-     * 获取月中最后一天
-     * @param y
-     * @param m
-     */
-    private getLastOfMonth(y: number, m: number): number {
-        const date = new Date(y, m, 0);
-        return date.getDate();
-     }
-
-    /**
-     * 获取第一天和最后一天
-     * @param y
-     * @param m
-     */
-    private getFirtAndLastOfMonth(y: number, m: number): [number, number] {
-        const date = new Date(y, m, 0);
-        const count = date.getDate();
-        date.setDate(1);
-        return [date.getDay(), count];
-    }
-
-    private applyCurrent() {
-        this.currentDate.setFullYear(this.currentYear, this.currentMonth -  1, this.currentDay);
-        if (this.hasTime) {
-            this.currentDate.setHours(this.currentHour, this.currentMinute, this.currentSecond);
-        }
-        this.title = this.formatDate(this.currentDate, this.titleFormat);
-    }
-
-    private changeYear(year: number) {
-        this.currentYear = year;
-        this.initDays();
-        this.applyCurrent();
-    }
-
-    private changeMonth(month: number) {
-        this.currentMonth = month;
-        this.initDays();
-        this.applyCurrent();
-    }
-
-    private changeDay(day: IDay) {
-        const date = new Date(this.currentDate.getTime());
-        if (day.disable) {
-            if (day.val < 15) {
-                date.setMonth(date.getMonth() + 1);
-            } else {
-                date.setMonth(date.getMonth() - 1);
+            if (date.getDate() !== this.currentDate.getDate()) {
+                return false;
             }
-        }
-        date.setDate(day.val);
-        if (!this.checkDate(date)) {
-            return;
-        }
-        this.currentDate = date;
-        this.refreshCurrent();
-        if (!this.hasTime) {
-            this.enterChange();
-            return;
-        }
-    }
-
-    private changeHour(hour: number) {
-        this.currentHour = hour;
-    }
-
-    private changeMinute(minute: number) {
-        this.currentMinute = minute;
-    }
-
-    private changeSecond(second: number) {
-        this.currentSecond = second;
-    }
-
-    /**
-     * 确认改变
-     */
-    private enterChange() {
-        this.applyCurrent();
-        if (!this.checkDate(this.currentDate)) {
-            return;
-        }
-
-        this.output();
-        this.calendarVisible = false;
-    }
-
-    private output() {
-        const format =  this.formatDate(this.currentDate, this.format);
-        this.$emit('input', typeof this.value !== 'object' ? format :  this.currentDate);
-        this.$emit('output', format);
-    }
-
-    private showCalendar() {
-        this.calendarVisible = true;
-        this.refresh();
-    }
-
-    private toDate(year: number|Date|string, month?: number): Date {
-        if (!year) {
-            return new Date();
-        }
-        if (typeof year === 'object') {
-            return year;
-        }
-        if (typeof year === 'number'
-        && typeof month === 'number') {
-            return new Date(year, month - 1, 1);
-        }
-        // 解决safari 无法识别 -
-        if (typeof year === 'string' && year.indexOf('-') > 0) {
-            year.replace('-', '/');
-        }
-        if (typeof year === 'number' && ('' + year).length  === 10) {
-            year *= 1000;
-        }
-        const date = new Date(year);
-        if (isNaN(date.getTime())) {
-            return new Date();
-        }
-        return date;
-    }
-
-    /**
-     * 格式化日期
-     */
-    private formatDate(date: Date, fmt= 'y年mm月dd日'): string {
-        const o: any = {
-            'y+': date.getFullYear(),
-            'm+': date.getMonth() + 1, // 月份
-            'd+': date.getDate(), // 日
-            'h+': date.getHours(), // 小时
-            'i+': date.getMinutes(), // 分
-            's+': date.getSeconds(), // 秒
-            'q+': Math.floor((date.getMonth() + 3) / 3), // 季度
-            'S': date.getMilliseconds(), // 毫秒
-        };
-        for (const k in o) {
-            if (new RegExp('(' + k + ')').test(fmt)) {
-                const len =  ('' + o[k]).length;
-                fmt = fmt.replace(RegExp.$1,
-                (RegExp.$1.length === 1 || RegExp.$1.length === len)
-                ? (o[k]) : (('00' + o[k]).substr(len)));
-            }
-        }
-        return fmt;
-    }
-
-
-    private hasElementByClass(path: Element[], className: string): boolean {
-        let hasClass = false;
-        for (const item of path) {
-            if (!item || !item.className) {
-                continue;
-            }
-            hasClass = item.className.indexOf(className) >= 0;
-            if (hasClass) {
+            if (!this.hasTime) {
                 return true;
             }
-        }
-        return hasClass;
-    }
+            if (date.getHours() !== this.currentDate.getHours()) {
+                return false;
+            }
+            if (date.getMinutes() !== this.currentDate.getMinutes()) {
+                return false;
+            }
+            return date.getSeconds() === this.currentDate.getSeconds();
+        },
+        /**
+        * 转化date
+        * @param date
+        */
+        parseDate(date: null|string|number|Date): Date {
+            if (!date) {
+                return new Date();
+            }
+            if (typeof date === 'number') {
+                return new Date(date * 1000);
+            }
+            if (typeof date === 'string') {
+                return new Date(date);
+            }
+            return date;
+        },
+        /**
+        * 验证Date
+        * @param date
+        */
+        checkDate(date: Date): boolean {
+            const min = this.currentMin;
+            if (min && date <= min) {
+                return false;
+            }
+            const max = this.currentMax;
+            return !max || date < max;
+        },
+        /**
+        * 刷新变化部分
+        */
+        refresh(): void {
+            this.hasTime = this.format.indexOf('h') > 0;
+            this.refreshCurrent();
+            this.initDays();
+        },
+        refreshCurrent(): void {
+            this.currentYear = this.currentDate.getFullYear();
+            this.currentMonth = this.currentDate.getMonth() + 1;
+            this.currentDay = this.currentDate.getDate();
+            if (this.hasTime) {
+                this.currentHour = this.currentDate.getHours();
+                this.currentMinute = this.currentDate.getMinutes();
+                this.currentSecond = this.currentDate.getSeconds();
+            }
+            this.title = this.formatDate(this.currentDate, this.titleFormat);
+        },
+        initHours(): void {
+            this.hourList = [];
+            for (let i = 0; i < 24; i++) {
+                this.hourList.push(i);
+            }
+        },
+        initMinutes(): void {
+            this.minuteList = [];
+            for (let i = 0; i < 60; i++) {
+                this.minuteList.push(i);
+            }
+        },
+        initSeconds(): void {
+            this.secondList = [];
+            for (let i = 0; i < 60; i++) {
+                this.secondList.push(i);
+            }
+        },
+        initMonths(): void {
+            this.monthList = [];
+            for (let i = 1; i < 13; i++) {
+                this.monthList.push(i);
+            }
+        },
+        initYears(): void {
+            this.yearList = [];
+            for (let i = this.minYear; i <= this.maxYear; i++) {
+                this.yearList.push(i);
+            }
+        },
+        initDays(): void {
+            this.dayList = this.getDaysOfMonth(this.currentMonth, this.currentYear);
+        },
+        toggleYear(): void {
+            this.gridMode = this.gridMode === DayMode.Year ? DayMode.Day : DayMode.Year;
+        },
+        toggleTime(): void {
+            this.gridMode = this.gridMode === DayMode.Hour ? DayMode.Day : DayMode.Hour;
+        },
+        /**
+        * 上一年
+        */
+        previousYear(): void {
+            this.changeYear(this.currentYear - 1);
+        },
+        /**
+        * 下一年
+        */
+        nextYear(): void {
+            this.changeYear(this.currentYear + 1);
+        },
+        /**
+        * 上月
+        */
+        previousMonth(): void {
+            this.changeMonth(this.currentMonth - 1);
+        },
+        /**
+        * 下月
+        */
+        nextMonth(): void {
+            this.changeMonth(this.currentMonth + 1);
+        },
+        getDaysOfMonth(m: number, y: number): IDay[] {
+            const days = [];
+            const [f, c] = this.getFirtAndLastOfMonth(y, m);
+            let i: number;
+            if (f > 0) {
+                const yc = this.getLastOfMonth(y, m - 1);
+                for (i = yc - f + 1; i <= yc; i ++) {
+                    days.push({
+                        disable: true,
+                        val: i,
+                    });
+                }
+            }
+            for (i = 1; i <= c; i ++) {
+                days.push({
+                    disable: false,
+                    val: i,
+                });
+            }
+            if (f + c < 43) {
+                const l = 42 - f - c;
+                for (i = 1; i <= l; i ++) {
+                    days.push({
+                        disable: true,
+                        val: i,
+                    });
+                }
+            }
+            return days;
+        },
+        /**
+        * 获取月中最后一天
+        * @param y
+        * @param m
+        */
+        getLastOfMonth(y: number, m: number): number {
+            const date = new Date(y, m, 0);
+            return date.getDate();
+        },
 
-}
+        /**
+        * 获取第一天和最后一天
+        * @param y
+        * @param m
+        */
+        getFirtAndLastOfMonth(y: number, m: number): [number, number] {
+            const date = new Date(y, m, 0);
+            const count = date.getDate();
+            date.setDate(1);
+            return [date.getDay(), count];
+        },
+        applyCurrent() {
+            this.currentDate.setFullYear(this.currentYear, this.currentMonth -  1, this.currentDay);
+            if (this.hasTime) {
+                this.currentDate.setHours(this.currentHour, this.currentMinute, this.currentSecond);
+            }
+            this.title = this.formatDate(this.currentDate, this.titleFormat);
+        },
+        changeYear(year: number) {
+            this.currentYear = year;
+            this.initDays();
+            this.applyCurrent();
+        },
+        changeMonth(month: number) {
+            this.currentMonth = month;
+            this.initDays();
+            this.applyCurrent();
+        },
+        changeDay(day: IDay) {
+            const date = new Date(this.currentDate.getTime());
+            if (day.disable) {
+                if (day.val < 15) {
+                    date.setMonth(date.getMonth() + 1);
+                } else {
+                    date.setMonth(date.getMonth() - 1);
+                }
+            }
+            date.setDate(day.val);
+            if (!this.checkDate(date)) {
+                return;
+            }
+            this.currentDate = date;
+            this.refreshCurrent();
+            if (!this.hasTime) {
+                this.enterChange();
+                return;
+            }
+        },
+        changeHour(hour: number) {
+            this.currentHour = hour;
+        },
+        changeMinute(minute: number) {
+            this.currentMinute = minute;
+        },
+        changeSecond(second: number) {
+            this.currentSecond = second;
+        },
+
+        /**
+        * 确认改变
+        */
+        enterChange() {
+            this.applyCurrent();
+            if (!this.checkDate(this.currentDate)) {
+                return;
+            }
+
+            this.output();
+            this.calendarVisible = false;
+        },
+        output() {
+            const format =  this.formatDate(this.currentDate, this.format);
+            this.$emit('input', typeof this.value !== 'object' ? format :  this.currentDate);
+            this.$emit('output', format);
+        },
+        showCalendar() {
+            this.calendarVisible = true;
+            this.refresh();
+        },
+        toDate(year: number|Date|string, month?: number): Date {
+            if (!year) {
+                return new Date();
+            }
+            if (typeof year === 'object') {
+                return year;
+            }
+            if (typeof year === 'number'
+            && typeof month === 'number') {
+                return new Date(year, month - 1, 1);
+            }
+            // 解决safari 无法识别 -
+            if (typeof year === 'string' && year.indexOf('-') > 0) {
+                year.replace('-', '/');
+            }
+            if (typeof year === 'number' && ('' + year).length  === 10) {
+                year *= 1000;
+            }
+            const date = new Date(year);
+            if (isNaN(date.getTime())) {
+                return new Date();
+            }
+            return date;
+        },
+
+        /**
+        * 格式化日期
+        */
+        formatDate(date: Date, fmt= 'y年mm月dd日'): string {
+            const o: any = {
+                'y+': date.getFullYear(),
+                'm+': date.getMonth() + 1, // 月份
+                'd+': date.getDate(), // 日
+                'h+': date.getHours(), // 小时
+                'i+': date.getMinutes(), // 分
+                's+': date.getSeconds(), // 秒
+                'q+': Math.floor((date.getMonth() + 3) / 3), // 季度
+                'S': date.getMilliseconds(), // 毫秒
+            };
+            for (const k in o) {
+                if (new RegExp('(' + k + ')').test(fmt)) {
+                    const len =  ('' + o[k]).length;
+                    fmt = fmt.replace(RegExp.$1,
+                    (RegExp.$1.length === 1 || RegExp.$1.length === len)
+                    ? (o[k]) : (('00' + o[k]).substr(len)));
+                }
+            }
+            return fmt;
+        },
+        hasElementByClass(path: Element[], className: string): boolean {
+            let hasClass = false;
+            for (const item of path) {
+                if (!item || !item.className) {
+                    continue;
+                }
+                hasClass = item.className.indexOf(className) >= 0;
+                if (hasClass) {
+                    return true;
+                }
+            }
+            return hasClass;
+        }
+    }
+});
 </script>
 <style lang="scss" scoped>
 $size: 50px;
