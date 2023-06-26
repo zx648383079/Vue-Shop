@@ -1,5 +1,5 @@
 <template>
-    <div class="cart-dialog" v-if="mode > 0" @click="tapClose">
+    <div class="cart-dialog" v-if="mode > 0 && product" @click="tapClose">
         <div class="dialog-body" @click.stop>
             <div class="dialog-header">
                 <img :src="product.thumb" alt="">
@@ -45,7 +45,7 @@ const shopStore = useShopStore();
 const emit = defineEmits(['close']);
 const props = withDefaults(
     defineProps<{
-        product: IProduct,
+        product?: IProduct,
         mode: number
     }>(),
     {

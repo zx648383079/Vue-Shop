@@ -4,8 +4,10 @@ import type { IErrorResponse } from "../../api/model";
 import type { AxiosError } from "axios";
 
 export const dialogInjectionKey: InjectionKey<string> = Symbol('dailog');
+
 interface DialogOption {
     [key: string]: any;
+    dialogId?: any;
     visible?: boolean;
     content?: string;   //内容
     closeAnimate?: boolean;
@@ -15,7 +17,6 @@ interface DialogOption {
 
 export interface DialogTipOption extends DialogOption {
     time?: number;         //显示时间
-    id?: any;
     type: string;
 }
 
@@ -29,13 +30,34 @@ export interface DialogConfirmOption extends DialogOption {
     onCancel?: () => void;
 }
 
-class DialogSerive {
+export interface IDialogSerive {
+    error(message: string|IErrorResponse|AxiosError): void;
+    warning(message: string|IErrorResponse|AxiosError): void;
+    success(message: string): void;
+    tip(content: string): void;
+    tip(content: string, time: number): void;
+    tip(option: DialogTipOption):  void;
+    tip(option: string|DialogTipOption, time?: number): void;
+    confirm(content: string): Promise<any>;
+    confirm(content: string, onConfirm: () => void): void;
+    confirm(option: DialogConfirmOption): Promise<any>;
+    confirm(option: DialogConfirmOption|string, onConfirm?: () => void): Promise<any>|void;
+
+    close(dialogId?: any): void;
+}
+
+class DialogSerive implements IDialogSerive {
 
     private guid = 0;
     private container: any;
+    private readyFn?: Function;
 
     public ready(container: any) {
         this.container = container;
+        if (this.readyFn) {
+            this.readyFn();
+            this.readyFn = undefined;
+        }
     }    
 
     private formatError(error: string|IErrorResponse|AxiosError): string {
@@ -100,30 +122,44 @@ class DialogSerive {
                 opt.onCancel = () => {
                     reject();
                 }
-                this.createDailog(opt);
+                this.createDialog(opt);
             });
         }
-        this.createDailog(opt);
+        this.createDialog(opt);
+    }
+
+    public close(id?: any) {
+        if (!this.container) {
+            return;
+        }
+        this.container.close(id);
     }
 
     private createMessage(option: DialogTipOption) {
         if (!this.container) {
+            this.readyFn = () => {
+                this.createMessage(option);
+            };
             return;
         }
-        option.id = ++ this.guid;
+        option.dialogId = ++ this.guid;
         this.container.addToast(option);
     }
 
-    private createDailog(option: DialogConfirmOption) {
+    private createDialog(option: DialogConfirmOption) {
         if (!this.container) {
+            this.readyFn = () => {
+                this.createDialog(option);
+            };
             return;
         }
+        option.dialogId = ++ this.guid;
         this.container.addConfirm(option);
     }
 
 }
 
-export function useDialog(): DialogSerive {
+export function useDialog(): IDialogSerive {
     return getCurrentInstance()
         ? inject<DialogSerive>(dialogInjectionKey, new DialogSerive())
         : new DialogSerive();

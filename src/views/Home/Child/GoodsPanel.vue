@@ -14,8 +14,8 @@ import type { IProduct } from '@/api/model';
 
 const emit = defineEmits(['enter', 'addCart']);
 const props = defineProps<{
-    items: IProduct[],
-    title: string
+    items?: IProduct[],
+    title?: string
 }>();
 
 function tapProduct(item: IProduct) {

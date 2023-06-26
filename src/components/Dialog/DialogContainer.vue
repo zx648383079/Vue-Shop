@@ -1,7 +1,7 @@
 <template>
     <div ref="el">
         <div class="dialog-mask" v-if="maskVisible" @click="close()"></div>
-        <DialogToast v-for="item in toastItems" :key="item.id"></DialogToast>
+        <DialogToast v-for="item in toastItems" :key="item.id" v-bind="item"></DialogToast>
         <DialogConfirmBox v-bind="confirmData"></DialogConfirmBox>
     </div>
 </template>
@@ -19,39 +19,51 @@ const props = withDefaults(
         container: document.body as  any
     }
 );
-
 const toastItems = ref<DialogTipOption[]>([]);
-const confirmData = ref<DialogConfirmOption|null>({});
+const confirmData = ref<DialogConfirmOption>({});
 
 const maskVisible = ref(false);
 const el = ref<HTMLDivElement>();
+const toastOuterHeight = 60;
 
 
-function close() {
+function close(id?: any) {
     maskVisible.value = false;
-    toastItems.value = [];
-    confirmData.value = {};
+    if (!id) {
+        toastItems.value = [];
+        confirmData.value = {};
+        return;
+    }
+    if (confirmData.value.id === id) {
+        confirmData.value = {};
+        return;
+    }
+    toastItems.value = toastItems.value.filter(i => i.id !== id).map((item, i) => {
+        item.offset = i * toastOuterHeight;
+        return item;
+    });
 }
 
 function addToast(option: DialogTipOption) {
     option.visible = true;
     const themeItems: any = {
         success: {
-            icon: 'icon-check-circle'
+            icon: 'fa-check-circle'
         },
         info: {
-            icon: 'icon-exclamation-circle',
+            icon: 'fa-exclamation-circle',
         },
         waining: {
-            icon: 'icon-exclamation-triangle',
+            icon: 'fa-exclamation-triangle',
         },
         error: {
-            icon: 'icon-close-circle'
+            icon: 'fa-close'
         }
     };
     const item = themeItems[option.type];
-    option.icon = item?.icon || ('icon-' + option.type);
+    option.icon = item?.icon || ('fa-' + option.type);
     option.theme = item?.theme || ('message-' + option.type);
+    option.offset = toastOuterHeight * toastItems.value.length;
     toastItems.value.push(option);
 }
 
@@ -80,6 +92,7 @@ onMounted(() => {
 defineExpose({
     addToast,
     addConfirm,
+    close,
 });
 </script>
 <style lang="scss">
