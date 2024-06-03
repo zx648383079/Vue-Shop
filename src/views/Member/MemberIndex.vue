@@ -13,7 +13,7 @@
                 <div class="name">
                     欢迎您，
                     <a v-if="user" @click="tapProfile">{{ user.name }}</a>
-                    <a v-else @click="tapLogin">请登陆</a>
+                    <a v-else @click="tapLogin">请登录</a>
                     ~
                 </div>
             </div>

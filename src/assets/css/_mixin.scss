@@ -1,25 +1,29 @@
-$debc: #e4e4e4;
-$title: 16px;
-$subtitle: 13px;
-$smsub: 12px;
-$margin: 10px;
-$gray: #81838e;
-$border: #e1e1e1;
-$padding: 10px;
-$fontfamily: 'Microsoft Yahei';
-$headerBg: #05a6b1;
-$white: #fff;
-$hr: 1px solid #ccc;
-$bg: #f4f4f4;
-$red: #d22222;
-$lineHeight: 2.5rem;
+
+@mixin iconFont($size: 0) {
+    display: inline-block;
+    font-family: "iconfont";
+    font-weight: 900;
+    font-size: inherit;
+    text-rendering: auto;
+    font-style: normal;
+    @if $size != 0 {
+        font-size: $size;
+    }
+}
+
+@mixin icon($code, $size: 0) {
+    @include iconFont($size);
+    &::before {
+        content: $code;
+    }
+}
 
 @mixin lineItem() {
     .line-item {
         position: relative;
         line-height: 1.875rem;
         .fa {
-            position: absolute; 
+            position: absolute;
             right: 0.3125rem;
             top: 0.4375rem;
         }
@@ -35,7 +39,7 @@ $lineHeight: 2.5rem;
 @mixin menuA() {
     display: block;
     padding: 0.625rem;
-    background: $white;
+    background: var(--#{$prefix}-primary-text);
     margin-top: 0.125rem;
     .fa:nth-child(2),
     .fa-chevron-right {
@@ -45,99 +49,99 @@ $lineHeight: 2.5rem;
     }
 }
 //flex box
-@mixin flexbox($jc:space-between, $ai:center, $fd:row, $fw:nowrap) {
-  display: flex;
-  flex: 1;
-  justify-content: $jc;
-  align-items: $ai;
-  flex-direction: $fd;
-  flex-wrap: $fw;
+@mixin flexbox($jc: space-between, $ai: center, $fd: row, $fw: nowrap) {
+    display: flex;
+    flex: 1;
+    justify-content: $jc;
+    align-items: $ai;
+    flex-direction: $fd;
+    flex-wrap: $fw;
 }
 
 // width height
-@mixin wh($w:100%, $h:100%) {
-  width: $w;
-  height: $h;
+@mixin wh($w: 100%, $h: 100%) {
+    width: $w;
+    height: $h;
 }
 
-@mixin radius($radius:50%) {
-  -webkit-border-radius: $radius;
-  -moz-border-radius: $radius;
-  -ms-border-radius: $radius;
-  -o-border-radius: $radius;
-  border-radius: $radius;
-  border: 1px solid #eee;
+@mixin radius($radius: 50%) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    -o-border-radius: $radius;
+    border-radius: $radius;
+    border: 1px solid #eee;
 }
 
 // 背景图片地址和大小
 @mixin bg($url) {
-  background-image: url($url);
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
+    background-image: url($url);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
 }
 
 // clamp
-@mixin textoverflow($clamp:1) {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: $clamp;
-  overflow: hidden;
+@mixin textoverflow($clamp: 1) {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $clamp;
+    overflow: hidden;
 }
 
 //渐变
 @mixin gradient($rc, $lc) {
-  background-image: -webkit-gradient(linear, left bottom, left top, from($rc), to($lc));
-  background-image: -webkit-linear-gradient(bottom, $rc, $lc);
-  background-image: -o-linear-gradient(bottom, $rc, $lc);
-  background-image: linear-gradient(0deg, $rc, $lc);
-  background-image: -webkit-linear-gradient(0deg, $rc, $lc);
+    background-image: -webkit-gradient(linear, left bottom, left top, from($rc), to($lc));
+    background-image: -webkit-linear-gradient(bottom, $rc, $lc);
+    background-image: -o-linear-gradient(bottom, $rc, $lc);
+    background-image: linear-gradient(0deg, $rc, $lc);
+    background-image: -webkit-linear-gradient(0deg, $rc, $lc);
 }
 
 @mixin placeholderColor($color) {
-   ::-webkit-input-placeholder {
-    /* WebKit browsers */
-    color: $color;
-  }
-   :-moz-placeholder {
-    /* Mozilla Firefox 4 to 18 */
-    color: $color;
-  }
-   ::-moz-placeholder {
-    /* Mozilla Firefox 19+ */
-    color: $color;
-  }
-   :-ms-input-placeholder {
-    /* Internet Explorer 10+ */
-    color: #999;
-  }
+    ::-webkit-input-placeholder {
+        /* WebKit browsers */
+        color: $color;
+    }
+    :-moz-placeholder {
+        /* Mozilla Firefox 4 to 18 */
+        color: $color;
+    }
+    ::-moz-placeholder {
+        /* Mozilla Firefox 19+ */
+        color: $color;
+    }
+    :-ms-input-placeholder {
+        /* Internet Explorer 10+ */
+        color: #999;
+    }
 }
 
-@mixin prefix-animation($animation-name){
-  animation: $animation-name;
-  -webkit-animation: $animation-name;
-  -moz-animation: $animation-name;
-  -o-animation: $animation-name;
+@mixin prefix-animation($animation-name) {
+    animation: $animation-name;
+    -webkit-animation: $animation-name;
+    -moz-animation: $animation-name;
+    -o-animation: $animation-name;
 }
 
-@mixin prefix-keyframes($animation-name){
-  @keyframes #{$animation-name}{
-      @content;
-  }
-  @-webkit-keyframes #{$animation-name}{
-      @content; 
-  }
-  @-moz-keyframes #{$animation-name}{
-      @content; 
-  }
-  @-o-keyframes #{$animation-name}{
-      @content; 
-  }
-} 
+@mixin prefix-keyframes($animation-name) {
+    @keyframes #{$animation-name} {
+        @content;
+    }
+    @-webkit-keyframes #{$animation-name} {
+        @content;
+    }
+    @-moz-keyframes #{$animation-name} {
+        @content;
+    }
+    @-o-keyframes #{$animation-name} {
+        @content;
+    }
+}
 
-@mixin prefix-content($content-name, $content-txt){
-  #{$content-name}: $content-txt;
-  -webkit-#{$content-name}: $content-txt;
-  -moz-#{$content-name}: $content-txt;
-  -ms-#{$content-name}: $content-txt;
-  -o-#{$content-name}: $content-txt;
+@mixin prefix-content($content-name, $content-txt) {
+    #{$content-name}: $content-txt;
+    -webkit-#{$content-name}: $content-txt;
+    -moz-#{$content-name}: $content-txt;
+    -ms-#{$content-name}: $content-txt;
+    -o-#{$content-name}: $content-txt;
 }

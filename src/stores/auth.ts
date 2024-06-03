@@ -1,8 +1,7 @@
 import { defineStore } from "pinia";
 import type { ILogin, IUser } from "../api/model";
-import { getSessionStorage, removeSessionStorage, setSessionStorage } from "../utils";
-import { TOKEN_KEY } from "./types";
 import { getProfile, login, logout } from "../api/user";
+import { useAuth } from "../services";
 
 
 interface AuthState {
@@ -22,7 +21,7 @@ export const useAuthStore = defineStore('auth', {
             if (state.user) {
                 return false;
             }
-            const token = getSessionStorage<string>(TOKEN_KEY);
+            const token = useAuth().getUserToken();
             return !token;
         }
     },
@@ -31,7 +30,7 @@ export const useAuthStore = defineStore('auth', {
             if (this.token) {
                 return this.token;
             }
-            const token = getSessionStorage<string>(TOKEN_KEY);
+            const token = useAuth().getUserToken();
             if (!token) {
                 return token;
             }
@@ -40,11 +39,7 @@ export const useAuthStore = defineStore('auth', {
         },
         setToken(token: string|null) {
             this.token = token;
-            if (token) {
-                setSessionStorage(TOKEN_KEY, token);
-                return;
-            }
-            removeSessionStorage(TOKEN_KEY);
+            useAuth().setUserToken(token);
             return token;
         },
         getUser() {
@@ -53,7 +48,7 @@ export const useAuthStore = defineStore('auth', {
                     resolve(this.user);
                     return;
                 }
-                const token = getSessionStorage<string>(TOKEN_KEY);
+                const token = useAuth().getUserToken();
                 if (!token) {
                     resolve(null);
                     return;
@@ -79,7 +74,7 @@ export const useAuthStore = defineStore('auth', {
         },
         logoutUser() {
             return new Promise<void>((resolve, reject) => {
-                const token = getSessionStorage<string>(TOKEN_KEY);
+                const token = useAuth().getUserToken();
                 if (!token) {
                     resolve();
                     return;

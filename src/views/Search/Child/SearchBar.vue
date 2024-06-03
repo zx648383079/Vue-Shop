@@ -40,14 +40,15 @@
     </div>
 </template>
 <script setup lang="ts">
-import { removeLocalStorage, getLocalStorage, setLocalStorage } from '@/utils';
 import { getHotKeywords, getTips } from '@/api/product';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useCache } from '../../../services';
 const KEYWORDS_HISTORY = 'KEYWORDS_HISTORY';
 
 const emit = defineEmits(['search', 'update:modalValue']);
 const router = useRouter();
+const cache = useCache();
 const props = defineProps<{
     modalValue: string
 }>();
@@ -68,7 +69,7 @@ function tapUpdateVal(val: string) {
 
 function tapClearHistory() {
     historyList.value = []
-    removeLocalStorage(KEYWORDS_HISTORY)
+    cache.remove(KEYWORDS_HISTORY)
 }
 
 function tapClearSearch() {
@@ -84,7 +85,7 @@ function addHistory(keywords: string) {
     if (historyList.value.length > 8) {
         historyList.value.splice(8);
     }
-    setLocalStorage(KEYWORDS_HISTORY, historyList)
+    cache.set(KEYWORDS_HISTORY, historyList)
 }
 
 function onKeyUp(event: any) {
@@ -106,7 +107,7 @@ function tapSearch(keywords: string) {
 }
 
 
-historyList.value = getLocalStorage(KEYWORDS_HISTORY, true) || []
+historyList.value = cache.get(KEYWORDS_HISTORY, true) || []
 getHotKeywords().then(res => {
     hotKeywords.value = res.data ? res.data : [];
 });

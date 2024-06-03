@@ -151,16 +151,17 @@ import { getInfo, getRecommend } from '@/api/product';
 import { getCommentSubtotal } from '@/api/comment';
 import { toggleCollect } from '@/api/user';
 import CommentPage from './Child/CommentPage.vue';
-import { getLocalStorage, setLocalStorage } from '@/utils';
 import { SET_GOODS_HISTORY } from '@/stores/types';
 import CartDialog from './Child/CartDialog.vue';
 import { computed, onMounted, onUnmounted, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '../../stores/auth';
 import { useDialog } from '../../components/Dialog/plugin';
+import { useCache } from '../../services';
 
 const route = useRoute();
 const router = useRouter();
+const cache = useCache();
 const authStore = useAuthStore();
 const toast = useDialog();
 const goods = ref<IProduct | null>(null);
@@ -211,13 +212,13 @@ function setHistory() {
     if (!goods.value) {
         return;
     }
-    let data = getLocalStorage<number[]>(SET_GOODS_HISTORY, true);
+    let data = cache.get<number[]>(SET_GOODS_HISTORY, true);
     if (!data) {
         data = [goods.value.id];
     } else if (data.indexOf(goods.value.id) < 0) {
         data.push(goods.value.id);
     }
-    setLocalStorage(SET_GOODS_HISTORY, data);
+    cache.set(SET_GOODS_HISTORY, data);
 }
 
 function loadComment() {

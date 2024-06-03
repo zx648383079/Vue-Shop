@@ -1,4 +1,4 @@
-export class Cookie {
+export class CookieService {
 
     private readonly documentIsAccessible = true;
     private document = window.document;
@@ -198,6 +198,7 @@ export class Cookie {
     * @returns property RegExp
     */
     private getCookieRegExp(name: string): RegExp {
+        // eslint-disable-next-line no-useless-escape
         const escapedName: string = name.replace(/([\[\]\{\}\(\)\|\=\;\+\?\,\.\*\^\$])/gi, '\\$1');
 
         return new RegExp('(?:^' + escapedName + '|;\\s*' + escapedName + ')=(.*?)(?:;|$)', 'g');

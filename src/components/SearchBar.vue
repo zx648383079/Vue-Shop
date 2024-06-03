@@ -1,6 +1,6 @@
 <template>
     <div>
-        <SearchHeader :value="value" @input="updateVal" @enter="tapSearch" @keyup="onKeyUp" @focus="tapFocus"></SearchHeader>
+        <SearchHeader :value="props.modalValue" @update:modal-value="updateVal" @enter="tapSearch" @keyup="onKeyUp" @focus="tapFocus"></SearchHeader>
         <div class="has-header" v-if="!isMini">
             <div class="search-recommend-box" v-if="!tipList || tipList.length == 0">
                 <div class="panel" v-if="historyList && historyList.length > 0">
@@ -30,81 +30,72 @@
         </div>
     </div>
 </template>
-<script lang="ts">
-import { removeLocalStorage, getLocalStorage, setLocalStorage } from '@/utils';
+<script setup lang="ts">
 const KEYWORDS_HISTORY = 'KEYWORDS_HISTORY';
 import SearchHeader from './SearchHeader.vue';
 import { getHotKeywords, getTips } from '@/api/product';
-import { defineComponent } from 'vue'
+import { ref } from 'vue'
+import { useRoute } from 'vue-router';
+import { useCache } from '../services';
 
-export default defineComponent({
-    components: {
-        SearchHeader
-    },
-    props: {
-        value: String,
-    },
-    data() {
-        const hotKeywords: string[] = [];
-        const tipList: string[] = [];
-        const historyList: string[] = [];
-        return {
-            hotKeywords,
-            tipList,
-            historyList,
-            isMini: false
-        };
-    },
-    created() {
-        this.isMini = Object.keys(this.$route.query).length > 0;
-        this.historyList = getLocalStorage<string[]>(KEYWORDS_HISTORY, true) as any || [];
-        getHotKeywords().then(res => {
-            this.hotKeywords = res.data as any;
-        });
-    },
-    methods: {
-        updateVal(val: string) {
-            this.$emit('input', val);
-            if (!val || val.length < 1) {
-                this.tipList = [];
-                this.isMini = false;
-            }
-        },
-        tapClearHistory() {
-            this.historyList = []
-            removeLocalStorage(KEYWORDS_HISTORY)
-        },
-        addHistory(keywords: string) {
-            if (this.historyList.indexOf(keywords) >= 0) {
-                return;
-            }
-            this.historyList.push(keywords);
-            if (this.historyList.length > 8) {
-                this.historyList.splice(8);
-            }
-            setLocalStorage(KEYWORDS_HISTORY, this.historyList)
-        },
-        onKeyUp() {
-            if (!this.value || this.value.length < 1) {
-                this.tipList = [];
-                return;
-            }
-            getTips(this.value).then(res => {
-                this.tipList = res.data as any;
-            });
-        },
-        tapSearch(keywords: string) {
-            if (!keywords || keywords.trim().length === 0) {
-                return;
-            }
-            this.addHistory(keywords);
-            this.$emit('search', keywords);
-            this.isMini = true;
-        },
-        tapFocus() {
-            this.$emit('focus');
-            this.isMini = false;
-        }
+const route = useRoute();
+const cache = useCache();
+const emit = defineEmits(['update:modalValue', 'focus', 'search']);
+const props = defineProps<{
+    modalValue?: string;
+}>();
+
+const hotKeywords = ref<string[]>([]);
+const tipList = ref<string[]>([]);
+const historyList = ref<string[]>([]);
+const isMini = ref(false);
+
+function updateVal(val: string) {
+    emit('update:modalValue', val);
+    if (!val || val.length < 1) {
+        tipList.value = [];
+        isMini.value = false;
     }
+}
+function tapClearHistory() {
+    historyList.value = []
+    cache.remove(KEYWORDS_HISTORY)
+}
+function addHistory(keywords: string) {
+    if (historyList.value.indexOf(keywords) >= 0) {
+        return;
+    }
+    historyList.value.push(keywords);
+    if (historyList.value.length > 8) {
+        historyList.value.splice(8);
+    }
+    cache.set(KEYWORDS_HISTORY, historyList)
+}
+function onKeyUp() {
+    if (!props.modalValue || props.modalValue.length < 1) {
+        tipList.value = [];
+        return;
+    }
+    getTips(props.modalValue).then(res => {
+        tipList.value = res.data as any;
+    });
+}
+function tapSearch(keywords: string) {
+    if (!keywords || keywords.trim().length === 0) {
+        return;
+    }
+    addHistory(keywords);
+    emit('search', keywords);
+    isMini.value = true;
+}
+function tapFocus() {
+    emit('focus');
+    isMini.value = false;
+}
+
+isMini.value = Object.keys(route.query).length > 0;
+historyList.value = cache.get<string[]>(KEYWORDS_HISTORY, true) as any || [];
+getHotKeywords().then(res => {
+    hotKeywords.value = res.data as any;
 });
 </script>

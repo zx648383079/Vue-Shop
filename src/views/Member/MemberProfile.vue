@@ -45,7 +45,7 @@
                     <i class="iconfont fa-chevron-right" aria-hidden="true"></i>
                 </a>
                 <a @click="$router.push('/member/driver')">
-                    登陆设备管理
+                    登录设备管理
                     <i class="iconfont fa-chevron-right" aria-hidden="true"></i>
                 </a>
                 <a @click="$router.push('/member/cancel')">

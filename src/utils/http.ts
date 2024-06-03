@@ -1,9 +1,8 @@
 import axios from 'axios';
 import router from '@/router'
 import { apiEndpoint } from '../config/config';
-import * as util from './'
-import { TOKEN_KEY } from '@/stores/types'
 import { useDialog } from '../components/Dialog/plugin';
+import { useAuth } from '../services';
 
 axios.defaults.timeout = 60000
 axios.defaults.baseURL = apiEndpoint
@@ -15,14 +14,15 @@ axios.interceptors.request.use(
             config.data = JSON.stringify(config.data)
             config.headers.setContentType('application/vnd.api+json').setAccept('application/json');
         }
-        const params = util.getAppParams();
+        const auth = useAuth();
+        const params = auth.getAppParams();
         if (!config.params) {
             config.params = {}
         }
         config.params.appid = params.appid;
         config.params.timestamp = params.timestamp;
         config.params.sign = params.sign;
-        const token = util.getSessionStorage(TOKEN_KEY)
+        const token = auth.getUserToken();
         if (token) {
             config.headers.Authorization = 'Bearer ' + token
         }
@@ -41,7 +41,7 @@ axios.interceptors.response.use(
     (error) => {
         useDialog().error(error && error.response ? error.response.data.message : error);
         if (error && error.response && error.response.status === 401) {
-            util.removeSessionStorage(TOKEN_KEY);
+            useAuth().logoutUser();
             router.push({
                 path: '/login',
                 query: {
@@ -152,11 +152,8 @@ export function uploadFile<T>(url: string, file: File, name = 'file'): Promise<T
     });
 }
 
-export default {
-    install(app: any) {
-        app.config.globalProperties.$post = post
-        app.config.globalProperties.$fetch = fetch
-        app.config.globalProperties.$patch = patch
-        app.config.globalProperties.$put = put
-    },
-}
+
+
+
+
+

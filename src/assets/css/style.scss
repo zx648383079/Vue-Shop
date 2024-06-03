@@ -1,3 +1,5 @@
+@import "theme";
+@import "root";
 @import "mixin";
 @import "dialog";
 
@@ -13,7 +15,7 @@
 }
 
 body {
-    background-color: $bg;
+    background-color: var(--#{$prefix}-body);
 }
 
 a {
@@ -68,7 +70,7 @@ a {
 .scroll-nav {
     position: relative;
     height: 45px;
-    background-color: $white;
+    background-color: var(--#{$prefix}-primary-text);
     z-index: 10;
     ul {
         padding-right: 35px;
@@ -77,7 +79,7 @@ a {
         white-space: nowrap;
         overflow: hidden;
         overflow-x: auto;
-        background-color: $white;
+        background-color: var(--#{$prefix}-primary-text);
     }
     li {
         width: 3.75rem;
@@ -106,7 +108,7 @@ a {
         height: 45px;
         line-height: 45px;
         text-align: center;
-        background: $white;
+        background: var(--#{$prefix}-primary-text);
     }
     &.unfold {
         ul {
@@ -138,7 +140,7 @@ header,
         }
         .iconfont {
             position: absolute;
-            top: 10px;
+            // top: 10px;
             z-index: 99;
             color: #666;
             &.fa-search {
@@ -154,17 +156,17 @@ header,
             font-size: 1.25rem;
             padding: 4px 29px;
             box-sizing: border-box;
-            background-color: $bg;
+            background-color: var(--#{$prefix}-body);
             border: 0;
         }
         .cancel-btn {
-            color: $white;
+            color: var(--#{$prefix}-primary-text);
         }
         .home-btn {
             font-size: 28px;
             .iconfont {
                 position: static;
-                color: $white;
+                color: var(--#{$prefix}-primary-text);
             }
         }
         &.under-search {
@@ -190,8 +192,8 @@ header,
     top: 0;
     left: 0;
     right: 0;
-    background: $headerBg;
-    color: $white;
+    background: var(--#{$prefix}-primary);
+    color: var(--#{$prefix}-primary-text);
     text-align: center;
     z-index: 99;
     border: 0;
@@ -202,7 +204,7 @@ header,
         top: 50%;
         margin-top: -1rem;
         font-size: 1.5625rem;
-        color: $white;
+        color: var(--#{$prefix}-primary-text);
     }
     .back {
         position: absolute;
@@ -263,7 +265,7 @@ header,
         }
         a {
             line-height: 36px;
-            color: $white;
+            color: var(--#{$prefix}-primary-text);
         }
     }
     &.main-header-box {
@@ -284,7 +286,7 @@ header,
                 top: 0;
                 width: 1rem;
                 height: 1rem;
-                color: $white;
+                color: var(--#{$prefix}-primary-text);
                 background: #e1454b;
                 font-size: 0.625rem;
                 line-height: 1rem;
@@ -313,7 +315,7 @@ footer,
 footer,
 .footer {
     height: 3rem;
-    background: $white;
+    background: var(--#{$prefix}-primary-text);
     border: 0.0625rem solid #e1e1e1;
     a,
     .item {
@@ -333,7 +335,7 @@ footer,
             top: 0;
             width: 1rem;
             height: 1rem;
-            color: $white;
+            color: var(--#{$prefix}-primary-text);
             background: #e1454b;
             font-size: 0.625rem;
         }
@@ -379,8 +381,8 @@ footer,
     bottom: 0;
     width: 100%;
     height: 3rem;
-    background: $white;
-    border-top: $hr;
+    background: var(--#{$prefix}-primary-text);
+    border-top: 1px solid var(--#{$prefix}-border);
     a {
         position: relative;
         text-align: center;
@@ -401,7 +403,7 @@ footer,
             top: 0;
             right: -0.75rem;
             background: #f00;
-            color: $white;
+            color: var(--#{$prefix}-primary-text);
             border-radius: 50%;
             text-align: center;
             line-height: 1.1875rem;
@@ -421,10 +423,10 @@ footer,
         line-height: 3rem;
         height: 3rem;
         position: static;
-        background: $headerBg;
+        background: var(--#{$prefix}-primary);
         border: none;
         a {
-            color: $white;
+            color: var(--#{$prefix}-primary-text);
             &.active {
                 border-bottom: 5px solid #b4282d;
             }
@@ -465,7 +467,7 @@ footer,
         position: relative;
         display: block;
         box-sizing: border-box;
-        background-color: $white;
+        background-color: var(--#{$prefix}-primary-text);
         .item-img {
             img {
                 width: 100%;
@@ -498,11 +500,11 @@ footer,
 .home-panel {
     margin-top: 20px;
     .panel-header {
-        border-bottom: $hr;
-        border-top: $hr;
+        border-bottom: 1px solid var(--#{$prefix}-border);
+        border-top: 1px solid var(--#{$prefix}-border);
         line-height: 40px;
         text-align: center;
-        background-color: $white;
+        background-color: var(--#{$prefix}-primary-text);
     }
     .goods-list {
         margin-top: 0;
@@ -514,7 +516,7 @@ footer,
     &.goods-list {
         text-align: left;
         .goods-item {
-            background-color: $white;
+            background-color: var(--#{$prefix}-primary-text);
             padding: 5px;
             .goods-img {
                 display: inline-block;
@@ -536,12 +538,12 @@ footer,
 .search-tip-box {
     display: block;
     padding-left: 10px;
-    background-color: $white;
+    background-color: var(--#{$prefix}-primary-text);
     li {
         height: 30px;
         line-height: 30px;
         &:not(:last-of-type) {
-            border-bottom: $hr;
+            border-bottom: 1px solid var(--#{$prefix}-border);
         }
     }
 }
@@ -549,7 +551,7 @@ footer,
 .search-recommend-box {
     .panel {
         padding: 0 10px 10px;
-        background-color: $white;
+        background-color: var(--#{$prefix}-primary-text);
         margin-bottom: 5px;
         .panel-header {
             height: 30px;
@@ -561,7 +563,7 @@ footer,
         }
         .panel-body {
             a {
-                border: $hr;
+                border: 1px solid var(--#{$prefix}-border);
                 border-radius: 2px;
                 color: #333;
                 padding: 0 2px;
@@ -575,7 +577,7 @@ footer,
     position: relative;
     display: block;
     width: 100%;
-    background-color: $white;
+    background-color: var(--#{$prefix}-primary-text);
     overflow: hidden;
     border-bottom: #e2e2e2 0.0625rem solid;
     .menu-item {
@@ -638,7 +640,7 @@ footer,
             border-bottom: #e2e2e2 0.0625rem solid;
             &.active {
                 border-left: #55595f 0.25rem solid;
-                background-color: $white;
+                background-color: var(--#{$prefix}-primary-text);
             }
         }
     }
@@ -655,7 +657,7 @@ footer,
     }
     .header {
         line-height: 40px;
-        background-color: $white;
+        background-color: var(--#{$prefix}-primary-text);
         padding-left: 10px;
     }
     .banner {
@@ -670,10 +672,10 @@ footer,
         list-style: none;
         a {
             line-height: 40px;
-            background-color: $white;
+            background-color: var(--#{$prefix}-primary-text);
             padding-left: 10px;
             display: block;
-            border-top: $hr;
+            border-top: 1px solid var(--#{$prefix}-border);
         }
     }
     .tree-item-chidren {
@@ -684,7 +686,7 @@ footer,
                 text-align: center;
                 &:not(:nth-child(3n - 1)),
                 &:not(:last-child) {
-                    border-right: $hr;
+                    border-right: 1px solid var(--#{$prefix}-border);
                 }
             }
         }
@@ -739,7 +741,7 @@ footer,
         display: block;
         .goods-item {
             position: relative;
-            background-color: $white;
+            background-color: var(--#{$prefix}-primary-text);
             .check-box {
                 font-size: 1rem;
                 width: 2rem;
@@ -770,7 +772,7 @@ footer,
 
 .cart-footer {
     bottom: 3rem;
-    background-color: $white;
+    background-color: var(--#{$prefix}-primary-text);
     .check-box {
         font-size: 1rem;
         width: 3.125rem;
@@ -784,7 +786,7 @@ footer,
         .btn {
             margin-right: 0;
             background-color: #b4282d;
-            color: $white;
+            color: var(--#{$prefix}-primary-text);
             line-height: 2rem;
         }
     }
@@ -829,7 +831,7 @@ footer,
         }
         .default {
             background: #f00;
-            color: $white;
+            color: var(--#{$prefix}-primary-text);
             padding: 0.125rem 0.4375rem;
         }
         &.empty-address {
@@ -865,7 +867,7 @@ footer,
         margin-top: 0;
         .goods-item {
             position: relative;
-            background-color: $white;
+            background-color: var(--#{$prefix}-primary-text);
             display: grid;
             grid-template: 70px / 80px 1fr;
             padding: 5px;
@@ -893,8 +895,8 @@ footer,
         padding: 20px;
         text-align: center;
         font-size: 40px;
-        background: $headerBg;
-        color: $white;
+        background: var(--#{$prefix}-primary);
+        color: var(--#{$prefix}-primary-text);
         em {
             font-style: normal;
             font-size: 20px;
@@ -918,13 +920,13 @@ footer,
 
 .checkout-footer {
     text-align: right;
-    border-top: 0.0625rem solid $red;
-    background-color: $white;
+    border-top: 0.0625rem solid $danger;
+    background-color: var(--#{$prefix}-primary-text);
     .btn {
         margin: 0 0 0 0.3125rem;
         line-height: 2.5rem;
-        background-color: $red;
-        color: $white;
+        background-color: $danger;
+        color: var(--#{$prefix}-primary-text);
     }
 }
 
@@ -937,7 +939,7 @@ footer,
 
 .goods-info {
     margin-bottom: 20px;
-    background-color: $white;
+    background-color: var(--#{$prefix}-primary-text);
     .goods-header {
         position: relative;
         .goods-name {
@@ -953,17 +955,12 @@ footer,
             height: 3.125rem;
             text-align: center;
             .like-icon {
+                @include icon("\f004", 26px);
                 display: block;
-                font-family: "Font Awesome 5 Free";
-                font-style: normal;
-                font-size: 26px;
-                &::before {
-                    content: "\f004";
-                }
             }
             &.active {
                 .like-icon {
-                    color: $red
+                    color: $danger;
                 }
             }
         }
@@ -982,11 +979,11 @@ footer,
 }
 
 .comment-box {
-    background-color: $white;
-    border-bottom: $hr;
+    background-color: var(--#{$prefix}-primary-text);
+    border-bottom: 1px solid var(--#{$prefix}-border);
     .comment-header {
         position: relative;
-        border-bottom: $hr;
+        border-bottom: 1px solid var(--#{$prefix}-border);
         padding: 10px;
         font-size: 20px;
         .iconfont {
@@ -1067,7 +1064,7 @@ footer,
 }
 
 .recomment-box {
-    background-color: $white;
+    background-color: var(--#{$prefix}-primary-text);
     .recommend-header {
         line-height: 40px;
         padding-left: 10px;
@@ -1096,7 +1093,7 @@ footer,
 .tab-box.goods-content {
     margin-top: 20px;
     .tab-header {
-        background-color: $white;
+        background-color: var(--#{$prefix}-primary-text);
         .tab-item {
             width: 33%;
             line-height: 40px;
@@ -1188,19 +1185,19 @@ footer,
         min-height: 375px;
         max-height: 475px;
         bottom: 0;
-        background-color: $white;
+        background-color: var(--#{$prefix}-primary-text);
         transition: transform .2s cubic-bezier(0,0,.25,1),-webkit-transform .2s cubic-bezier(0,0,.25,1);
     }
     .dialog-footer {
         position: absolute;
         bottom: 0;
         display: flex;
-        background-color: $white;
+        background-color: var(--#{$prefix}-primary-text);
         width: 100%;
         .dailog-yes {
             height: 50px;
             line-height: 50px;
-            color: $white;
+            color: var(--#{$prefix}-primary-text);
             font-size: 16px;
             text-align: center;
             background-color: #e4393c;
@@ -1212,7 +1209,7 @@ footer,
     .dialog-header {
         height: 70px;
         padding: 0 0 10px 110px;
-        background-color: $white;
+        background-color: var(--#{$prefix}-primary-text);
         position: relative;
         line-height: 46px;
         font-size: 16px;
@@ -1285,7 +1282,7 @@ footer,
                     cursor: pointer;
                     &.active {
                         background-color: #e4393c;
-                        color: $white;
+                        color: var(--#{$prefix}-primary-text);
                     }
                     &.disable {
                         background-color: #bbb;
@@ -1309,7 +1306,7 @@ footer,
     position: relative;
     padding-top: 1.5625rem;
     padding-bottom: 1.875rem;
-    background: $headerBg;
+    background: var(--#{$prefix}-primary);
     .avatar {
         width: 5.625rem;
         height: 5.625rem;
@@ -1337,14 +1334,14 @@ footer,
     .name {
         text-align: center;
         padding-top: 0.625rem;
-        color: $white;
+        color: var(--#{$prefix}-primary-text);
     }
 }
 
 .menu-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    background-color: $white;
+    background-color: var(--#{$prefix}-primary-text);
     .item {
         border-right: 0.0625rem dotted #4693d0;
         text-align: center;
@@ -1378,7 +1375,7 @@ footer,
             top: 0;
             left: 50%;
             background: #f00;
-            color: $white;
+            color: var(--#{$prefix}-primary-text);
             border-radius: 50%;
             text-align: center;
             line-height: 1.1875rem;
@@ -1422,14 +1419,14 @@ footer,
 
 
 .menu-list {
-    background: $white;
+    background: var(--#{$prefix}-primary-text);
     padding: 0 0.625rem;
     a {
         @include menuA();
         margin-top: 0;
         padding: 0.625rem 0;
         &:not(:last-child) {
-            border-bottom: $hr;
+            border-bottom: 1px solid var(--#{$prefix}-border);
         }
     }
 }
@@ -1437,7 +1434,7 @@ footer,
 .profile-box,
 .account-box {
     margin-bottom: 2rem;
-    background-color: $white;
+    background-color: var(--#{$prefix}-primary-text);
     padding: 0 10px;
     @include lineItem();
     .avatar-item {
@@ -1457,7 +1454,7 @@ footer,
         }
     }
     .line-item {
-        border-top: $hr;
+        border-top: 1px solid var(--#{$prefix}-border);
     }
 }
 .account-box {
@@ -1480,11 +1477,11 @@ footer,
         padding: 0.375rem;
         display: block;
         text-align: center;
-        background-color: $red;
-        color: $white;
+        background-color: $danger;
+        color: var(--#{$prefix}-primary-text);
     }
     &.btn-primary {
-        background-color: $headerBg;
+        background-color: var(--#{$prefix}-primary);
         width: 80%;
         margin: 1rem auto;
         padding: 0;
@@ -1525,8 +1522,8 @@ footer,
         width: 100%;
         margin: 0;
         line-height: 40px;
-        background: $red;
-        color: $white;
+        background: $danger;
+        color: var(--#{$prefix}-primary-text);
     }
 }
 
@@ -1542,7 +1539,7 @@ footer,
             line-height: 3.125rem;
             border-radius: 50%;
             background: #333;
-            color: $white;
+            color: var(--#{$prefix}-primary-text);
             text-align: center;
             img {
                 width: 100%;
@@ -1563,7 +1560,7 @@ footer,
             }
             .default {
                 background: #f00;
-                color: $white;
+                color: var(--#{$prefix}-primary-text);
                 padding: 0.125rem 0.4375rem;
             }
         }
@@ -1572,10 +1569,8 @@ footer,
                 background-color: transparent;
                 color: #f00;
                 &::before {
-                    font-family: "Font Awesome 5 Free";
-                    font-style: normal;
+                    @include iconFont();
                     font-size: 26px;
-                    font-weight: 900;
                     content: "\f058";
                 }
                 span {
@@ -1588,7 +1583,7 @@ footer,
 
 .order-box {
     .order-item {
-        background-color: $white;
+        background-color: var(--#{$prefix}-primary-text);
         .order-header {
             line-height: 30px;
             .status {
@@ -1600,10 +1595,10 @@ footer,
         }
         .goods-list {
             .goods-item {
-                background-color: $bg;
+                background-color: var(--#{$prefix}-body);
             }
             .goods-info {
-                background-color: $bg;
+                background-color: var(--#{$prefix}-body);
                 margin: 0;
             }
         }
@@ -1640,8 +1635,8 @@ footer,
     }
     .status-header {
         padding: 10px 20px 30px;
-        background-color: $headerBg;
-        color: $white;
+        background-color: var(--#{$prefix}-primary);
+        color: var(--#{$prefix}-primary-text);
         text-align: center;
         font-size: 30px;
     }
@@ -1661,11 +1656,11 @@ footer,
         margin: 0 0 10px;
         line-height: 40px;
         height: 40px;
-        color: $white;
+        color: var(--#{$prefix}-primary-text);
         border: 1px solid #b4282d;
         background-color: #b4282d;
         &.btn-none {
-            background-color: $white;
+            background-color: var(--#{$prefix}-primary-text);
             color: #b4282d;
         }
     }
@@ -1683,7 +1678,7 @@ footer,
             display: inline-block;
             padding: 0 10px;
             &:not(:last-child) {
-                border-right: $hr;
+                border-right: 1px solid var(--#{$prefix}-border);
             }
         }
     }
@@ -1692,7 +1687,7 @@ footer,
     }
     .input-box,
     .code-input {
-        border-bottom: $hr;
+        border-bottom: 1px solid var(--#{$prefix}-border);
         input {
             height: 40px;
             border: 0;
@@ -1744,7 +1739,7 @@ footer,
     display: grid;
     grid-template-columns: 75px 1fr 75px;
     height: 100px;
-    background-color: $white;
+    background-color: var(--#{$prefix}-primary-text);
     margin-bottom: 10px;
     .thumb {
         padding-top: 20px;
@@ -1800,7 +1795,7 @@ footer,
         background-color: #7eacf4;
         text-align: center;
         i {
-            color: $white;
+            color: var(--#{$prefix}-primary-text);
             font-size: 12px;
             font-style: normal;
         }
@@ -1810,8 +1805,8 @@ footer,
             display: block;
             font-size: 12px;
             box-sizing: border-box;
-            border: 2px solid $white;
-            color: $white;
+            border: 2px solid var(--#{$prefix}-primary-text);
+            color: var(--#{$prefix}-primary-text);
             border-radius: 50%;
             width: 50px;
             height: 50px;
@@ -1837,7 +1832,7 @@ footer,
     justify-content: space-around;
     flex-flow: row nowrap;
     line-height: 40px;
-    background-color: $white;
+    background-color: var(--#{$prefix}-primary-text);
     .tab-item {
         &.active {
             border-bottom: 2px solid #b4282d;
@@ -1850,11 +1845,11 @@ footer,
     display: grid;
     grid-template-columns: 100px 1fr;
     height: 114px;
-    background-color: $white;
+    background-color: var(--#{$prefix}-primary-text);
     margin: 5px 0;
     .price {
         background-color: #b4282d;
-        color: $white;
+        color: var(--#{$prefix}-primary-text);
         text-align: center;
         padding: 30px 0 0;
         em {
@@ -1888,8 +1883,8 @@ footer,
 }
 
 .search-back-box {
-    background: $headerBg;
-    color: $white;
+    background: var(--#{$prefix}-primary);
+    color: var(--#{$prefix}-primary-text);
     position: relative;
     height: 44px;
     padding: 5px 5px 0 40px;
@@ -1898,7 +1893,7 @@ footer,
         top: 50%;
         margin-top: -1rem;
         font-size: 1.5625rem;
-        color: $white;
+        color: var(--#{$prefix}-primary-text);
         left: 0.625rem;
     }
     .search-entry {
@@ -1949,7 +1944,7 @@ footer,
                 line-height: 23px;
                 white-space: nowrap;
                 font-size: 12px;
-                color: $white;
+                color: var(--#{$prefix}-primary-text);
             }
         }
     }
@@ -1960,7 +1955,7 @@ footer,
         position: absolute;
         top: 0;
         z-index: 7;
-        background-color: $bg;
+        background-color: var(--#{$prefix}-body);
     }
     .store-body {
         margin-top: 184px;
@@ -1998,7 +1993,7 @@ footer,
 .log-item,
 .order-mini-item {
     position: relative;
-    background-color: $white;
+    background-color: var(--#{$prefix}-primary-text);
     padding: 0 20px;
     .info {
         padding: 10px 80px 10px 0;
@@ -2019,7 +2014,7 @@ footer,
     }
     &:not(:last-of-type) {
         .info {
-            border-bottom: $hr;
+            border-bottom: 1px solid var(--#{$prefix}-border);
         }
     }
 }
@@ -2044,7 +2039,7 @@ footer,
     bottom: 0;
     width: 100%;
     padding-left: 20px;
-    background-color: $white;
+    background-color: var(--#{$prefix}-primary-text);
     >div {
         &:first-child,
         &:nth-child(2) {
@@ -2059,7 +2054,7 @@ footer,
             p {
                 line-height: 22px;
                 &:first-child {
-                    color: $red;
+                    color: $danger;
                 }
             }
         }
@@ -2068,8 +2063,8 @@ footer,
         width: 100%;
         line-height: 44px;
         text-align: center;
-        background-color: $red;
-        color: $white;
+        background-color: $danger;
+        color: var(--#{$prefix}-primary-text);
         display: block;
     }
 }
@@ -2079,7 +2074,7 @@ footer,
     grid-template: 40px / 40px 1fr 40px;
     grid-gap: 10px;
     line-height: 40px;
-    background: $white;
+    background: var(--#{$prefix}-primary-text);
     .icon {
         text-align: center;
         img {
@@ -2101,16 +2096,16 @@ footer,
 .payment-list {
     .payment-item {
         &:not(:last-of-type) {
-            border-bottom: $hr;
+            border-bottom: 1px solid var(--#{$prefix}-border);
         }
     }
 }
 
 .account-header,
 .affiliate-header {
-    background-color: $headerBg;
+    background-color: var(--#{$prefix}-primary);
     padding: 20px;
-    color: $white;
+    color: var(--#{$prefix}-primary-text);
     .money {
         font-size: 40px;
         font-weight: 700;
@@ -2127,7 +2122,7 @@ footer,
     grid-template-columns: 1fr 1fr;
     grid-gap: 20px;
     >div:first-child {
-        border-right: $hr;
+        border-right: 1px solid var(--#{$prefix}-border);
     }
 }
 
@@ -2159,7 +2154,7 @@ footer,
         .iconfont {
             font-size: 20px;
             &.active {
-                color: $red;
+                color: $danger;
             }
         }
     }
@@ -2181,8 +2176,8 @@ footer,
         }
     }
     .btn {
-        background-color: $red;
-        color: $white;
+        background-color: $danger;
+        color: var(--#{$prefix}-primary-text);
         width: 80%;
         margin: 0 auto;
         display: block;
@@ -2227,11 +2222,11 @@ footer,
     bottom: 0px;
     top: 38%;
     .dialog-header {
-        background-color: $white;
+        background-color: var(--#{$prefix}-primary-text);
         color: #333;
         border: none;
         .dialog-close {
-            background-color: $white;
+            background-color: var(--#{$prefix}-primary-text);
             color: #333;
         }
         .dialog-title {
@@ -2241,7 +2236,7 @@ footer,
     .dialog-footer {
         border: none;
         .dialog-yes {
-            background-color: $red;
+            background-color: $danger;
             width: 80%;
         }
     }
@@ -2271,7 +2266,7 @@ footer,
 
 .title-list {
     .title-item {
-        background-color: $white;
+        background-color: var(--#{$prefix}-primary-text);
         padding-left: 10px;
         .name {
             font-weight: 700;
@@ -2290,7 +2285,7 @@ footer,
     .input-group {
         display: grid;
         grid-template-columns: 100px 1fr;
-        background-color: $white;
+        background-color: var(--#{$prefix}-primary-text);
         > label:first-child {
             padding: 0;
             width: auto;
@@ -2315,7 +2310,7 @@ footer,
 
 .input-box,
 .code-input {
-    border-bottom: $hr;
+    border-bottom: 1px solid var(--#{$prefix}-border);
     input {
         height: 40px;
         border: 0;

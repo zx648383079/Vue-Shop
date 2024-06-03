@@ -1,87 +1,93 @@
-import { Md5 } from 'ts-md5';
-import { appId, secret, apiEndpoint } from '../config/config';
-import { Cookie } from './cookie';
-import { useAuthStore } from '../stores/auth';
-import { useDialog } from '../components/Dialog/plugin';
-export * from '../config/config';
 
-interface IAppParam {
-    appid: string,
-    timestamp: string,
-    sign: string,
+/**
+ * 格式化数字
+ * @param val 
+ * @returns 
+ */
+export function parseNumber(val: any): number {
+    if (!val || isNaN(val)) {
+        return 0;
+    }
+    if (typeof val === 'number') {
+        return val;
+    }
+    if (typeof val === 'boolean') {
+        return val ? 1 : 0;
+    }
+    if (typeof val !== 'string') {
+        val = val.toString();
+    }
+    if (val.indexOf(',') > 0) {
+        val = val.replace(/,/g, '');
+    }
+    if (val.indexOf('.') > 0) {
+        val = parseFloat(val);
+    } else {
+        val = parseInt(val, 10);
+    }
+    return isNaN(val) ? 0 : val;
 }
 
-export function getAuthUri(type: string, redirectUri: string): string {
-    const params = getAppParams();
-    return apiEndpoint + 'auth/oauth?appid=' + params.appid +
-     '&timestamp=' + params.timestamp + '&sign=' + params.sign + '&type=' +
-     type + '&redirect_uri=' +
-     encodeURIComponent(window.location.protocol + '//' +
-        window.location.hostname +
-        (window.location.port !== '80' ? ':' + window.location.port : '') +
-        window.location.pathname + '#') + redirectUri;
+/**
+ * 拼接网址
+ * @param path 
+ * @param obj 
+ * @param unEncodeURI 不要编码
+ * @returns 
+ */
+export function uriEncode(path: string, obj: Object = {}, unEncodeURI?: boolean): string {
+    const result: string[] = [];
+    const pushQuery = (key: string, value: any) => {
+        if (typeof value !== 'object') {
+            result.push(key + '=' + (unEncodeURI ? value : encodeURIComponent(value)));
+            return;
+        }
+        if (value instanceof Array) {
+            value.forEach(v => {
+                pushQuery(key + '[]', v);
+            });
+            return;
+        }
+        eachObject(value, (v, k) => {
+            pushQuery(key + '[' + k +']', v);
+        });
+    }
+    for (const name in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, name)) {
+            pushQuery(name, (obj as any)[name]);
+        }
+    }
+    if (result.length < 1) {
+        return path;
+    }
+    return path + (path.indexOf('?') > 0 ? '&' : '?') + result.join('&');
 }
 
-export function getAppParams(): IAppParam {
-    const timestamp = getCurrentTime();
-    const sign = Md5.hashStr(appId + timestamp + secret) + '';
-    return {
-        appid: appId,
-        timestamp,
-        sign,
-    };
-}
 
-export function checkTokenFromCookie() {
-    const key = appId + 'token';
-    const cookie = new Cookie();
-    const str = cookie.get(key);
-    if (!str) {
+/**
+ * 遍历对象属性或数组
+ */
+export function eachObject<K = string|number, V = any>(obj: any, cb: (val: V, key: K) => boolean| void): any {
+    if (typeof obj !== 'object') {
+        return cb(obj, undefined as any);
+    }
+    if (obj instanceof Array) {
+        for (let i = 0; i < obj.length; i++) {
+            if (cb(obj[i], i as any) === false) {
+                return false;
+            }
+        }
         return;
     }
-    const data = JSON.parse(str);
-    cookie.delete(key);
-    if (data.code !== 200) {
-        useDialog().error(data.error);
-        return;
+    for (const key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+            if (cb(obj[key], key as any) === false) {
+                return false;
+            }
+        }
     }
-    const authStore = useAuthStore();
-    authStore.setToken(data.token);
 }
 
-export function setLocalStorage(key: string, value: any) {
-    let val = value;
-    if (typeof value !== 'string') {
-        val = JSON.stringify(value);
-    }
-    window.localStorage.setItem(key, val);
-}
-
-export function getLocalStorage<T>(key: string, decode = false): T {
-    const val = window.localStorage.getItem(key);
-    return !val || !decode ? val : JSON.parse(val);
-}
-
-export function removeLocalStorage(key: string) {
-    window.localStorage.removeItem(key);
-}
-
-export function setSessionStorage(key: string, value: any) {
-    let val = value;
-    if (typeof value !== 'string') {
-        val = JSON.stringify(value);
-    }
-    window.sessionStorage.setItem(key, val);
-}
-
-export function getSessionStorage<T>(key: string, decode = false): T {
-    const val = window.sessionStorage.getItem(key);
-    return !val || !decode ? val : JSON.parse(val);
-}
-
-export function removeSessionStorage(key: string) {
-    window.sessionStorage.removeItem(key);
-}
 
 export function search(key: string) {
     const reg = new RegExp('(^|&)' + key + '=([^&]*)(&|$)');
@@ -127,25 +133,4 @@ export function formatTime(time: Date) {
         ' ' + twoPad(time.getHours()) +
         ':' + twoPad(time.getMinutes()) +
         ':' + twoPad(time.getSeconds())
-}
-
-export function each(data: any, cb: (val: any, key: string | number) => boolean| void) {
-    if (typeof data !== 'object') {
-        return cb(data, 0);
-    }
-    if (data instanceof Array) {
-        for (let i = 0; i < data.length; i++) {
-            if (cb(data[i], i) === false) {
-                return;
-            }
-        }
-        return;
-    }
-    for (const key in data) {
-        if (Object.prototype.hasOwnProperty.call(data, key)) {
-            if (cb(data[key], key) === false) {
-                return;
-            }
-        }
-    }
 }

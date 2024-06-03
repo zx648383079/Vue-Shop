@@ -53,12 +53,12 @@ import MobileCodeLogin from './Child/MobileCodeLogin.vue';
 import MobileRegister from './Child/MobileRegister.vue';
 import EmailLogin from './Child/EmailLogin.vue';
 import EmailRegister from './Child/EmailRegister.vue';
-import { getAuthUri } from '@/utils';
 import type { ISite } from '@/api/model';
 import { assetsFilter } from '../../pipes';
 import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useShopStore } from '../../stores/shop';
+import { useAuth } from '../../services';
 
 const route = useRoute();
 const router = useRouter();
@@ -88,7 +88,7 @@ function tapLoginBack() {
 
 
 function tapAuth(type: string) {
-    window.location.href = getAuthUri(type,
+    window.location.href = useAuth().authUri(type,
     route.query.redirect_uri ? route.query.redirect_uri + '' : '');
 }
 

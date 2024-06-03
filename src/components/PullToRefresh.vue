@@ -4,25 +4,25 @@
         @touchstart="touchStart" 
         @touchmove="touchMove" 
         @touchend="touchEnd">
-        <div class="scroll-top" :style="{height: topHeight + 'px'}">
+        <div class="scroll-top" :style="{height: input.topHeight + 'px'}">
             <slot name="top">
-                <div v-if="state == ESTATE.PULL">
+                <div v-if="input.state == ESTATE.PULL">
                     <i class="iconfont fa-arrow-down"></i>
                     下拉刷新
                 </div>
-                 <div v-if="state == ESTATE.PULLED">
+                 <div v-if="input.state == ESTATE.PULLED">
                     <i class="iconfont fa-arrow-up"></i>
                     松开刷新
                 </div>
-                <div v-if="state == ESTATE.REFRESHING">
+                <div v-if="input.state == ESTATE.REFRESHING">
                     <i class="iconfont fa-retweet"></i>
                     刷新中
                 </div>
-                 <div v-if="state == ESTATE.REFRESHED">
+                 <div v-if="input.state == ESTATE.REFRESHED">
                     <i class="iconfont fa-check"></i>
                     刷新完成
                 </div>
-                <div v-if="state == ESTATE.CANCEL">
+                <div v-if="input.state == ESTATE.CANCEL">
                     <i class="iconfont fa-arrow-up"></i>
                     停止刷新
                 </div>
@@ -33,15 +33,15 @@
         </div>
         <div class="scroll-bottom">
             <slot name="bottom">
-                <div v-if="state == ESTATE.MORE">
+                <div v-if="input.state == ESTATE.MORE">
                     <i class="iconfont fa-retweet"></i>
                     加载更多
                 </div>
-                 <div v-if="state == ESTATE.LOADING">
+                 <div v-if="input.state == ESTATE.LOADING">
                     <i class="iconfont fa-check"></i>
                     加载中
                 </div>
-                <div v-if="state == ESTATE.LOADED">
+                <div v-if="input.state == ESTATE.LOADED">
                     <i class="iconfont fa-arrow-up"></i>
                     加载完成
                 </div>
@@ -49,10 +49,10 @@
         </div>
     </div>
 </template>
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 
-export enum ESTATE {
+enum ESTATE {
     NONE = 0,
     PULL = 1,
     PULLED = 2,
@@ -70,200 +70,202 @@ enum EDIRECTION {
     UP = 2,
 }
 
-export default defineComponent({
-    props: {
-        refresh: {type: Boolean, default: true},
-        more: {type: Boolean, default: true},
-        loading: {type: Boolean, default: false},
-        distance: {type: Number, default: 10},
-        maxHeight: {type: Number, default: 100},
-    },
-    data() {
-        return {
-            ESTATE: ESTATE,
-            state: ESTATE.NONE,
-            startY: 0,
-            startUp: EDIRECTION.NONE, // 一开始滑动的方向
-            scrollTop: 0,
-            topHeight: 0,
-        }
-    },
-    mounted() {
-        window.addEventListener('scroll', this.onScroll)
-    },
-    beforeUnmount() {
-        window.removeEventListener('scroll', this.onScroll);
-    },
-    computed: {
-        box(): HTMLDivElement {
-            return this.$refs.pullScroll as any;
-        }
-    },
-    watch: {
-        state(val: ESTATE, oldVal: ESTATE) {
-            this.$emit('change', val, oldVal);
-        },
-        more(val: boolean) {
-            if (!val && this.state === ESTATE.MORE) {
-                this.state = ESTATE.NONE;
-            }
-        },
-        topHeight(val: number, oldVal: number) {
-            this.$emit('top.height.change', val, oldVal);
-        },
-        loading(val: number, oldVal: number) {
-            if (val && !oldVal) {
-                if (this.state === ESTATE.PULLED) {
-                    this.state =  ESTATE.REFRESHING;
-                    return;
-                }
-                if (this.state === ESTATE.MORE) {
-                    this.state =  ESTATE.LOADING;
-                    return;
-                }
-            }
+const emit = defineEmits(['change', 'top.height.change', 'more', 'refresh']);
+const props = withDefaults(defineProps<{
+    refresh?: boolean,
+    more?: boolean,
+    loading?: boolean,
+    distance?: number;
+    maxHeight?: number;
+}>(), {
+    refresh: true,
+    more: true,
+    loading: false,
+    distance: 10,
+    maxHeight: 100,
+});
 
-            if (oldVal && !val) {
-                if (this.state === ESTATE.LOADING) {
-                    this.state = ESTATE.LOADED;
-                    this.reset();
-                    return;
-                }
-                if (this.state === ESTATE.REFRESHING) {
-                    this.state = ESTATE.REFRESHED;
-                    this.reset();
-                    return;
-                }
-                if (this.state === ESTATE.MORE) {
-                    this.state =  ESTATE.NONE;
-                    return;
-                }
-            }
+const input = reactive({
+    state: ESTATE.NONE,
+    startY: 0,
+    startUp: EDIRECTION.NONE, // 一开始滑动的方向
+    scrollTop: 0,
+    topHeight: 0,
+});
+
+const pullScroll = ref<HTMLDivElement>();
+
+
+watch(() => input.state, (val: ESTATE, oldVal: ESTATE) => {
+    emit('change', val, oldVal);
+});
+watch(() => props.more, (val: boolean) => {
+    if (!val && input.state === ESTATE.MORE) {
+        input.state = ESTATE.NONE;
+    }
+});
+watch(() => input.topHeight, (val: number, oldVal: number) => {
+    emit('top.height.change', val, oldVal);
+});
+watch(() => props.loading, (val: boolean, oldVal: boolean) => {
+    if (val && !oldVal) {
+        if (input.state === ESTATE.PULLED) {
+            input.state =  ESTATE.REFRESHING;
+            return;
         }
-    },
-    methods: {
-        onScroll() {
-            if (!this.more) {
-                return;
-            }
-            if (this.getScrollBottomHeight() > this.distance) {
-                return;
-            }
-            this.state = ESTATE.MORE;
-            this.$emit('more');
-        },
-        touchStart(event: TouchEvent) {
-            if (this.scrollTop > 0) {
-                return;
-            }
-            this.startY = event.targetTouches[0].pageY;
-            this.startUp = EDIRECTION.NONE;
-        },
-        touchMove(event: TouchEvent) {
-            if (this.scrollTop > 0 && this.state === ESTATE.NONE) {
-                return;
-            }
-            const diff = event.changedTouches[0].pageY - this.startY;
-            if (this.startUp === EDIRECTION.NONE) {
-                this.startUp = diff > 0 ? EDIRECTION.DOWN : EDIRECTION.UP;
-            }
-            // 进行滑动操作
-            if (this.startUp === EDIRECTION.DOWN) {
-                if (this.state === ESTATE.NONE && diff > 0) {
-                    this.state = ESTATE.PULL;
-                }
-                if (this.state === ESTATE.PULL && diff >= this.maxHeight) {
-                    this.state = ESTATE.PULLED;
-                }
-                if (this.state === ESTATE.PULLED && diff < this.maxHeight) {
-                    this.state = ESTATE.CANCEL;
-                }
-                if (this.state === ESTATE.PULL) {
-                    this.topHeight = diff;
-                }
-            }
-            // 上拉加载更多
-            if (this.startUp === EDIRECTION.UP && this.more) {
-                this.state = Math.abs(diff) > this.distance ? ESTATE.MORE : ESTATE.NONE;
-            }
-        },
-        touchEnd() {
-            if (this.scrollTop > 0) {
-                return;
-            }
-            // const diff = event.changedTouches[0].pageY - this.startY;
-            if (this.state === ESTATE.PULL || this.state === ESTATE.CANCEL) {
-                this.state = ESTATE.NONE;
-                return;
-            }
-            if (this.state === ESTATE.PULLED) {
-                this.$emit('refresh');
-                return;
-            }
-            if (this.state === ESTATE.MORE) {
-                this.$emit('more');
-            }
-        },
-        animation(
-            start: number, end: number, endHandle?: () => void) {
-            const diff = start > end ? -1 : 1;
-            let step = 1;
-            const handle = setInterval(() => {
-                start += (step ++) * diff;
-                if ((diff > 0 && start >= end) || (diff < 0 && start <= end)) {
-                    clearInterval(handle);
-                    this.topHeight = end;
-                    if (endHandle) {
-                        endHandle();
-                    }
-                    return;
-                }
-                this.topHeight = start;
-            }, 16);
-        },
-        reset() {
-            this.animation(this.topHeight, 0, () => {
-                this.state = ESTATE.NONE;
-            });
-        },
-        // 滚动条到底部的距离
-        getScrollBottomHeight() {
-            this.scrollTop = this.getScrollTop();
-            return this.getPageHeight() - this.scrollTop - this.getWindowHeight();
-        },
-        // 页面高度
-        getPageHeight() {
-            const box = document.querySelector('html');
-            if (!box) {
-                return 0;
-            }
-            return box.scrollHeight
-        },
-        // 滚动条顶 高度
-        getScrollTop() {
-            let scrollTop = 0;
-            let bodyScrollTop = 0;
-            let documentScrollTop = 0;
-            if (document.body) {
-                bodyScrollTop = document.body.scrollTop;
-            }
-            if (document.documentElement) {
-                documentScrollTop = document.documentElement.scrollTop;
-            }
-            scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
-            return scrollTop;
-        },
-        getWindowHeight() {
-            let windowHeight = 0;
-            if (document.compatMode === 'CSS1Compat') {
-                windowHeight = document.documentElement.clientHeight;
-            } else {
-                windowHeight = document.body.clientHeight;
-            }
-            return windowHeight;
+        if (input.state === ESTATE.MORE) {
+            input.state =  ESTATE.LOADING;
+            return;
+        }
+    }
+
+    if (oldVal && !val) {
+        if (input.state === ESTATE.LOADING) {
+            input.state = ESTATE.LOADED;
+            reset();
+            return;
+        }
+        if (input.state === ESTATE.REFRESHING) {
+            input.state = ESTATE.REFRESHED;
+            reset();
+            return;
+        }
+        if (input.state === ESTATE.MORE) {
+            input.state =  ESTATE.NONE;
+            return;
         }
     }
 });
+
+onMounted(() => {
+    window.addEventListener('scroll', onScroll)
+});
+
+onUnmounted(() => {
+    window.removeEventListener('scroll', onScroll);
+});
+
+function onScroll() {
+    if (!props.more) {
+        return;
+    }
+    if (getScrollBottomHeight() > props.distance) {
+        return;
+    }
+    input.state = ESTATE.MORE;
+    emit('more');
+}
+function touchStart(event: TouchEvent) {
+    if (input.scrollTop > 0) {
+        return;
+    }
+    input.startY = event.targetTouches[0].pageY;
+    input.startUp = EDIRECTION.NONE;
+}
+function touchMove(event: TouchEvent) {
+    if (input.scrollTop > 0 && input.state === ESTATE.NONE) {
+        return;
+    }
+    const diff = event.changedTouches[0].pageY - input.startY;
+    if (input.startUp === EDIRECTION.NONE) {
+        input.startUp = diff > 0 ? EDIRECTION.DOWN : EDIRECTION.UP;
+    }
+    // 进行滑动操作
+    if (input.startUp === EDIRECTION.DOWN) {
+        if (input.state === ESTATE.NONE && diff > 0) {
+            input.state = ESTATE.PULL;
+        }
+        if (input.state === ESTATE.PULL && diff >= props.maxHeight) {
+            input.state = ESTATE.PULLED;
+        }
+        if (input.state === ESTATE.PULLED && diff < props.maxHeight) {
+            input.state = ESTATE.CANCEL;
+        }
+        if (input.state === ESTATE.PULL) {
+            input.topHeight = diff;
+        }
+    }
+    // 上拉加载更多
+    if (input.startUp === EDIRECTION.UP && props.more) {
+        input.state = Math.abs(diff) > props.distance ? ESTATE.MORE : ESTATE.NONE;
+    }
+}
+function touchEnd() {
+    if (input.scrollTop > 0) {
+        return;
+    }
+    // const diff = event.changedTouches[0].pageY - input.startY;
+    if (input.state === ESTATE.PULL || input.state === ESTATE.CANCEL) {
+        input.state = ESTATE.NONE;
+        return;
+    }
+    if (input.state === ESTATE.PULLED) {
+        emit('refresh');
+        return;
+    }
+    if (input.state === ESTATE.MORE) {
+        emit('more');
+    }
+}
+function animation(
+    start: number, end: number, endHandle?: () => void) {
+    const diff = start > end ? -1 : 1;
+    let step = 1;
+    const handle = setInterval(() => {
+        start += (step ++) * diff;
+        if ((diff > 0 && start >= end) || (diff < 0 && start <= end)) {
+            clearInterval(handle);
+            input.topHeight = end;
+            if (endHandle) {
+                endHandle();
+            }
+            return;
+        }
+        input.topHeight = start;
+    }, 16);
+}
+function reset() {
+    animation(input.topHeight, 0, () => {
+        input.state = ESTATE.NONE;
+    });
+}
+// 滚动条到底部的距离
+function getScrollBottomHeight() {
+    input.scrollTop = getScrollTop();
+    return getPageHeight() - input.scrollTop - getWindowHeight();
+}
+// 页面高度
+function getPageHeight() {
+    const box = document.querySelector('html');
+    if (!box) {
+        return 0;
+    }
+    return box.scrollHeight
+}
+// 滚动条顶 高度
+function getScrollTop() {
+    let scrollTop = 0;
+    let bodyScrollTop = 0;
+    let documentScrollTop = 0;
+    if (document.body) {
+        bodyScrollTop = document.body.scrollTop;
+    }
+    if (document.documentElement) {
+        documentScrollTop = document.documentElement.scrollTop;
+    }
+    scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
+    return scrollTop;
+}
+function getWindowHeight() {
+    let windowHeight = 0;
+    if (document.compatMode === 'CSS1Compat') {
+        windowHeight = document.documentElement.clientHeight;
+    } else {
+        windowHeight = document.body.clientHeight;
+    }
+    return windowHeight;
+}
+
 </script>
 <style lang="scss">
 .pull-to-refresh-scroll {

@@ -3,7 +3,7 @@
         <BackHeader :title="($route.meta.title as any)"/>
         <div class="has-header">
             <div class="tip">
-                最新登陆设备：点击可以查看登陆时间
+                最新登录设备：点击可以查看登录时间
             </div>
             <a class="item">
                 <div class="name">MI 8</div>

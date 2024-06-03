@@ -30,14 +30,15 @@ import type { IProduct } from '@/api/model';
 import PullToRefresh from '@/components/PullToRefresh.vue';
 import BackHeader from '@/components/BackHeader.vue';
 import SwipeRow from '@/components/SwipeRow.vue';
-import { getLocalStorage, setLocalStorage, removeLocalStorage } from '@/utils';
 import { SET_GOODS_HISTORY } from '@/stores/types';
 import { getList } from '@/api/product';
 import { reactive, ref } from 'vue';
 import { useDialog } from '../../components/Dialog/plugin';
+import { useCache } from '../../services';
 
 
 const toast = useDialog();
+const cache = useCache();
 const items = ref<IProduct[]>([]);
 const queries = reactive({
     hasMore: true,
@@ -53,7 +54,7 @@ function tapRemove(item: IProduct) {
             break;
         }
     }
-    setLocalStorage(SET_GOODS_HISTORY, goodsId);
+    cache.set(SET_GOODS_HISTORY, goodsId);
 }
 
 function tapClear() {
@@ -65,7 +66,7 @@ function tapClear() {
         items.value = [];
         queries.hasMore = false;
         queries.isLoading = false;
-        removeLocalStorage(SET_GOODS_HISTORY);
+        cache.remove(SET_GOODS_HISTORY);
     });
 }
 
@@ -77,7 +78,7 @@ function tapRefresh() {
     items.value = [];
     queries.isLoading = false;
     queries.hasMore = true;
-    goodsId.value = getLocalStorage<number[]>(SET_GOODS_HISTORY, true);
+    goodsId.value = cache.get<number[]>(SET_GOODS_HISTORY, true);
     if (!goodsId.value || goodsId.value.length < 1) {
         queries.hasMore = false;
         queries.isLoading = true;

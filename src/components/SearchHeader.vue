@@ -17,8 +17,8 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 const emit = defineEmits(['update:modalValue', 'focus', 'enter', 'keyup']);
 const props = defineProps<{
-    modalValue: string;
-}>()
+    modalValue?: string;
+}>();
 
 const current = ref('');
 function tapBack() {
