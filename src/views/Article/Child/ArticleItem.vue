@@ -4,13 +4,13 @@
             <dt><a @click="tapItem(item)">{{ item.title }}</a>
                 <span class="book-time">{{ item.created_at }}</span></dt>
             <dd>
-                <p>{{ item.description ? item.description.substr(0, 100) : '' }}</p>
+                <p>{{ item.description ? item.description.substring(0, 100) : '' }}</p>
                 <div class="tags">
-                    <span class="author"><i class="iconfont fa-edit"></i><b>admin</b></span>
-                    <span class="category"><i class="iconfont fa-bookmark"></i><b>其他</b></span>
-                    <span class="comment"><i class="iconfont fa-comments"></i><b>0</b></span>
-                    <span class="agree"><i class="iconfont fa-thumbs-o-up"></i><b>0</b></span>
-                    <span class="click"><i class="iconfont fa-eye"></i><b>31</b></span>
+                    <span class="author"><i class="iconfont icon-edit"></i><b>admin</b></span>
+                    <span class="category"><i class="iconfont icon-bookmark"></i><b>其他</b></span>
+                    <span class="comment"><i class="iconfont icon-comment"></i><b>0</b></span>
+                    <span class="agree"><i class="iconfont icon-thumbs-o-up"></i><b>0</b></span>
+                    <span class="click"><i class="iconfont icon-eye"></i><b>31</b></span>
                 </div>
             </dd>
         </dl>

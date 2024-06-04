@@ -8,7 +8,7 @@
             <a class="item">
                 <div class="name">MI 8</div>
                 <div class="time">4秒前</div>
-                <i class="iconfont fa-chevron-right" aria-hidden="true"></i>
+                <i class="iconfont icon-chevron-right" aria-hidden="true"></i>
             </a>
         </div>
     </div>

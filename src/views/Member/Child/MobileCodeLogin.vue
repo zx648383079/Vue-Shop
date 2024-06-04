@@ -9,7 +9,7 @@
             </div>
             <div class="code-input">
                 <input type="text" v-model="input.code">
-                <CountDown @click="tapSend"/>
+                <CountDownButton @click="tapSend"/>
             </div>
             <div class="unlogin">
                 <a href="">遇到问题？</a>
@@ -21,7 +21,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import CountDown from '@/components/CountDown.vue';
+import CountDownButton from '@/components/CountDownButton.vue';
 import { sendMobileCode } from '../../../api/user';
 import { isEmpty, isMobile } from '../../../utils/validate';
 import { reactive } from 'vue';

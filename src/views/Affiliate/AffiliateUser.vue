@@ -16,7 +16,7 @@
                         </div>
                     </div>
                     <div class="actions-right">
-                        <i class="iconfont fa-trash"></i>
+                        <i class="iconfont icon-trash"></i>
                     </div>
                 </div>
             </div>

@@ -1,7 +1,7 @@
 <template>
     <div @click="tapClick">
         <div class="address-box" v-if="props.address">
-            <i class="iconfont fa-map-marker"></i>
+            <i class="iconfont icon-map-marker"></i>
             <p>
                 <a >
                     <span class="name">{{ props.address.name }}</span>
@@ -9,14 +9,14 @@
                 </a>
             </p>
             <p>{{ props.address.region?.full_name }} {{ props.address.address }}</p>
-            <i class="iconfont fa-chevron-right"></i>
+            <i class="iconfont icon-chevron-right"></i>
         </div>
         <div class="address-box empty-address" v-else>
-            <i class="iconfont fa-map-marker"></i>
+            <i class="iconfont icon-map-marker"></i>
             <h3>
                 <a>请选择地址</a>
             </h3>
-            <i class="iconfont fa-chevron-right"></i>
+            <i class="iconfont icon-chevron-right"></i>
         </div>
     </div>
 </template>

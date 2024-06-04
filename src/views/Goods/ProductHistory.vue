@@ -2,7 +2,7 @@
     <div>
         <BackHeader :title="$route.meta.title as string">
             <a v-if="items && items.length > 0" class="right" @click="tapClear">
-                <i class="iconfont fa-trash-alt"></i>
+                <i class="iconfont icon-trash-alt"></i>
             </a>
         </BackHeader>
         <div class="has-header collect-page">

@@ -3,14 +3,14 @@
         <BackHeader title="订单详情"/>
         <div class="has-header order-box" v-if="order">
             <div class="status-header">
-                <i class="iconfont fa-money-bill"></i>
+                <i class="iconfont icon-money-bill"></i>
                 {{ order.status_label }}
             </div>
             <div class="shipping-box">
                 {{ order.shipping_status }}
             </div>
             <div class="address-box" v-if="order.address">
-                <i class="iconfont fa-map-marker"></i>
+                <i class="iconfont icon-map-marker"></i>
                 <p>
                     <span class="name">{{ order.address.name }}</span>
                     <span class="tel">{{ order.address.tel }}</span>

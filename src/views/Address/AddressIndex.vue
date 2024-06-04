@@ -2,7 +2,7 @@
     <div>
         <BackHeader :title="queries.mode > 0 ? '选择地址' : '我的地址'">
             <a class="right" @click="$router.push('/address/create')">
-                <i class="iconfont fa-plus"></i>
+                <i class="iconfont icon-plus"></i>
             </a>
         </BackHeader>
       <div class="has-header">
@@ -28,9 +28,9 @@
                     </div>
                     <slot name="right">
                         <a @click="tapEdit(item)">
-                            <i class="iconfont fa-edit"></i>
+                            <i class="iconfont icon-edit"></i>
                         </a>
-                        <i class="iconfont fa-trash" @click="tapRemove(item)"></i>
+                        <i class="iconfont icon-trash" @click="tapRemove(item)"></i>
                     </slot>
                 </SwipeRow>
             </div>

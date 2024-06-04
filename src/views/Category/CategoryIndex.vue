@@ -2,7 +2,7 @@
     <div>
         <header class="top">
             <a class="search-entry" @click="$router.push('/search')">
-                <i class="iconfont fa-search"></i>
+                <i class="iconfont icon-search"></i>
                 <span>搜索商品, 共 {{ subtotal ? subtotal.goods : 0 }} 款好物</span>
             </a>
         </header>
@@ -20,8 +20,8 @@
                         <a @click="tapSearch(category)">{{ category.name }}</a>
                     </div>
                     <div class="goods-list" v-if="category.goods_list && category.goods_list.length > 0">
-                        <div class="item-view" v-for="(item, index) in category.goods_list" :key="index">
-                            <div class="item-img">
+                        <div class="product-item" v-for="(item, index) in category.goods_list" :key="index">
+                            <div class="item-thumb">
                                 <a  @click="tapProduct(item)"><img :src="item.thumb" alt=""></a>
                             </div>
                             <div class="item-title">

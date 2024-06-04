@@ -11,7 +11,7 @@
         </div>
         <div class="code-input">
             <input type="text" v-model="input.code" placeholder="请输入短信验证码">
-            <CountDown @click="tapSend"/>
+            <CountDownButton @click="tapSend"/>
         </div>
         <div class="input-box">
             <input type="password" v-model="input.password" placeholder="请输入密码">
@@ -28,12 +28,12 @@
         </div>
 
         <a class="footer-btn" @click="tapChange(5)">邮箱帐号注册
-            <i class="iconfont fa-angle-right"></i>
+            <i class="iconfont icon-angle-right"></i>
         </a>
     </div>
 </template>
 <script setup lang="ts">
-import CountDown from '@/components/CountDown.vue';
+import CountDownButton from '@/components/CountDownButton.vue';
 import { sendMobileCode } from '../../../api/user';
 import { isMobile, isEmpty } from '../../../utils/validate';
 import { reactive } from 'vue';

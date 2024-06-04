@@ -9,19 +9,19 @@
 
             <div class="menu-list">
                 <a @click="$router.push('/invoice/apply')">
-                    <i class="iconfont fa-money-check-alt" aria-hidden="true"></i>
+                    <i class="iconfont icon-money-check-alt" aria-hidden="true"></i>
                     申请开票
-                    <i class="iconfont fa-chevron-right" aria-hidden="true"></i>
+                    <i class="iconfont icon-chevron-right" aria-hidden="true"></i>
                 </a>
                 <a @click="$router.push('/invoice/title')">
-                    <i class="iconfont fa-wallet" aria-hidden="true"></i>
+                    <i class="iconfont icon-wallet" aria-hidden="true"></i>
                     发票抬头
-                    <i class="iconfont fa-chevron-right" aria-hidden="true"></i>
+                    <i class="iconfont icon-chevron-right" aria-hidden="true"></i>
                 </a>
                 <a @click="$router.push('/invoice/log')">
-                    <i class="iconfont fa-bookmark" aria-hidden="true"></i>
+                    <i class="iconfont icon-bookmark" aria-hidden="true"></i>
                     近期开票
-                    <i class="iconfont fa-chevron-right" aria-hidden="true"></i>
+                    <i class="iconfont icon-chevron-right" aria-hidden="true"></i>
                 </a>
             </div>
         </div>

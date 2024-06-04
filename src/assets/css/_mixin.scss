@@ -39,10 +39,10 @@
 @mixin menuA() {
     display: block;
     padding: 0.625rem;
-    background: var(--#{$prefix}-primary-text);
+    background: var(--#{$prefix}-panel);
     margin-top: 0.125rem;
     .fa:nth-child(2),
-    .fa-chevron-right {
+    .icon-chevron-right {
         float: right;
         margin-right: 0.625rem;
         line-height: 20px;

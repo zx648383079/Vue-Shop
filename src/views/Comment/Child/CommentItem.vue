@@ -12,10 +12,10 @@
             <div class="multi-image-box">
                 <div class="image-item" v-for="(img, i) in comment.images" :key="i">
                     <img :src="img.image" alt="">
-                    <i class="iconfont fa-times" @click="tapRemove(i)"></i>
+                    <i class="iconfont icon-times" @click="tapRemove(i)"></i>
                 </div>
                 <div class="add-item" >
-                    <i class="iconfont fa-plus"></i>
+                    <i class="iconfont icon-plus"></i>
                 </div>
             </div>
         </div>

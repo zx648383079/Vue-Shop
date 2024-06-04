@@ -13,255 +13,255 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.fa-eye-slash:before {
+.icon-eye-slash:before {
   content: "\e680";
 }
 
-.fa-eye:before {
+.icon-eye:before {
   content: "\e681";
 }
 
-.fa-runner:before {
+.icon-runner:before {
   content: "\e61d";
 }
 
-.fa-gift:before {
+.icon-gift:before {
   content: "\e69f";
 }
 
-.fa-money-o:before {
+.icon-money-o:before {
   content: "\e6e4";
 }
 
-.fa-qq:before {
+.icon-qq:before {
   content: "\e69e";
 }
 
-.fa-github:before {
+.icon-github:before {
   content: "\e691";
 }
 
-.fa-weibo:before {
+.icon-weibo:before {
   content: "\e6b5";
 }
 
-.fa-google:before {
+.icon-google:before {
   content: "\e8f1";
 }
 
-.fa-paypal:before {
+.icon-paypal:before {
   content: "\e905";
 }
 
-.fa-alipay:before {
+.icon-alipay:before {
   content: "\e602";
 }
 
-.fa-coins:before {
+.icon-coins:before {
   content: "\f3a0";
 }
 
-.fa-clock:before {
+.icon-clock:before {
   content: "\e651";
 }
 
-.fa-scan:before {
+.icon-scan:before {
   content: "\e701";
 }
 
-.fa-minus-circle:before {
+.icon-minus-circle:before {
   content: "\e6e0";
 }
 
-.fa-plus-circle:before {
+.icon-plus-circle:before {
   content: "\e6f6";
 }
 
-.fa-weixin:before {
+.icon-weixin:before {
   content: "\f152";
 }
 
-.fa-minus:before {
+.icon-minus:before {
   content: "\e601";
 }
 
-.fa-plus:before {
+.icon-plus:before {
   content: "\e620";
 }
 
-.fa-circle:before {
+.icon-circle:before {
   content: "\e72f";
 }
 
-.fa-check-circle:before {
+.icon-check-circle:before {
   content: "\e731";
 }
 
-.fa-service:before {
+.icon-service:before {
   content: "\e740";
 }
 
-.fa-cardvip:before {
+.icon-cardvip:before {
   content: "\e66a";
 }
 
-.fa-i-card:before {
+.icon-i-card:before {
   content: "\e62c";
 }
 
-.fa-et-checking-in:before {
+.icon-et-checking-in:before {
   content: "\e647";
 }
 
-.fa-withdrawal:before {
+.icon-withdrawal:before {
   content: "\e742";
 }
 
-.fa-invoice:before {
+.icon-invoice:before {
   content: "\e8f0";
 }
 
-.fa-comment:before {
+.icon-comment:before {
   content: "\e6a7";
 }
 
-.fa-set:before {
+.icon-set:before {
   content: "\e618";
 }
 
-.fa-close:before {
+.icon-close:before {
   content: "\e62b";
 }
 
-.fa-trash:before {
+.icon-trash:before {
   content: "\e726";
 }
 
-.fa-users:before {
+.icon-users:before {
   content: "\e730";
 }
 
-.fa-help:before {
+.icon-help:before {
   content: "\e603";
 }
 
-.fa-exchange:before {
+.icon-exchange:before {
   content: "\e67b";
 }
 
-.fa-idcard:before {
+.icon-idcard:before {
   content: "\e7de";
 }
 
-.fa-card:before {
+.icon-card:before {
   content: "\e70d";
 }
 
-.fa-calendar-check:before {
+.icon-calendar-check:before {
   content: "\ef5b";
 }
 
-.fa-check:before {
+.icon-check:before {
   content: "\ef65";
 }
 
-.fa-shipping-fast:before {
+.icon-shipping-fast:before {
   content: "\f0b3";
 }
 
-.fa-wallet:before {
+.icon-wallet:before {
   content: "\f151";
 }
 
-.fa-money:before {
+.icon-money:before {
   content: "\e60d";
 }
 
-.fa-message:before {
+.icon-message:before {
   content: "\e6f2";
 }
 
-.fa-info:before {
+.icon-info:before {
   content: "\e608";
 }
 
-.fa-check-square:before {
+.icon-check-square:before {
   content: "\e646";
 }
 
-.fa-chevron-down:before {
+.icon-chevron-down:before {
   content: "\e649";
 }
 
-.fa-chevron-left:before {
+.icon-chevron-left:before {
   content: "\e64a";
 }
 
-.fa-chevron-right:before {
+.icon-chevron-right:before {
   content: "\e64b";
 }
 
-.fa-chevron-up:before {
+.icon-chevron-up:before {
   content: "\e64c";
 }
 
-.fa-close1:before {
+.icon-close1:before {
   content: "\e653";
 }
 
-.fa-collect:before {
+.icon-collect:before {
   content: "\e6b3";
 }
 
-.fa-uncollect:before {
+.icon-uncollect:before {
   content: "\e6b4";
 }
 
-.fa-history:before {
+.icon-history:before {
   content: "\e6b6";
 }
 
-.fa-home:before {
+.icon-home:before {
   content: "\e6b7";
 }
 
-.fa-map:before {
+.icon-map:before {
   content: "\e6d6";
 }
 
-.fa-search:before {
+.icon-search:before {
   content: "\e70a";
 }
 
-.fa-shield:before {
+.icon-shield:before {
   content: "\e70c";
 }
 
-.fa-share:before {
+.icon-share:before {
   content: "\e70e";
 }
 
-.fa-cart:before {
+.icon-cart:before {
   content: "\e70f";
 }
 
-.fa-square:before {
+.icon-square:before {
   content: "\e71e";
 }
 
-.fa-star:before {
+.icon-star:before {
   content: "\e722";
 }
 
-.fa-table:before {
+.icon-table:before {
   content: "\e735";
 }
 
-.fa-user:before {
+.icon-user:before {
   content: "\e751";
 }
 
-.fa-wechat:before {
+.icon-wechat:before {
   content: "\e759";
 }
 

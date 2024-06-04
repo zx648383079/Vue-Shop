@@ -7,7 +7,7 @@
             <div class="dialog-header">
                 <slot name="header">
                     <div class="dialog-title">{{ props.title }}</div>
-                    <i class="iconfont fa-close dialog-close" @click="hideCalerdar"></i>
+                    <i class="iconfont icon-close dialog-close" @click="hideCalerdar"></i>
                 </slot>
             </div>
             <div class="dialog-body">

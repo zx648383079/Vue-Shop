@@ -2,7 +2,7 @@
     <div>
         <BackHeader :title="$route.meta.title as string">
             <a class="right" @click="$router.push('/account/card/create')">
-                <i class="iconfont fa-plus"></i>
+                <i class="iconfont icon-plus"></i>
             </a>
         </BackHeader>
         <div class="has-header">

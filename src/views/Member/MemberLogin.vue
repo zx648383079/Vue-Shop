@@ -2,16 +2,16 @@
     <div>
         <header class="top main-header-box">
             <a class="home-btn" @click="tapHome">
-                <i class="iconfont fa-home"></i>
+                <i class="iconfont icon-home"></i>
             </a>
             <a @click="tapHome" class="logo">
                 <img :src="logo" alt="">
             </a>
             <a class="search-btn" @click="$router.push('/search')">
-                <i class="iconfont fa-search"></i>
+                <i class="iconfont icon-search"></i>
             </a>
             <a @click="$router.push('/cart')" class="top-cart">
-                <i class="iconfont fa-shopping-cart"></i>
+                <i class="iconfont icon-shopping-cart"></i>
                 <!-- <i class="tip">1</i> -->
             </a>
         </header>
@@ -25,12 +25,12 @@
                 <a @click="mode = 4">手机号快捷注册</a>
 
                 <div class="login-oauth-box">
-                    <a @click="tapAuth('qq')"><i class="iconfont fa-qq"></i></a>
-                    <a @click="tapAuth('wx')"><i class="iconfont fa-weixin"></i></a>
-                    <a @click="tapAuth('weibo')"><i class="iconfont fa-weibo"></i></a>
-                    <a @click="tapAuth('github')"><i class="iconfont fa-github"></i></a>
+                    <a @click="tapAuth('qq')"><i class="iconfont icon-qq"></i></a>
+                    <a @click="tapAuth('wx')"><i class="iconfont icon-weixin"></i></a>
+                    <a @click="tapAuth('weibo')"><i class="iconfont icon-weibo"></i></a>
+                    <a @click="tapAuth('github')"><i class="iconfont icon-github"></i></a>
                     <a @click="tapAuth('zd')">
-                        <i class="iconfont fa-handshake"></i>
+                        <i class="iconfont icon-handshake"></i>
                     </a>
                 </div>
             </div>

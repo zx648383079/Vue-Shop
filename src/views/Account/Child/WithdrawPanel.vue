@@ -1,9 +1,9 @@
 <template>
     <DialogPanel title="提现">
         <a>
-            <i class="iconfont fa-wallet" aria-hidden="true"></i>
+            <i class="iconfont icon-wallet" aria-hidden="true"></i>
             提现
-            <i class="iconfont fa-chevron-right" aria-hidden="true"></i>
+            <i class="iconfont icon-chevron-right" aria-hidden="true"></i>
         </a>
         <slot name="panel">
             <p>充值金额</p>

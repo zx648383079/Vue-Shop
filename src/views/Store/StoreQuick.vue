@@ -4,10 +4,10 @@
             <header class="store-header">
                 <div class="search-back-box">
                     <a class="back" @click="tapBack">
-                        <i class="iconfont fa-chevron-left" aria-hidden="true"></i>
+                        <i class="iconfont icon-chevron-left" aria-hidden="true"></i>
                     </a>
                     <a class="search-entry" @click="$router.push('/search')">
-                        <i class="iconfont fa-search" aria-hidden="true"></i>
+                        <i class="iconfont icon-search" aria-hidden="true"></i>
                         <span>搜索本店商品</span>
                     </a>
                 </div>
@@ -21,7 +21,7 @@
                     </div>
                     <div class="action">
                         <a href="">
-                            <i class="iconfont fa-star"></i>    
+                            <i class="iconfont icon-star"></i>    
                             收藏
                         </a>
                     </div>
@@ -42,9 +42,9 @@
                                 <div class="item-title">{{item.name}}</div>
                                 <span class="item-price">{{item.price}}</span>
                                 <div class="item-actions">
-                                    <i class="iconfont fa-minus-circle" v-if="item.amount && item.amount > 0"  @click="tapMinus(item)"></i>
+                                    <i class="iconfont icon-minus-circle" v-if="item.amount && item.amount > 0"  @click="tapMinus(item)"></i>
                                     <span v-if="item.amount && item.amount > 0">{{ item.amount }}</span>
-                                    <i class="iconfont fa-plus-circle" @click="tapPlus(item)"></i>
+                                    <i class="iconfont icon-plus-circle" @click="tapPlus(item)"></i>
                                 </div>
                             </div>
                             
@@ -183,7 +183,7 @@ tapRefresh();
                 display: inline-block;
                 padding: 0 5px;
             }
-            .fa-minus-circle {
+            .icon-minus-circle {
                 color: #777;
             }
         }

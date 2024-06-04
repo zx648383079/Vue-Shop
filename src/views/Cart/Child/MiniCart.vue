@@ -8,7 +8,7 @@
             <div class="header">
                 已选商品
                 <span class="right">
-                    <i class="iconfont fa-trash"></i>
+                    <i class="iconfont icon-trash"></i>
                     清空
                 </span>
             </div>
@@ -17,16 +17,16 @@
                     <div class="name">{{ item.goods?.name }}</div>
                     <div class="price">{{ item.price }}</div>
                     <div class="item-actions">
-                        <i class="iconfont fa-minus-circle" v-if="item.amount && item.amount > 0"  @click="tapMinus(item)"></i>
+                        <i class="iconfont icon-minus-circle" v-if="item.amount && item.amount > 0"  @click="tapMinus(item)"></i>
                         <span v-if="item.amount && item.amount > 0">{{ item.amount }}</span>
-                        <i class="iconfont fa-plus-circle" @click="tapPlus(item)"></i>
+                        <i class="iconfont icon-plus-circle" @click="tapPlus(item)"></i>
                     </div>
                 </div>
             </div>
         </div>
         <div class="mini-footer">
             <div class="icon" @click="tapExpand">
-                <i class="iconfont fa-shopping-cart"></i>
+                <i class="iconfont icon-shopping-cart"></i>
                 <span class="amount-tip" v-if="queries.amount > 0">{{ cartAmount }}</span>
             </div>
             <div class="subtotal">
@@ -130,7 +130,7 @@ getCart().then(res => {
                     display: inline-block;
                     padding: 0 5px;
                 }
-                .fa-minus-circle {
+                .icon-minus-circle {
                     color: #777;
                 }
             }

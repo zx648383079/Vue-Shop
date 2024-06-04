@@ -1,4 +1,4 @@
-$prefix: 'zre-' !default;
+$prefix: 'zre' !default;
 
 
 $primary: #05a6b1;
@@ -7,7 +7,7 @@ $primaryText: #fff;
 $disabledText: #FF9787;
 $strongText: red;
 $shadow: rgba(51, 51, 51, 0.7);
-$border: $primary;
+$border: #ccc;
 $body: #f4f4f4;
 $bodyText: #333;
 $hover: #ccc;   // 相对与body的变化
@@ -19,6 +19,15 @@ $grayText: #fff;
 
 $secondary: #ccc;
 $secondaryText: #b3b1b1;
+
+$danger: #d22222;
+$danger-text: #fff;
+$success: #198754;
+$success-text: #fff;
+$info: #0dcaf0;
+$info-text: #fff;
+$warning: #ffc107;
+$warning-text: #fff;
 
 $dialog: rgba(255, 255, 255, .9);
 $dialogMask: rgba(0, 0, 0, .3);
@@ -55,6 +64,14 @@ $dark-dialog: #333;
 $dark-dialogText: #fff;
 $dark-dialogMask: rgba(255,255,255, .3);
 
+$dark-danger: #d22222;
+$dark-danger-text: #fff;
+$dark-success: #198754;
+$dark-success-text: #fff;
+$dark-info: #0dcaf0;
+$dark-info-text: #fff;
+$dark-warning: #ffc107;
+$dark-warning-text: #fff;
 
 $dark-linkText: #0d6efd;
 $dark-linkHoverText: #0a58ca;
@@ -66,10 +83,6 @@ $dark-inputHoverBorder: rgb(47, 65, 86);
 $dark-inputHoverShadow: #0d6efd40;
 
 
-
-$invalid: #dc3545;
-$valid: #198754;
-$danger: #d22222;
 
 $colorHoverOffset: 12%; // Hover 颜色加深程度
 $colorActiveOffset: 20%; // 点击后 颜色加深程度

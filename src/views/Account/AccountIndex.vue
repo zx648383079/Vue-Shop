@@ -15,14 +15,14 @@
                 <RechargePanel/>
                 <WithdrawPanel/>
                 <a @click="$router.push('/account/card')">
-                    <i class="iconfont fa-credit-card" aria-hidden="true"></i>
+                    <i class="iconfont icon-credit-card" aria-hidden="true"></i>
                     银行卡
-                    <i class="iconfont fa-chevron-right" aria-hidden="true"></i>
+                    <i class="iconfont icon-chevron-right" aria-hidden="true"></i>
                 </a>
                 <a @click="$router.push('/invoice')">
-                    <i class="iconfont fa-bookmark" aria-hidden="true"></i>
+                    <i class="iconfont icon-bookmark" aria-hidden="true"></i>
                     发票管理
-                    <i class="iconfont fa-chevron-right" aria-hidden="true"></i>
+                    <i class="iconfont icon-chevron-right" aria-hidden="true"></i>
                 </a>
             </div>
         </div>

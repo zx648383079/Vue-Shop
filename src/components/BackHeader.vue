@@ -1,7 +1,7 @@
 <template>
     <header class="top" :class="{fixed: !props.fixed}">
         <a class="back" @click="tapBack">
-            <i class="iconfont fa-chevron-left" aria-hidden="true"></i>
+            <i class="iconfont icon-chevron-left" aria-hidden="true"></i>
         </a>
         <span class="title">
             {{ props.title }}

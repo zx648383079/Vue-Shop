@@ -1,7 +1,7 @@
 <template>
     <div class="box">
         <div class="header">
-            <i class="iconfont fa-arrow-left" @click="tapBack"></i>
+            <i class="iconfont icon-arrow-left" @click="tapBack"></i>
             {{ props.item.name }}</div>
         <div class="thumb">
             <img :src="props.item.image" alt="">

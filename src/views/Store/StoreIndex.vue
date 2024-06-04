@@ -4,10 +4,10 @@
             <header class="store-header">
                 <div class="search-back-box">
                     <a class="back" @click="tapBack">
-                        <i class="iconfont fa-chevron-left" aria-hidden="true"></i>
+                        <i class="iconfont icon-chevron-left" aria-hidden="true"></i>
                     </a>
                     <a class="search-entry" @click="$router.push('/search')">
-                        <i class="iconfont fa-search" aria-hidden="true"></i>
+                        <i class="iconfont icon-search" aria-hidden="true"></i>
                         <span>搜索本店商品</span>
                     </a>
                 </div>
@@ -21,7 +21,7 @@
                     </div>
                     <div class="action">
                         <a href="">
-                            <i class="iconfont fa-star"></i>    
+                            <i class="iconfont icon-star"></i>    
                             收藏
                         </a>
                     </div>
@@ -34,8 +34,8 @@
             <div class="store-body">
                 <PullToRefresh :loading="isLoading" :more="hasMore" @refresh="tapRefresh" @more="tapMore">
                     <div class="goods-list">
-                        <div class="item-view" v-for="(item, index) in items" :key="index">
-                            <div class="item-img">
+                        <div class="product-item" v-for="(item, index) in items" :key="index">
+                            <div class="item-thumb">
                                 <a ><img :src="item.thumb" alt=""></a>
                             </div>
                             <div class="item-title">

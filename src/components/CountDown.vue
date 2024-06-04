@@ -1,63 +1,94 @@
 <template>
-    <div class="count-down" :class="{disable: input.disable}" @click="tapClick">
-        <span>{{ input.text }}</span>
+    <div class="countdown">
+        <p class="label" v-if="props.label">{{ props.label }}</p>
+        <p class="time">
+            <span>{{ input.hour }}</span>
+            :
+            <span>{{ input.minute }}</span>
+            :
+            <span>{{ input.second }}</span>
+        </p>
     </div>
 </template>
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { onUnmounted, reactive, watch } from 'vue';
+import { twoPadFilter } from '../pipes';
 
-const emit = defineEmits(['click']);
+const emit = defineEmits(['finished']);
 const props = withDefaults(defineProps<{
-    time: number;
+    label?: string;
+    end: number|string;
+    auto?: boolean;
 }>(), {
-    time: 0,
+    label: '',
+    auto: false,
 });
 
 const input = reactive({
-    text: '获取验证码',
-    disable: false,
-    handle: 0
+    formatEnd: 0,
+    hour: '00',
+    minute: '00',
+    second: '00',
+    handle: 0,
 });
 
-function tapClick(): void {
-    if (input.disable) {
-        return;
+watch(() => props.end, val => {
+    input.formatEnd = parseTime(val);
+    refresh();
+});
+watch(() => props.auto, val => {
+    if (val) {
+        startTimer();
     }
-    emit('click', {
-        start,
-        reset
-    });
+});
+function refresh(now?: Date) {
+    if (!now) {
+        now = new Date();
+    }
+    const diff = Math.max(input.formatEnd - parseTime(now), 0) / 1000;
+    if (diff <= 0) {
+        emit('finished');
+    }
+    input.hour = twoPadFilter(Math.floor(diff / 3600));
+    input.minute = twoPadFilter(Math.floor(diff % 3600 / 60));
+    input.second = twoPadFilter(Math.floor(diff % 60));
+    if (diff <= 0) {
+        stopTimer();
+    }
 }
-function start(time = 0): void {
-    input.disable = true;
-    if (time < 1) {
-        time = props.time;
-    }
-    input.text = time.toString();
+
+function startTimer() {
+    stopTimer();
     input.handle = window.setInterval(() => {
-        time --;
-        if (time <= 0) {
-            clearInterval(input.handle);
-            input.disable = false;
-            input.handle = 0;
-            input.text = '重新获取';
-            return;
-        }
-        input.text = time.toString();
-    }, 1000);
+        refresh();
+    }, 300);
 }
-function reset(): void {
-    if (input.disable) {
-        input.disable = true;
-    }
+
+function stopTimer() {
     if (input.handle > 0) {
         clearInterval(input.handle);
+        input.handle = 0;
     }
-    input.handle = 0;
-    input.text = '获取验证码';
 }
+
+function parseTime(date: any): number {
+    if (!date) {
+        return 0;
+    }
+    if (typeof date === 'object') {
+        return (date as Date).getTime();
+    }
+    if (typeof date === 'string' && !/^\d{10}$/.test(date)) {
+        return new Date(date).getTime();
+    }
+    return /^\d{10}$/.test(date) ? date * 1000 : parseInt(date, 10);
+}
+onUnmounted(() => {
+    stopTimer();
+});
 </script>
 <style lang="scss" scoped>
+@import '../assets/css/theme';
 .count-down {
     line-height: 40px;
     background-color: aquamarine;

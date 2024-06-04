@@ -20,10 +20,10 @@
             <div class="multi-image-box">
                 <div class="image-item">
                     <img alt="">
-                    <i class="iconfont fa-times"></i>
+                    <i class="iconfont icon-times"></i>
                 </div>
                 <div class="add-item" >
-                    <i class="iconfont fa-plus"></i>
+                    <i class="iconfont icon-plus"></i>
                 </div>
             </div>
         </div>
@@ -38,10 +38,10 @@
             <label>收货地址</label>
             <span class="tip">(该地址是商城回寄给您的地址)</span>
             <div class="address-box" @click="tapAddress">
-                <i class="iconfont fa-map-marker"></i>
+                <i class="iconfont icon-map-marker"></i>
                 <p v-if="address">{{ address.region?.full_name }} {{ address.address }}</p>
                 <p v-else>请选择地址</p>
-                <i class="iconfont fa-chevron-right"></i>
+                <i class="iconfont icon-chevron-right"></i>
             </div>
         </div>
          <div class="input-group">
@@ -132,10 +132,10 @@ store.getAddress().then(res => {
         font-size: 16px;
         top: 50%;
         margin-top: -8px;
-        &.fa-map-marker {
+        &.icon-map-marker {
             left: 1.1875rem;
         }
-        &.fa-chevron-right {
+        &.icon-chevron-right {
             right: 0.3125rem;
         }
     }

@@ -1,0 +1,28 @@
+.form-inline {
+    .input-group {
+        display: block;
+        border-bottom: 1px solid var(--#{$prefix}-border);
+        min-height: $lineHeight;
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="password"],
+        input[type="url"], 
+        input[type="number"], 
+        select,
+        textarea {
+            border: none;
+            background: transparent;
+            height: $lineHeight;
+            box-sizing: border-box;
+            &.height-auto {
+                height: auto;
+            }
+        }
+        
+    }
+    .btn {
+        line-height: $lineHeight;
+        margin-top: 8px;
+    }
+}

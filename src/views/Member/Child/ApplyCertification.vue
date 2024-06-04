@@ -18,11 +18,11 @@
                 请上传手持身份证照片
             </div>
             <div class="photo-box">
-                <i class="iconfont fa-plus"></i>
+                <i class="iconfont icon-plus"></i>
                 <div class="tip">人像页</div>
             </div>
             <div class="photo-box">
-                <i class="iconfont fa-plus"></i>
+                <i class="iconfont icon-plus"></i>
                 <div class="tip">国徽页</div>
             </div>
 

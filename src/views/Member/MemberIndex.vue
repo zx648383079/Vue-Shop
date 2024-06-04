@@ -2,7 +2,7 @@
     <div>
         <BackHeader title="个人中心" :fixed="isFixed">
             <a v-if="user" class="right" @click="tapLogout">
-                <i class="iconfont fa-sign-out-alt"></i>
+                <i class="iconfont icon-sign-out-alt"></i>
             </a>
         </BackHeader>
         <div class="has-header has-footer">
@@ -19,23 +19,23 @@
             </div>
             <div class="menu-grid">
                 <a @click="$router.push('/order')" class="item">
-                    <i class="iconfont fa-users" aria-hidden="true"></i>
+                    <i class="iconfont icon-users" aria-hidden="true"></i>
                     订单
                 </a>
                 <a @click="$router.push('/collect')" class="item">
-                    <i class="iconfont fa-collect" aria-hidden="true"></i>
+                    <i class="iconfont icon-collect" aria-hidden="true"></i>
                     关注
                 </a>
                 <a @click="$router.push('/message')" class="item">
-                    <i class="iconfont fa-message" aria-hidden="true"></i>
+                    <i class="iconfont icon-message" aria-hidden="true"></i>
                     消息
                 </a>
                 <a @click="$router.push('/account/center')" class="item">
-                    <i class="iconfont fa-shield" aria-hidden="true"></i>
+                    <i class="iconfont icon-shield" aria-hidden="true"></i>
                     安全
                 </a>
                 <a @click="tapProfile" class="item">
-                    <i class="iconfont fa-set" aria-hidden="true"></i>
+                    <i class="iconfont icon-set" aria-hidden="true"></i>
                     设置
                 </a>
             </div>
@@ -48,9 +48,9 @@
 
             <div class="menu-panel">
                 <a @click="$router.push('/account')" class="panel-header">
-                    <i class="iconfont fa-wallet" aria-hidden="true"></i>
+                    <i class="iconfont icon-wallet" aria-hidden="true"></i>
                     我的钱包
-                    <i class="iconfont fa-chevron-right" aria-hidden="true"></i>
+                    <i class="iconfont icon-chevron-right" aria-hidden="true"></i>
                 </a>
                 <div class="panel-body">
                     <a @click="$router.push('/account')" class="item">

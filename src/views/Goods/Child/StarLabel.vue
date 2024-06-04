@@ -1,6 +1,6 @@
 <template>
     <div class="score">
-        <i class="iconfont fa-star" v-for="(i, j) in starList" :key="j" v-show="i * 2 <= props.star"></i>
+        <i class="iconfont icon-star" v-for="(i, j) in starList" :key="j" v-show="i * 2 <= props.star"></i>
     </div>
 </template>
 <script setup lang="ts">

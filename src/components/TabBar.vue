@@ -20,22 +20,22 @@ interface IMenu {
 const menus: IMenu[]  = [
     {
         name: '首页',
-        icon: 'iconfont fa-home',
+        icon: 'iconfont icon-home',
         url: 'home',
     },
     {
         name: '分类',
-        icon: 'iconfont fa-table',
+        icon: 'iconfont icon-table',
         url: 'category',
     },
     {
         name: '购物车',
-        icon: 'iconfont fa-cart',
+        icon: 'iconfont icon-cart',
         url: 'cart',
     },
     {
         name: '我的',
-        icon: 'iconfont fa-user',
+        icon: 'iconfont icon-user',
         url: 'member',
     },
 ];

@@ -93,7 +93,7 @@ watch(() => props.open, val => {
         vertical-align: middle;
         color: #999;
     }
-    .fa-check-circle {
+    .icon-check-circle {
         color: #b4282d;
     }
 }

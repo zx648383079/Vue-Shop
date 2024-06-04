@@ -5,7 +5,7 @@
             <div :class="['scroll-nav', queries.isExpand ? 'unfold' : '']">
                 <ul>
                     <li v-for="(item, index) in categories" :key="index" :class="{active: queries.category == item.id}">
-                            <a>{{ item.name }}</a>
+                            <a @click="tapCategory(item)">{{ item.name }}</a>
                     </li>
                 </ul>
                 <a @click="queries.isExpand = !queries.isExpand" :class="['iconfont', 'nav-arrow', queries.isExpand ? 'fa-chevron-up' : 'fa-chevron-down']"></a>
@@ -69,9 +69,9 @@ function goPage(page: number) {
         queries.isLoading = false;
         if (page < 2) {
             items.value = res.data as never[];
-            return;
+        } else {
+            items.value = [].concat(items.value as never[], res.data as never[]);
         }
-        items.value = [].concat(items.value as never[], res.data as never[]);
     });
 }
 if (route.query.category) {

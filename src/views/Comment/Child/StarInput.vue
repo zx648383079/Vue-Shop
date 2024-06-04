@@ -1,6 +1,6 @@
 <template>
     <div class="score">
-        <i class="iconfont fa-star" v-for="(i, j) in starList" :key="j" :class="{active: i * 2 <= props.modelValue}" @click="tapStar(i)"></i>
+        <i class="iconfont icon-star" v-for="(i, j) in starList" :key="j" :class="{active: i * 2 <= props.modelValue}" @click="tapStar(i)"></i>
     </div>
 </template>
 <script setup lang="ts">

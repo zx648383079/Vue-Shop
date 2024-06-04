@@ -11,7 +11,7 @@
         </div>
         <div class="actions-right" ref="right">
             <slot name="right">
-                <i class="iconfont fa-trash" @click="tapRemove"></i>
+                <i class="iconfont icon-trash" @click="tapRemove"></i>
             </slot>
         </div>
     </div>

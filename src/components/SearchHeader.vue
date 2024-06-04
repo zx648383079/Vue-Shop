@@ -2,9 +2,9 @@
     <header>
         <div class="search-box">
             <div class="search-input">
-                <i class="iconfont fa-search" aria-hidden="true" @click="tapSearch"></i>
+                <i class="iconfont icon-search" aria-hidden="true" @click="tapSearch"></i>
                 <input type="text" :value="props.modalValue" @input="updateVal(($event as any).target?.value)" @keyup="onKeyUp" placeholder="搜索" @click="tapFocus" autocomplete="off">
-                <i class="iconfont fa-times-circle" v-if="current && current.length > 0" @click="tapClear"></i>
+                <i class="iconfont icon-times-circle" v-if="current && current.length > 0" @click="tapClear"></i>
             </div>
             <a class="cancel-btn" @click="tapBack">取消</a>
         </div>

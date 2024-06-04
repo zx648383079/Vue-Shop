@@ -2,7 +2,7 @@
     <div>
         <BackHeader :title="$route.meta.title as string">
             <a class="right" @click="tapSubmit">
-                <i class="iconfont fa-check"></i>
+                <i class="iconfont icon-check"></i>
             </a>
         </BackHeader>
         <div class="has-header">

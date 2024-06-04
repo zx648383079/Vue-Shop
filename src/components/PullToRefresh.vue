@@ -7,23 +7,23 @@
         <div class="scroll-top" :style="{height: input.topHeight + 'px'}">
             <slot name="top">
                 <div v-if="input.state == ESTATE.PULL">
-                    <i class="iconfont fa-arrow-down"></i>
+                    <i class="iconfont icon-arrow-down"></i>
                     下拉刷新
                 </div>
                  <div v-if="input.state == ESTATE.PULLED">
-                    <i class="iconfont fa-arrow-up"></i>
+                    <i class="iconfont icon-arrow-up"></i>
                     松开刷新
                 </div>
                 <div v-if="input.state == ESTATE.REFRESHING">
-                    <i class="iconfont fa-retweet"></i>
+                    <i class="iconfont icon-retweet"></i>
                     刷新中
                 </div>
                  <div v-if="input.state == ESTATE.REFRESHED">
-                    <i class="iconfont fa-check"></i>
+                    <i class="iconfont icon-check"></i>
                     刷新完成
                 </div>
                 <div v-if="input.state == ESTATE.CANCEL">
-                    <i class="iconfont fa-arrow-up"></i>
+                    <i class="iconfont icon-arrow-up"></i>
                     停止刷新
                 </div>
             </slot>
@@ -34,15 +34,15 @@
         <div class="scroll-bottom">
             <slot name="bottom">
                 <div v-if="input.state == ESTATE.MORE">
-                    <i class="iconfont fa-retweet"></i>
+                    <i class="iconfont icon-retweet"></i>
                     加载更多
                 </div>
                  <div v-if="input.state == ESTATE.LOADING">
-                    <i class="iconfont fa-check"></i>
+                    <i class="iconfont icon-check"></i>
                     加载中
                 </div>
                 <div v-if="input.state == ESTATE.LOADED">
-                    <i class="iconfont fa-arrow-up"></i>
+                    <i class="iconfont icon-arrow-up"></i>
                     加载完成
                 </div>
             </slot>

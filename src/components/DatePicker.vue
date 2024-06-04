@@ -5,11 +5,11 @@
         </div>
         <div class="datepicker__calendar datepicker__calendar_animate_slide-in" v-if="input.calendarVisible">
             <div class="header">
-                <i class="iconfont fa-backward previousYear" @click="previousYear()"></i>
-                <i class="iconfont fa-chevron-left previousMonth" @click="previousMonth()"></i>
+                <i class="iconfont icon-backward previousYear" @click="previousYear()"></i>
+                <i class="iconfont icon-chevron-left previousMonth" @click="previousMonth()"></i>
                 <span @click="toggleYear()">{{ input.title }}</span>
-                <i class="iconfont fa-chevron-right nextMonth" @click="nextMonth()"></i>
-                <i class="iconfont fa-forward nextYear" @click="nextYear()"></i>
+                <i class="iconfont icon-chevron-right nextMonth" @click="nextMonth()"></i>
+                <i class="iconfont icon-forward nextYear" @click="nextYear()"></i>
             </div>
             <div class="body">
                 <div class="month-grid" v-if="input.gridMode == 0">
@@ -29,7 +29,7 @@
                         <li v-for="(item, index) in monthList" :key="index" :class="{active: item == input.currentMonth}" @click="changeMonth(item)">{{ twoPad(item) }}</li>
                     </ul>
                     </div>
-                    <i class="iconfont fa-close" @click="toggleYear()"></i>
+                    <i class="iconfont icon-close" @click="toggleYear()"></i>
                 </div>
                 <div class="day-grid" v-if="input.hasTime && input.gridMode == 2">
                     <div class="list-group hour">
@@ -50,7 +50,7 @@
                         <li v-for="(item, index) in secondList" :key="index" :class="{active: item == input.currentSecond}" @click="changeSecond(item)">{{ twoPad(item) }}</li>
                     </ul>
                     </div>
-                    <i class="iconfont fa-close"></i>
+                    <i class="iconfont icon-close"></i>
                 </div>
             </div>
             <div class="footer" v-if="input.hasTime">
@@ -636,7 +636,7 @@ $minBoxWidth: $size * 7;
             }
             .year-grid,
             .day-grid {
-                .fa-close {
+                .icon-close {
                     position: absolute;
                     top: 5px;
                     right: 5px;

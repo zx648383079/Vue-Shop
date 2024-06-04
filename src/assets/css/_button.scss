@@ -1,0 +1,38 @@
+.btn {
+    --#{$prefix}-btn: var(--#{$prefix}-primary);
+    --#{$prefix}-btn-text: var(--#{$prefix}-primary-text);
+    padding: 0 1.875rem;
+    background-color: var(--#{$prefix}-btn);
+    color: var(--#{$prefix}-btn-text);
+    border: none;
+    display: inline-block;
+    text-decoration: none;
+    line-height: 1.875rem;
+    margin: 0 0.5rem;
+    vertical-align: middle;
+}
+
+.btn-primary {
+    --#{$prefix}-btn: var(--#{$prefix}-primary);
+    --#{$prefix}-btn-text: var(--#{$prefix}-primary-text);
+}
+
+.btn-success {
+    --#{$prefix}-btn: var(--#{$prefix}-success);
+    --#{$prefix}-btn-text: var(--#{$prefix}-success-text);
+}
+
+.btn-danger {
+    --#{$prefix}-btn: var(--#{$prefix}-danger);
+    --#{$prefix}-btn-text: var(--#{$prefix}-danger-text);
+}
+
+.btn-info {
+    --#{$prefix}-btn: var(--#{$prefix}-info);
+    --#{$prefix}-btn-text: var(--#{$prefix}-info-text);
+}
+
+.btn-warning {
+    --#{$prefix}-btn: var(--#{$prefix}-warning);
+    --#{$prefix}-btn-text: var(--#{$prefix}-warning-text);
+}

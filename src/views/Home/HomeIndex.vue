@@ -5,12 +5,12 @@
                 <img :src="logo" alt="">
             </a>
             <a class="search-entry" @click="tapSearch">
-                <i class="iconfont fa-search"></i>
+                <i class="iconfont icon-search"></i>
                 <span>搜索商品, 共{{ subtotal ? subtotal.goods : 0 }}款好物</span>
             </a>
-            <a v-if="isGuest" @click="tapLogin">登录</a>
-            <a v-if="!isGuest" @click="tapMessage">
-                <i class="iconfont fa-comment-dots"></i>
+            <a class="icon-item" v-if="isGuest" @click="tapLogin">登录</a>
+            <a class="icon-item" v-if="!isGuest" @click="tapMessage">
+                <i class="iconfont icon-comment"></i>
             </a>
         </header>
 
@@ -80,7 +80,7 @@ function tapProduct(item: IProduct) {
 
 function tapAddCart(item: IProduct) {
     if (isGuest.value) {
-        router.push('/login');
+        tapLogin();
         return;
     }
     if (goods.value && goods.value.id === item.id) {
@@ -106,6 +106,10 @@ function tapLogin() {
 }
 
 function tapMessage() {
+    if (isGuest.value) {
+        tapLogin();
+        return;
+    }
     router.push('/message');
 }
 

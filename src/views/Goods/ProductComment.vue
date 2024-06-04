@@ -2,7 +2,7 @@
     <div>
         <header class="top">
             <a @click="tapBack" class="back">
-                <i class="iconfont fa-chevron-left" aria-hidden="true"></i>
+                <i class="iconfont icon-chevron-left" aria-hidden="true"></i>
             </a>
             <div class="top-tab">
                 <a @click="tapProductScroll('info')">商品</a>

@@ -1,18 +1,10 @@
-.fa {
-    &.fa-close {
-        &::before {
-            content: "\f00d";
-        }
-    }
-}
-
-.dialog-bg {
+.dialog-mask {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.4);
+    background-color: var(--#{$prefix}-dialog-mask);
     z-index: 910;
 }
 
@@ -122,7 +114,7 @@
                 color: #fff;
                 line-height: 30px;
             }
-            .fa-arrow-left {
+            .icon-arrow-left {
                 left: 0;
                 background: #333;
                 color: #fff;

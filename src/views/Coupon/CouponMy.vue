@@ -25,11 +25,11 @@
 
         <footer class="tab-bar">
             <a @click="$router.replace('/coupon')">
-                <i class="iconfont fa-gift" aria-hidden="true"></i>
+                <i class="iconfont icon-gift" aria-hidden="true"></i>
                 领券
             </a>
             <a class="active">
-                <i class="iconfont fa-user" aria-hidden="true"></i>
+                <i class="iconfont icon-user" aria-hidden="true"></i>
                 我的优惠券
             </a>
         </footer>

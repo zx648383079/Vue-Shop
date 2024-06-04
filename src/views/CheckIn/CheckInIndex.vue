@@ -7,7 +7,7 @@
                     签到
                 </div>
                 <div v-else class="checked-btn">
-                    <i class="iconfont fa-calendar-check" aria-hidden="true"></i>
+                    <i class="iconfont icon-calendar-check" aria-hidden="true"></i>
                     已签到
                 </div>
                 <div v-if="checked" class="checked-tip">已连续签到{{ checked.running }}天，继续加油</div>

@@ -2,7 +2,7 @@
     <a @click="tapGo">
         <i :class="['iconfont', props.icon]" aria-hidden="true"></i>
         {{ props.title }}
-        <i class="iconfont fa-chevron-right" aria-hidden="true"></i>
+        <i class="iconfont icon-chevron-right" aria-hidden="true"></i>
     </a>
 </template>
 <script setup lang="ts">

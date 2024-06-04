@@ -1,13 +1,13 @@
 <template>
-    <div class="item-view">
-        <div class="item-img">
+    <div class="product-item">
+        <div class="item-thumb">
             <a @click="tapProduct"><img :src="props.item.thumb" alt=""></a>
         </div>
         <div class="item-title">
             {{ props.item.name }}
         </div>
         <div class="item-actions">
-            <span class="item-price">{{ props.item.price }}
+            <span class="item-price">￥{{ props.item.price }}
             </span>
             <span @click="tapAddCart">加入购物车</span>
         </div>

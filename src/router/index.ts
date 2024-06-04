@@ -1,11 +1,19 @@
 import { createRouter, createWebHistory, type Router, type RouteRecordRaw } from 'vue-router'
 import emitter from '../event';
-import { useAuth } from '../services';
+import { useAuth, useTheme } from '../services';
 
 const routes: Readonly<RouteRecordRaw[]> = [
     {
         path: '/',
         name: 'home',
+        component: () => import('../views/Home/HomeIndex2.vue'),
+        meta: {
+            title: '首页',
+        },
+    },
+    {
+        path: '/index2',
+        name: 'home2',
         component: () => import('../views/Home/HomeIndex.vue'),
         meta: {
             title: '首页',
@@ -529,21 +537,19 @@ const routes: Readonly<RouteRecordRaw[]> = [
 router.beforeEach((to, from, next) => {
     const auth = useAuth();
     auth.checkTokenFromCookie();
-    const token = auth.getUserToken(); // 获取本地存储的token
-    if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
-        if (token && token.length > 0) { // 通过vuex state获取当前的token是否存
-            next();
-        } else {
-            next({
-                path: '/login',
-                query: {
-                    redirect_uri: to.fullPath,
-                }, // 将跳转的路由path作为参数，登录成功后跳转到该路由
-            });
-        }
-    } else {
-        next();
+    if (to.meta.requireAuth && !auth.getUserToken()) {
+        next({
+            path: '/login',
+            query: {
+                redirect_uri: to.fullPath,
+            }, // 将跳转的路由path作为参数，登录成功后跳转到该路由
+        });
+        return;
     }
+    if (to.meta.title) {
+        useTheme().setTitle(to.meta.title as string);
+    }
+    next();
 });
 
 export default router

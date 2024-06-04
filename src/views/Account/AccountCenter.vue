@@ -6,7 +6,7 @@
                 <div class="line-item" v-for="(item, index) in items" :key="index">
                     <span><i :class="['fab', item.icon]"></i>{{ item.name }}</span>
                     <span>{{ item.id ? '已绑定' : '未绑定' }}</span>
-                    <i class="iconfont fa-chevron-right"></i>
+                    <i class="iconfont icon-chevron-right"></i>
                 </div>
             </div>
         </div>

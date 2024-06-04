@@ -6,7 +6,7 @@
                 <p class="price">{{ product.price }}</p>
                 <p class="stock">库存：{{ product.stock }}</p>
                 <p class="selected-property"></p>
-                <i class="iconfont fa-times dialog-close" @click="tapClose"></i>
+                <i class="iconfont icon-times dialog-close" @click="tapClose"></i>
             </div>
             <div class="property-box">
                 <div v-for="(item, index) in product.properties" :key="index" :class="['group', item.type == 2 ? ' multi-group' : '']">
@@ -19,9 +19,9 @@
                 <div class="count-box">
                     <span>数量</span>
                     <div class="number-box">
-                        <i class="iconfont fa-minus" @click="tapMinus"></i>
+                        <i class="iconfont icon-minus" @click="tapMinus"></i>
                         <input type="text" class="number-input" v-model="amount" @change="tapChangeAmount">
-                        <i class="iconfont fa-plus" @click="tapPlus"></i>
+                        <i class="iconfont icon-plus" @click="tapPlus"></i>
                     </div>
                 </div>
             </div>

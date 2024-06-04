@@ -1,11 +1,11 @@
 <template>
     <div class="large-header">
         <a class="back" @click="tapBack">
-            <i class="iconfont fa-chevron-left" aria-hidden="true"></i>
+            <i class="iconfont icon-chevron-left" aria-hidden="true"></i>
         </a>
         <div class="title">{{ props.title }}</div>
         <slot></slot>
-        <i class="iconfont fa-check" @click="tapSubmit"></i>
+        <i class="iconfont icon-check" @click="tapSubmit"></i>
     </div>
 </template>
 <script setup lang="ts">
@@ -46,7 +46,7 @@ function tapSubmit() {
         padding: 90px 0 0 20px;
         font-size: 30px;
     }
-    .fa-check {
+    .icon-check {
         position: absolute;
         bottom: -20px;
         font-size: 30px;

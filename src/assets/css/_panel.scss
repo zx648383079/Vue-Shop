@@ -1,0 +1,12 @@
+.page-empty-tip {
+    display: block;
+    font-size: 3em;
+    color: var(--#{$prefix}-border);
+    font-weight: 700;
+    text-align: center;
+    cursor: default;
+    user-select: none;
+    .iconfont {
+        font-size: 2em;
+    }
+}

@@ -5,7 +5,7 @@
             <span>
                 {{ props.modelValue ? props.modelValue.name : '请选择' }}
             </span>
-            <i class="iconfont fa-chevron-right"></i>
+            <i class="iconfont icon-chevron-right"></i>
         </div>
         <slot name="panel">
             <div class="item-list">

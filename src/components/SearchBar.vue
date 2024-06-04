@@ -6,7 +6,7 @@
                 <div class="panel" v-if="historyList && historyList.length > 0">
                     <div class="panel-header">
                         <span>历史记录</span>
-                        <i class="iconfont fa-trash" @click="tapClearHistory"></i>
+                        <i class="iconfont icon-trash" @click="tapClearHistory"></i>
                     </div>
                     <div class="panel-body">
                         <a v-for="(item, index) in historyList" :key="index" @click="tapSearch(item)">{{ item }}</a>

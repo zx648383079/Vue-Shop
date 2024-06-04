@@ -1,9 +1,9 @@
 <template>
     <DialogPanel title="充值">
         <a>
-            <i class="iconfont fa-money-check-alt" aria-hidden="true"></i>
+            <i class="iconfont icon-money-check-alt" aria-hidden="true"></i>
             充值
-            <i class="iconfont fa-chevron-right" aria-hidden="true"></i>
+            <i class="iconfont icon-chevron-right" aria-hidden="true"></i>
         </a>
         <slot name="panel">
             <p>充值金额</p>

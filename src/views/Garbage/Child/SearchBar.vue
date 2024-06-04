@@ -1,15 +1,15 @@
 <template>
     <div class="box">
         <div class="search-box">
-            <i class="iconfont fa-camera"></i>
+            <i class="iconfont icon-camera"></i>
             <input type="text" @keyup="tapKey" :value="props.modelValue" @input="tapUpdateVal(($event as any).target.value)">
-            <i class="iconfont fa-search"></i>
+            <i class="iconfont icon-search"></i>
         </div>
         <ul class="tip-box" v-if="tipList && tipList.length > 0">
             <li v-for="(item, index) in tipList" :key="index" @click="tapTip(item)">
-                <i class="iconfont fa-search"></i>
+                <i class="iconfont icon-search"></i>
                 {{ item }}
-                <i class="iconfont fa-arrow-right"></i>
+                <i class="iconfont icon-arrow-right"></i>
             </li>
         </ul>
     </div>
@@ -65,7 +65,7 @@ function tapTip(val: string) {
         position: absolute;
         top: 8px;
         font-size: 24px;
-        &.fa-search {
+        &.icon-search {
             right: 0;
         }
     }
@@ -84,10 +84,10 @@ function tapTip(val: string) {
             position: absolute;
             top: 7px;
         }
-        .fa-search {
+        .icon-search {
             left: -24px;
         }
-        .fa-arrow-right {
+        .icon-arrow-right {
             right: 0;
         }
     }

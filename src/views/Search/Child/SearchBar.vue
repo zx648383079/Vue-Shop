@@ -3,9 +3,9 @@
         <header class="top">
             <div class="search-box">
                 <form onsubmit="return false;">
-                    <i class="iconfont fa-search" aria-hidden="true"></i>
+                    <i class="iconfont icon-search" aria-hidden="true"></i>
                     <input type="text" name="keywords" :value="props.modalValue" @input="tapUpdateVal(($event as any).target.value)" @keyup="onKeyUp" placeholder="搜索" autocomplete="off">
-                    <i class="iconfont fa-times-circle" v-if="props.modalValue && props.modalValue.length > 0" @click="tapClearSearch()"></i>
+                    <i class="iconfont icon-times-circle" v-if="props.modalValue && props.modalValue.length > 0" @click="tapClearSearch()"></i>
                 </form>
                 <a class="cancel-btn" @click="tapBack()">取消</a>
             </div>
@@ -15,7 +15,7 @@
                 <div class="panel" v-if="historyList && historyList.length > 0">
                     <div class="panel-header">
                         <span>历史记录</span>
-                        <i class="iconfont fa-trash" @click="tapClearHistory"></i>
+                        <i class="iconfont icon-trash" @click="tapClearHistory"></i>
                     </div>
                     <div class="panel-body">
                         <a v-for="(item, index) in historyList" :key="index" @click="tapSearch(item)">{{ item }}</a>

@@ -19,9 +19,9 @@
                                     <h4>{{ cart.goods?.name }}</h4>
                                     <span>{{ cart.price }}</span>
                                     <div class="number-box">
-                                        <i class="iconfont fa-minus"></i>
+                                        <i class="iconfont icon-minus"></i>
                                         <input type="text" name="" v-model="cart.amount">
-                                        <i class="iconfont fa-plus"></i>
+                                        <i class="iconfont icon-plus"></i>
                                     </div>
                                 </div>
                             </SwipeRow>

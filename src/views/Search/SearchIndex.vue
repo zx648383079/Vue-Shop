@@ -5,12 +5,12 @@
             <header class="top">
                 <div class="search-box under-search">
                     <a class="home-btn" @click="tapHome">
-                        <i class="iconfont fa-home"></i>
+                        <i class="iconfont icon-home"></i>
                     </a>
                     <form @click="tapEnterSearch">
-                        <i class="iconfont fa-search" aria-hidden="true"></i>
+                        <i class="iconfont icon-search" aria-hidden="true"></i>
                         <input type="text" readonly name="keywords" :value="searchParams.keywords">
-                        <i class="iconfont fa-times-circle" @click="tapNewSearch"></i>
+                        <i class="iconfont icon-times-circle" @click="tapNewSearch"></i>
                     </form>
                 </div>
             </header>

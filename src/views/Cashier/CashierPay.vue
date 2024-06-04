@@ -25,7 +25,7 @@
                 <div class="payment-list">
                     <div class="payment-item" v-for="(item, index) in paymentList" :key="index"  :class="{active: item.id == order.payment_id}"  @click="tapSelected(item)">
                         <div class="icon">
-                            <i class="fab fa-weixin"></i>
+                            <i class="fab icon-weixin"></i>
                         </div>
                         <div class="name">{{ item.name }}</div>
                         <div class="status">

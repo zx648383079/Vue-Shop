@@ -9,23 +9,23 @@
                     <span class="avatar">
                         <img :src="user.avatar" alt="">
                     </span>
-                    <i class="iconfont fa-chevron-right"></i>
+                    <i class="iconfont icon-chevron-right"></i>
                 </div>
                 <div class="line-item" @click="tapName">
                     <span>昵称</span>
                     <span>{{user.name}}</span>
-                    <i class="iconfont fa-chevron-right"></i>
+                    <i class="iconfont icon-chevron-right"></i>
                 </div>
                 <div class="line-item">
                     <span>性别</span>
                     <span>{{user.sex}}</span>
-                    <i class="iconfont fa-chevron-right"></i>
+                    <i class="iconfont icon-chevron-right"></i>
                 </div>
                 <DatePicker v-model="user.birthday" format="yyyy-mm-dd">
                     <div class="line-item">
                         <span>生日</span>
                         <span>{{user.birthday}}</span>
-                        <i class="iconfont fa-chevron-right"></i>
+                        <i class="iconfont icon-chevron-right"></i>
                     </div>
                 </DatePicker>
             </div>
@@ -34,23 +34,23 @@
             <div class="menu-list">
                 <a @click="$router.push('/address')">
                     我的收货地址
-                    <i class="iconfont fa-chevron-right" aria-hidden="true"></i>
+                    <i class="iconfont icon-chevron-right" aria-hidden="true"></i>
                 </a>
                 <a @click="$router.push('/member/password')">
                     修改密码
-                    <i class="iconfont fa-chevron-right" aria-hidden="true"></i>
+                    <i class="iconfont icon-chevron-right" aria-hidden="true"></i>
                 </a>
                 <a @click="$router.push('/member/certification')">
                     实名认证
-                    <i class="iconfont fa-chevron-right" aria-hidden="true"></i>
+                    <i class="iconfont icon-chevron-right" aria-hidden="true"></i>
                 </a>
                 <a @click="$router.push('/member/driver')">
                     登录设备管理
-                    <i class="iconfont fa-chevron-right" aria-hidden="true"></i>
+                    <i class="iconfont icon-chevron-right" aria-hidden="true"></i>
                 </a>
                 <a @click="$router.push('/member/cancel')">
                     账户注销
-                    <i class="iconfont fa-chevron-right" aria-hidden="true"></i>
+                    <i class="iconfont icon-chevron-right" aria-hidden="true"></i>
                 </a>
                 
             </div>

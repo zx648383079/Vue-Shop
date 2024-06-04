@@ -2,7 +2,7 @@
     <div>
         <header class="top">
             <a @click="tapBack" class="back">
-                <i class="iconfont fa-chevron-left" aria-hidden="true"></i>
+                <i class="iconfont icon-chevron-left" aria-hidden="true"></i>
             </a>
             <div class="top-tab">
                 <a v-for="(item, index) in tabMenus" :key="index" @click="tapScroll(item.id)" :class="{active: item.id == input.tabIndex}">{{ item.name }}</a>
@@ -22,18 +22,9 @@
                     </div>
                     <div class="info">
                         <p class="old-price">{{ goods.market_price }}</p>
-                        <span class="time-block"><i class="iconfont fa-clock"></i>秒杀</span>
+                        <span class="time-block"><i class="iconfont icon-clock"></i>秒杀</span>
                     </div>
-                    <div class="countdown">
-                        <p class="text">距秒杀结束还剩</p>
-                        <p class="time">
-                            <span>01</span>
-                            :
-                            <span>01</span>
-                            :
-                            <span>01</span>
-                        </p>
-                    </div>
+                    <CountDown label="距秒杀结束还剩" end="0"/>
                 </div>
 
                 <div class="goods-info">
@@ -73,9 +64,9 @@
             <div id="comments" class="comment-box" v-if="comment">
                 <div class="comment-header">
                     评价
-                    <i @click="tapGoComment" class="iconfont fa-angle-right"></i>
+                    <i @click="tapGoComment" class="iconfont icon-angle-right"></i>
                 </div>
-                <a class="comment-more" v-if="comment.total < 1">暂无评价</a>
+                <a class="page-empty-tip" v-if="comment.total < 1">暂无评价</a>
                 <div v-else>
                     <div class="comment-stats" v-if="comment.tags && comment.tags.length > 0">
                         <a v-for="(item, index) in comment.tags" :key="index">{{ item.label }}（{{ item.count }}）</a>
@@ -88,8 +79,8 @@
             <div id="recommend" class="recomment-box" v-if="items && items.length > 0">
                 <div class="recommend-header">推荐</div>
                 <div class="goods-list">
-                    <div class="item-view" v-for="(item, index) in items" :key="index">
-                        <div class="item-img">
+                    <div class="product-item" v-for="(item, index) in items" :key="index">
+                        <div class="item-thumb">
                             <a @click="tapProduct(item)"><img :src="item.thumb" alt=""></a>
                         </div>
                         <div class="item-title">
@@ -123,21 +114,21 @@
 
         <footer class="goods-navbar">
             <a @click="$router.push('/')">
-                <i class="iconfont fa-home" aria-hidden="true"></i>
+                <i class="iconfont icon-home" aria-hidden="true"></i>
                 首页
             </a>
             <a  @click="$router.push('/category')">
-                <i class="iconfont fa-th-large" aria-hidden="true"></i>
+                <i class="iconfont icon-table" aria-hidden="true"></i>
                 分类
             </a>
             <a  @click="$router.push('/cart')">
-                <i class="iconfont fa-shopping-cart" aria-hidden="true"></i>
+                <i class="iconfont icon-cart" aria-hidden="true"></i>
                 购物车
             </a>
-            <a class="btn btn-orange" @click="tapAddCart">
+            <a class="btn btn-success" @click="tapAddCart">
                 加入购物车
             </a>
-            <a class="btn" @click="tapBuy">
+            <a class="btn btn-danger" @click="tapBuy">
                 立即购买
             </a>
         </footer>
@@ -150,6 +141,7 @@ import type { IProduct, ICommentSubtotal } from '@/api/model';
 import { getInfo, getRecommend } from '@/api/product';
 import { getCommentSubtotal } from '@/api/comment';
 import { toggleCollect } from '@/api/user';
+import CountDown from '../../components/CountDown.vue';
 import CommentPage from './Child/CommentPage.vue';
 import { SET_GOODS_HISTORY } from '@/stores/types';
 import CartDialog from './Child/CartDialog.vue';
@@ -157,7 +149,7 @@ import { computed, onMounted, onUnmounted, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '../../stores/auth';
 import { useDialog } from '../../components/Dialog/plugin';
-import { useCache } from '../../services';
+import { useCache, useTheme } from '../../services';
 
 const route = useRoute();
 const router = useRouter();
@@ -306,6 +298,7 @@ if (!id) {
     router.push('/');
 } else {
     getInfo(id).then(res => {
+        useTheme().setTitle(res.name);
         goods.value = res;
         loadComment();
         loadRecommend();
