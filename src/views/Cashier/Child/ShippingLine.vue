@@ -3,13 +3,13 @@
         <div class="line-item shipping-box">
             <span>配送方式</span>
             <span>
-                {{ props.modelValue ? props.modelValue.name : '请选择' }}
+                {{ model ? model.name : '请选择' }}
             </span>
             <i class="iconfont icon-chevron-right"></i>
         </div>
         <slot name="panel">
             <div class="item-list">
-                <a v-for="(item, index) in props.items" :key="index" :class="{active: props.modelValue && item.id == props.modelValue.id}" @click="tapSelected(item)">{{ item.name }}</a>
+                <a v-for="(item, index) in props.items" :key="index" :class="{active: model && item.id == model.id}" @click="tapSelected(item)">{{ item.name }}</a>
             </div>
         </slot>
     </DialogPanel>
@@ -18,14 +18,13 @@
 import type { IShipping } from '@/api/model';
 import DialogPanel from '@/components/DialogPanel.vue';
 
-const emit = defineEmits(['update:modelValue']);
+const model = defineModel<IShipping>();
 const props = defineProps<{
-    modelValue: IShipping|null,
     items: IShipping[]
 }>();
 
 function tapSelected(item: IShipping) {
-    emit('update:modelValue', item);
+    model.value = item;
 }
 </script>
 <style lang="scss" scoped>

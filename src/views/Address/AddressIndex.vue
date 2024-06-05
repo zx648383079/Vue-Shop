@@ -7,7 +7,7 @@
         </BackHeader>
       <div class="has-header">
             <div class="swipe-box address-list">
-                <SwipeRow v-for="(item, index) in items" :name="['address-item', queries.selected == item.id ? ' selected' : '']"  :key="index" :index="item.id" ref="swiperow" @click="tapSelected(item)">
+                <SwipeRow v-for="(item, index) in items" :name="['address-item', queries.selected == item.id ? ' selected' : '']"  :key="index" :index="item.id" ref="swiperow"             @tapped="tapSelected(item)">
                     <slot name="left" v-if="!item.is_default">
                         <a class="set-default" @click="tapDefault(item)">
                             设为默认

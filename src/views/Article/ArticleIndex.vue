@@ -8,7 +8,7 @@
                             <a @click="tapCategory(item)">{{ item.name }}</a>
                     </li>
                 </ul>
-                <a @click="queries.isExpand = !queries.isExpand" :class="['iconfont', 'nav-arrow', queries.isExpand ? 'fa-chevron-up' : 'fa-chevron-down']"></a>
+                <a @click="queries.isExpand = !queries.isExpand" :class="['iconfont', 'nav-arrow', queries.isExpand ? 'icon-chevron-up' : 'icon-chevron-down']"></a>
             </div>
             <PullToRefresh :loading="queries.isLoading" :more="queries.hasMore" @refresh="tapRefresh" @more="tapMore">
                 <ArticleItem :items="items"/>

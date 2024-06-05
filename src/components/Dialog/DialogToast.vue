@@ -61,6 +61,7 @@ timeHandle = setTimeout(() => {
 </script>
 
 <style lang="scss">
+@import '../../assets/css/theme';
 .dialog-message-box {
     position: fixed;
     top: 0;
@@ -72,8 +73,8 @@ timeHandle = setTimeout(() => {
         min-height: 3rem;
         display: inline-flex;
         padding: 0.2em .8em;
-        background-color: white;
-        box-shadow: 0 1px 3px rgba(0,0,0,.2);
+        background-color: var(--#{$prefix}-dialog);
+        box-shadow: 0 1px 3px var(--#{$prefix}-shadow);;
         min-width: 18.75rem;
         border-radius: 0 0 .3em .3em;
         &.is-offset {
@@ -95,20 +96,20 @@ timeHandle = setTimeout(() => {
         justify-content: center;
     }
     .message-success {
-        color: white;
-        background-color: #198754;
+        color: var(--#{$prefix}-success-text);
+        background-color: var(--#{$prefix}-success);
     }
     .message-waining {
-        color: white;
-        background-color: #f89406;
+        color: var(--#{$prefix}-warning-text);
+        background-color: var(--#{$prefix}-warning);
     }
     .message-error {
-        color: white;
-        background-color: #dc3545;
+        color: var(--#{$prefix}-danger-text);
+        background-color: var(--#{$prefix}-danger);
     }
     .message-info {
-        color: white;
-        background-color: #2f96b4;
+        color: var(--#{$prefix}-primary-text);
+        background-color: var(--#{$prefix}-primary);
     }
 }
 

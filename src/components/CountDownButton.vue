@@ -5,8 +5,9 @@
 </template>
 <script setup lang="ts">
 import { onUnmounted, reactive } from 'vue';
+import type { CountdownEvent } from './types';
 
-const emit = defineEmits(['click']);
+const emit = defineEmits<(e: 'tapped', args: CountdownEvent) => void>();
 const props = withDefaults(defineProps<{
     time: number;
 }>(), {
@@ -23,7 +24,7 @@ function tapClick(): void {
     if (input.disable) {
         return;
     }
-    emit('click', {
+    emit('tapped', {
         start,
         reset
     });
@@ -70,8 +71,10 @@ onUnmounted(() => {
 .count-down-button {
     line-height: 2.5rem;
     background-color: var(--#{$prefix}-primary);
+    color: var(--#{$prefix}-primary-text);
     &.disable {
         background-color: var(--#{$prefix}-secondary);
+        color: var(--#{$prefix}-secondary-text);
     }
 }
 </style>

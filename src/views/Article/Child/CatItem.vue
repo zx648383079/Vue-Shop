@@ -9,12 +9,12 @@
 <script setup lang="ts">
 import type { IArticleCategory } from '@/api/model';
 
-const emit = defineEmits(['click']);
+const emit = defineEmits(['tapped']);
 const props = defineProps<{
     items: IArticleCategory[]
 }>();
 function tapItem(item: IArticleCategory) {
-    emit('click', item);
+    emit('tapped', item);
 }
 </script>
 <style lang="scss" scoped>

@@ -23,13 +23,13 @@
 <script setup lang="ts">
 import type { IAddress } from '@/api/model';
 
-const emit = defineEmits(['click']);
+const emit = defineEmits(['tapped']);
 const props = defineProps<{
     address: IAddress
 }>();
 
 function tapClick() {
-    emit('click');
+    emit('tapped');
 }
 </script>
 <style lang="scss" scoped>

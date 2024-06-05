@@ -1,3 +1,17 @@
+export interface IPoint {
+    x: number;
+    y: number;
+}
+
+export interface ISize {
+    width: number;
+    height: number;
+}
+
+export interface IBound extends IPoint, ISize {
+
+}
+
 export interface IPaging {
     limit: number;
     offset: number;
@@ -36,8 +50,8 @@ export interface IDataOne<T> extends IBaseResponse {
 export interface IAd {
     id?: number,
     name?: string,
-    type?: number,
-    url?: string,
+    type: number,
+    url: string,
     content: string
 }
 
@@ -133,8 +147,11 @@ export interface IBrand {
 }
 
 export interface IGoodsGallery {
+    id?: number;
+    type: number;
     thumb: string;
-    image: string;
+    file: string;
+    goods_id?: number;
 }
 
 export interface IHomeProduct {
@@ -265,6 +282,19 @@ export interface IUser {
     birthday?: string;
 }
 
+export interface ICaptcha {
+    type?: string;
+    image: string;
+    width: number;
+    height: number;
+    imageItems?: IBound[];
+    control?: string;
+    controlWidth?: number;
+    controlHeight?: number;
+    controlY?: number;
+    count?: number;
+}
+
 export interface IAccountLog {
     id?: number,
     type?: number;
@@ -297,6 +327,18 @@ export interface ILogin {
     password?: string;
     mobile?: string;
     code?: string;
+    agree?: number|boolean;
+}
+
+export interface IRegister {
+    name: string;
+    email?: string;
+    password?: string;
+    confirm_password?: string;
+    invite_code?: string;
+    mobile?: string;
+    code?: string;
+    agree?: number|boolean;
 }
 
 export interface IRegion {

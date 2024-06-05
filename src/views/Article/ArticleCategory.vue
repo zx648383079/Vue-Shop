@@ -2,7 +2,7 @@
     <div>
         <BackHeader :title="$route.meta.title as string"/>
         <div class="has-header">
-            <CatItem :items="items" @click="tapCategory"/>
+            <CatItem :items="items" @tapped="tapCategory"/>
         </div>
     </div>
 </template>

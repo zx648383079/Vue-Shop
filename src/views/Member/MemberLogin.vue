@@ -11,7 +11,7 @@
                 <i class="iconfont icon-search"></i>
             </a>
             <a @click="$router.push('/cart')" class="top-cart">
-                <i class="iconfont icon-shopping-cart"></i>
+                <i class="iconfont icon-cart"></i>
                 <!-- <i class="tip">1</i> -->
             </a>
         </header>
@@ -20,13 +20,13 @@
                 <div class="logo">
                     <img :src="logo" alt="">
                 </div>
-                <a @click="mode = 1" class="btn">手机号登录</a>
-                <a @click="mode = 3" class="btn btn-none">邮箱登录</a>
+                <a @click="mode = 1" class="btn btn-danger">手机号登录</a>
+                <a @click="mode = 3" class="btn btn-outline-danger">邮箱登录</a>
                 <a @click="mode = 4">手机号快捷注册</a>
 
                 <div class="login-oauth-box">
                     <a @click="tapAuth('qq')"><i class="iconfont icon-qq"></i></a>
-                    <a @click="tapAuth('wx')"><i class="iconfont icon-weixin"></i></a>
+                    <a @click="tapAuth('wx')"><i class="iconfont icon-wechat"></i></a>
                     <a @click="tapAuth('weibo')"><i class="iconfont icon-weibo"></i></a>
                     <a @click="tapAuth('github')"><i class="iconfont icon-github"></i></a>
                     <a @click="tapAuth('zd')">
@@ -35,13 +35,13 @@
                 </div>
             </div>
             <div class="login-box" v-if="mode > 0 && mode < 4">
-                <MobileLogin v-if="mode == 2" :logo="logo" @click="tapChange" @back="tapLoginBack"/>
-                <MobileCodeLogin v-if="mode == 1" :logo="logo" @click="tapChange" @back="tapLoginBack"/>
-                <EmailLogin v-if="mode == 3" :logo="logo" @click="tapChange" @back="tapLoginBack"/>
+                <MobileLogin v-if="mode == 2" :logo="logo" @toggle="tapChange" @back="tapLoginBack"/>
+                <MobileCodeLogin v-if="mode == 1" :logo="logo" @toggle="tapChange" @back="tapLoginBack"/>
+                <EmailLogin v-if="mode == 3" :logo="logo" @toggle="tapChange" @back="tapLoginBack"/>
             </div>
             <div class="register-box" v-if="mode >= 4">
-                <MobileRegister v-if="mode == 4" @click="tapChange" @back="tapLoginBack"/>
-                <EmailRegister v-if="mode == 5" @click="tapChange" @back="tapLoginBack"/>
+                <MobileRegister v-if="mode == 4" @toggle="tapChange" @back="tapLoginBack"/>
+                <EmailRegister v-if="mode == 5" @toggle="tapChange" @back="tapLoginBack"/>
             </div>
 
         </div>

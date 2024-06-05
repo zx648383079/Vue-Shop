@@ -41,7 +41,7 @@ axios.interceptors.response.use(
     (error) => {
         useDialog().error(error && error.response ? error.response.data.message : error);
         if (error && error.response && error.response.status === 401) {
-            useAuth().logoutUser();
+            useAuth().logout();
             router.push({
                 path: '/login',
                 query: {
@@ -66,7 +66,7 @@ export function fetch<T>(url: string, params = {}): Promise<T> {
             params,
         }).then((response) => {
             resolve(response.data)
-        }).catch((err) => {
+        }).catch(err => {
             reject(err)
         })
     })

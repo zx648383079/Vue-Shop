@@ -40,10 +40,10 @@
                 </a>
             </div>
             <div class="menu-large">
-                <MenuLargeItem title="待付款" icon="fa-money" :uri="'/order?status=' + ORDER_STATUS.UN_PAY" :count="orderSubtotal.un_pay"/>
-                <MenuLargeItem title="待收货" icon="fa-shipping-fast" :uri="'/order?status=' + ORDER_STATUS.SHIPPED" :count="orderSubtotal.shipped"/>
-                <MenuLargeItem title="待评价" icon="fa-comment" uri="/comment" :count="orderSubtotal.uncomment"/>
-                <MenuLargeItem title="退换货" icon="fa-exchange" uri="/refund" :count="orderSubtotal.refunding"/>
+                <MenuLargeItem title="待付款" icon="icon-money" :uri="'/order?status=' + ORDER_STATUS.UN_PAY" :count="orderSubtotal.un_pay"/>
+                <MenuLargeItem title="待收货" icon="icon-shipping-fast" :uri="'/order?status=' + ORDER_STATUS.SHIPPED" :count="orderSubtotal.shipped"/>
+                <MenuLargeItem title="待评价" icon="icon-comment" uri="/comment" :count="orderSubtotal.uncomment"/>
+                <MenuLargeItem title="退换货" icon="icon-exchange" uri="/refund" :count="orderSubtotal.refunding"/>
             </div>
 
             <div class="menu-panel">
@@ -74,12 +74,12 @@
             </div>
 
             <div class="menu-list">
-                <MenuItem title="签到" icon="fa-calendar-check" uri="/checkin"/>
-                <MenuItem title="我的收货地址" icon="fa-map" uri="/address"/>
-                <MenuItem title="浏览历史" icon="fa-history" uri="/product/history"/>
-                <MenuItem title="我的推荐" icon="fa-share" uri="/affiliate"/>
-                <MenuItem title="帮助" icon="fa-gift" uri="/article"/>
-                <MenuItem title="反馈" icon="fa-comment" uri="/feedback"/>
+                <MenuItem title="签到" icon="icon-calendar-check" uri="/checkin"/>
+                <MenuItem title="我的收货地址" icon="icon-map" uri="/address"/>
+                <MenuItem title="浏览历史" icon="icon-history" uri="/product/history"/>
+                <MenuItem title="我的推荐" icon="icon-share" uri="/affiliate"/>
+                <MenuItem title="帮助" icon="icon-gift" uri="/article"/>
+                <MenuItem title="反馈" icon="icon-comment" uri="/feedback"/>
             </div>
             
         </div>

@@ -4,8 +4,8 @@
             <div class="search-box">
                 <form onsubmit="return false;">
                     <i class="iconfont icon-search" aria-hidden="true"></i>
-                    <input type="text" name="keywords" :value="props.modalValue" @input="tapUpdateVal(($event as any).target.value)" @keyup="onKeyUp" placeholder="搜索" autocomplete="off">
-                    <i class="iconfont icon-times-circle" v-if="props.modalValue && props.modalValue.length > 0" @click="tapClearSearch()"></i>
+                    <input type="text" name="keywords" :value="model" @input="tapUpdateVal(($event as any).target.value)" @keyup="onKeyUp" placeholder="搜索" autocomplete="off">
+                    <i class="iconfont icon-times-circle" v-if="model && model.length > 0" @click="tapClearSearch()"></i>
                 </form>
                 <a class="cancel-btn" @click="tapBack()">取消</a>
             </div>
@@ -32,7 +32,9 @@
             </div>
             <ul class="search-tip-box" v-else>
                 <li v-for="(item, index) in tipList" :key="index">
-                    <a @click="tapSearch(item)">{{ item }}</a>
+                    <a @click="tapSearch(item)">
+                        <i class="iconfont icon-search"></i>
+                        {{ item }}</a>
                 </li>
             </ul>
 
@@ -46,12 +48,10 @@ import { useRouter } from 'vue-router';
 import { useCache } from '../../../services';
 const KEYWORDS_HISTORY = 'KEYWORDS_HISTORY';
 
-const emit = defineEmits(['search', 'update:modalValue']);
+const model = defineModel({type: String, default: ''});
+const emit = defineEmits(['search']);
 const router = useRouter();
 const cache = useCache();
-const props = defineProps<{
-    modalValue: string
-}>();
 const hotKeywords = ref<string[]>([]);
 const tipList = ref<string[]>([]);
 const historyList = ref<string[]>([]);
@@ -64,7 +64,7 @@ function tapBack() {
 }
 
 function tapUpdateVal(val: string) {
-    emit('update:modalValue', val);
+    model.value = val;
 }
 
 function tapClearHistory() {
@@ -88,16 +88,16 @@ function addHistory(keywords: string) {
     cache.set(KEYWORDS_HISTORY, historyList)
 }
 
-function onKeyUp(event: any) {
-    if (!props.modalValue || props.modalValue.trim().length === 0) {
+function onKeyUp(event: KeyboardEvent) {
+    if (!model.value || model.value.trim().length === 0) {
         return;
     }
     if (event.code === 'Enter') {
-        addHistory(props.modalValue);
-        tapSearch(props.modalValue);
+        addHistory(model.value);
+        tapSearch(model.value);
         return;
     }
-    getTips(props.modalValue).then(res => {
+    getTips(model.value).then(res => {
         tipList.value = res.data ? res.data : [];
     });
 }

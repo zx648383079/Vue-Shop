@@ -10,11 +10,11 @@ import { useRouter } from 'vue-router';
 
 
 const router = useRouter();
-const emit = defineEmits(['click']);
+const emit = defineEmits(['tapped']);
 const props = defineProps<{
     title: string;
     icon: string;
-    uri: string;
+    uri?: string;
 }>();
 
 
@@ -23,6 +23,6 @@ function tapGo() {
         router.push(props.uri);
         return;
     }
-    emit('click');
+    emit('tapped');
 }
 </script>

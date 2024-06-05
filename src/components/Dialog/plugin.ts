@@ -2,6 +2,7 @@ import { createApp, type App, type Plugin, type InjectionKey, nextTick, inject, 
 import DialogContainer from './DialogContainer.vue';
 import type { IErrorResponse } from "../../api/model";
 import type { AxiosError } from "axios";
+import { globalSingleton } from "../../globe";
 
 export const dialogInjectionKey: InjectionKey<string> = Symbol('dailog');
 
@@ -160,9 +161,7 @@ class DialogSerive implements IDialogSerive {
 }
 
 export function useDialog(): IDialogSerive {
-    return getCurrentInstance()
-        ? inject<DialogSerive>(dialogInjectionKey, new DialogSerive())
-        : new DialogSerive();
+    return globalSingleton.inject<DialogSerive>(dialogInjectionKey, () => new DialogSerive());
 }
 
 export function createDialog(): Plugin {
@@ -173,6 +172,6 @@ export function createDialog(): Plugin {
             const component = container.mount(document.createElement('div'));
             service.ready(component);
         });
-        app.provide<DialogSerive>(dialogInjectionKey, service);
+        globalSingleton.provide<DialogSerive>(dialogInjectionKey, service, app);
     };
 }

@@ -7,11 +7,11 @@
             <input type="text" name="name" required autocomplete="off" v-model="input.name" placeholder="请输入昵称">
         </div>
         <div class="input-box">
-            <input type="text" v-model="input.mobile" placeholder="请输入手机号">
+            <MobileInput V-model="input.mobile"/>
         </div>
         <div class="code-input">
             <input type="text" v-model="input.code" placeholder="请输入短信验证码">
-            <CountDownButton @click="tapSend"/>
+            <CountDownButton @tapped="tapSend"/>
         </div>
         <div class="input-box">
             <input type="password" v-model="input.password" placeholder="请输入密码">
@@ -19,41 +19,45 @@
         <div class="input-box">
             <input type="password" name="confirm_password" required autocomplete="off" v-model="input.confirmPassword" placeholder="请确认密码">
         </div>
-        <button  @click="tapRegister">注册</button>
+        <button class="btn btn-danger" @click="tapRegister">注册</button>
         <div class="input-group">
             <div class="checkbox" @click="input.agree = !input.agree">
-                <i :class="['iconfont', input.agree ? 'fa-check-circle' : 'fa-circle']"></i>
+                <i :class="['iconfont', input.agree ? 'icon-check-circle' : 'icon-circle']"></i>
             </div>
-            同意本站协议
+            同意<AgreementDialog @confirm="input.agree = true">本站协议</AgreementDialog>
         </div>
 
-        <a class="footer-btn" @click="tapChange(5)">邮箱帐号注册
-            <i class="iconfont icon-angle-right"></i>
+        <a class="footer-btn btn btn-outline-primary" @click="tapChange(5)">邮箱帐号注册
+            <i class="iconfont icon-chevron-right"></i>
         </a>
     </div>
 </template>
 <script setup lang="ts">
+import MobileInput from './MobileInput.vue';
 import CountDownButton from '@/components/CountDownButton.vue';
+import AgreementDialog from './AgreementDialog.vue';
 import { sendMobileCode } from '../../../api/user';
 import { isMobile, isEmpty } from '../../../utils/validate';
 import { reactive } from 'vue';
 import { useDialog } from '../../../components/Dialog/plugin';
+import { useAuth } from '../../../services';
 
 const toast = useDialog();
-const emit = defineEmits(['click', 'back']);
+const auth = useAuth();
+const emit = defineEmits(['toggle', 'back']);
 const input = reactive({
     name: '',
     mobile: '',
     code: '',
     confirmPassword: '',
     password: '',
-    agree: true
+    agree: false
 });
 function tapChange(mode: number) {
-    emit('click', mode);
+    emit('toggle', mode);
 }
 
-function tapSend(btn: typeof CountDown) {
+function tapSend(btn: typeof CountDownButton) {
     if (!verifyMobile()) {
         toast.warning('请输入手机号');
         return;
@@ -65,7 +69,7 @@ function tapSend(btn: typeof CountDown) {
 
 function tapRegister() {
     const name = input.name;
-    // const mobile = mobile;
+    const mobile = input.mobile;
     const password = input.password;
     if (isEmpty(name)) {
         toast.warning('请输入昵称');
@@ -87,7 +91,9 @@ function tapRegister() {
         toast.warning('请两次密码不一致');
         return;
     }
-
+    auth.register({name, mobile, password, confirm_password: input.confirmPassword, agree: input.agree}).then(res => {
+        
+    });
 }
 
 function verifyMobile() {
@@ -95,10 +101,11 @@ function verifyMobile() {
 }
 </script>
 <style lang="scss" scoped>
+@import '../../../assets/css/theme';
 .title {
-    font-size: 20px;
-    line-height: 80px;
-    color: #333;
+    font-size: 1.25rem;
+    line-height: 5rem;
+    color: var(--#{$prefix}-body-text);
     margin-bottom: 10vh;
 }
 .checkbox {
@@ -106,8 +113,7 @@ function verifyMobile() {
 }
 .footer-btn {
     text-align: center;
-    line-height: 30px;
-    margin-top: 40px;
+    margin-top: 2.5rem;
     display: block;
 }
 </style>

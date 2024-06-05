@@ -1,6 +1,6 @@
 <template>
     <div>
-        <SearchHeader :value="props.modalValue" @update:modal-value="updateVal" @enter="tapSearch" @keyup="onKeyUp" @focus="tapFocus"></SearchHeader>
+        <SearchHeader :value="model" @update:modelValue="updateVal" @enter="tapSearch" @keyup="onKeyUp" @focus="tapFocus"></SearchHeader>
         <div class="has-header" v-if="!isMini">
             <div class="search-recommend-box" v-if="!tipList || tipList.length == 0">
                 <div class="panel" v-if="historyList && historyList.length > 0">
@@ -23,7 +23,9 @@
             </div>
             <ul class="search-tip-box" v-else>
                 <li v-for="(item, index) in tipList" :key="index">
-                    <a @click="tapSearch(item)">{{ item }}</a>
+                    <a @click="tapSearch(item)">
+                        <i class="iconfont icon-search"></i>
+                        {{ item }}</a>
                 </li>
             </ul>
 
@@ -40,10 +42,8 @@ import { useCache } from '../services';
 
 const route = useRoute();
 const cache = useCache();
-const emit = defineEmits(['update:modalValue', 'focus', 'search']);
-const props = defineProps<{
-    modalValue?: string;
-}>();
+const emit = defineEmits(['focus', 'search']);
+const model = defineModel({type: String, default: ''});
 
 const hotKeywords = ref<string[]>([]);
 const tipList = ref<string[]>([]);
@@ -51,7 +51,7 @@ const historyList = ref<string[]>([]);
 const isMini = ref(false);
 
 function updateVal(val: string) {
-    emit('update:modalValue', val);
+    model.value = val;
     if (!val || val.length < 1) {
         tipList.value = [];
         isMini.value = false;
@@ -72,11 +72,11 @@ function addHistory(keywords: string) {
     cache.set(KEYWORDS_HISTORY, historyList)
 }
 function onKeyUp() {
-    if (!props.modalValue || props.modalValue.length < 1) {
+    if (!model.value || model.value.length < 1) {
         tipList.value = [];
         return;
     }
-    getTips(props.modalValue).then(res => {
+    getTips(model.value).then(res => {
         tipList.value = res.data as any;
     });
 }

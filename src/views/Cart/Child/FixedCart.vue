@@ -1,6 +1,6 @@
 <template>
     <div class="cart-fixed">
-        <i class="iconfont icon-shopping-cart"></i>
+        <i class="iconfont icon-cart"></i>
         <span class="amount-tip" v-if="amount > 0">{{ cartAmount }}</span>
     </div>
 </template>

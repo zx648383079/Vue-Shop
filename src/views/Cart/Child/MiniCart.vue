@@ -26,7 +26,7 @@
         </div>
         <div class="mini-footer">
             <div class="icon" @click="tapExpand">
-                <i class="iconfont icon-shopping-cart"></i>
+                <i class="iconfont icon-cart"></i>
                 <span class="amount-tip" v-if="queries.amount > 0">{{ cartAmount }}</span>
             </div>
             <div class="subtotal">

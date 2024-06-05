@@ -5,7 +5,8 @@ import { useCache, useCookie, useEncryptor } from "./register";
 import { useDialog } from "../components/Dialog";
 import { useAuthStore } from "../stores/auth";
 import { TOKEN_KEY } from "../stores/types";
-import type { IUser } from "../api/model";
+import type { ILogin, IRegister, IUser } from "../api/model";
+import { login, logout, register } from "../api/user";
 
 interface IAppParam {
     appid: string,
@@ -14,8 +15,50 @@ interface IAppParam {
 }
 
 export class AuthService {
-    
 
+
+    public encrypt<T>(data: T, keys: string[]): T {
+        const encryptor = useEncryptor();
+        for (const key of keys) {
+            if (Object.prototype.hasOwnProperty.call(data, key)) {
+                (data as any)[key] = encryptor.encrypt((data as any)[key]);
+            }
+        }
+        return data;
+    }
+    
+    public login(params: ILogin) {
+        return login(this.encrypt(params, ['password'])).then((res: IUser) => {
+            const store = useAuthStore();
+            store.setToken(res.token || null);
+            store.setUser(res);
+            return res;
+        });
+    }
+
+    public register(params: IRegister) {
+        return register(this.encrypt(params, ['password'])).then((res: IUser) => {
+            const store = useAuthStore();
+            store.setToken(res.token || null);
+            store.setUser(res);
+            return res;
+        });
+    }
+    
+    public logout() {
+        return new Promise<void>((resolve, reject) => {
+            const token = this.getUserToken();
+            if (!token) {
+                resolve();
+                return;
+            }
+            this.setUserToken();
+            logout().then(() => {
+                useAuthStore().$reset();
+                resolve();
+            }).catch(reject);
+        });
+    }
 
     private now() {
         // return getCurrentTime();
@@ -43,11 +86,6 @@ export class AuthService {
 
     public getUserToken(): string|null {
         return useCache().get(TOKEN_KEY);
-    }
-
-    public logoutUser() {
-        useAuthStore().logoutUser().then();
-        this.setUserToken();
     }
 
 

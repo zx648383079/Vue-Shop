@@ -2,7 +2,7 @@
     <div>
         <BackHeader title="结算"/>
         <div class="has-header has-footer checkout-box">
-            <AddressLine :address="(address as any)" @click="tapAddress"/>
+            <AddressLine :address="(address as any)" @tapped="tapAddress"/>
 
             <PaymentLine v-model="payment" :items="paymentList"/>
             

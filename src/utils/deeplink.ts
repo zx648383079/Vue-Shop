@@ -2,6 +2,8 @@
 import type { Router } from 'vue-router';
 import { ORDER_STATUS } from '../api/model';
 
+export const DEEPLINK_SCHEMA = 'zodream';
+
 export const openLink = (router: Router, link: string) => {
     if (!link || link.length < 1 || link.charAt(0) === '#' || link.indexOf('javascript:') === 0) {
         return;
@@ -14,7 +16,7 @@ export const openLink = (router: Router, link: string) => {
         router.push({name: 'browser', query: {url: link}});
         return;
     }
-    if (schema !== 'deeplink') {
+    if (schema !== DEEPLINK_SCHEMA) {
         return;
     }
     let params: any = null;
@@ -73,7 +75,7 @@ export const openLink = (router: Router, link: string) => {
                 params = { name: 'products', params: { isFromHome: true } }
             } else {
                 // 商品详情
-                params = { name: 'product', query: { id: action } }
+                params = { name: 'product', params: { id: action } }
             }
         } else if (where === 'notice/scanner') {
             // 二维码界面 // TODO:

@@ -21,25 +21,35 @@
     </div>
 </template>
 <script setup lang="ts">
+import { useDialog } from './plugin';
 
+const service = useDialog();
 const props = withDefaults(defineProps<{
+    dialogId?: number;
     visible?: boolean;
     title?: string;
     content?: string;
     icon?: string;
     confirmText?: string;
     cancelText?: string;
+    onConfirm?: () => void;
+    onCancel?: () => void;
 }>(), {
     cancelText: 'Cancel',
     confirmText: 'Confirm'
 });
 
 function close(res = false) {
-
+    const cb = props[res ? 'onConfirm' : 'onCancel'];
+    if (cb) {
+        cb();
+    }
+    service?.close(props.dialogId);
 }
 
 </script>
 <style lang="scss">
+@import '../../assets/css/theme';
 .dialog-box {
     position: fixed;
     z-index: 920;
@@ -48,16 +58,16 @@ function close(res = false) {
     top: 50%;
     margin-top: -7.5rem;
     width: 43.75rem;
-    background: #fff;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-    transform: translate3d(0, -1000px, 0);
+    background-color: var(--#{$prefix}-dialog);;
+    box-shadow: 0 0 1.25rem var(--#{$prefix}-shadow);;
+    transform: translate3d(0, -62.5rem, 0);
     .dialog-header {
         position: relative;
         height: 2.5rem;
         line-height: 1.875rem;
         text-align: center;
         padding: 0.3125rem 0.625rem;
-        border-bottom: 1px solid #ccc;
+        border-bottom: 1px solid var(--#{$prefix}-border);;
         .iconfont {
             width: 1.875rem;
             height: 1.875rem;
@@ -79,7 +89,7 @@ function close(res = false) {
         padding: 0.625rem;
     }
     .dialog-footer {
-        border-top: 1px solid #ccc;
+        border-top: 1px solid var(--#{$prefix}-border);;
         text-align: center;
     }
     .dialog-invail-tip {

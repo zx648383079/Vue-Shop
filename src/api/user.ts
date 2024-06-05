@@ -1,5 +1,5 @@
 import {fetch, post, deleteRequest, put, uploadFile} from '../utils/http';
-import type {IUser, ILogin, IPage, IAccountLog, ICollect, IData, IConnect, IDataOne, ICard, ISubtotal} from './model';
+import type {IUser, ILogin, IPage, IAccountLog, ICollect, IData, IConnect, IDataOne, ICard, ISubtotal, IRegister, ICaptcha} from './model';
 
 export const getProfile = () => fetch<IUser>('auth/user');
 
@@ -21,10 +21,7 @@ export const login = (param: ILogin) => post<IUser>('auth/login', param);
 
 export const logout = () => fetch('auth/logout');
 
-export const register = (email: string, password: string) => post<IUser>('auth/register', {
-    email,
-    password,
-});
+export const register = (param: IRegister) => post<IUser>('auth/register', param);
 
 export const sendFindEmail = (email: string) => post<IDataOne<boolean>>('auth/password/send_find_email', {
     email,
@@ -54,3 +51,8 @@ export const updateProfile = (param: any) => put<IUser>('auth/user/update', para
 
 
 export const uploadAvatar = (img: File) => uploadFile<IUser>('auth/user/avatar', img);
+
+export const getCaptcha = (token: string) => fetch<ICaptcha>('auth/captcha', {
+    captcha_token: token,
+    type: 'hint',
+});

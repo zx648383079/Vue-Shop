@@ -5,11 +5,11 @@
                 <span>一键登录解锁</span>
                 <p class="small">选购优质商品，享受优质服务</p>
             </div>
-            <a :class="['btn', input.agree ? '' : 'disabled']">微信授权登录</a>
-            <a :class="['btn', 'btn-none', input.agree ? '' : 'disabled']">其他方式注册/登录</a>
+            <a :class="['btn', 'btn-danger', input.agree ? '' : 'disabled']">微信授权登录</a>
+            <a :class="['btn', 'btn-outline-danger', input.agree ? '' : 'disabled']">其他方式注册/登录</a>
             <div class="input-group">
                 <div class="checkbox" @click="input.agree = !input.agree">
-                    <i :class="['iconfont', input.agree ? 'fa-check-circle' : 'fa-circle']"></i>
+                    <i :class="['iconfont', input.agree ? 'icon-check-circle' : 'icon-circle']"></i>
                 </div>
                 我已阅读并同意
                 <a href="">用户服务协议</a>
@@ -22,7 +22,6 @@
 </template>
 <script setup lang="ts">
 import { reactive, watch } from 'vue';
-
 
 const props = defineProps<{
     open: boolean

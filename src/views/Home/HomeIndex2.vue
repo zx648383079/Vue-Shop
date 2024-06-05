@@ -6,7 +6,7 @@
             </a>
             <a class="search-entry" @click="tapSearch">
                 <i class="iconfont icon-search"></i>
-                <span>搜索商品, 共{{ subtotal ? subtotal.goods : 0 }}款好物</span>
+                <span>{{ $t('message.search_tip', {subtotal: subtotal ? subtotal.goods : 0}) }}</span>
             </a>
             <a class="icon-item" @click="tapMessage">
                 <i class="iconfont icon-scan"></i>
@@ -20,11 +20,7 @@
 
             <div class="header-mask">
                 <div class="banner">
-                    <Swiper :auto="4000">
-                        <SwiperSlide v-for="(item, index) in banners" :key="index">
-                            <img :src="item.content" style="width:100%">
-                        </SwiperSlide>
-                    </Swiper>
+                    <SwiperContainer :items="banners"/>
                 </div>
 
                 <div class="menu-box">
@@ -47,7 +43,7 @@
                             <div class="item-thumb">
                                 <img src="" alt="">
                             </div>
-                            <div class="item-price">￥99</div>
+                            <div class="item-price">{{ $n(99.1, 'currency') }}</div>
                         </div>
                         <div class="flex-item">
                             <div class="item-thumb">
@@ -129,11 +125,11 @@
     </div>
 </template>
 <script setup lang="ts">
-import { Swiper, SwiperSlide } from 'swiper/vue';
 import TabBar from '@/components/TabBar.vue'
 import GoodsItem from './Child/GoodsItem.vue';
 import GoodsPanel from './Child/GoodsPanel.vue'
 import NoticeBar from './Child/NoticeBar.vue';
+import SwiperContainer from './Child/SwiperContainer.vue';
 import CountDown from '../../components/CountDown.vue';
 import {getHome} from '../../api/product'
 import {getCategories} from '../../api/category'
@@ -226,6 +222,8 @@ shopStore.getSite().then(res => {
 <style lang="scss" scoped>
 @import '../../assets/css/theme';
 .banner {
+    --#{$prefix}-swiper-text: var(--#{$prefix}-primary-text);
+    --#{$prefix}-swiper-height: 20rem;
     min-height: 15rem;
 }
 .header-mask {

@@ -34,34 +34,35 @@ function close(id?: any) {
         confirmData.value = {};
         return;
     }
-    if (confirmData.value.id === id) {
+    if (confirmData.value.dialogId === id) {
         confirmData.value = {};
         return;
     }
-    toastItems.value = toastItems.value.filter(i => i.id !== id).map((item, i) => {
+    toastItems.value = toastItems.value.filter(i => i.dialogId !== id).map((item, i) => {
         item.offset = i * toastOuterHeight;
         return item;
     });
+    
 }
 
 function addToast(option: DialogTipOption) {
     option.visible = true;
     const themeItems: any = {
         success: {
-            icon: 'fa-check-circle'
+            icon: 'icon-check-circle'
         },
         info: {
-            icon: 'fa-exclamation-circle',
+            icon: 'icon-exclamation-circle',
         },
         waining: {
-            icon: 'fa-exclamation-triangle',
+            icon: 'icon-exclamation-triangle',
         },
         error: {
-            icon: 'fa-close'
+            icon: 'icon-close'
         }
     };
     const item = themeItems[option.type];
-    option.icon = item?.icon || ('fa-' + option.type);
+    option.icon = item?.icon || ('icon-' + option.type);
     option.theme = item?.theme || ('message-' + option.type);
     option.offset = toastOuterHeight * toastItems.value.length;
     toastItems.value.push(option);
@@ -96,6 +97,7 @@ defineExpose({
 });
 </script>
 <style lang="scss">
+@import '../../assets/css/theme';
 .dialog-mask {
     position: fixed;
     top: 0;
@@ -103,6 +105,6 @@ defineExpose({
     right: 0;
     bottom: 0;
     z-index: 200;
-    background-color: rgba(0, 0, 0, .7);
+    background-color: var(--#{$prefix}-dialog-mask);;
 }
 </style>

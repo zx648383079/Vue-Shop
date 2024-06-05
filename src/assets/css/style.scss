@@ -8,6 +8,7 @@
 @import "menu";
 @import "tab";
 @import "panel";
+@import "utilities";
 
 * {
     margin: 0;
@@ -56,12 +57,12 @@ a {
             display: inline-block;
             height: 45px;
             line-height: 45px;
-            color: #333;
+            color: var(--#{$prefix}-body-text);
         }
         &.active {
             a {
-                color: #e4393c;
-                border-bottom: 2px solid #e4393c;
+                color: var(--#{$prefix}-danger);
+                border-bottom: 2px solid var(--#{$prefix}-danger);
             }
         }
     }
@@ -88,7 +89,7 @@ header,
 .header {
     width: 100%;
     height: 2.75rem;
-    border-bottom: 0.0625rem solid #e1e1e1;
+    border-bottom: 0.0625rem solid var(--#{$prefix}-border);
     .brand {
         width: 20%;
         font-size: 1.875rem;
@@ -96,10 +97,10 @@ header,
         float: left;
     }
     .search-box {
-        padding: 5px;
-        line-height: 36px;
+        padding: 0.3125rem;
+        line-height: 2.25rem;
         display: grid;
-        grid-template-columns: 1fr 54px;
+        grid-template-columns: 1fr 3.375rem;
         form {
             position: relative;
         }
@@ -107,7 +108,7 @@ header,
             position: absolute;
             // top: 10px;
             z-index: 99;
-            color: #666;
+            color: var(--#{$prefix}-secondary-text);
             &.icon-search {
                 left: 5px;
             }
@@ -121,6 +122,7 @@ header,
             font-size: 1.25rem;
             padding: 4px 29px;
             box-sizing: border-box;
+            outline: none;
             background-color: var(--#{$prefix}-body);
             border: 0;
         }
@@ -141,10 +143,10 @@ header,
 }
 
 .search-entry {
-    background-color: #ededed;
+    background-color: var(--#{$prefix}-body);
     border-radius: 2px;
     font-size: 15px;
-    color: #666;
+    color: var(--#{$prefix}-secondary-text);
     line-height: 36px;
     height: 35px;
     overflow: hidden;
@@ -197,7 +199,7 @@ header,
     }
     .top-tab {
         a {
-            color: #fff;
+            color: var(--#{$prefix}-primary-text);
             line-height: 44px;
             padding: 0 0.3125rem;
             display: inline-block;
@@ -319,7 +321,7 @@ footer,
         }
     }
     &.comment {
-        background: rgba(23,12,23,.7);
+        background-color: rgba(23,12,23,.7);
         a {
             width: 100%;
             text-align: center;
@@ -392,7 +394,7 @@ footer,
         width: 100%;
         height: 1.5rem;
         text-align: center;
-        color: #404245;
+        color: var(--#{$prefix}-secondary-text);
         font-size: 0.8125rem;
         font-weight: normal;
         line-height: 2rem;
@@ -524,8 +526,8 @@ footer,
             .goods-img {
                 display: inline-block;
                 img {
-                    width: 70px;
-                    height: 70px;
+                    width: 4.375rem;
+                    height: 4.375rem;
                 }
             }
             .goods-info {
@@ -540,11 +542,15 @@ footer,
 
 .search-tip-box {
     display: block;
-    padding-left: 10px;
+    padding-left: 0.625rem;
     background-color: var(--#{$prefix}-panel);
     li {
-        height: 30px;
-        line-height: 30px;
+        height: 1.875rem;
+        line-height: 1.875rem;
+        .iconfont {
+            font-weight: 100;
+            color: var(--#{$prefix}-secondary-text);
+        }
         &:not(:last-of-type) {
             border-bottom: 1px solid var(--#{$prefix}-border);
         }
@@ -586,7 +592,7 @@ footer,
     width: 100%;
     background-color: var(--#{$prefix}-panel);
     overflow: hidden;
-    border-bottom: #e2e2e2 0.0625rem solid;
+    border-bottom: 0.0625rem solid var(--#{$prefix}-border);
     .menu-item {
         position: relative;
         float: left;
@@ -611,7 +617,7 @@ footer,
             box-sizing: border-box;
             border: none;
             overflow: hidden;
-            color: #404245;
+            color: var(--#{$prefix}-secondary-text);
             font-size: 0.875rem;
             font-weight: normal;
             text-align: center;
@@ -633,20 +639,20 @@ footer,
         top: 44px;
         display: block;
         box-sizing: border-box;
-        border-right: #e2e2e2 0.0625rem solid;
+        border-right: 0.0625rem solid var(--#{$prefix}-border);
         .menu-item {
             display: block;
             width: 100%;
             height: 3.75rem;
-            color: #404245;
+            color: var(--#{$prefix}-secondary-text);
             font-size: 1rem;
             font-weight: normal;
             line-height: 3.75rem;
             text-align: center;
             box-sizing: border-box;
-            border-bottom: #e2e2e2 0.0625rem solid;
+            border-bottom: 0.0625rem solid var(--#{$prefix}-border);
             &.active {
-                border-left: #55595f 0.25rem solid;
+                border-left: 0.25rem solid var(--#{$prefix}-secondary-text);
                 background-color: var(--#{$prefix}-panel);
             }
         }
@@ -735,9 +741,9 @@ footer,
 .cart-box {
     .cart-group-item {
         margin: 5px 0;
-        background-color: #fff;
+        background-color: var(--#{$prefix}-panel);
         .group-header {
-            line-height: 30px;
+            line-height: 1.875rem;
             padding: 0 13px;
         }
         .goods-list {
@@ -792,8 +798,8 @@ footer,
         float: right;
         .btn {
             margin-right: 0;
-            background-color: #b4282d;
-            color: var(--#{$prefix}-primary-text);
+            background-color: var(--#{$prefix}-danger);
+            color: var(--#{$prefix}-danger-text);
             line-height: 2rem;
         }
     }
@@ -803,10 +809,10 @@ footer,
 .empty-cart-box {
     text-align: center;
     padding-top: 30vh;
-    line-height: 50px;
+    line-height: 3.125rem;
     p {
-        font-size: 30px;
-        color: #ccc;
+        font-size: 1.875rem;
+        color: var(--#{$prefix}-border);
     }
     .btn {
         background-color: transparent;
@@ -837,8 +843,8 @@ footer,
             
         }
         .default {
-            background: #f00;
-            color: var(--#{$prefix}-primary-text);
+            background-color: var(--#{$prefix}-danger);
+            color: var(--#{$prefix}-danger-text);
             padding: 0.125rem 0.4375rem;
         }
         &.empty-address {
@@ -937,12 +943,12 @@ footer,
     }
 }
 
-.goods-gallary-box {
-    img {
-        height: 22.5rem;
-        max-width: 100%;
-    }
-}
+// .goods-gallary-box {
+//     img {
+//         height: 22.5rem;
+//         max-width: 100%;
+//     }
+// }
 
 .goods-info {
     margin-bottom: 20px;
@@ -976,14 +982,14 @@ footer,
         }
     }
     .goods-price {
-        color: #B4282D;
+        color: var(--#{$prefix}-danger);
         font-weight: 700;
-        font-size: 20px;
+        font-size: 1.25rem;
     }
     .promote-line {
         display: grid;
         grid-template-columns: 50px 1fr 35px;
-        border-top: 1px solid #ddd;
+        border-top: 1px solid var(--#{$prefix}-border);
         line-height: 40px;
     }
 }
@@ -1003,23 +1009,23 @@ footer,
         }
     }
     .comment-subtotal {
-        line-height: 40px;
-        padding-left: 10px;
+        line-height: 2.5rem;
+        padding-left: 0.625rem;
         .score {
             display: inline-block;
         }
     }
     .comment-stats {
-        padding: 10px;
+        padding: 0.625rem;
         a {
             border-radius: 2px;
-            background: #fdf0f0;
+            background-color: var(--#{$prefix}-body);
             margin: 0 10px 7px 0;
             padding: 0 5px;
             height: 25px;
             line-height: 25px;
             font-size: 10px;
-            color: #666;
+            color: var(--#{$prefix}-secondary-text);
             display: inline-block;
         }
     }
@@ -1030,7 +1036,7 @@ footer,
     .comment-item {
         .item-header {
             display: grid;
-            grid-template-columns: 39px 1fr 110px;
+            grid-template-columns: 2.4375rem 1fr 6.875rem;
             .avatar {
                 img {
                     width: 100%;
@@ -1042,26 +1048,26 @@ footer,
             margin-bottom: 10px;
         }
         .time {
-            color: #666;
+            color: var(--#{$prefix}-secondary-text);
             .attr {
                 display: inline-block;
             }
         }
         .content {
-            line-height: 20px;
-            font-size: 14px;
-            color: #333;
-            margin-bottom: 10px;
+            line-height: 1.25rem;
+            font-size: 0.875rem;
+            color: var(--#{$prefix}-body-text);
+            margin-bottom: 0.625rem;
             word-break: break-word;
         }
         .image-box {
-            margin: 10px 0;
+            margin: 0.625rem 0;
             li {
                 display: inline-block;
-                margin-right: 10px;
+                margin-right: 0.625rem;
                 list-style-type: none;
-                width: 80px;
-                height: 80px;
+                width: 5rem;
+                height: 5rem;
                 text-align: center;
                 img {
                     margin: auto;
@@ -1127,8 +1133,8 @@ footer,
 .activity-box {
     display: grid;
     grid-template: 50px / 80px 1fr 120px;
-    background-color: #ff553f;
-    color: #fff;
+    background-color: var(--#{$prefix}-danger);
+    color: var(--#{$prefix}-danger-text);
     .price {
         font-size: 26px;
         text-align: center;
@@ -1140,29 +1146,29 @@ footer,
     }
     .info {
         .old-price {
-            color: #ccc;
-            text-decoration: line-through solid #999;
+            color: var(--#{$prefix}-border);
+            text-decoration: line-through solid var(--#{$prefix}-border);
         }
         .time-block {
             vertical-align: middle;
-            line-height: 15px;
-            font-size: 10px;
+            line-height: 0.9375rem;
+            font-size: 0.625rem;
         }
     }
     .countdown {
         text-align: center;
-        background-color: #f7f7f7;
-        padding-top: 7px;
+        background-color: var(--#{$prefix}-body);
+        padding-top: 0.4375rem;
         .text {
-            color: #333;
-            font-size: 10px;
+            color: var(--#{$prefix}-body-text);
+            font-size: 0.625rem;
         }
         .time {
-            color: #e93b3d;
-            font-size: 12px;
+            color: var(--#{$prefix}-danger);
+            font-size: 0.75rem;
             span {
-                background-color: #fff;
-                border: 1px solid #ccc;
+                background-color: var(--#{$prefix}-danger-text);
+                border: 1px solid var(--#{$prefix}-border);
             }
         }
     }
@@ -1175,7 +1181,7 @@ footer,
     left: 0;
     right: 0;
     z-index: 110;
-    background-color: rgba(0,0,0,.7);
+    background-color: var(--#{$prefix}-dialog-mask);
     .dialog-body {
         position: absolute;
         transform: translate3d(0,0,0);
@@ -1195,10 +1201,10 @@ footer,
         .dailog-yes {
             height: 50px;
             line-height: 50px;
-            color: var(--#{$prefix}-primary-text);
+            color: var(--#{$prefix}-danger-text);
             font-size: 16px;
             text-align: center;
-            background-color: #e4393c;
+            background-color: var(--#{$prefix}-danger);
             display: block;
             width: 100%;
             flex: 1;
@@ -1211,7 +1217,7 @@ footer,
         position: relative;
         line-height: 46px;
         font-size: 16px;
-        color: #333;
+        color: var(--#{$prefix}-body-text);
         img {
             position: absolute;
             left: 10px;
@@ -1222,16 +1228,16 @@ footer,
         }
         .price {
             display: inline-block;
-            height: 40px;
-            line-height: 40px;
-            color: #e4393c;
-            font-size: 10px;
+            height: 2.5rem;
+            line-height: 2.5rem;
+            color: var(--#{$prefix}-danger);
+            font-size: 0.625rem;
         }
         .selected-property,
         .stock {
             word-break: break-all;
             font-size: 12px;
-            color: #333;
+            color: var(--#{$prefix}-body-text);
             line-height: 1.4em;
             padding-right: 10px;
             overflow: hidden;
@@ -1254,7 +1260,7 @@ footer,
         .group {
             .group-header {
                 font-size: 12px;
-                color: #999;
+                color: var(--#{$prefix}-secondary-text);
                 margin: 0 10px;
                 height: 40px;
                 line-height: 40px;
@@ -1274,17 +1280,17 @@ footer,
                     margin-left: 10px;
                     margin-bottom: 10px;
                     border-radius: 4px;
-                    color: #333;
-                    background-color: #f7f7f7;
+                    color: var(--#{$prefix}-body-text);
+                    background-color: var(--#{$prefix}-body);
                     font-size: 14px;
                     cursor: pointer;
                     &.active {
-                        background-color: #e4393c;
-                        color: var(--#{$prefix}-primary-text);
+                        background-color: var(--#{$prefix}-danger);
+                        color: var(--#{$prefix}-danger-text);
                     }
                     &.disable {
-                        background-color: #bbb;
-                        color: #fff;
+                        background-color: var(--#{$prefix}-gray);
+                        color: var(--#{$prefix}-gray-text);
                         cursor: not-allowed;
                     }
                 }
@@ -1294,7 +1300,7 @@ footer,
             padding: 0 10px;
             span {
                 font-size: 12px;
-                color: #999;
+                color: var(--#{$prefix}-secondary-text);
             }
         }
     }
@@ -1321,7 +1327,7 @@ footer,
             content: "";
             width: 6.25rem;
             height: 6.25rem;
-            border: 0.125rem solid #99e3ff;
+            border: 0.125rem solid var(--#{$prefix}-border);
             border-radius: 100%;
             position: absolute;
             left: -0.3125rem;
@@ -1337,11 +1343,11 @@ footer,
 }
 
 .menu-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    display: flex;
     background-color: var(--#{$prefix}-panel);
     .item {
-        border-right: 0.0625rem dotted #4693d0;
+        flex: 1;
+        border-right: 0.0625rem dotted var(--#{$prefix}-border);
         text-align: center;
         box-sizing: border-box;
         line-height: $lineHeight;
@@ -1470,20 +1476,12 @@ footer,
     }
 }
 
-.btn {
-    &.btn-primary,
-    &.del-btn {
-        margin: 0.875rem;
-        box-sizing: border-box;
-        padding: 0.375rem;
-        display: block;
-        text-align: center;
-    }
-    &.btn-primary {
-        width: 80%;
-        margin: 1rem auto;
-        padding: 0;
-    }
+.del-btn {
+    margin: 0.875rem;
+    box-sizing: border-box;
+    padding: 0.375rem;
+    display: block;
+    text-align: center;
 }
 
 .share-box {
@@ -1534,8 +1532,8 @@ footer,
             height: 3.125rem;
             line-height: 3.125rem;
             border-radius: 50%;
-            background: #333;
-            color: var(--#{$prefix}-primary-text);
+            background-color: var(--#{$prefix}-body-text);
+            color: var(--#{$prefix}-body);
             text-align: center;
             img {
                 width: 100%;
@@ -1555,18 +1553,18 @@ footer,
                 
             }
             .default {
-                background: #f00;
-                color: var(--#{$prefix}-primary-text);
+                background: var(--#{$prefix}-danger);
+                color: var(--#{$prefix}-danger-text);
                 padding: 0.125rem 0.4375rem;
             }
         }
         &.selected {
             .address-first {
                 background-color: transparent;
-                color: #f00;
+                color: var(--#{$prefix}-danger);
                 &::before {
                     @include iconFont();
-                    font-size: 26px;
+                    font-size: 1.625rem;
                     content: "\f058";
                 }
                 span {
@@ -1649,16 +1647,8 @@ footer,
     .btn,
     button {
         display: block;
-        margin: 0 0 10px;
-        line-height: 40px;
-        height: 40px;
-        color: var(--#{$prefix}-primary-text);
-        border: 1px solid #b4282d;
-        background-color: #b4282d;
-        &.btn-none {
-            background-color: var(--#{$prefix}-panel);
-            color: #b4282d;
-        }
+        margin: 0 0 0.625rem;
+        line-height: 2.5rem;
     }
     button {
         width: 100%;
@@ -1721,20 +1711,20 @@ footer,
 
 .register-box {
     button {
-        margin-top: 10px;
+        margin-top: 0.625rem;
     }
 }
 
 .more-load {
     text-align: center;
-    line-height: 30px;
-    color: #767676;
+    line-height: 1.875rem;
+    color: var(--#{$prefix}-secondary-text);
 }
 
 .coupon-item {
     display: grid;
     grid-template-columns: 75px 1fr 75px;
-    height: 100px;
+    height: 6.25rem;
     background-color: var(--#{$prefix}-panel);
     margin-bottom: 10px;
     .thumb {
@@ -1832,8 +1822,8 @@ footer,
     background-color: var(--#{$prefix}-panel);
     margin: 5px 0;
     .price {
-        background-color: #b4282d;
-        color: var(--#{$prefix}-primary-text);
+        background-color: var(--#{$prefix}-danger);
+        color: var(--#{$prefix}-danger-text);
         text-align: center;
         padding: 30px 0 0;
         em {
@@ -1851,8 +1841,8 @@ footer,
             width: 100%;
             font-size: 12px;
             a {
-                color: #f00;
-                border: 1px solid #f00;
+                color: var(--#{$prefix}-danger);
+                border: 1px solid var(--#{$prefix}-danger);
                 border-radius: 5px;
                 padding: 0 3px;
                 float: right;
@@ -1861,7 +1851,7 @@ footer,
     }
     &.expired {
         .price {
-            background-color: #999;
+            background-color: var(--#{$prefix}-border);
         }
     }
 }
@@ -1895,13 +1885,13 @@ footer,
         border-top: none;
         a {
             &.active {
-                border-bottom: 2px solid #333;
+                border-bottom: 2px solid var(--#{$prefix}-body-text);
             }
         }
     }
     .store-info {
         display: grid;
-        grid-template-columns: 50px 1fr 60px;
+        grid-template-columns: 3.125rem 1fr 3.75rem;
         grid-gap: 8px;
         padding: 30px 8px 8px;
         .logo {
@@ -1920,15 +1910,15 @@ footer,
         .action {
             padding-top: 20px;
             a {
-                background: #e93b3d;
-                border: 1px solid #e93b3d;
+                background-color: var(--#{$prefix}-danger);
+                border: 1px solid var(--#{$prefix}-danger);
                 border-radius: 50px;
                 overflow: hidden;
                 padding: 0 7px;
                 line-height: 23px;
                 white-space: nowrap;
                 font-size: 12px;
-                color: var(--#{$prefix}-primary-text);
+                color: var(--#{$prefix}-danger-text);
             }
         }
     }
@@ -1983,14 +1973,14 @@ footer,
         padding: 10px 80px 10px 0;
         p {
             font-size: 12px;
-            color: #767676;
+            color: var(--#{$prefix}-secondary-text);
         }
         .name {
             font-size: 16px;
         }
     }
     .amount {
-        color: #f00;
+        color: var(--#{$prefix}-danger);
         font-size: 20px;
         position: absolute;
         right: 20px;
@@ -2095,7 +2085,7 @@ footer,
         font-weight: 700;
     }
     p {
-        color: #ccc;
+        color: var(--#{$prefix}-secondary-text);
         font-size: 12px;
         line-height: 20px;
     }
@@ -2174,30 +2164,30 @@ footer,
 	.image-item {
 		display: inline-block;
 		position: relative;
-		background-color: #fff;
+		background-color: var(--#{$prefix}-panel);
 		.iconfont {
 			position: absolute;
 			top: 0;
 			right: 0;
-			background: rgba(#333, .2);
+			background-color: rgba(#333, .2);
 			border-radius: 50%;
 			display: block;
-			width: 20px;
-			height: 20px;
+			width: 1.25rem;
+			height: 1.25rem;
 			text-align: center;
 			line-height: 20px;
 		}
 		img {
-			width: 60px;
-			height: 60px;
+			width: 3.75rem;
+			height: 3.75rem;
 		}
 	}
 	.add-item {
 		display: inline-block;
-		width: 60px;
-		height: 60px;
+		width: 3.75rem;
+		height: 3.75rem;
 		text-align: center;
-		font-size: 40px;
+		font-size: 2.5rem;
 		vertical-align: top;
 	}
 }
@@ -2207,11 +2197,11 @@ footer,
     top: 38%;
     .dialog-header {
         background-color: var(--#{$prefix}-panel);
-        color: #333;
+        color: var(--#{$prefix}-body-text);
         border: none;
         .dialog-close {
             background-color: var(--#{$prefix}-panel);
-            color: #333;
+            color: var(--#{$prefix}-body-text);
         }
         .dialog-title {
             font-weight: 700;
@@ -2242,7 +2232,7 @@ footer,
             width: 100%;
             height: 36px;
             outline: 0;
-            border: 1px solid #eee;
+            border: 1px solid var(--#{$prefix}-border);
             padding: 0 10px
         }
     }
@@ -2259,7 +2249,7 @@ footer,
         }
         p {
             font-size: 12px;
-            color: #767676;
+            color: var(--#{$prefix}-secondary-text);
             line-height: 20px;
         }
     }
@@ -2284,7 +2274,7 @@ footer,
                 width: 100%;
                 height: 36px;
                 outline: 0;
-                border: 1px solid #eee;
+                border: 1px solid var(--#{$prefix}-border);
                 background-color: transparent;
             }
         }
@@ -2296,7 +2286,7 @@ footer,
 .code-input {
     border-bottom: 1px solid var(--#{$prefix}-border);
     input {
-        height: 40px;
+        height: 2.5rem;
         border: 0;
         background: transparent;
         width: 100%;
@@ -2309,6 +2299,6 @@ footer,
         outline: none;
         border: 0;
         resize: vertical;
-        min-height: 80px;
+        min-height: 5rem;
     }
 }

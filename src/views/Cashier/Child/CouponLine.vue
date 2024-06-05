@@ -3,7 +3,7 @@
         <div class="line-item inovice-box">
             <span>优惠券</span>
             <span>
-                {{ props.modelValue ? props.modelValue.name : (!items || items.length < 1 ? '无可用' : '请选择') }}
+                {{ model ? model.name : (!items || items.length < 1 ? '无可用' : '请选择') }}
             </span>
             <i class="iconfont icon-chevron-right"></i>
         </div>
@@ -18,7 +18,7 @@
                         <div class="time">
                             <span>{{ item.start_at }}-{{ item.end_at}}</span>
                         </div>
-                        <i :class="['fa', 'check-box', props.modelValue && item.id == props.modelValue.id ? 'active' : '']"></i>
+                        <i :class="['fa', 'check-box', model && item.id == model.id ? 'active' : '']"></i>
                     </div>
                 </div>
             </div>
@@ -33,15 +33,14 @@ import type { ICoupon } from '@/api/model';
 import DialogPanel from '@/components/DialogPanel.vue';
 import { ref } from 'vue';
 
-const emit = defineEmits(['update:modelValue']);
+const model = defineModel<ICoupon>();
 const props = defineProps<{
-    modelValue: ICoupon|null,
     items: ICoupon[]
 }>();
 const dialog = ref<typeof DialogPanel>();
 
 function tapSelected(item: ICoupon) {
-    emit('update:modelValue', item);
+    model.value = item;
 }
 
 function tapHide() {

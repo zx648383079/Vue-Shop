@@ -15,27 +15,30 @@
         <div class="input-box">
             <input type="password" name="confirm_password" required autocomplete="off" @keyup="tapKey" v-model="input.confirmPassword" placeholder="请确认密码">
         </div>
-        <button @click="tapRegister">注册</button>
+        <button class="btn btn-danger" @click="tapRegister">注册</button>
         <div class="input-group">
             <div class="checkbox" @click="input.agree = !input.agree">
-                <i :class="['iconfont', input.agree ? 'fa-check-circle' : 'fa-circle']"></i>
+                <i :class="['iconfont', input.agree ? 'icon-check-circle' : 'icon-circle']"></i>
             </div>
-            同意本站协议
+            同意<AgreementDialog @confirm="input.agree = true">本站协议</AgreementDialog>
         </div>
     </div>
 </template>
 <script setup lang="ts">
+import AgreementDialog from './AgreementDialog.vue';
 import { reactive } from 'vue';
 import { isEmpty, isEmail } from '../../../utils/validate';
 import { useDialog } from '../../../components/Dialog/plugin';
+import { useAuth } from '../../../services';
 
 const toast = useDialog();
+const auth = useAuth();
 const input = reactive({
     name: '',
     email: '',
     confirmPassword: '',
     password: '',
-    agree: true
+    agree: false
 });
 
 function tapKey(e: KeyboardEvent) {
@@ -68,7 +71,9 @@ function tapRegister() {
         toast.warning('请两次密码不一致');
         return;
     }
+    auth.register({name, email, password, confirm_password: input.confirmPassword, agree: input.agree}).then(res => {
 
+    });
 }
 </script>
 <style lang="scss" scoped>

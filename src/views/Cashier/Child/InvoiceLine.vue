@@ -3,7 +3,7 @@
         <div class="line-item inovice-box">
             <span>发票</span>
             <span>
-                {{ props.modelValue ? props.modelValue.title : '请选择' }}
+                {{ model ? model.title : '请选择' }}
             </span>
             <i class="iconfont icon-chevron-right"></i>
         </div>
@@ -53,11 +53,9 @@
 <script setup lang="ts">
 import DialogPanel from '@/components/DialogPanel.vue';
 import { reactive } from 'vue';
+import type { IInvoiceTitle } from '../../../api/model';
 
-const emit = defineEmits(['update:modelValue']);
-const props = defineProps<{
-    modelValue: any|null,
-}>();
+const model = defineModel<IInvoiceTitle>();
 
 const titleTypeList = ['个人', '企业'];
 const typeList = ['普通发票', '电子普通发票'];

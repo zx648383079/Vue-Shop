@@ -10,30 +10,38 @@
             <div class="input-box">
                 <input type="password" name="password" required autocomplete="off" @keyup="tapKey" v-model="input.password" placeholder="请输入密码">
             </div>
+            <CaptchaInput :token="input.captchaToken"/>
             <div class="unlogin">
                 <a @click="tapChange(4)">注册账号</a>
                 <a href="">忘记密码</a>
             </div>
-            <button @click="tapLogin">登录</button>
-            <a @click="tapChange(0)" class="btn btn-none">其他登录方式</a>
+            <ActionButton class="btn btn-danger" @tapped="tapLogin">登录</ActionButton>
+            <a @click="tapChange(0)" class="btn btn-outline-danger">其他登录方式</a>
         </div>
+        <TwoFactor/>
     </div>
 </template>
 <script setup lang="ts">
+import CaptchaInput from './CaptchaInput.vue';
+import TwoFactor from './TwoFactor.vue';
+import ActionButton from '../../../components/ActionButton.vue';
 import { isEmpty, isEmail } from '../../../utils/validate';
 import { reactive } from 'vue';
-import { useAuthStore } from '../../../stores/auth';
 import { useDialog } from '../../../components/Dialog/plugin';
+import { useAuth } from '../../../services';
+import type { IErrorResponse } from '../../../api/model';
+import type { ButtonEvent } from '../../../components/types';
 
-const authStore = useAuthStore();
+const auth = useAuth();
 const toast = useDialog();
-const emit = defineEmits(['click', 'back']);
+const emit = defineEmits(['toggle', 'back']);
 const props = defineProps<{
     logo: string
 }>();
 const input = reactive({
     email: '',
     password: '',
+    captchaToken: '',
 });
 
 function tapKey(e: KeyboardEvent) {
@@ -44,10 +52,10 @@ function tapKey(e: KeyboardEvent) {
 }
 
 function tapChange(mode: number) {
-    emit('click', mode);
+    emit('toggle', mode);
 }
 
-function tapLogin() {
+function tapLogin(e?: ButtonEvent) {
     const email = input.email;
     const password = input.password;
     if (isEmpty(email) || !isEmail(email)) {
@@ -58,8 +66,20 @@ function tapLogin() {
         toast.warning('请输入密码');
         return;
     }
-    authStore.loginUser({email, password}).then(() => {
+    e?.enter();
+    auth.login({email, password}).then(() => {
+        e?.reset();
         emit('back');
+    }).catch(err => {
+        e?.reset();
+        const res = err.response?.data as IErrorResponse;
+        if (res.captcha_token) {
+            input.captchaToken = res.captcha_token;
+        }
+        // this.tapCaptcha();
+        // if (res.code === 1015) {
+        //     this.mode = 8;
+        // }
     });
 }
 </script>

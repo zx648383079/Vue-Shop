@@ -15,7 +15,7 @@
                     <a href="">查看详情</a>
                 </div>
                 <div class="menu-list">
-                    <MenuItem title="上传证件" icon="fa-camera" uri="/checkin"/>
+                    <MenuItem title="上传证件" icon="icon-camera" uri="/checkin"/>
                 </div>
             </div>
         </div>

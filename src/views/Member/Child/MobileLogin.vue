@@ -5,7 +5,7 @@
         </div>
         <div class="phone-password">
             <div class="input-box">
-                <input type="text" v-model="input.mobile">
+                <MobileInput V-model="input.mobile"/>
             </div>
             <div class="input-box">
                 <input type="password" v-model="input.password">
@@ -14,20 +14,21 @@
                 <a href="">忘记密码</a>
                 <a @click="tapChange(1)">使用短信验证登录</a>
             </div>
-            <button @click="tapLogin">登录</button>
-            <a @click="tapChange(0)" class="btn btn-none">其他登录方式</a>
+            <button class="btn btn-danger" @click="tapLogin">登录</button>
+            <a @click="tapChange(0)" class="btn btn-outline-danger">其他登录方式</a>
         </div>
     </div>
 </template>
 <script setup lang="ts">
+import MobileInput from './MobileInput.vue';
 import { isEmpty, isMobile } from '../../../utils/validate';
 import { reactive } from 'vue';
-import { useAuthStore } from '../../../stores/auth';
 import { useDialog } from '../../../components/Dialog/plugin';
+import { useAuth } from '../../../services';
 
-const authStore = useAuthStore();
+const auth = useAuth();
 const toast = useDialog();
-const emit = defineEmits(['click', 'back']);
+const emit = defineEmits(['toggle', 'back']);
 const props = defineProps<{
     logo: string
 }>();
@@ -37,7 +38,7 @@ const input = reactive({
 });
 
 function tapChange(mode: number) {
-    emit('click', mode);
+    emit('toggle', mode);
 }
 
 function tapLogin() {
@@ -51,7 +52,7 @@ function tapLogin() {
         toast.warning('请输入密码');
         return;
     }
-    authStore.loginUser({mobile, password}).then(() => {
+    auth.login({mobile, password}).then(() => {
         emit('back');
     });
 }

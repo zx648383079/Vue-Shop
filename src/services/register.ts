@@ -1,4 +1,4 @@
-import { getCurrentInstance, inject, type App, type Plugin, type InjectionKey } from 'vue';
+import { type App, type Plugin, type InjectionKey } from 'vue';
 import type { IHttpClient } from "./types";
 import { HttpClient } from "./http";
 import { EncryptorService } from './encryptor';
@@ -7,6 +7,7 @@ import { CacheService } from './cache';
 import { AuthService } from './auth';
 import { ThemeService } from './theme';
 import { WebAuthn } from './webAuthn';
+import { globalSingleton } from '../globe';
 
 const httpInjectionKey: InjectionKey<string> = Symbol('httpclient');
 const encryptorInjectionKey: InjectionKey<string> = Symbol('encryptor');
@@ -14,55 +15,44 @@ const cookieInjectionKey: InjectionKey<string> = Symbol('cookie');
 const cacheInjectionKey: InjectionKey<string> = Symbol('cache');
 const authInjectionKey: InjectionKey<string> = Symbol('auth');
 const themeInjectionKey: InjectionKey<string> = Symbol('theme');
+const webAuthnInjectionKey: InjectionKey<string> = Symbol('webAuthn');
 
 export function useHttp(): IHttpClient {
-    return getCurrentInstance()
-        ? inject<IHttpClient>(httpInjectionKey, new HttpClient())
-        : new HttpClient();
+    return globalSingleton.inject<IHttpClient>(httpInjectionKey, () => new HttpClient());
 }
 
 export function useEncryptor(): EncryptorService {
-    return getCurrentInstance()
-    ? inject<EncryptorService>(encryptorInjectionKey, new EncryptorService())
-    : new EncryptorService();
+    return globalSingleton.inject<EncryptorService>(encryptorInjectionKey, () => new EncryptorService());
 }
 
 export function useCookie(): CookieService {
-    return getCurrentInstance()
-    ? inject<CookieService>(cookieInjectionKey, new CookieService())
-    : new CookieService();;
+    return globalSingleton.inject<CookieService>(cookieInjectionKey, () => new CookieService());
 }
 
 export function useCache(): CacheService {
-    return getCurrentInstance()
-    ? inject<CacheService>(cacheInjectionKey, new CacheService())
-    : new CacheService();;
+    return globalSingleton.inject<CacheService>(cacheInjectionKey, () => new CacheService());
 }
 
 export function useAuth(): AuthService {
-    return getCurrentInstance()
-    ? inject<AuthService>(authInjectionKey, new AuthService())
-    : new AuthService();;
+    return globalSingleton.inject<AuthService>(authInjectionKey, () => new AuthService());
 }
 
 export function useTheme(): ThemeService {
-    return getCurrentInstance()
-    ? inject<ThemeService>(themeInjectionKey, new ThemeService())
-    : new ThemeService();;
+    return globalSingleton.inject<ThemeService>(themeInjectionKey, () => new ThemeService());
 }
 
 export function useWebAuthn(): WebAuthn {
-    return new WebAuthn();
+    return globalSingleton.inject(webAuthnInjectionKey, () => new WebAuthn());
 }
 
 export function createSerive(): Plugin {
     return (app: App) => {
-        app.provide<IHttpClient>(httpInjectionKey, new HttpClient())
-        .provide<EncryptorService>(encryptorInjectionKey, new EncryptorService())
-        .provide<CookieService>(cookieInjectionKey, new CookieService())
-        .provide<CacheService>(cacheInjectionKey, new CacheService())
-        .provide<AuthService>(authInjectionKey, new AuthService())
-        .provide<ThemeService>(themeInjectionKey, new ThemeService())
+        globalSingleton.provide<IHttpClient>(httpInjectionKey, new HttpClient(), app)
+        .provide<EncryptorService>(encryptorInjectionKey, new EncryptorService(), app)
+        .provide<CookieService>(cookieInjectionKey, new CookieService(), app)
+        .provide<CacheService>(cacheInjectionKey, new CacheService(), app)
+        .provide<AuthService>(authInjectionKey, new AuthService(), app)
+        .provide<ThemeService>(themeInjectionKey, new ThemeService(), app)
         ;
     };
 }

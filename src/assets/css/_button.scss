@@ -10,6 +10,7 @@
     line-height: 1.875rem;
     margin: 0 0.5rem;
     vertical-align: middle;
+    text-align: center;
 }
 
 .btn-primary {
@@ -35,4 +36,23 @@
 .btn-warning {
     --#{$prefix}-btn: var(--#{$prefix}-warning);
     --#{$prefix}-btn-text: var(--#{$prefix}-warning-text);
+}
+
+.btn-outline-primary,
+.btn-outline-danger {
+    border: 1px solid var(--#{$prefix}-btn-text);
+    &:hover {
+        background-color: var(--#{$prefix}-btn-text);
+        color: var(--#{$prefix}-btn);
+    }
+}
+
+.btn-outline-primary {
+    --#{$prefix}-btn-text: var(--#{$prefix}-primary);
+    --#{$prefix}-btn: var(--#{$prefix}-primary-text);
+}
+
+.btn-outline-danger {
+    --#{$prefix}-btn-text: var(--#{$prefix}-danger);
+    --#{$prefix}-btn: var(--#{$prefix}-danger-text);
 }

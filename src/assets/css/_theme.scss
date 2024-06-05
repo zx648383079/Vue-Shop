@@ -17,8 +17,8 @@ $panel: white;
 $gray: #6c757d;
 $grayText: #fff;
 
-$secondary: #ccc;
-$secondaryText: #b3b1b1;
+$secondary: #ccc;        // 相对于 body 的变化
+$secondaryText: #b3b1b1; // 相对预 bodyTet 的变化
 
 $danger: #d22222;
 $danger-text: #fff;
@@ -29,7 +29,7 @@ $info-text: #fff;
 $warning: #ffc107;
 $warning-text: #fff;
 
-$dialog: rgba(255, 255, 255, .9);
+$dialog: $panel;
 $dialogMask: rgba(0, 0, 0, .3);
 $dialogText: #333;
 

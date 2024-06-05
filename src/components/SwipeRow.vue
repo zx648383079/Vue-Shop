@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import { getCurrentInstance, reactive, ref } from 'vue';
 
-const emit = defineEmits(['click', 'remove']);
+const emit = defineEmits(['tapped', 'remove']);
 const props = defineProps<{
     name: string|string[],
     index: number|string;
@@ -83,7 +83,7 @@ function touchMove(e: TouchEvent) {
 function touchEnd() {
     if (!input.isTouch) {
         animation(input.left, 0);
-        emit('click');
+        emit('tapped');
         return;
     }
     // const diff = e.changedTouches[0].clientX - startX;

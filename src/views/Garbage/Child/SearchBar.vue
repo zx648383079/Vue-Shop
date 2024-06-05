@@ -2,7 +2,7 @@
     <div class="box">
         <div class="search-box">
             <i class="iconfont icon-camera"></i>
-            <input type="text" @keyup="tapKey" :value="props.modelValue" @input="tapUpdateVal(($event as any).target.value)">
+            <input type="text" @keyup="tapKey" :value="model" @input="tapUpdateVal(($event as any).target.value)">
             <i class="iconfont icon-search"></i>
         </div>
         <ul class="tip-box" v-if="tipList && tipList.length > 0">
@@ -18,25 +18,23 @@
 import { getTips } from '@/api/garbage';
 import { ref } from 'vue';
 
-const emit = defineEmits(['update:modelValue', 'search']);
-const props = defineProps<{
-    modelValue: string
-}>();
+const emit = defineEmits(['search']);
+const model = defineModel({type: String, default: ''});
 const tipList = ref<string[]>([]);
 
 function tapUpdateVal(val: string) {
-    emit('update:modelValue', val);
+    model.value = val;
 }
 
 function tapKey(e: KeyboardEvent) {
-    if (!props.modelValue || props.modelValue.trim().length === 0) {
+    if (!model.value || model.value.trim().length === 0) {
         return;
     }
     if (e.code === 'Enter') {
-        emit('search', props.modelValue);
+        emit('search', model.value);
         return;
     }
-    getTips(props.modelValue).then(res => {
+    getTips(model.value).then(res => {
         tipList.value = res.data || [];
     });
 }

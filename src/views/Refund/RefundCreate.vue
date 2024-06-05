@@ -27,10 +27,10 @@
                 </div>
             </div>
             <div class="menu-list" v-if="mode == 2">
-                <MenuItem title="维修" icon="fa-hammer" @click="mode = 3"/>
-                <MenuItem title="退货" icon="fa-undo" @click="mode = 4"/>
-                <MenuItem title="换货" icon="fa-exchange-alt" @click="mode = 5"/>
-                <MenuItem title="价格保护" icon="fa-exchange-alt" @click="mode = 6"/>
+                <MenuItem title="维修" icon="icon-hammer" @tapped="mode = 3"/>
+                <MenuItem title="退货" icon="icon-undo" @tapped="mode = 4"/>
+                <MenuItem title="换货" icon="icon-exchange-alt" @tapped="mode = 5"/>
+                <MenuItem title="价格保护" icon="icon-exchange-alt" @tapped="mode = 6"/>
             </div>
             <AfterSalegGrid v-if="mode > 2" :mode="mode"/>
         </div>

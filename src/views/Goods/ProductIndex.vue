@@ -13,7 +13,7 @@
 
             <div id="info">
                 <div class="goods-gallary-box">
-                    <img :src="goods.thumb" alt="">
+                    <SwiperContainer :items="bannerItems"/>
                 </div>
 
                 <div class="activity-box" v-if="goods.activity">
@@ -137,11 +137,12 @@
     </div>
 </template>
 <script setup lang="ts">
-import type { IProduct, ICommentSubtotal } from '@/api/model';
+import type { IProduct, ICommentSubtotal, IAd } from '@/api/model';
 import { getInfo, getRecommend } from '@/api/product';
 import { getCommentSubtotal } from '@/api/comment';
 import { toggleCollect } from '@/api/user';
 import CountDown from '../../components/CountDown.vue';
+import SwiperContainer from '../Home/Child/SwiperContainer.vue';
 import CommentPage from './Child/CommentPage.vue';
 import { SET_GOODS_HISTORY } from '@/stores/types';
 import CartDialog from './Child/CartDialog.vue';
@@ -163,6 +164,7 @@ const input = reactive({
     tab: 0,
     tabIndex: 'info'
 });
+const bannerItems = ref<IAd[]>([]);
 const comment = ref<ICommentSubtotal | null>(null);
 const items = ref<IProduct[]>([]);
 const tabMenus = [
@@ -299,6 +301,9 @@ if (!id) {
 } else {
     getInfo(id).then(res => {
         useTheme().setTitle(res.name);
+        bannerItems.value = res.gallery ? res.gallery.map(item => {
+            return {type: item.type === 1 ? 3 : 1, content: item.file} as any;
+        }) : [{type: 1, content: res.thumb} as any];
         goods.value = res;
         loadComment();
         loadRecommend();
@@ -311,5 +316,9 @@ if (!id) {
 
 </script>
 <style lang="scss" scoped>
-
+@import '../../assets/css/theme';
+.goods-gallary-box {
+    --#{$prefix}-swiper-text: var(--#{$prefix}-body-text);
+    --#{$prefix}-swiper-height: 22.5rem;
+}
 </style>

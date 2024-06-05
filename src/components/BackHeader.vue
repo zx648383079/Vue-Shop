@@ -12,10 +12,11 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 const props = withDefaults(defineProps<{
-    title: string,
+    title?: string,
     fixed: boolean
 }>(), {
-    fixed: true
+    fixed: true,
+    title: ''
 });
 
 const router = useRouter();
