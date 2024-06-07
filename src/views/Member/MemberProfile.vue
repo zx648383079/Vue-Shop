@@ -18,7 +18,7 @@
                 </div>
                 <div class="line-item">
                     <span>性别</span>
-                    <span>{{user.sex}}</span>
+                    <span>{{user.sex_label }}</span>
                     <i class="iconfont icon-chevron-right"></i>
                 </div>
                 <DatePicker v-model="user.birthday" format="yyyy-mm-dd">

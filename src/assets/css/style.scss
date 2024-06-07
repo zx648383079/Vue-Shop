@@ -1,3 +1,4 @@
+@import "functions";
 @import "theme";
 @import "root";
 @import "mixin";
@@ -644,7 +645,7 @@ footer,
             display: block;
             width: 100%;
             height: 3.75rem;
-            color: var(--#{$prefix}-secondary-text);
+            color: var(--#{$prefix}-body-text);
             font-size: 1rem;
             font-weight: normal;
             line-height: 3.75rem;
@@ -652,7 +653,7 @@ footer,
             box-sizing: border-box;
             border-bottom: 0.0625rem solid var(--#{$prefix}-border);
             &.active {
-                border-left: 0.25rem solid var(--#{$prefix}-secondary-text);
+                border-left: 0.25rem solid var(--#{$prefix}-primary);
                 background-color: var(--#{$prefix}-panel);
             }
         }
@@ -707,29 +708,6 @@ footer,
 }
 
 
-
-.check-box {
-    &::before {
-        content: "\f111";
-    }
-    &.active {
-        &::before {
-            content: "\f058";
-        }  
-    }
-}
-
-.toggle-box {
-    &::before {
-        content: "\f204";
-    }
-    &.active {
-        &::before {
-            content: "\f205";
-        }  
-    }
-}
-
 .number-box {
     input {
         width: 3.125rem;
@@ -744,7 +722,7 @@ footer,
         background-color: var(--#{$prefix}-panel);
         .group-header {
             line-height: 1.875rem;
-            padding: 0 13px;
+            padding: 0 0.8125rem;
         }
         .goods-list {
             margin-top: 0;
@@ -760,6 +738,7 @@ footer,
                 width: 2rem;
                 text-align: center;
                 position: relative;
+                margin-left: .4rem;
                 top: -2rem;
             }
             .number-box {
@@ -769,7 +748,7 @@ footer,
             }
             .goods-info {
                 width: calc(100% - 8rem);
-                height: 70px;
+                height: 4.375rem;
                 margin: 0;
                 h4 {
                     overflow: hidden;
@@ -779,7 +758,7 @@ footer,
         }
     }
     .cart-item {
-        margin-bottom: 10px;
+        margin-bottom: 0.625rem;
     }
 }
 
@@ -787,6 +766,7 @@ footer,
     bottom: 3rem;
     background-color: var(--#{$prefix}-panel);
     .check-box {
+        margin-left: .8rem;
         font-size: 1rem;
         width: 3.125rem;
         text-align: center;
@@ -797,10 +777,9 @@ footer,
     .cart-amount {
         float: right;
         .btn {
-            margin-right: 0;
-            background-color: var(--#{$prefix}-danger);
-            color: var(--#{$prefix}-danger-text);
             line-height: 2rem;
+            margin-right: 0;
+            // line-height: 2rem;
         }
     }
 }
@@ -829,8 +808,9 @@ footer,
             position: absolute;
             font-size: 2.5rem;
             top: 0.75rem;
-            &.icon-map-marker {
+            &.icon-map {
                 left: 1.1875rem;
+                color: var(--#{$prefix}-secondary-text);  
             }
             &.icon-chevron-right {
                 right: 0.3125rem;
@@ -840,7 +820,8 @@ footer,
             font-size: 1.875rem;
         }
         .tel {
-            
+            margin-left: .4rem;
+            color: var(--#{$prefix}-secondary-text);  
         }
         .default {
             background-color: var(--#{$prefix}-danger);
@@ -1447,7 +1428,7 @@ footer,
     .avatar-item {
         line-height: 5rem;
         .iconfont {
-            top: 2rem;
+            // top: 2rem;
         }
         .avatar {
             width: 5rem;
@@ -1455,8 +1436,8 @@ footer,
             border-radius: 50%;
             padding: 5px;
             img {
-                width: 70px;
-                height: 70px;
+                width: 4.375rem;
+                height: 4.375rem;
             }
         }
     }
@@ -1466,13 +1447,27 @@ footer,
 }
 .account-box {
     .line-item {
-        line-height: 2rem;
         .iconfont {
-            margin-right: 10px;
+            margin-right: 0.625rem;
         }
         &:first-child {
             border-top: none;
         }
+    }
+    .item-header {
+        display: inline-block;
+        .iconfont {
+            position: static;
+            margin-right: .4rem;
+        }
+    }
+    .item-platform {
+        user-select: none;
+    }
+    .meta-text,
+    .item-platform {
+        font-size: .8rem;
+        color: var(--#{$prefix}-secondary-text);
     }
 }
 
@@ -1488,30 +1483,7 @@ footer,
     text-align: center;
 }
 
-.form-inline {
-    .input-group {
-        input {
-            width: 100%;
-        }
-        span {
-            line-height: 1.875rem;
-        }
-        textarea {
-            width: 100%;
-            height: 5rem;
-        }
-    }
-    .input-radio {
-        line-height: 1.875rem;
-        position: relative;
-        .iconfont {
-            position: absolute;
-            right: 0.625rem;
-            font-size: 1.5625rem;
-            top: 0.125rem;
-        }
-    }
-}
+
 
 .fixed-footer {
     .btn {

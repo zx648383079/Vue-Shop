@@ -1,7 +1,7 @@
 .tab-bar {
     --#{$prefix}-tab: var(--#{$prefix}-panel);
     --#{$prefix}-tab-border: var(--#{$prefix}-border);
-    --#{$prefix}-tab-text: var(--#{$prefix}-secondary-text);
+    --#{$prefix}-tab-text: var(--#{$prefix}-body-text);
     --#{$prefix}-tab-active-text: var(--#{$prefix}-danger);
     display: flex;
     justify-content: space-around;

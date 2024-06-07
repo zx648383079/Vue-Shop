@@ -7,10 +7,10 @@
                     请输入您的银行卡号
                 </div>
                 <div class="input-group">
-                    <input type="text" placeholder="请输入卡号">
+                    <input type="text" class="form-control" placeholder="请输入卡号">
                 </div>
 
-                <button class="btn">下一步</button>
+                <button class="btn btn-danger">下一步</button>
             </form>
         
         </div>
@@ -20,17 +20,16 @@
 import BackHeader from '@/components/BackHeader.vue';
 </script>
 <style lang="scss" scoped>
+@import '../../assets/css/theme';
 .form-inline {
-    padding-top: 40px;
+    padding-top: 2.5rem;
     .tip {
-        line-height: 40px;
+        line-height: 2.5rem;
     }
     button {
-        background-color: #b4282d;
-        color: #fff;
         width: 80%;
         display: block;
-        margin: 40px auto 0;
+        margin: 2.5rem auto 0;
     }
 }
 </style>

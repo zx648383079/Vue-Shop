@@ -21,27 +21,27 @@ const items = ref<any[]>([]);
 </script>
 <style lang="scss" scoped>
 .tip {
-    line-height: 30px;
-    padding: 10px;
+    line-height: 1.875rem;
+    padding: 0.625rem;
 }
 .item {
     background-color: #fff;
-    padding: 5px 60px 5px 10px;
+    padding: 0.3125rem 3.75rem 0.3125rem 0.625rem;
     position: relative;
     display: block;
     .name {
-        line-height: 30px;
-        font-size: 20px;
+        line-height: 1.875rem;
+        font-size: 1.25rem;
     }
     .time {
         color: #ccc;
-        font-size: 12px;
+        font-size: 0.75rem;
     }
-    .fa {
+    .iconfont {
         position: absolute;
-        right: 10px;
-        top: 18px;
-        font-size: 20px;
+        right: 0.625rem;
+        top: 1.125rem;
+        font-size: 1.25rem;
         color: #999;
     }
     &:not(:last-of-type) {

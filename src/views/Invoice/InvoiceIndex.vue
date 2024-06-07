@@ -9,7 +9,7 @@
 
             <div class="menu-list">
                 <a @click="$router.push('/invoice/apply')">
-                    <i class="iconfont icon-money-check-alt" aria-hidden="true"></i>
+                    <i class="iconfont icon-money-o" aria-hidden="true"></i>
                     申请开票
                     <i class="iconfont icon-chevron-right" aria-hidden="true"></i>
                 </a>

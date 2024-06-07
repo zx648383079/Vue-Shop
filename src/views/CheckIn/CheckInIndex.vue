@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import BackHeader from '@/components/BackHeader.vue';
 import { twoPad } from '@/utils';
-import { getCanCheckIn, checkIn, getMonth } from '@/api/check';
+import { checkIn, checkInBatch } from '@/api/check';
 import type { ICheckIn } from '@/api/model';
 import { ref } from 'vue';
 
@@ -87,88 +87,85 @@ function checkDay(...days: number[]) {
 }
 
 refreshGrid(new Date());
-getCanCheckIn().then(res => {
-    if (res.data) {
-        checked.value = res.data;
-    }
-});
-getMonth().then(res => {
-    if (!res.data) {
-        return;
-    }
+checkInBatch({
+    today: {},
+    month: {}
+}).then(res => {
+    checked.value = res.today;
     const days = [];
-    for (const item of res.data) {
+    for (const item of res.month) {
         days.push(new Date(item.created_at).getDate());
     }
     checkDay(...days);
 });
 </script>
 <style lang="scss" scoped>
+@import '../../assets/css/theme';
+@import '../../assets/css/mixin';
 .top-header {
-    background: #05a6b1;
-    color: #fff;
-    height: 200px;
-    padding-top: 40px;
+    background-color: var(--#{$prefix}-primary);
+    color: var(--#{$prefix}-primary-text);
+    height: 12.5rem;
+    padding-top: 2.5rem;
     .checked-btn,
     .check-btn {
-        font-size: 30px;
-        width: 130px;
+        font-size: 1.875rem;
+        width: 8.125rem;
         margin: 0 auto;
         text-align: center;
         border: 1px solid;
-        line-height: 40px;
-        border-radius: 20px;
+        line-height: 2.5rem;
+        border-radius: 1.25rem;
     }
     .checked-btn {
         background-color: rgba(255, 255, 255, .1);
-        font-size: 22px;
+        font-size: 1.375rem;
     }
     .checked-tip {
         text-align: center;
-        margin-top: 10px;
-        font-size: 13px;
+        margin-top: 0.625rem;
+        font-size: 0.8125rem;
         font-weight: 300;
     }
 }
 .date-grid {
-    width: 280px;
-    margin: -60px auto 0;
-    background-color: #fff;
+    width: 17.5rem;
+    margin: -3.75rem auto 0;
+    background-color: var(--#{$prefix}-panel);
     .title {
-        line-height: 40px;
+        line-height: 2.5rem;
         text-align: center;
     }
     .day-grid {
         ol {
-            background: #eee;
+            background: var(--#{$prefix}-body);
         }
         li {
             display: inline-block;
-            width: 40px;
-            line-height: 40px;
+            width: 2.5rem;
+            line-height: 2.5rem;
             text-align: center;
             box-sizing: border-box;
             list-style: none;
-            color: #333;
+            color: var(--#{$prefix}-body-text);
         }
         ul {
             li {
                 cursor: pointer;
                 &.active {
-                    background: #006cff;
-                    color: #fff;
+                    background: var(--#{$prefix}-primary);
+                    color: var(--#{$prefix}-primary-text);
                     border-radius: 50%;
                     &:before {
-                        font-family: "Font Awesome 5 Free";
-                        font-weight: 900;
-                        content: "\f00c";
-                        color: rgba(255, 255, 255, .3);
-                        font-size: 30px;
+                        @include iconFont(1.875rem);
+                        content: "\ef65";
+                        color: var(--#{$prefix}-primary-text);
                         position: absolute;
+                        opacity: .3;
                     }
                 }
                 &.disable {
-                    color: #ccc;
+                    color: var(--#{$prefix}-secondary-text);
                 }
             }
         }

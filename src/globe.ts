@@ -5,6 +5,10 @@ export class GlobalSingleton {
         [key: string]: any
     } = {};
 
+    public has(key: Symbol | string): boolean {
+        return Object.prototype.hasOwnProperty.call(this.items, key.toString());
+    }
+
     public inject<T>(key: Symbol | string, defFn: () => T): T;
     public inject<T>(key: Symbol | string, def: T): T;
     public inject<T>(key: Symbol | string, def: T | (() => T)): T  {
@@ -28,6 +32,8 @@ export class GlobalSingleton {
             app.provide<T>(key, value);
         }
         this.items[key.toString()] = value;
+        console.log(this);
+        
         return this;
     }
 }

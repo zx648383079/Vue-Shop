@@ -1,7 +1,7 @@
 <template>
     <div class="mobile-input-group">
         <div class="code-input" v-if="visible && data && data.type === 'code'">
-            <input type="text" v-model="input.value">
+            <input type="text" v-model="model">
             <a @click="tapRefresh" i18n-title title="Click refresh">
                 <img :src="data.image" i18n-alt alt="Refresh and retry">
                 <i class="iconfont icon-refresh code-refresh-btn"></i>
@@ -44,6 +44,8 @@ import { reactive, ref, watch } from 'vue';
 import { getCaptcha } from '../../../api/user';
 import type { ICaptcha, IPoint } from '../../../api/model';
 
+const model = defineModel<string>();
+const emit = defineEmits<(e: 'finish', data: any) => void>();
 const props = defineProps<{
     token: string;
 }>();
@@ -77,9 +79,9 @@ function tapRefresh() {
     });
 }
 
-function open() {
-    visible.value = true;
-}
+// function open() {
+//     visible.value = true;
+// }
 
 function touchStart(e: TouchEvent) {
     input.x = 0;
@@ -93,7 +95,7 @@ function touchMove(e: TouchEvent) {
 }
 
 function touchEnd() {
-    
+    emit('finish', input.x);
 }
 
 function onHint(e: MouseEvent) {
@@ -102,6 +104,7 @@ function onHint(e: MouseEvent) {
         y: e.offsetY
     });
     if (input.maskItems.length === data.value?.count) {
+        emit('finish', input.maskItems);
         return;
     }
 }

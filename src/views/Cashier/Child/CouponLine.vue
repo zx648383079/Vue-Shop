@@ -7,7 +7,7 @@
             </span>
             <i class="iconfont icon-chevron-right"></i>
         </div>
-        <slot name="panel">
+        <template #panel">
             <div class="coupon-body">
                 <div class="my-coupon-item" v-for="(item, index) in props.items" :key="index" @click="tapSelected(item)">
                     <div class="price">
@@ -22,10 +22,10 @@
                     </div>
                 </div>
             </div>
-        </slot>
-        <slot name="footer">
+        </template>
+        <template #footer>
             <button @click="tapHide">确定</button>
-        </slot>
+        </template>
     </DialogPanel>
 </template>
 <script setup lang="ts">
@@ -48,8 +48,9 @@ function tapHide() {
 }
 </script>
 <style lang="scss" scoped>
+@import '../../../assets/css/theme';
 .payment-box {
-    background-color: #fff;
+    background-color: var(--#{$prefix}-panel);
 }
 
 .my-coupon-item {

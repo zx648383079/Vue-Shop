@@ -76,7 +76,7 @@ function goPage(p: number) {
     }
     isLoading.value = true;
     getOrder({
-        status: status,
+        status: status.value,
         page: p,
     }).then(res => {
         page.value = p;

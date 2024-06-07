@@ -1,7 +1,7 @@
 <template>
     <div @click="tapClick">
         <div class="address-box" v-if="props.address">
-            <i class="iconfont icon-map-marker"></i>
+            <i class="iconfont icon-map"></i>
             <p>
                 <a >
                     <span class="name">{{ props.address.name }}</span>
@@ -12,7 +12,7 @@
             <i class="iconfont icon-chevron-right"></i>
         </div>
         <div class="address-box empty-address" v-else>
-            <i class="iconfont icon-map-marker"></i>
+            <i class="iconfont icon-map"></i>
             <h3>
                 <a>请选择地址</a>
             </h3>
@@ -33,7 +33,8 @@ function tapClick() {
 }
 </script>
 <style lang="scss" scoped>
+@import '../../../assets/css/theme';
 .address-box {
-    background-color: #fff;
+    background-color: var(--#{$prefix}-panel);
 }
 </style>

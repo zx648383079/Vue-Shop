@@ -37,25 +37,26 @@ if (!id) {
 
 </script>
 <style lang="scss" scoped>
+@import '../../assets/css/theme';
 .article-content {
-    background-color: #fff;
-    margin: 0 0 20px;
-    padding: 10px 5px;
+    background-color: var(--#{$prefix}-panel);
+    margin: 0 0 1.25rem;
+    padding: 0.625rem 0.3125rem;
 }
 .article-title {
-    color: #fff;
-    background-color: #05a6b1;
-    font-size: 18px;
+    background-color: var(--#{$prefix}-primary);
+    color: var(--#{$prefix}-primary-text);
+    font-size: 1.125rem;
     text-align: center;
-    line-height: 30px;
+    line-height: 1.875rem;
 }
 .article-tags {
-    padding-top: 10px;
-    padding-left: 10px;
-    line-height: 20px;
-    font-size: 13px;
-    color: #fff;
-    background-color: #05a6b1;
+    padding-top: 0.625rem;
+    padding-left: 0.625rem;
+    line-height: 1.25rem;
+    font-size: 0.8125rem;
+    background-color: var(--#{$prefix}-primary);
+    color: var(--#{$prefix}-primary-text);
     .author,
     .agree,
     .category,

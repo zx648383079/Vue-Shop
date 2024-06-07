@@ -1,6 +1,6 @@
 <template>
     <div>
-        <LargeHeader :title="($route.meta.title as any)" @submited="tapSubmit()"/>
+        <LargeHeader :title="'编辑' + input.title" @submited="tapSubmit()"/>
         <div>
             <div class="input-box">
                 <input type="text" :placeholder="input.title" required  v-model="input.value">

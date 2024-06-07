@@ -99,7 +99,7 @@ $dialogIndex: 1200;
         background: var(--#{$prefix}-dialog);
         color: var(--#{$prefix}-dialog-text);
         min-width: 16.25rem;
-        display: none;
+        // display: none;
         box-shadow: 0 0 1.25rem var(--#{$prefix}-shadow);
         @include prefix-animation(dialog-box 0.5s);
         .dialog-header {
@@ -114,16 +114,16 @@ $dialogIndex: 1200;
             .dialog-title {
                 cursor: move;
             }
-            .fa {
-                width: 30px;
-                height: 30px;
+            .iconfont {
+                width: 1.875rem;
+                height: 1.875rem;
                 border: none;
                 position: absolute;
                 top: 0;
                 color: var(--#{$prefix}-primary-text);
                 line-height: 1.875rem;
             }
-            .fa-arrow-left {
+            .icon-arrow-left {
                 left: 0;
                 background-color: var(--#{$prefix}-primary);
                 color: var(--#{$prefix}-primary-text);
@@ -160,7 +160,7 @@ $dialogIndex: 1200;
             .dialog-yes,
             .dialog-close {
                 border: none;
-                line-height: 1.875rem;
+                line-height: 2.5rem;
                 width: 30%;
             }
             .dialog-yes {

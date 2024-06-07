@@ -7,12 +7,12 @@
         </BackHeader>
       <div class="has-header">
             <div class="swipe-box address-list">
-                <SwipeRow v-for="(item, index) in items" :name="['address-item', queries.selected == item.id ? ' selected' : '']"  :key="index" :index="item.id" ref="swiperow"             @tapped="tapSelected(item)">
-                    <slot name="left" v-if="!item.is_default">
+                <SwipeRow v-for="(item, index) in items" :name="['address-item', queries.selected == item.id ? ' selected' : '']"  :key="index" :index="item.id"  @tapped="tapSelected(item)">
+                    <template #left v-if="!item.is_default">
                         <a class="set-default" @click="tapDefault(item)">
                             设为默认
                         </a>
-                    </slot>
+                    </template>
                     <div class="address-first">
                         <span>{{ item.name }}</span>
                     </div>
@@ -26,12 +26,12 @@
                             <span>{{ item.region?.full_name }} {{ item.address }}</span>    
                         </p>
                     </div>
-                    <slot name="right">
+                    <template #right>
                         <a @click="tapEdit(item)">
                             <i class="iconfont icon-edit"></i>
                         </a>
                         <i class="iconfont icon-trash" @click="tapRemove(item)"></i>
-                    </slot>
+                    </template>
                 </SwipeRow>
             </div>
         </div>
@@ -54,7 +54,7 @@ const queries = reactive({
     selected: 0,
     mode: 0
 });
-const rows = ref<typeof SwipeRow[]>();
+// const swipeRows = ref<typeof SwipeRow[]>([]);
 
 function tapEdit(item: IAddress) {
     router.push({name: 'address-edit', params: { id: item.id + ''}});
@@ -81,12 +81,12 @@ function tapDefault(item: IAddress) {
         for (const it of items.value) {
             it.is_default = item.id === it.id;
         }
-        if (!rows.value) {
-            return;
-        }
-        for (const box of rows.value) {
-            box.reset();
-        }
+        // if (!swipeRows.value) {
+        //     return;
+        // }
+        // for (const box of swipeRows.value) {
+        //     box.reset();
+        // }
         if (queries.mode > 0) {
             shopStore.setAddressIfEmpty(item);
         }

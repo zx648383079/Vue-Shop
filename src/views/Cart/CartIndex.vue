@@ -6,35 +6,31 @@
                 <div class="cart-box" v-if="items && items.length > 0">
                     <div class="cart-group-item" v-for="(item, index) in items" :key="index">
                         <div class="group-header">
-                            <i :class="['fa', 'check-box', item.checked ? 'active' : '']" @click="toggleCheckGroup(item)"></i>
+                            <i :class="['iconfont', 'check-box', item.checked ? 'active' : '']" @click="toggleCheckGroup(item)"></i>
                             <span>{{ item.name }}</span>
                         </div>
                         <div class="swipe-box goods-list">
                             <SwipeRow name="cart-item goods-item" v-for="(cart, i) in item.goods_list" :key="i" :index="(cart.id as any)" ref="swiperow">
-                                <i :class="['fa', 'check-box', cart.checked ? 'active' : '']" @click="toggleCheck(item, cart)"></i>
+                                <i :class="['iconfont', 'check-box', cart.checked ? 'active' : '']" @click="toggleCheck(item, cart)"></i>
                                 <div class="goods-img">
                                     <img :src="cart.goods?.thumb" alt="">
                                 </div>
                                 <div class="goods-info">
                                     <h4>{{ cart.goods?.name }}</h4>
-                                    <span>{{ cart.price }}</span>
-                                    <div class="number-box">
-                                        <i class="iconfont icon-minus"></i>
-                                        <input type="text" name="" v-model="cart.amount">
-                                        <i class="iconfont icon-plus"></i>
-                                    </div>
+                                    <span>{{ $n(cart.price!, 'currency') }}</span>
+                                    <NumberInput v-model="cart.amount"/>
                                 </div>
                             </SwipeRow>
                         </div>
                     </div>
                 </div>
                 <div class="cart-footer"  v-if="items && items.length > 0">
-                    <i :class="['fa', 'check-box', queries.checkedAll ? 'active' : '']" @click="toggleCheckAll"></i>
+                    <i :class="['iconfont', 'check-box', queries.checkedAll ? 'active' : '']" @click="toggleCheckAll"></i>
                     <span @click="toggleCheckAll">全选</span>
 
                     <div class="cart-amount">
-                        <span>{{ total() }}</span>
-                        <a @click="tapCashier" class="btn">结算</a>
+                        <span>{{ $n(total(), 'currency') }}</span>
+                        <a @click="tapCashier" class="btn btn-danger">结算</a>
                     </div>
                 </div>
 
@@ -60,6 +56,7 @@ import TabBar from '@/components/TabBar.vue';
 import BackHeader from '@/components/BackHeader.vue';
 import SwipeRow from '@/components/SwipeRow.vue';
 import PullToRefresh from '@/components/PullToRefresh.vue';
+import NumberInput from './Child/NumberInput.vue';
 import { useAuthStore } from '../../stores/auth';
 import { computed, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';

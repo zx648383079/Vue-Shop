@@ -7,9 +7,9 @@
                 {{ order.order_amount }}
             </div>
             <div class="checkout-amount">
-                <p class="line-item"><span>商品总价</span> <span>{{ order.goods_amount }}</span> </p>
-                <p class="line-item"><span>运费</span> <span>{{ order.shipping_fee }}</span> </p>
-                <p class="line-item"><span>订单总价</span> <span>{{ order.order_amount }}</span> </p>
+                <p class="line-item"><span>商品总价</span> <span>{{ $n(order.goods_amount, 'currency') }}</span> </p>
+                <p class="line-item"><span>运费</span> <span>{{ $n(order.shipping_fee, 'currency') }}</span> </p>
+                <p class="line-item"><span>订单总价</span> <span>{{ $n(order.order_amount, 'currency') }}</span> </p>
             </div>
             <div class="payment-item" v-if="payment" :class="{active: payment.id == order.payment_id}" @click="tapSelected(payment)">
                 <div class="icon">
@@ -17,7 +17,7 @@
                 </div>
                 <div class="name">{{ payment.name }}</div>
                 <div class="status">
-                    <i class="fa"></i>
+                    <i class="iconfont"></i>
                 </div>
             </div>
             <div v-if="paymentList && paymentList.length > 0">
@@ -25,11 +25,11 @@
                 <div class="payment-list">
                     <div class="payment-item" v-for="(item, index) in paymentList" :key="index"  :class="{active: item.id == order.payment_id}"  @click="tapSelected(item)">
                         <div class="icon">
-                            <i class="fab icon-weixin"></i>
+                            <i class="iconfont icon-wechat"></i>
                         </div>
                         <div class="name">{{ item.name }}</div>
                         <div class="status">
-                            <i class="fa"></i>
+                            <i class="iconfont"></i>
                         </div>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
             
 
             <div class="fixed-footer">
-                <button class="btn" @click="tapPay">立即支付</button> 
+                <button class="btn btn-danger" @click="tapPay">立即支付</button> 
             </div>
         </div>
     </div>

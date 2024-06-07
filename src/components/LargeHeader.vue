@@ -30,9 +30,10 @@ function tapSubmit() {
 }
 </script>
 <style lang="scss" scoped>
+@import '../assets/css/theme';
 .large-header {
-    background: #05a6b1;
-    color: #fff;
+    background-color: var(--#{$prefix}-primary);
+    color: var(--#{$prefix}-primary-text);
     height: 150px;
     position: relative;
     margin-bottom: 20px;

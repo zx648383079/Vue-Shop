@@ -16,7 +16,7 @@
                     </div>
                     <div class="goods-info">
                         <h4>{{ goods.goods?.name }}</h4>
-                        <span class="price">{{ goods.price }}</span>
+                        <span class="price">{{ $n(goods.price!, 'currency') }}</span>
                         <span class="amount"> x {{ goods.amount }}</span>
                     </div>
                 </div>
@@ -29,19 +29,19 @@
             
 
             <div class="checkout-amount" v-if="order">
-                <p class="line-item"><span>商品总价</span> <span data-key="goods_amount">{{ order.goods_amount }}</span> </p>
-                <p class="line-item"><span>+运费</span> <span data-key="shipping_fee">{{ order.shipping_fee }}</span> </p>
-                <p class="line-item"><span>+支付手续费</span> <span data-key="pay_fee">{{ order.pay_fee }}</span> </p>
-                <p class="line-item"><span>-优惠</span> <span data-key="discount">{{ order.discount }}</span> </p>
-                <p class="line-item"><span>订单总价</span> <span data-key="order_amount">{{ order.order_amount }}</span> </p>
+                <p class="line-item"><span>商品总价</span> <span data-key="goods_amount">{{ $n(order.goods_amount, 'currency') }}</span> </p>
+                <p class="line-item"><span>+运费</span> <span data-key="shipping_fee">{{ $n(order.shipping_fee, 'currency') }}</span> </p>
+                <p class="line-item"><span>+支付手续费</span> <span data-key="pay_fee">{{ $n(order.pay_fee, 'currency') }}</span> </p>
+                <p class="line-item"><span>-优惠</span> <span data-key="discount">{{ $n(order.discount, 'currency') }}</span> </p>
+                <p class="line-item"><span>订单总价</span> <span data-key="order_amount">{{ $n(order.order_amount, 'currency') }}</span> </p>
             </div>
 
             <div class="address-tip" v-if="address">
                 {{ address.region?.full_name }} {{ address.address }}
             </div>
             <div class="checkout-footer" v-if="order">
-                <span data-key="order_amount">{{ order.order_amount }}</span>
-                <a @click="tapCheckout" class="btn">立即支付</a>
+                <span data-key="order_amount">{{ $n(order.order_amount, 'currency') }}</span>
+                <a @click="tapCheckout" class="btn btn-danger">立即支付</a>
             </div>
         </div>
     </div>

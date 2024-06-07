@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 1879616 */
-  src: url('iconfont.woff2?t=1717569808547') format('woff2'),
-       url('iconfont.woff?t=1717569808547') format('woff'),
-       url('iconfont.ttf?t=1717569808547') format('truetype');
+  src: url('iconfont.woff2?t=1717729878888') format('woff2'),
+       url('iconfont.woff?t=1717729878888') format('woff'),
+       url('iconfont.ttf?t=1717729878888') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-edit:before {
+  content: "\e671";
 }
 
 .icon-refresh:before {

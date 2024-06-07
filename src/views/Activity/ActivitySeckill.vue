@@ -120,10 +120,11 @@ getTimes().then(res => {
 });
 </script>
 <style lang="scss" scoped>
+@import '../../assets/css/theme';
 .time-header {
     height: 3rem;
     position: static;
-    background: #05a6b1;
+    background-color: var(--#{$prefix}-primary);
     border: none;
     a {
         span {
@@ -134,15 +135,15 @@ getTimes().then(res => {
             font-style: normal;
         }
         &.active {
-            color: #fff;
+            color: var(--#{$prefix}-primary-text);
             span {
-                color: #fff; 
+                color: var(--#{$prefix}-primary-text); 
             }
         }
     }
 }
 .panel {
-    background-color: #fff;
+    background-color: var(--#{$prefix}-panel);
     .panel-header {
         border-bottom: 1px solid;
         .time-tip {
@@ -151,7 +152,7 @@ getTimes().then(res => {
     }
 }
 .goods-item {
-    background-color: #fff;
+    background-color: var(--#{$prefix}-panel);
     padding: 5px;
     position: relative;
     .goods-img {

@@ -7,7 +7,7 @@
             </span>
             <i class="iconfont icon-chevron-right"></i>
         </div>
-        <slot name="panel">
+        <template #panel>
             <div class="invoice-body">
                 <div class="input-group">
                     <label>发票类型</label>
@@ -44,10 +44,10 @@
                     </div>
                 </div>
             </div>
-        </slot>
-        <slot name="footer">
+        </template>
+        <template #footer>
             <button>确定</button>
-        </slot>
+        </template>
     </DialogPanel>
 </template>
 <script setup lang="ts">

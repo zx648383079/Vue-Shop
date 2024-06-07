@@ -8,30 +8,30 @@
         <div class="has-header">
             <form class="form-inline" method="post">
                 <div class="input-group">
-                    <input type="text" name="name" placeholder="收货人" required  v-model="address.name">
+                    <input type="text" name="name" class="form-control" placeholder="收货人" required  v-model="address.name">
                 </div>
                 <div class="input-group">
-                    <input type="text" name="tel" placeholder="手机号" required v-model="address.tel">
+                    <input type="text" name="tel" class="form-control" placeholder="手机号" required v-model="address.tel">
                 </div>
-                <SelectPicker :items="regions" :column="3" v-model="address.region">
+                <SelectPicker :items="regions" :column="3" v-model="region">
                     <div class="input-group region-box">
-                        <span>{{ address.region && address.region.full_name ? address.region.full_name : '地址' }}</span>
+                        <span>{{ region && region.full_name ? region.full_name : '地址' }}</span>
                     </div>
                 </SelectPicker>
                 
                 <div class="input-group">
-                    <textarea name="address" placeholder="详细地址" required v-model="address.address"></textarea>
+                    <textarea name="address" class="form-control" placeholder="详细地址" required v-model="address.address"></textarea>
                 </div>
 
                 <div class="input-radio" @click="address.is_default = !address.is_default">
                     <span>设为默认地址</span>
-                    <i class="fa toggle-box" :class="{active: address.is_default}"></i>
+                    <ToggleSwitch v-model="address.is_default"/>
                 </div>
             </form>
         </div>
 
         <div class="fixed-footer" v-if="address.id > 0">
-            <button class="btn" type="button" @click="tapRemove">删除地址</button> 
+            <button class="btn btn-danger" type="button" @click="tapRemove">删除地址</button> 
         </div>
 
     </div>
@@ -41,6 +41,7 @@ import type { IAddress, IRegionObject } from '@/api/model';
 import { getRegionTree } from '@/api/region';
 import { deleteAddress, getAddress, updateAddress, createAddress } from '@/api/address';
 import BackHeader from '@/components/BackHeader.vue';
+import ToggleSwitch from '../../components/ToggleSwitch.vue';
 import SelectPicker from '@/components/SelectPicker.vue';
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -60,11 +61,12 @@ const address = ref<IAddress>({
     address: '',
     is_default: false,
 });
+const region = ref<any>(null);
 const back = ref(0);
 const regions = ref<IRegionObject>({});
 
 function tapSubmit() {
-    if (!address.value.region) {
+    if (!region.value) {
         toast.warning('请选择收货地址');
         return;
     }
@@ -72,7 +74,7 @@ function tapSubmit() {
         id: address.value.id,
         name: address.value.name,
         tel: address.value.tel,
-        region_id: address.value.region.id,
+        region_id: region.value.id,
         address: address.value.address,
         is_default: address.value.is_default,
     };
@@ -135,10 +137,17 @@ const id = parseInt(route.params.id as string, 10);
 if (id) {
     getAddress(id).then(res => {
         address.value = res;
+        region.value = res.region;
     });
 }
 
 </script>
 <style lang="scss" scoped>
-
+.region-box {
+    padding-left: .4rem;
+    span {
+        display: block;
+        line-height: 2.5rem;
+    }
+}
 </style>

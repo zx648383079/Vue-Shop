@@ -270,6 +270,7 @@ export interface IConnect {
     created_at?: string,
     name?: string,
     icon?: string;
+    platform?: string;
 }
 
 export interface IUser {
@@ -279,6 +280,7 @@ export interface IUser {
     avatar: string;
     token?: string;
     sex?: number;
+    sex_label?: string;
     birthday?: string;
 }
 
@@ -326,6 +328,8 @@ export interface ILogin {
     email?: string;
     password?: string;
     mobile?: string;
+    captcha?: any;
+    captcha_token?: string;
     code?: string;
     agree?: number|boolean;
 }

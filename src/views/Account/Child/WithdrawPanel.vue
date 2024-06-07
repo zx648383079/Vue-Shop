@@ -5,7 +5,7 @@
             提现
             <i class="iconfont icon-chevron-right" aria-hidden="true"></i>
         </a>
-        <slot name="panel">
+        <template #panel>
             <p>充值金额</p>
             <div class="money-input">
                 <em>￥</em>
@@ -25,19 +25,20 @@
             <div class="row-input">
                 <input type="text" placeholder="姓名">
             </div>
-        </slot>
-        <slot name="footer">
+        </template>
+        <template #footer>
             <button class="dialog-yes">提交提现申请</button>
-        </slot>
+        </template>
     </DialogPanel>
 </template>
 <script setup lang="ts">
 import DialogPanel from '@/components/DialogPanel.vue';
 </script>
 <style lang="scss">
+@import '../../../assets/css/theme';
 .menu-list {
     .dialog-panel-box {
-        border-bottom: 1px solid #ccc;
+        border-bottom: 1px solid var(--#{$prefix}-border);
     }
 }
 </style>

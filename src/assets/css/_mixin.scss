@@ -21,16 +21,17 @@
 @mixin lineItem() {
     .line-item {
         position: relative;
-        line-height: 1.875rem;
-        .fa {
+        line-height: 2.5rem;
+        .iconfont {
             position: absolute;
             right: 0.3125rem;
-            top: 0.4375rem;
+            // top: 0.4375rem;
+            color: var(--#{$prefix}-secondary-text);
         }
         span {
             &:nth-child(2) {
                 float: right;
-                margin-right: 1.25rem;
+                margin-right: 2rem;
             }
         }
     }
@@ -41,11 +42,14 @@
     padding: 0.625rem;
     background: var(--#{$prefix}-panel);
     margin-top: 0.125rem;
-    .fa:nth-child(2),
+    .iconfont:nth-child(2),
     .icon-chevron-right {
         float: right;
         margin-right: 0.625rem;
-        line-height: 20px;
+        line-height: 1.25rem;
+    }
+    .icon-chevron-right {
+        color: var(--#{$prefix}-secondary-text);
     }
 }
 //flex box

@@ -15,7 +15,7 @@
                     <a href="">查看详情</a>
                 </div>
                 <div class="menu-list">
-                    <MenuItem title="上传证件" icon="icon-camera" uri="/checkin"/>
+                    <MenuItem title="上传证件" icon="icon-camera"/>
                 </div>
             </div>
         </div>
@@ -41,25 +41,26 @@ authStore.getUser().then(res => {
 });
 </script>
 <style lang="scss" scoped>
+@import '../../assets/css/theme';
 .top-header {
-    background: #05a6b1;
-    color: #fff;
-    height: 160px;
-    padding-top: 40px;
+    background-color: var(--#{$prefix}-primary);
+    color: var(--#{$prefix}-primary-text);
+    height: 10rem;
+    padding-top: 2.5rem;
 }
 .user-box {
-    background-color: #fff;
-    width: 300px;
-    margin: -120px auto 20px;
+    background-color: var(--#{$prefix}-panel);;
+    width: 18.75rem;
+    margin: -7.5rem auto 1.25rem;
     position: relative;
-    padding: 60px 20px 20px;
+    padding: 3.75rem 1.25rem 1.25rem;
     .avatar {
         border-radius: 50%;
-        height: 80px;
-        width: 80px;
+        height: 5rem;
+        width: 5rem;
         position: absolute;
-        top: -30px;
-        left: 110px;
+        top: -1.875rem;
+        left: 6.875rem;
         img {
             width: 100%;
             height: 100%;
@@ -68,7 +69,7 @@ authStore.getUser().then(res => {
     }
     .name,
     .card {
-        line-height: 30px;
+        line-height: 1.875rem;
     }
 }
 </style>

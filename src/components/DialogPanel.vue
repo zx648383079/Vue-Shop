@@ -4,7 +4,7 @@
             <slot></slot>
         </div>
         <div class="dialog dialog-content" v-if="calendarVisible">
-            <div class="dialog-header">
+            <div class="dialog-header" v-if="$slots.header">
                 <slot name="header">
                     <div class="dialog-title">{{ props.title }}</div>
                     <i class="iconfont icon-close dialog-close" @click="hideCalerdar"></i>
@@ -13,11 +13,11 @@
             <div class="dialog-body">
                 <slot name="panel"></slot>
             </div>
-            <div class="dialog-footer">
+            <div class="dialog-footer" v-if="$slots.footer">
                 <slot name="footer"></slot>
             </div>
         </div>
-        <div class="dialog-bg" v-if="calendarVisible" @click="hideCalerdar"/>
+        <div class="dialog-mask" v-if="calendarVisible" @click="hideCalerdar"/>
     </div>
 </template>
 <script setup lang="ts">
@@ -56,7 +56,7 @@ defineExpose({
 <style lang="scss" scoped>
 .dialog.dialog-content {
     bottom: 0px;
-    top: 38%;
+    top: auto;
     animation: fadeInUp 0.5s;
 }
 

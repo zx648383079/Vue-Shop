@@ -15,7 +15,7 @@
                 <RechargePanel/>
                 <WithdrawPanel/>
                 <a @click="$router.push('/account/card')">
-                    <i class="iconfont icon-credit-card" aria-hidden="true"></i>
+                    <i class="iconfont icon-card" aria-hidden="true"></i>
                     银行卡
                     <i class="iconfont icon-chevron-right" aria-hidden="true"></i>
                 </a>
@@ -30,6 +30,9 @@
     </div>
 </template>
 <script setup lang="ts">
+import BackHeader from '../../components/BackHeader.vue';
+import RechargePanel from './Child/RechargePanel.vue';
+import WithdrawPanel from './Child/WithdrawPanel.vue';
 import { ref } from 'vue';
 
 

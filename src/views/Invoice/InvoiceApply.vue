@@ -3,27 +3,29 @@
         <BackHeader title="申请开票"/>
         <div class="has-header has-double-footer">
             <div class="order-mini-item" v-for="(item, index) in items" :key="index">
-                <i class="fa check-box" :class="{active: item.checked}" @click="toggleCheck(item)"></i>
+                <i class="iconfont check-box" :class="{active: item.checked}" @click="toggleCheck(item)"></i>
                 <div class="info">
-                    <div class="name">{{ item.series_number }}</div>
+                    <div class="name">
+                        <em class="item-sn">SN: </em>
+                        {{ item.series_number }}</div>
                     <p>{{ item.created_at }}</p>
                 </div>
                 <div class="amount">
-                    {{ item.goods_amount }}
+                    {{ $n(item.goods_amount, 'currency') }}
                 </div>
             </div>
         </div>
         <div class="invoice-footer">
             <div @click="toggleCheckAll">
-                <i class="fa check-box" :class="{active: queries.checkedAll}"></i>
+                <i class="iconfont check-box" :class="{active: queries.checkedAll}"></i>
                 全选
             </div>
             <div>
                 已选择 {{ queries.selectedCount }} 笔订单
             </div>
             <div>
-                <p>可开票金额{{ queries.total }}</p>
-                <p>已选金额{{ queries.selectedMoney }}</p>
+                <p>可开票金额{{ $n(queries.total, 'currency') }}</p>
+                <p>已选金额{{ $n(queries.selectedMoney, 'currency') }}</p>
             </div>
             <div>
                 <a href="">立即开票</a>
@@ -83,5 +85,9 @@ getOrderList().then(res => {
 })
 </script>
 <style lang="scss" scoped>
-
+@import '../../assets/css/theme';
+.item-sn {
+    color: var(--#{$prefix}-secondary-text);
+    font-size: .8rem;
+}
 </style>

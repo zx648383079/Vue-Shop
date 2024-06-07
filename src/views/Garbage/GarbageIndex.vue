@@ -57,9 +57,10 @@ getClassification().then(res => {
 });
 </script>
 <style lang="scss" scoped>
+@import '../../assets/css/theme';
 .garbage-header {
-    background-color: #05a6b1;
-    color: #fff;
+    background-color: var(--#{$prefix}-primary);
+    color: var(--#{$prefix}-primary-text);
     height: 100px;
     padding: 20px 20%;
     .right {
@@ -69,7 +70,7 @@ getClassification().then(res => {
 
 .grid-box {
     margin: 10px;
-    background-color: #fff;
+    background-color: var(--#{$prefix}-panel);
     .header {
         text-align: center;
         font-size: 20px;

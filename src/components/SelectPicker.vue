@@ -10,6 +10,7 @@
                 <div class="dialog-yes" @click="tapOutput">确定</div>
             </div>
             <div class="dialog-body"
+                @mousedown="mouseDown"
                 @touchstart='touchStart'
                 @touchmove='touchMove'>
                 <ul v-for="(item, index) in columnList" :key="index" :class="'dialog-column-' + index" :style="item.style">
@@ -24,7 +25,7 @@
 </template>
 <script setup lang="ts">
 import { eachObject } from '@/utils';
-import { ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 
 interface IColumn {
     index: number,
@@ -37,7 +38,7 @@ interface IPoint {
     y: number,
 }
 
-const emit = defineEmits(['update:modalValue'])
+const model = defineModel<any>();
 const props = withDefaults(defineProps<{
     column?: number,
     title?: string,
@@ -45,7 +46,6 @@ const props = withDefaults(defineProps<{
     valueTag?: string,
     childrenTag?: string,
     lineHeight?: number,
-    modalValue?: any,
     items: any,
 }>(), {
     column: 1,
@@ -74,12 +74,29 @@ function tapItem(index: number, i: number) {
         refreshColumn(j, 0);
     }
 }
+
+let isMouseDown = false;
+
+function mouseDown(e: MouseEvent) {
+    isMouseDown = true;
+    onTouchStart(e.pageX, e.pageY);
+}
+
+function mouseMove(e: MouseEvent) {
+    if (!isMouseDown) {
+        return;
+    }
+    e.preventDefault();
+    onTouchMove(e.pageX, e.pageY);
+}
+
+function mouseUp() {
+    isMouseDown = false;
+}
+
 function touchStart(event: TouchEvent) {
     const touch = event.targetTouches[0];
-    startPoint.value = {
-        x: touch.pageX,
-        y: touch.pageY,
-    };
+    onTouchStart(touch.pageX, touch.pageY);
 }
 function touchMove(event: TouchEvent) {
     const touch = event.targetTouches[0];
@@ -87,11 +104,21 @@ function touchMove(event: TouchEvent) {
         return;
     }
     event.preventDefault();
-    const y = touch.pageY - startPoint.value.y;
+    onTouchMove(touch.pageX, touch.pageY);
+}
+
+function onTouchStart(x: number, y: number) {
+    startPoint.value = {
+        x,
+        y,
+    };
+}
+function onTouchMove(pageX: number, pageY: number) {
+    const y = pageY - startPoint.value.y;
     const diff = Math.abs(y);
     if (diff >= props.lineHeight) {
         // 滑动了一个单位就更新起始y 坐标
-        startPoint.value.y = touch.pageY;
+        startPoint.value.y = pageY;
         doMove(diff, y < 0, startPoint.value.x);
     }
 }
@@ -136,8 +163,8 @@ function tapOutput() {
         name.push(column.items[current][props.textTag]);
         data.push(cloneItem(column.items[current]));
     }
-    if (typeof props.modalValue === 'object' && props.modalValue instanceof Array) {
-        emit('update:modalValue', data);
+    if (typeof model.value === 'object' && model.value instanceof Array) {
+        model.value = data;
         return;
     }
     if (data.length < 1) {
@@ -147,7 +174,8 @@ function tapOutput() {
     if (!Object.prototype.hasOwnProperty.call(item, 'full_name')) {
         item.full_name = name.join(' ');
     }
-    emit('update:modalValue', item);
+    model.value = item;
+    
 }
 function cloneItem(obj: any): any {
     const item: any = new Object();
@@ -211,17 +239,17 @@ function getIndexStyle(index: number) {
 * @param id
 */
 function getPath(): number[] {
-    if (!props.modalValue) {
+    if (!model.value) {
         return [];
     }
     let id: string | number;
-    if (typeof props.modalValue === 'object') {
-        if (props.modalValue instanceof Array) {
+    if (typeof model.value === 'object') {
+        if (model.value instanceof Array) {
             return getPathByArr();
         }
-        id = (props.modalValue as any)[props.valueTag];
+        id = (model.value as any)[props.valueTag];
     } else {
-        id = props.modalValue;
+        id = model.value;
     }
     if (!id) {
         return [];
@@ -267,7 +295,7 @@ function getPath(): number[] {
 function getPathByArr() {
     let data = props.items;
     const path: number[] = [];
-    eachObject(props.modalValue, (item) => {
+    eachObject(model.value, (item) => {
         const [index, children] = getIndexWithItems(item, data);
         path.push(index);
         if (!children) {
@@ -308,15 +336,23 @@ watch(() => props.items, (val: any, oldVal: any) => {
     }
 });
 
-
+onMounted(() => {
+    document.addEventListener('mousemove', mouseMove);
+    document.addEventListener('mouseup', mouseUp);
+});
+onUnmounted(() => {
+    document.removeEventListener('mousemove', mouseMove);
+    document.removeEventListener('mouseup', mouseUp);
+});
 </script>
 <style lang="scss" scoped>
+@import '../assets/css/theme';
 .dialog-select-input {
-    padding: 0 20px 0 10px;
-    height: 36px;
-    line-height: 36px;
+    padding: 0 1.25rem 0 0.625rem;
+    height: 2.25rem;
+    line-height: 2.25rem;
     position: relative;
-    border: 1px solid #eee;
+    border: 1px solid var(--#{$prefix}-border);
     cursor: pointer;
     &::after {
         content: "";
@@ -330,34 +366,35 @@ watch(() => props.items, (val: any, oldVal: any) => {
     }
 }
 .dialog.dialog-select {
+    user-select: none;
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
     z-index: 998;
-    background: #fff;
+    background-color: var(--#{$prefix}-dialog);
     .dialog-header {
         position: relative;
         height: 30px;
         line-height: 30px;
         text-align: center;
-        background: #fff;
-        border-bottom: 1px solid #ccc;
+        background-color: var(--#{$prefix}-dialog);
+        border-bottom: 1px solid var(--#{$prefix}-border);
         z-index: 999;
         .dialog-close {
             position: absolute;
-            left: 15px;
-            line-height: 30px;
+            left: 0.9375rem;
+            line-height: 1.875rem;
         }
         .dialog-yes {
             position: absolute;
-            right: 15px;
+            right: 0.9375rem;
             top: 0;
-            line-height: 30px;
+            line-height: 1.875rem;
         }
     }
     .dialog-body {
-        height: 150px;
+        height: 9.375rem;
         position: relative;
         overflow: hidden;
         ul {
@@ -367,12 +404,12 @@ watch(() => props.items, (val: any, oldVal: any) => {
             li {
                 list-style: none;
                 line-height: 30px;
-                color: rgba(0, 0, 0, .3);
+                color: rgba(var(--#{$prefix}-body-text-rgb), .3);
                 text-align: center;
                 overflow-x: hidden;
                 word-break: keep-all;
                 &.active {
-                    color: #000;
+                    color: var(--#{$prefix}-body-text);
                 }
             }
         }

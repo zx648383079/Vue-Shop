@@ -7,7 +7,7 @@
             </div>
 
             <div class="item" v-for="(item, index) in items" :key="index"  @click="selected = index">
-                <i class="fa check-box" :class="{active: selected == index}"></i>
+                <i class="iconfont check-box" :class="{active: selected == index}"></i>
                 {{ item }}
             </div>
 
@@ -45,18 +45,18 @@ onMounted(() => {
 </script>
 <style lang="scss" scoped>
 .tip {
-    line-height: 30px;
-    padding: 10px;
+    line-height: 1.875rem;
+    padding: 0.625rem;
 }
 .item {
     background-color: #fff;
     position: relative;
-    padding-left: 60px;
-    line-height: 40px;
-    .fa {
+    padding-left: 3.75rem;
+    line-height: 2.5rem;
+    .iconfont {
         position: absolute;
-        top: 12px;
-        left: 20px;
+        // top: 0.75rem;
+        left: 1.25rem;
     }
     &:not(:last-of-type) {
         border-bottom: 1px solid #ccc;

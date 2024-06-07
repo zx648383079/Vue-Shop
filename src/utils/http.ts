@@ -24,12 +24,12 @@ axios.interceptors.request.use(
         config.params.sign = params.sign;
         const token = auth.getUserToken();
         if (token) {
-            config.headers.Authorization = 'Bearer ' + token
+            config.headers.Authorization = 'Bearer ' + token;
         }
-        return config
+        return config;
     },
     (error) => {
-        return Promise.reject(error)
+        return Promise.reject(error);
     },
 )
 

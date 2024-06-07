@@ -13,7 +13,7 @@
 import { useRouter } from "vue-router";
 const props = withDefaults(defineProps<{
     title?: string,
-    fixed: boolean
+    fixed?: boolean
 }>(), {
     fixed: true,
     title: ''
@@ -30,6 +30,7 @@ function tapBack(): void {
 }
 </script>
 <style lang="scss" scoped>
+@import '../assets/css/theme';
 header {
     width: 100%;
     height: 2.75rem;
@@ -37,8 +38,8 @@ header {
     top: 0;
     left: 0;
     right: 0;
-    background: #05a6b1;
-    color: #fff;
+    background-color: var(--#{$prefix}-primary);
+    color: var(--#{$prefix}-primary-text);
     text-align: center;
     z-index: 99;
     border: 0;
