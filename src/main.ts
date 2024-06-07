@@ -7,16 +7,16 @@ import { createPinia } from 'pinia';
 
 import App from './App.vue';
 import router from './router';
-import emitter from './event';
 import i18n from './i18n';
 import { createDialog } from './components/Dialog/plugin';
 import { createDirective } from './directives';
 import { createSerive } from './services';
+import { globalSingleton } from './globe';
 
-
+globalSingleton.reload();
 const app = createApp(App, {
     onscroll(e: Event) {
-        emitter.emit('scroll', e);
+        globalSingleton.emit('scroll', e);
     }
 });
 

@@ -34,15 +34,17 @@
 <script setup lang="ts">
 import type { IComment, ICommentSubtotal } from '@/api/model';
 import CommentPage from './Child/CommentPage.vue';
-import Toast from '@/components/toast';
 import { getCommentSubtotal, getCommentList } from '@/api/comment';
 import PullToRefresh from '@/components/PullToRefresh.vue';
 import Star from './Child/StarLabel.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { reactive, ref } from 'vue';
+import { useDialog } from '../../components/Dialog';
+import { parseNumber } from '../../utils';
 
 const route = useRoute();
 const router = useRouter();
+const toast = useDialog();
 
 const comment = ref<ICommentSubtotal | null>(null);
 const items = ref<IComment[]>([]);
@@ -97,9 +99,9 @@ function tapProductScroll(id: string) {
     router.replace({name: 'product', params: {id: queries.itemId + ''}, hash: '#' + id});
 }
 
-queries.itemId = parseInt(route.params.id as string, 10);
+queries.itemId = parseNumber(route.params.id);
 if (!queries.itemId) {
-    Toast('商品错误');
+    toast.warning('商品错误');
     router.push('/');
 } else {
     getCommentSubtotal(queries.itemId).then(res => {

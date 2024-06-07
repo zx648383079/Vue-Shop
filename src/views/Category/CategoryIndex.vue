@@ -28,7 +28,7 @@
                                 {{item.name}}
                             </div>
                             <div class="item-actions">
-                                <span class="item-price">{{ item.price }}</span>
+                                <span class="item-price">{{ $n(item.price, 'currency') }}</span>
                                 
                             </div>
                         </div>

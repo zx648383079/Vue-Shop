@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, type Router, type RouteRecordRaw } from 'vue-router'
-import emitter from '../event';
 import { useAuth, useTheme } from '../services';
+import { globalSingleton } from '../globe';
 
 const routes: Readonly<RouteRecordRaw[]> = [
     {
@@ -526,8 +526,7 @@ const routes: Readonly<RouteRecordRaw[]> = [
                 position.x = 0
                 position.y = 0
             }
-            emitter.on('scroll', () => {
-                emitter.off('scroll');
+            globalSingleton.once('scroll', () => {
                 resolve(position);
             });
         });

@@ -14,7 +14,7 @@
                         </div>
                         <div class="goods-info">
                             <h4>{{item.name}}</h4>
-                            <span>{{ item.price }}</span>
+                            <span>{{ $n(item.price, 'currency') }}</span>
                         </div>
                     </SwipeRow>
                 </div>

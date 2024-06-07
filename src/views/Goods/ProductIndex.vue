@@ -35,7 +35,7 @@
                             收藏
                         </div>
                     </div>
-                    <div class="goods-price">{{ goods.price }}</div>
+                    <div class="goods-price">{{ $n(goods.price, 'currency') }}</div>
 
                     <div class="promote-line">
                         <div>支付</div>
@@ -87,7 +87,7 @@
                             {{ item.name }}
                         </div>
                         <div class="item-actions">
-                            <span class="item-price">{{ item.price }}</span>
+                            <span class="item-price">{{ $n(item.price, 'currency') }}</span>
                         </div>
                     </div>
                 </div>

@@ -1,9 +1,20 @@
 import { getCurrentInstance, inject, type App } from "vue";
+import { EventEmitter, type IEventEmitter } from "./services/event";
 
-export class GlobalSingleton {
+export class GlobalSingleton extends EventEmitter implements IEventEmitter {
+
+    constructor() {
+        super();
+    }
+
     private items: {
         [key: string]: any
     } = {};
+
+    public reload() {
+        this.items = [];
+        this.listeners = {};
+    }
 
     public has(key: Symbol | string): boolean {
         return Object.prototype.hasOwnProperty.call(this.items, key.toString());
