@@ -4,7 +4,7 @@
             <slot></slot>
         </div>
         <div class="dialog dialog-content" v-if="calendarVisible">
-            <div class="dialog-header" v-if="$slots.header">
+            <div class="dialog-header" v-if="$slots.header || props.title">
                 <slot name="header">
                     <div class="dialog-title">{{ props.title }}</div>
                     <i class="iconfont icon-close dialog-close" @click="hideCalerdar"></i>

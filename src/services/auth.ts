@@ -78,7 +78,7 @@ export class AuthService {
             }
         } : {};
         return batch<{
-            shop_informatiion: any;
+            shop_information: any;
             seo_configs: any,
             auth_profile: IUser|undefined,
         }>({
@@ -93,6 +93,7 @@ export class AuthService {
                 this.setUser(user, true);
                 return user;
             }
+            this.setUserToken();
             return undefined;
         });
     }

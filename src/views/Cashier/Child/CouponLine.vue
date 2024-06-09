@@ -7,7 +7,7 @@
             </span>
             <i class="iconfont icon-chevron-right"></i>
         </div>
-        <template #panel">
+        <template #panel>
             <div class="coupon-body">
                 <div class="my-coupon-item" v-for="(item, index) in props.items" :key="index" @click="tapSelected(item)">
                     <div class="price">
@@ -18,7 +18,7 @@
                         <div class="time">
                             <span>{{ item.start_at }}-{{ item.end_at}}</span>
                         </div>
-                        <i :class="['fa', 'check-box', model && item.id == model.id ? 'active' : '']"></i>
+                        <i :class="['iconfont', 'check-box', model && item.id == model.id ? 'active' : '']"></i>
                     </div>
                 </div>
             </div>

@@ -57,6 +57,7 @@ import TabBar from '@/components/TabBar.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useShopStore } from '../../stores/shop';
+import { useTheme } from '../../services';
 
 const router = useRouter();
 const shopStore = useShopStore();
@@ -92,7 +93,7 @@ shopStore.getCategories().then(res => {
     categories.value = res;
     tapSelected(res[0], 0);
 });
-shopStore.getSite().then(res => {
+useTheme().getInformation().then(res => {
     subtotal.value = res;
 });
 

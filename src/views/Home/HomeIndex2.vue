@@ -203,7 +203,7 @@ shopBatch<{
     banner: {},
     home_product: {},
 }).then(res => {
-    floorItems.value = res.home_product;
+    floorItems.value = res.home_product || {};
     categories.value = res.category;
     banners.value = res.banner;
 });

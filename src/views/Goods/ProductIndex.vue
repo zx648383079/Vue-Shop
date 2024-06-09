@@ -37,27 +37,11 @@
                     </div>
                     <div class="goods-price">{{ $n(goods.price, 'currency') }}</div>
 
-                    <div class="promote-line">
-                        <div>支付</div>
-                        <div>
-                        11111
-                        </div>
-                        <div>...</div>
-                    </div>
-                    <div class="promote-line">
-                        <div>领券</div>
-                        <div>
-                        11111
-                        </div>
-                        <div>...</div>
-                    </div>
-                    <div class="promote-line">
-                        <div>促销</div>
-                        <div>
-                        11111
-                        </div>
-                        <div>...</div>
-                    </div>
+                    <PaymentLine/>
+                    <ShippingLine/>
+                    <CouponLine/>
+                    <ServiceLine/>
+                    <ActivityLine/>
                 </div>
             </div>
 
@@ -142,6 +126,11 @@ import { getInfo, getRecommend } from '@/api/product';
 import { getCommentSubtotal } from '@/api/comment';
 import { toggleCollect } from '@/api/user';
 import CountDown from '../../components/CountDown.vue';
+import ActivityLine from './Child/ActivityLine.vue';
+import CouponLine from './Child/CouponLine.vue';
+import PaymentLine from './Child/PaymentLine.vue';
+import ShippingLine from './Child/ShippingLine.vue';
+import ServiceLine from './Child/ServiceLine.vue';
 import SwiperContainer from '../Home/Child/SwiperContainer.vue';
 import CommentPage from './Child/CommentPage.vue';
 import { SET_GOODS_HISTORY } from '@/stores/types';
@@ -185,7 +174,7 @@ const tabMenus = [
         name: '推荐',
     },
 ];
-const isGuest = computed(() => authStore.isGuest);
+const isGuest = computed(() => authStore.guest);
 
 function handleScroll() {
     const top = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
