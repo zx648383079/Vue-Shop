@@ -96,7 +96,7 @@ function submitLogin(data: ILogin, e?: ButtonEvent) {
         emit('back');
     }).catch(err => {
         e?.reset();
-        const res = err.response?.data as IErrorResponse;
+        const res = err as IErrorResponse;
         if (res.captcha_token) {
             input.captchaToken = res.captcha_token;
         }

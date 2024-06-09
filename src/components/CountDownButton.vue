@@ -9,7 +9,7 @@ import type { CountdownEvent } from './types';
 
 const emit = defineEmits<(e: 'tapped', args: CountdownEvent) => void>();
 const props = withDefaults(defineProps<{
-    time: number;
+    time?: number;
 }>(), {
     time: 0,
 });

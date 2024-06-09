@@ -1,13 +1,11 @@
 import { defineStore } from "pinia";
 import type { IAddress, ICartGroup, ICategory, IOrder, ISite } from "../api/model";
 import { getCategories } from "../api/category";
-import { getSiteInfo } from "../api/site";
 import { getAddressList } from "../api/address";
 import { getOrderInfo } from "../api/order";
 
 interface ShopState {
     categories: ICategory[];
-    site: ISite | null;
     cart: ICartGroup[];
     addressList: IAddress[];
     address: IAddress | null;
@@ -18,7 +16,6 @@ export const useShopStore = defineStore('shop', {
     state(): ShopState {
         return {
             categories: [],
-            site: null,
             cart: [],
             addressList: [],
             address: null,
@@ -41,18 +38,6 @@ export const useShopStore = defineStore('shop', {
                 getCategories().then(res => {
                     this.categories = res.data as any;
                     resolve(res.data as any);
-                }).catch(reject);
-            });
-        },
-        getSite() {
-            return new Promise<ISite>((resolve, reject) => {
-                if (this.site) {
-                    resolve(this.site);
-                    return;
-                }
-                getSiteInfo().then(res => {
-                    this.site = res;
-                    resolve(res);
                 }).catch(reject);
             });
         },

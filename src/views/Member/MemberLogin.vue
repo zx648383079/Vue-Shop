@@ -57,12 +57,10 @@ import type { ISite } from '@/api/model';
 import { assetsFilter } from '../../pipes';
 import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useShopStore } from '../../stores/shop';
-import { useAuth } from '../../services';
+import { useAuth, useTheme } from '../../services';
 
 const route = useRoute();
 const router = useRouter();
-const shopStore = useShopStore();
 const mode = ref(0);
 const site = ref<ISite|null>(null);
 
@@ -92,7 +90,7 @@ function tapAuth(type: string) {
     route.query.redirect_uri ? route.query.redirect_uri + '' : '');
 }
 
-shopStore.getSite().then(res => {
+useTheme().getInformation().then(res => {
     site.value = res;
 });
 

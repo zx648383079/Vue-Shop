@@ -535,8 +535,7 @@ const routes: Readonly<RouteRecordRaw[]> = [
 
 router.beforeEach((to, from, next) => {
     const auth = useAuth();
-    auth.checkTokenFromCookie();
-    if (to.meta.requireAuth && !auth.getUserToken()) {
+    if (to.meta.requireAuth && auth.isGuest) {
         next({
             path: '/login',
             query: {

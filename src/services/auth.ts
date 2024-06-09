@@ -1,12 +1,13 @@
 import { Md5 } from "ts-md5";
 import * as environment from '../config/config';
 import { getCurrentTime, uriEncode } from "../utils";
-import { useCache, useCookie, useEncryptor } from "./register";
+import { useCache, useCookie, useEncryptor, useTheme } from "./register";
 import { useDialog } from "../components/Dialog";
 import { useAuthStore } from "../stores/auth";
 import { TOKEN_KEY } from "../stores/types";
 import type { ILogin, IRegister, IUser } from "../api/model";
 import { login, logout, register } from "../api/user";
+import { batch } from '../api/site';
 
 interface IAppParam {
     appid: string,
@@ -15,6 +16,10 @@ interface IAppParam {
 }
 
 export class AuthService {
+
+    public get isGuest() {
+        return !this.getUserToken();
+    }
 
 
     public encrypt<T>(data: T, keys: string[]): T {
@@ -29,18 +34,16 @@ export class AuthService {
     
     public login(params: ILogin) {
         return login(this.encrypt(params, ['password'])).then((res: IUser) => {
-            const store = useAuthStore();
-            store.setToken(res.token || null);
-            store.setUser(res);
+            useAuthStore().setUser(res).then();
+            this.setUser(res);
             return res;
         });
     }
 
     public register(params: IRegister) {
         return register(this.encrypt(params, ['password'])).then((res: IUser) => {
-            const store = useAuthStore();
-            store.setToken(res.token || null);
-            store.setUser(res);
+            useAuthStore().setUser(res).then();
+            this.setUser(res);
             return res;
         });
     }
@@ -57,6 +60,40 @@ export class AuthService {
                 useAuthStore().$reset();
                 resolve();
             }).catch(reject);
+        });
+    }
+
+    /**
+     * 系统启动时调用, 加载系统设置和用户登录信息
+     */
+    public systemBoot() {
+        let token = this.getUserToken();
+        const key = this.loadFromCookie();
+        if (key) {
+            token = key;
+        }
+        const options = token ? {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        } : {};
+        return batch<{
+            shop_informatiion: any;
+            seo_configs: any,
+            auth_profile: IUser|undefined,
+        }>({
+            seo_configs: {},
+            auth_profile: {},
+            shop_information: {},
+        }, options).then(res => {
+            useTheme().ready(res);
+            if (res.auth_profile && !(res.auth_profile instanceof Array)) {
+                const user = res.auth_profile;
+                user.token = token;
+                this.setUser(user, true);
+                return user;
+            }
+            return undefined;
         });
     }
 
@@ -89,7 +126,7 @@ export class AuthService {
     }
 
 
-    public checkTokenFromCookie() {
+    public loadFromCookie(): string|undefined {
         const key = environment.appId + 'token';
         const cookie = useCookie();
         const str = cookie.get(key);
@@ -102,8 +139,7 @@ export class AuthService {
             useDialog().error(data.error);
             return;
         }
-        const authStore = useAuthStore();
-        authStore.setToken(data.token);
+        return data.token;
     }
 
     public getAppParams(): IAppParam {

@@ -70,6 +70,7 @@ import { updateProfile } from '../../api/user';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../../stores/auth';
+import { useAuth } from '../../services';
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -99,7 +100,7 @@ function onUpdateProfile(name: string, value: any) {
 }
 
 function tapLogout() {
-    authStore.logoutUser().then(() => {
+    useAuth().logout().then(() => {
         router.push('/login');
     });
 }

@@ -60,16 +60,10 @@ axios.interceptors.response.use(
  * @param data
  * @returns {Promise}
  */
-export function fetch<T>(url: string, params = {}): Promise<T> {
-    return new Promise((resolve, reject) => {
-        axios.get(url, {
-            params,
-        }).then((response) => {
-            resolve(response.data)
-        }).catch(err => {
-            reject(err)
-        })
-    })
+export function fetch<T>(url: string, params: Record<string|number, any> = {}): Promise<T> {
+    return axios.get<T>(url, {
+        params,
+    }).then(res => res.data);
 }
 
 /**
@@ -78,15 +72,8 @@ export function fetch<T>(url: string, params = {}): Promise<T> {
  * @param data
  * @returns {Promise}
  */
-export function post<T>(url: string, data = {}): Promise<T> {
-    return new Promise((resolve, reject) => {
-        axios.post(url, data)
-            .then((response) => {
-                resolve(response.data)
-            }, (err) => {
-                reject(err)
-            })
-    })
+export function post<T>(url: string, data: any = {}): Promise<T> {
+    return axios.post<T>(url, data).then(res => res.data);
 }
 
 /**
@@ -95,26 +82,12 @@ export function post<T>(url: string, data = {}): Promise<T> {
  * @param data
  * @returns {Promise}
  */
-export function patch<T>(url: string, data = {}): Promise<T> {
-    return new Promise((resolve, reject) => {
-        axios.patch(url, data)
-            .then((response) => {
-                resolve(response.data)
-            }, (err) => {
-                reject(err)
-            })
-    })
+export function patch<T>(url: string, data: Record<string|number, any> = {}): Promise<T> {
+    return axios.patch<T>(url, data).then(res => res.data);
 }
 
-export function deleteRequest<T>(url: string): Promise<T> {
-    return new Promise<T>((resolve, reject) => {
-        axios.delete(url)
-            .then((response) => {
-                resolve(response.data)
-            }, (err) => {
-                reject(err)
-            })
-    })
+export function deleteRequest<T>(url: string, params: Record<string|number, any> = {}): Promise<T> {
+    return axios.delete<T>(url, {params}).then(res => res.data);
 }
 
 /**
@@ -124,32 +97,18 @@ export function deleteRequest<T>(url: string): Promise<T> {
  * @returns {Promise}
  */
 export function put<T>(url: string, data = {}): Promise<T> {
-    return new Promise<T>((resolve, reject) => {
-        axios.put(url, data)
-            .then((response) => {
-                resolve(response.data)
-            }, (err) => {
-                reject(err)
-            })
-    });
+    return axios.put<T>(url, data).then(res => res.data);
 }
 
 export function uploadFile<T>(url: string, file: File, name = 'file'): Promise<T> {
     const data = new FormData();
     data.append(name, file);
-    return new Promise<T>((resolve, reject) => {
-        axios.post(url, data, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              'Accept': 'application/json',
-            },
-          })
-            .then((response) => {
-                resolve(response.data)
-            }, (err) => {
-                reject(err)
-            })
-    });
+    return axios.post<T>(url, data, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            Accept: 'application/json',
+        },
+    }).then(res => res.data);
 }
 
 

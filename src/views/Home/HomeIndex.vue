@@ -57,11 +57,10 @@ import { assetsFilter } from '../../pipes';
 import { useAuthStore } from '../../stores/auth';
 import { useRouter } from 'vue-router';
 import { computed, ref } from 'vue';
-import { useShopStore } from '../../stores/shop';
 import { useDialog } from '../../components/Dialog/plugin';
+import { useTheme } from '../../services';
 
 const authStore = useAuthStore();
-const shopStore = useShopStore();
 const router = useRouter();
 const toast = useDialog();
 const banners = ref<IAd[]>([]);
@@ -71,7 +70,7 @@ const subtotal = ref<ISite| null>(null);
 const goods = ref<IProduct| null>(null);
 const mode = ref(0);
 
-const isGuest = computed(() => authStore.isGuest);
+const isGuest = computed(() => authStore.guest);
 const logo = computed(() => assetsFilter(subtotal.value ? subtotal.value.logo : '/assets/images/wap_logo.png'))
 
 function tapProduct(item: IProduct) {
@@ -130,7 +129,7 @@ getBanners().then(res => {
     }
     banners.value = res.data;
 });
-shopStore.getSite().then(res => {
+useTheme().getInformation().then(res => {
     subtotal.value = res;
 });
 </script>

@@ -99,6 +99,7 @@ import { assetsFilter } from '../../pipes';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../../stores/auth';
+import { shopBatch } from '../../api/site';
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -115,11 +116,15 @@ function getSubtotal() {
     if (!user.value) {
         return;
     }
-    getOrderSubtotal().then(res => {
-        orderSubtotal.value = res;
-    });
-    getAccountSubtotal().then(res => {
-        accountSubtotal.value = res;
+    shopBatch<{
+        order_subtotal: IOrderCount;
+        account_subtotal: ISubtotal;
+    }>({
+        order_subtotal: {},
+        account_subtotal: {}
+    }).then(res => {
+        orderSubtotal.value = res.order_subtotal;
+        accountSubtotal.value = res.account_subtotal;
     });
 }
 

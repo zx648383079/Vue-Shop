@@ -134,3 +134,29 @@ export function formatTime(time: Date) {
         ':' + twoPad(time.getMinutes()) +
         ':' + twoPad(time.getSeconds())
 }
+
+/**
+ * 等待异步加载完成
+ * @param cb 
+ * @param maxTimeout 
+ * @returns 
+ */
+export function withBoot(cb: () => boolean, maxTimeout = 500) {
+    const timeout = 50;
+    return new Promise((resolve, reject) => {
+        let retry = 0;
+        const func = () => {
+            if (cb()) {
+                resolve();
+                return;
+            }
+            if (retry >= maxTimeout) {
+                reject('timeout');
+                return;
+            }
+            setTimeout(func, timeout);
+            retry += timeout;
+        };
+        func();
+    });
+}

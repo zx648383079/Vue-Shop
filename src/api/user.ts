@@ -7,7 +7,9 @@ export const getAccountLog = (params: any) => fetch<IPage<IAccountLog>>('shop/ac
 
 export const getBankCardList = (params: any) => fetch<IPage<ICard>>('shop/account/card', params);
 
-export const getConnect = () => fetch<IData<IConnect>>('shop/account/connect');
+export const getConnect = () => fetch<IData<IConnect>>('auth/account/connect');
+
+export const connectRemove = (id: any) => deleteRequest<IDataOne<boolean>>('auth/account/connect_delete', {id});
 
 export const getAccountSubtotal = () => fetch<ISubtotal>('shop/account/subtotal');
 
@@ -19,7 +21,7 @@ export const removeCollect = (id: number) => deleteRequest<IDataOne<boolean>>('s
 
 export const login = (param: ILogin) => post<IUser>('auth/login', param);
 
-export const logout = () => fetch('auth/logout');
+export const logout = () => post('auth/logout');
 
 export const register = (param: IRegister) => post<IUser>('auth/register', param);
 

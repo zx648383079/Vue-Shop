@@ -26,6 +26,7 @@ const numberFormats: any = {
 };
 
 export default createI18n({
+    legacy: false,
     locale: 'zh-CN',
     fallbackLocale: 'en-US',
     numberFormats,

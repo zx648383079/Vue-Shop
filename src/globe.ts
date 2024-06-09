@@ -43,8 +43,6 @@ export class GlobalSingleton extends EventEmitter implements IEventEmitter {
             app.provide<T>(key, value);
         }
         this.items[key.toString()] = value;
-        console.log(this);
-        
         return this;
     }
 }

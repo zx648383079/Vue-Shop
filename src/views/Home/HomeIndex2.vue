@@ -131,9 +131,6 @@ import GoodsPanel from './Child/GoodsPanel.vue'
 import NoticeBar from './Child/NoticeBar.vue';
 import SwiperContainer from './Child/SwiperContainer.vue';
 import CountDown from '../../components/CountDown.vue';
-import {getHome} from '../../api/product'
-import {getCategories} from '../../api/category'
-import {getBanners} from '../../api/ad'
 import type { IProduct, IAd, ICategory, IHomeProduct, ISite } from '@/api/model';
 import CartDialog from '../Goods/Child/CartDialog.vue';
 import { addGoods } from '@/api/cart';
@@ -141,11 +138,11 @@ import { assetsFilter } from '../../pipes';
 import { useAuthStore } from '../../stores/auth';
 import { useRouter } from 'vue-router';
 import { computed, ref } from 'vue';
-import { useShopStore } from '../../stores/shop';
 import { useDialog } from '../../components/Dialog/plugin';
+import { shopBatch } from '../../api/site';
+import { useTheme } from '../../services';
 
 const authStore = useAuthStore();
-const shopStore = useShopStore();
 const router = useRouter();
 const toast = useDialog();
 const banners = ref<IAd[]>([]);
@@ -155,7 +152,7 @@ const subtotal = ref<ISite| null>(null);
 const goods = ref<IProduct| null>(null);
 const mode = ref(0);
 
-const isGuest = computed(() => authStore.isGuest);
+const isGuest = computed(() => authStore.guest);
 const logo = computed(() => assetsFilter(subtotal.value ? subtotal.value.logo : '/assets/images/wap_logo.png'))
 
 function tapProduct(item: IProduct) {
@@ -197,24 +194,21 @@ function tapMessage() {
     router.push('/message');
 }
 
-getHome().then(res => {
-    floorItems.value = res;
-}).catch(err => {
-    toast.error(err);
+shopBatch<{
+    category: ICategory[],
+    banner: IAd[],
+    home_product: IHomeProduct,
+}>({
+    category: {},
+    banner: {},
+    home_product: {},
+}).then(res => {
+    floorItems.value = res.home_product;
+    categories.value = res.category;
+    banners.value = res.banner;
 });
-getCategories().then(res => {
-    if (!res.data) {
-        return;
-    }
-    categories.value = res.data;
-});
-getBanners().then(res => {
-    if (!res.data) {
-        return;
-    }
-    banners.value = res.data;
-});
-shopStore.getSite().then(res => {
+
+useTheme().getInformation().then(res => {
     subtotal.value = res;
 });
 </script>
