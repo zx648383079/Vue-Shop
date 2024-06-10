@@ -3,12 +3,12 @@
         <BackHeader/>
         <div class="has-header" v-if="article">
             <div class="article-title">{{ article.title }}</div>
-            <div class="article-tags">
-                <span class="author"><i class="iconfont icon-edit"></i><b>admin</b></span>
-                <span class="category"><i class="iconfont icon-bookmark"></i><b>其他</b></span>
-                <span class="comment"><i class="iconfont icon-comment"></i><b>0</b></span>
+            <div class="article-tag-bar">
+                <span class="author" v-if="article.user"><i class="iconfont icon-edit"></i><b>{{  article.user?.name }}</b></span>
+                <span class="category" v-if="article.category"><i class="iconfont icon-bookmark"></i><b>{{ article.category?.name  }}</b></span>
+                <span class="comment"><i class="iconfont icon-comment"></i><b>{{  $n(article.comment_count || 0)  }}</b></span>
                 <!-- <span class="agree"><i class="iconfont icon-thumbs-o-up"></i><b>0</b></span> -->
-                <span class="click"><i class="iconfont icon-eye"></i><b>31</b></span>
+                <span class="click"><i class="iconfont icon-eye"></i><b>{{  $n(article.view_count || 0)  }}</b></span>
             </div>
             <div class="article-content" v-html="article.content">
             </div>
@@ -50,7 +50,7 @@ if (!id) {
     text-align: center;
     line-height: 1.875rem;
 }
-.article-tags {
+.article-tag-bar {
     padding-top: 0.625rem;
     padding-left: 0.625rem;
     line-height: 1.25rem;

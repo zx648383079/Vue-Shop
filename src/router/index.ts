@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, type Router, type RouteRecordRaw } from
 import { useAuth, useTheme } from '../services';
 import { globalSingleton } from '../globe';
 import { handleChangeLocale } from '../i18n';
+import { useI18n } from 'vue-i18n';
 
 const routes: Readonly<RouteRecordRaw[]> = [
     {

@@ -64,6 +64,9 @@ export interface IArticle {
     url?: string,
     content: string;
     created_at: string;
+    comment_count?: number;
+    view_count?: number;
+    user?: IUserItem;
 }
 
 export interface IArticleCategory {
@@ -282,6 +285,12 @@ export interface IUser {
     sex?: number;
     sex_label?: string;
     birthday?: string;
+}
+
+export interface IUserItem {
+    id: number;
+    name: string;
+    avatar: string;
 }
 
 export interface ICaptcha {
