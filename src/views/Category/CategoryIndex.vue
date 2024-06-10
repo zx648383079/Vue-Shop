@@ -3,7 +3,7 @@
         <header class="top">
             <a class="search-entry" @click="$router.push('/search')">
                 <i class="iconfont icon-search"></i>
-                <span>搜索商品, 共 {{ subtotal ? subtotal.goods : 0 }} 款好物</span>
+                <span v-t="{path: 'search_tip', args: {subtotal: subtotal ? subtotal.goods : 0}}"></span>
             </a>
         </header>
         <div class="has-header has-footer category-page">

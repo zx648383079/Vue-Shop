@@ -3,7 +3,7 @@
         <div class="dialog-body" @click.stop>
             <div class="dialog-header">
                 <img :src="product.thumb" alt="">
-                <p class="price">{{ $n(product.price, 'currency') }}</p>
+                <p class="item-price">{{ $n(product.price, 'currency') }}</p>
                 <p class="stock">库存：{{ product.stock }}</p>
                 <p class="selected-property"></p>
                 <i class="iconfont icon-times dialog-close" @click="tapClose"></i>

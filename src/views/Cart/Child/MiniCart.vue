@@ -15,7 +15,7 @@
             <div class="group-item" v-for="(group, j) in cart.data" :key="j">
                 <div class="item" v-for="(item, index) in group.goods_list" :key="index">
                     <div class="name">{{ item.goods?.name }}</div>
-                    <div class="price">{{ item.price }}</div>
+                    <div class="item-price">{{ item.price }}</div>
                     <div class="item-actions">
                         <i class="iconfont icon-minus-circle" v-if="item.amount && item.amount > 0"  @click="tapMinus(item)"></i>
                         <span v-if="item.amount && item.amount > 0">{{ item.amount }}</span>
@@ -30,7 +30,7 @@
                 <span class="amount-tip" v-if="queries.amount > 0">{{ cartAmount }}</span>
             </div>
             <div class="subtotal">
-                <div class="price">{{ cart.data.length > 0 ? cart.subtotal.total : '未选购商品' }}</div>
+                <div class="item-price">{{ cart.data.length > 0 ? cart.subtotal.total : '未选购商品' }}</div>
                 <p>另需配送费</p>
             </div>
             <div class="checkout">

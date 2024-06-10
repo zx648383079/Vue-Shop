@@ -10,13 +10,16 @@
         <template #panel>
             <div class="coupon-body">
                 <div class="my-coupon-item" v-for="(item, index) in props.items" :key="index" @click="tapSelected(item)">
-                    <div class="price">
-                        <em>{{ item.money }}</em>
+                    <div class="item-header">
+                        <div class="item-price">
+                            <em>￥</em>
+                            {{ item.money }}
+                        </div>
                     </div>
-                    <div class="info">
+                    <div class="item-body">
                         <p>{{ item.name }}</p>
-                        <div class="time">
-                            <span>{{ item.start_at }}-{{ item.end_at}}</span>
+                        <div class="item-time">
+                            <span>{{ $d(item.start_at, 'long') }}-{{ $d(item.end_at, 'long')}}</span>
                         </div>
                         <i :class="['iconfont', 'check-box', model && item.id == model.id ? 'active' : '']"></i>
                     </div>

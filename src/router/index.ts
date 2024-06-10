@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, type Router, type RouteRecordRaw } from 'vue-router'
 import { useAuth, useTheme } from '../services';
 import { globalSingleton } from '../globe';
+import { handleChangeLocale } from '../i18n';
 
 const routes: Readonly<RouteRecordRaw[]> = [
     {
@@ -227,6 +228,7 @@ const routes: Readonly<RouteRecordRaw[]> = [
         component: () => import('../views/Member/MemberLogin.vue'),
         meta: {
             title: '登录',
+            transition: 'fade',
         },
     },
     {
@@ -506,7 +508,7 @@ const routes: Readonly<RouteRecordRaw[]> = [
     },
     ];
 
-    const router = createRouter({
+const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes,
     scrollBehavior(this: Router, to, from, savedPosition) {
@@ -533,21 +535,23 @@ const routes: Readonly<RouteRecordRaw[]> = [
     },
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async(to, from, next) => {
     const auth = useAuth();
     if (to.meta.requireAuth && auth.isGuest) {
-        next({
+        return next({
             path: '/login',
             query: {
                 redirect_uri: to.fullPath,
             }, // 将跳转的路由path作为参数，登录成功后跳转到该路由
         });
-        return;
     }
+    await handleChangeLocale(to.params.locale as string);
+    return next();
+});
+router.afterEach((to, from) => {
     if (to.meta.title) {
         useTheme().setTitle(to.meta.title as string);
     }
-    next();
 });
 
 export default router

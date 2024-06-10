@@ -6,7 +6,7 @@
             </a>
             <a class="search-entry" @click="tapSearch">
                 <i class="iconfont icon-search"></i>
-                <span>{{ $t('message.search_tip', {subtotal: subtotal ? subtotal.goods : 0}) }}</span>
+                <span v-t="{path: 'search_tip', args: {subtotal: subtotal ? subtotal.goods : 0}}"></span>
             </a>
             <a class="icon-item" @click="tapMessage">
                 <i class="iconfont icon-scan"></i>
@@ -95,7 +95,7 @@
                         </div>
                         <div class="item-footer">
                             <div class="price-group">
-                                <div class="price">
+                                <div class="item-price">
                                     <em>￥</em>
                                     {{ item.price || 0 }}</div>
                                 <div class="old-price">￥{{ item.market_price }}</div>

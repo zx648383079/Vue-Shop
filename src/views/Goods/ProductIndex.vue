@@ -17,7 +17,7 @@
                 </div>
 
                 <div class="activity-box" v-if="goods.activity">
-                    <div class="price">
+                    <div class="item-price">
                         <em>￥</em>{{ goods.price }}
                     </div>
                     <div class="info">

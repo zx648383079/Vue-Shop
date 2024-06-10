@@ -1,7 +1,11 @@
 
 
 <template>
-    <RouterView />
+    <RouterView v-slot="{ Component, route }">
+        <transition :name="`${route.meta.transition || 'fade'}`">
+            <component :is="Component"></component>
+        </transition>
+    </RouterView>
 </template>
 <script setup lang="ts">
 import { RouterView } from 'vue-router';

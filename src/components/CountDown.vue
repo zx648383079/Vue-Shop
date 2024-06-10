@@ -89,11 +89,4 @@ onUnmounted(() => {
 </script>
 <style lang="scss" scoped>
 @import '../assets/css/theme';
-.count-down {
-    line-height: 40px;
-    background-color: aquamarine;
-    &.disable {
-        background-color: #ccc;
-    }
-}
 </style>

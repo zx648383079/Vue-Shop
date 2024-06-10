@@ -2,16 +2,16 @@
     <div>
         <LargeHeader :title="$route.meta.title as string" @submited="tapSubmit()"/>
         <div class="input-box">
-            <input type="text" placeholder="称呼" required  v-model="input.name">
+            <input type="text" placeholder="称呼" class="form-control" required  v-model="input.name">
         </div>
         <div class="input-box">
-            <input type="email" placeholder="邮箱" v-model="input.email">
+            <input type="email" placeholder="邮箱" class="form-control"  v-model="input.email">
         </div>
         <div class="input-box">
-            <input type="text" placeholder="联系方式" v-model="input.phone">
+            <input type="text" placeholder="联系方式" class="form-control"  v-model="input.phone">
         </div>
         <div class="input-box">
-            <textarea placeholder="留言内容" v-model="input.content"></textarea>
+            <textarea placeholder="留言内容" class="form-control"  v-model="input.content"></textarea>
         </div>
     </div>
 </template>

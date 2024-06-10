@@ -482,19 +482,23 @@ footer,
     }
 }
 
+.item-price {
+    font-size: 1.5rem;
+    color: var(--#{$prefix}-danger);
+    font-family: arial;
+    margin-right: 0.125rem;
+    line-height: 1;
+    display: inline-block;
+    // min-width: 3.125rem;
+    em {
+        font-size: 0.875rem;
+        font-style: normal;
+    }
+}
+
 .price-group {
-    .price {
-        font-size: 1.5rem;
-        color: var(--#{$prefix}-danger);
-        font-family: arial;
-        margin-right: 0.125rem;
-        line-height: 1;
+    .item-price {
         display: inline-block;
-        // min-width: 3.125rem;
-        em {
-            font-size: 0.875rem;
-            font-style: normal;
-        }
     }
     .old-price {
         display: inline-block;
@@ -796,6 +800,7 @@ footer,
         color: var(--#{$prefix}-border);
     }
     .btn {
+        color: var(--#{$prefix}-secondary-text);
         background-color: transparent;
         border: 1px solid;
     }
@@ -1762,12 +1767,13 @@ footer,
 }
 
 .coupon-item {
-    display: grid;
-    grid-template-columns: 4.6875rem 1fr 4.6875rem;
+    display: flex;
     height: 6.25rem;
     background-color: var(--#{$prefix}-panel);
     margin-bottom: 0.625rem;
-    .thumb {
+    .item-icon {
+        display: inline-block;
+        width: 4.6875rem;
         padding-top: 20px;
         text-align: center;
         img {
@@ -1775,49 +1781,52 @@ footer,
             height: 3.75rem;
         }
     }
-    .info {
+    .item-body {
+        flex: 1;
         position: relative;
         padding-top: 10px;
-        .discount {
-            position: absolute;
-            left: 0;
-            bottom: 7px;
-            dd {
-                font-size: 18px;
-                color: var(--#{$prefix}-primary);
-                margin-bottom: -5px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
-            dt {
-                font-size: 12px;
-                color: var(--#{$prefix}-primary);
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
-        }
-        .price {
+    }
+    .item-discount {
+        position: absolute;
+        left: 0;
+        bottom: 7px;
+        dd {
+            font-size: 18px;
             color: var(--#{$prefix}-primary);
-            font-size: 14px;
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            font-family: font_helvetica;
+            margin-bottom: -5px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            em {
-                display: inline-block;
-                vertical-align: -2px;
-                margin-right: 6px;
-                font-size: 30px;
-                font-style: normal;
-            }
+        }
+        dt {
+            font-size: 12px;
+            color: var(--#{$prefix}-primary);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
     }
-    .action {
+    .item-price {
+        color: var(--#{$prefix}-primary);
+        font-size: 14px;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        // font-family: font_helvetica;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        em {
+            display: inline-block;
+            vertical-align: -2px;
+            margin-right: 6px;
+            font-size: 30px;
+            font-style: normal;
+        }
+    }
+    .item-action {
+        display: inline-block;
+        width: 4.6875rem;
         background-color: var(--#{$prefix}-primary);
         text-align: center;
         i {
@@ -1825,30 +1834,30 @@ footer,
             font-size: 12px;
             font-style: normal;
         }
-        .status-icon {
-            margin: 1.25rem 0.875rem 0;
-            padding: 0.5625rem 0;
-            display: block;
-            font-size: 12px;
-            box-sizing: border-box;
-            border: 2px solid var(--#{$prefix}-primary-text);
-            color: var(--#{$prefix}-primary-text);
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            &.status-received,
-            &.status-close {
-                font-size: 1.875rem;
-                font-weight: 900;
-                border: none;
-                color: rgba(var(--#{$prefix}-body-rgb),.6);
-                width: 100%;
-                border-radius: 0;
-                margin: 1.25rem 0 0;
-            }
-            &.status-close {
-                margin: 0.625rem 0 0;
-            }
+    }
+    .status-icon {
+        margin: 1.25rem 0.875rem 0;
+        padding: 0.5625rem 0;
+        display: block;
+        font-size: 12px;
+        box-sizing: border-box;
+        border: 2px solid var(--#{$prefix}-primary-text);
+        color: var(--#{$prefix}-primary-text);
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        &.status-received,
+        &.status-close {
+            font-size: 1.875rem;
+            font-weight: 900;
+            border: none;
+            color: rgba(var(--#{$prefix}-body-rgb),.6);
+            width: 100%;
+            border-radius: 0;
+            margin: 1.25rem 0 0;
+        }
+        &.status-close {
+            margin: 0.625rem 0 0;
         }
     }
 }
@@ -1856,41 +1865,44 @@ footer,
 
 
 .my-coupon-item {
-    display: grid;
-    grid-template-columns: 100px 1fr;
-    height: 114px;
+    display: flex;
+    height: 7.125rem;
     background-color: var(--#{$prefix}-panel);
-    margin: 5px 0;
-    .price {
+    margin: 0.3125rem 0;
+    .item-header {
+        display: inline-block;
+        width: 6.25rem;
         background-color: var(--#{$prefix}-danger);
         color: var(--#{$prefix}-danger-text);
         text-align: center;
-        padding: 30px 0 0;
-        em {
-            font-style: normal;
-            font-size: 30px;
-        }
+        padding: 1.875rem 0 0;
     }
-    .info {
-        padding-top: 10px;
+    .item-price {
+        color: var(--#{$prefix}-danger-text);
+    }
+    .item-body {
+        flex: 1;
+        padding-top: 0.625rem;
+        padding-left: .8rem;
         position: relative;
-        .time {
-            position: absolute;
-            bottom: 35px;
-            line-height: 20px;
-            width: 100%;
-            font-size: 12px;
-            a {
-                color: var(--#{$prefix}-danger);
-                border: 1px solid var(--#{$prefix}-danger);
-                border-radius: 5px;
-                padding: 0 3px;
-                float: right;
-            }
+    }
+    .item-time {
+        position: absolute;
+        bottom: 2.1875rem;
+        line-height: 1.25rem;
+        left: .8rem;
+        right: 0.8rem;
+        font-size: 0.75rem;
+        a {
+            color: var(--#{$prefix}-danger);
+            border: 1px solid var(--#{$prefix}-danger);
+            border-radius: 5px;
+            padding: 0 3px;
+            float: right;
         }
     }
     &.expired {
-        .price {
+        .item-price {
             background-color: var(--#{$prefix}-border);
         }
     }

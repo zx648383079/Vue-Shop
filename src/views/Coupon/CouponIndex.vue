@@ -13,21 +13,21 @@
 
             <PullToRefresh :loading="queries.isLoading" :more="queries.hasMore" @refresh="tapRefresh" @more="tapMore">
                 <div class="coupon-item" v-for="(item, index) in items" :key="index">
-                    <div class="thumb">
+                    <div class="item-icon">
                         <img :src="item.thumb" alt="">
                     </div>
-                    <div class="info">
+                    <div class="item-body">
                         <p>{{item.name }}</p>
-                        <dl class="discount" v-if="item.type > 0">
+                        <dl class="item-discount" v-if="item.type > 0">
                             <dd>8.8折</dd>
                             <dt>满168可用</dt>
                         </dl>
-                        <div class="price" v-else>
+                        <div class="item-price" v-else>
                             <em>¥300</em>
                             满168可用
                         </div>
                     </div>
-                    <div class="action">
+                    <div class="item-action">
                         <span v-if="item.can_receive && item.received >= item.send_value" class="status-icon status-close">已抢完</span>
                         <span v-if="item.received < item.send_value && item.can_receive" class="status-icon" @click="tapRecieve(item)">立即<br>领取</span>
                         <span v-if="!item.can_receive" class="status-icon status-received">已领</span>

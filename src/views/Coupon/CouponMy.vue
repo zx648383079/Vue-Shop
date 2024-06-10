@@ -8,13 +8,16 @@
 
             <PullToRefresh :loading="queries.isLoading" :more="queries.hasMore" @refresh="tapRefresh" @more="tapMore">
                 <div class="my-coupon-item" v-for="(item, index) in items" :key="index" :calss="{expired: item.expired}">
-                    <div class="price">
-                        <em>{{ item.money }}</em>
+                    <div class="item-header">
+                        <div class="item-price">
+                            <em>￥</em>
+                            {{ item.money }}
+                        </div>
                         <p>满{{ item.min_money }}可用</p>
                     </div>
-                    <div class="info">
+                    <div class="item-body">
                         <p>{{ item.name }}</p>
-                        <div class="time">
+                        <div class="item-time">
                             <span>{{ item.start_at }}-{{ item.end_at}}</span>
                             <a href="" v-if="!item.expired">立即使用</a>
                         </div>
@@ -78,7 +81,7 @@ function goPage(page: number) {
     }
     queries.isLoading = true;
     getMyCoupon({
-        status: status,
+        status: queries.status,
         page,
     }).then(res => {
         queries.page = page;

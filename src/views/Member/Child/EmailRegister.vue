@@ -20,7 +20,12 @@
             <div class="checkbox" @click="input.agree = !input.agree">
                 <i :class="['iconfont', input.agree ? 'icon-check-circle' : 'icon-circle']"></i>
             </div>
-            同意<AgreementDialog @confirm="input.agree = true">本站协议</AgreementDialog>
+            <i18n-t keypath="agreement_tip" tag="span">
+                <template #link>
+                    <AgreementDialog @confirm="input.agree = true">{{ $t('agreement_name') }}</AgreementDialog>
+                </template>
+            </i18n-t>
+            
         </div>
     </div>
 </template>

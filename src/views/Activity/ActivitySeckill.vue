@@ -23,7 +23,7 @@
                             </div>
                             <div class="goods-info">
                                 <h4>{{ goods.goods.name }}</h4>
-                                <span class="price">{{ goods.price }}</span>
+                                <span class="item-price">{{ goods.price }}</span>
                                 <span class="old-price">{{ goods.goods.price }}</span>
                             </div>
                             <div class="goods-actions">

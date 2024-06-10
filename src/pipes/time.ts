@@ -1,8 +1,14 @@
-import { formatTime } from '@/utils';
+import { formatTime, parseNumber } from '@/utils';
 
-export function timeFilter(value: number) {
-    if (value < 1000000000) {
-        return '';
+export function timeFilter(value: number|string|Date|undefined) {
+    if (!value) {
+        return;
     }
-    return formatTime(new Date(value * 1000));
+    if (value instanceof Date) {
+        return formatTime(value);
+    }
+    if (typeof value === 'string' && !/^\d+$/.test(value)) {
+        return value;
+    }
+    return formatTime(new Date((value.toString().length > 10 ? 1000 : 1) * parseNumber(value)));
 }

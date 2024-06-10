@@ -8,8 +8,10 @@
 </template>
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 
 const router = useRouter();
+const { t } = useI18n();
 
 interface IMenu {
     name: string,
@@ -19,22 +21,22 @@ interface IMenu {
 
 const menus: IMenu[]  = [
     {
-        name: '首页',
+        name: t('nav_home'),
         icon: 'iconfont icon-home',
         url: 'home',
     },
     {
-        name: '分类',
+        name: t('nav_category'),
         icon: 'iconfont icon-table',
         url: 'category',
     },
     {
-        name: '购物车',
+        name: t('nav_cart'),
         icon: 'iconfont icon-cart',
         url: 'cart',
     },
     {
-        name: '我的',
+        name: t('nav_my'),
         icon: 'iconfont icon-user',
         url: 'member',
     },

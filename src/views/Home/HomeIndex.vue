@@ -6,7 +6,7 @@
             </a>
             <a class="search-entry" @click="tapSearch">
                 <i class="iconfont icon-search"></i>
-                <span>搜索商品, 共{{ subtotal ? subtotal.goods : 0 }}款好物</span>
+                <span v-t="{path: 'search_tip', args: {subtotal: subtotal ? subtotal.goods : 0}}"></span>
             </a>
             <a class="icon-item" v-if="isGuest" @click="tapLogin">登录</a>
             <a class="icon-item" v-if="!isGuest" @click="tapMessage">

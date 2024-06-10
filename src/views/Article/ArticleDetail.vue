@@ -7,7 +7,7 @@
                 <span class="author"><i class="iconfont icon-edit"></i><b>admin</b></span>
                 <span class="category"><i class="iconfont icon-bookmark"></i><b>其他</b></span>
                 <span class="comment"><i class="iconfont icon-comment"></i><b>0</b></span>
-                <span class="agree"><i class="iconfont icon-thumbs-o-up"></i><b>0</b></span>
+                <!-- <span class="agree"><i class="iconfont icon-thumbs-o-up"></i><b>0</b></span> -->
                 <span class="click"><i class="iconfont icon-eye"></i><b>31</b></span>
             </div>
             <div class="article-content" v-html="article.content">
