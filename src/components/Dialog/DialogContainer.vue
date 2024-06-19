@@ -3,12 +3,14 @@
         <div class="dialog-mask" v-if="maskVisible" @click="close()"></div>
         <DialogToast v-for="item in toastItems" :key="item.id" v-bind="item"></DialogToast>
         <DialogConfirmBox v-bind="confirmData"></DialogConfirmBox>
+        <DilaogLoading v-bind="loadingData"></DilaogLoading>
     </div>
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import DialogConfirmBox from './DialogConfirmBox.vue';
 import DialogToast from './DialogToast.vue';
+import DilaogLoading from './DialogLoading.vue';
 import type { DialogConfirmOption, DialogTipOption } from './plugin';
 
 const props = withDefaults(
@@ -21,6 +23,7 @@ const props = withDefaults(
 );
 const toastItems = ref<DialogTipOption[]>([]);
 const confirmData = ref<DialogConfirmOption>({});
+const loadingData = ref<DialogOption>({});
 
 const maskVisible = ref(false);
 const el = ref<HTMLDivElement>();
@@ -32,10 +35,15 @@ function close(id?: any) {
     if (!id) {
         toastItems.value = [];
         confirmData.value = {};
+        loadingData.value = {};
         return;
     }
     if (confirmData.value.dialogId === id) {
         confirmData.value = {};
+        return;
+    }
+    if (loadingData.value.dialogId === id) {
+        loadingData.value = {};
         return;
     }
     toastItems.value = toastItems.value.filter(i => i.dialogId !== id).map((item, i) => {
@@ -69,8 +77,15 @@ function addToast(option: DialogTipOption) {
 }
 
 function addConfirm(option: DialogConfirmOption) {
+    maskVisible.value = true;
     option.visible = true;
     confirmData.value = option;
+}
+
+function addLoading(option: DialogOption) {
+    maskVisible.value = true;
+    option.visible = true;
+    loadingData.value = option;
 }
 
 function removeElement(node: Element) {
@@ -93,6 +108,7 @@ onMounted(() => {
 defineExpose({
     addToast,
     addConfirm,
+    addLoading,
     close,
 });
 </script>

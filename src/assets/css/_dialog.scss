@@ -1,6 +1,6 @@
 $dialogIndex: 1200;
 
-.dialog-bg {
+.dialog-mask {
     position: fixed;
     top: 0;
     left: 0;
@@ -8,7 +8,7 @@ $dialogIndex: 1200;
     bottom: 0;
     background: var(--#{$prefix}-dialog-mask);
     z-index: $dialogIndex - 10;
-    display: none;
+    // display: none;
     &.dialog-bg-private {
         position: absolute;
         z-index: 900;

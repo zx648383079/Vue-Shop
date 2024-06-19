@@ -3,7 +3,7 @@
         <div class="action-body">
             <slot></slot>
         </div>
-        <div class="action-loading">
+        <div class="loading-bar action-loading">
             <span :style="loadingStyle"></span>
             <span :style="loadingStyle"></span>
             <span :style="loadingStyle"></span>
@@ -83,35 +83,5 @@ onMounted(() => {
 }
 
 .action-loading {
-    padding: 0.3125rem;
-    span {
-        display: inline-block;
-        border-radius: 50%;
-        width: 1rem;
-        height: 1rem;
-        background-color: var(--#{$prefix}-border);
-        animation-fill-mode: both;
-        animation: loading-default 1.8s infinite ease-in-out;
-        &:nth-of-type(2) {
-            animation-delay: 0.16s;
-        }
-        &:nth-of-type(3) {
-            animation-delay: 0.32s;
-        }
-    }
-}
-
-@keyframes loading-default {
-    0%,
-    80%,
-    100% {
-        transform: scale(.8);
-        opacity: 1;
-    }
-
-    40% {
-        transform: scale(.1);
-        opacity: 0;
-    }
 }
 </style>

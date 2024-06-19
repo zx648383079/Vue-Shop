@@ -35,6 +35,7 @@ export interface IDialogSerive {
     error(message: string|IErrorResponse|AxiosError): void;
     warning(message: string|IErrorResponse|AxiosError): void;
     success(message: string): void;
+    loading(message?: string): void;
     tip(content: string): void;
     tip(content: string, time: number): void;
     tip(option: DialogTipOption):  void;
@@ -107,6 +108,14 @@ class DialogSerive implements IDialogSerive {
         });
     }
 
+    public loading(): void;
+    public loading(message: string): void;
+    public loading(message?: string): void {
+        this.createLoading({
+            content: message
+        });
+    }
+
     public confirm(content: string): Promise<any>;
     public confirm(content: string, onConfirm: () => void): void;
     public confirm(option: DialogConfirmOption): Promise<any>;
@@ -156,6 +165,17 @@ class DialogSerive implements IDialogSerive {
         }
         option.dialogId = ++ this.guid;
         this.container.addConfirm(option);
+    }
+
+    private createLoading(option: DialogOption) {
+        if (!this.container) {
+            this.readyFn = () => {
+                this.createLoading(option);
+            };
+            return;
+        }
+        option.dialogId = ++ this.guid;
+        this.container.addLoading(option);
     }
 
 }
